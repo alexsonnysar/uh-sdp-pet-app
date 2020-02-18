@@ -7,6 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class PetApiApplicationTests {
 
 	@Test
+	void Canary() {
+		assert(true);
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
