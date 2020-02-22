@@ -10,15 +10,17 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '13'
 
 repositories {
-	mavenCentral()
+	jcenter()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testCompile "org.mockito:mockito-core:2.+"
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	implementation 'org.projectlombok:lombok'
+
 	
 }
 
