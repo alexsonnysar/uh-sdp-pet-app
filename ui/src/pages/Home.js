@@ -1,6 +1,13 @@
 import React from "react";
 import PetCard from "../components/PetCard";
 
+const petProfileInfo = {
+  Name: "Garfield",
+  Type: "Cat"
+};
+
+const petName = {};
+
 const Home = () => {
   return (
     <div>
