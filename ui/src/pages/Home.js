@@ -6,13 +6,14 @@ const petProfileInfo = {
   Type: "Cat"
 };
 
-const petName = {};
+const petName = "Garfield";
+const petType = "Cat";
 
 const Home = () => {
   return (
     <div>
       <h1>Hello World!!</h1>
-      <PetCard />
+      <PetCard petName={petName} petType={petType} />
     </div>
   );
 };
