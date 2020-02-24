@@ -1,20 +1,9 @@
-buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.2.1.RELEASE'
-  }
-}
-
 plugins {
 	id 'org.springframework.boot' version '2.2.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id "io.freefair.lombok" version "5.0.0-rc2"
 }
-
-apply plugin: 'spring-cloud-contract'
 
 group = 'com.sdp'
 version = '0.0.1-SNAPSHOT'
@@ -24,10 +13,6 @@ repositories {
 	jcenter()
 }
 
-ext {
-  set('springCloudVersion', "Hoxton.SR1")
-}
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testCompile "org.mockito:mockito-core:2.+"
@@ -35,15 +20,8 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	implementation 'org.projectlombok:lombok'
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+  implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	
-}
-
-dependencyManagement {
-  imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-  }
 }
 
 test {
