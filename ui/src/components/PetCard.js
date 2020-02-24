@@ -8,7 +8,8 @@ const PetCard = () => {
       <Card style={{ width: "18rem" }}>
         <Card.Img
           variant="top"
-          src="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_weight_other/1800x1200_cat_weight_other.jpg?resize=600px:*"
+          //src="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_weight_other/1800x1200_cat_weight_other.jpg?resize=600px:*"
+          src="/images/garfield.jpg"
           alt="Pet Image"
         />
         <Card.Body>
