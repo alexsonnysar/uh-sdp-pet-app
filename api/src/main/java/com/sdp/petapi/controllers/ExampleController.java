@@ -13,7 +13,8 @@ import java.util.List;
 @RestController
 public class ExampleController {
 
-    private final ExampleService exampleService;
+    private ExampleService exampleService;
+
 
     @Autowired
     public ExampleController(ExampleService exampleService) {
