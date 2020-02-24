@@ -19,11 +19,11 @@ public class PetDocumentTest {
   @Test
   public void persist() throws Exception {
 
-    Pet pe = new Pet();
-    Mono<Pet> save = this.petRepository.save(pe);
+    Pet sample_pet = new Pet();
+    Mono<Pet> save = this.petRepository.save(sample_pet);
     // TODO: IS THERE A BETTER WAY TO DO THIS???
     // StepVerifier.create(save).expectNextMatches(p -> p.getId() != null &&
-    // p.getName().equalsIgnoreCase("Buddy")) .verifyComplete();
+    // p.getName().equalsIgnoreCase(null)).verifyComplete();
   }
 
 }
