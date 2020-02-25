@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 const PetCard = ({ pet }) => {
-  console.log(pet);
+  // console.log(pet);
   const { Name, Type } = pet;
   return (
     <div data-testid="petcard">

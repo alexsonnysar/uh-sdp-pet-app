@@ -1,5 +1,6 @@
 import React from "react";
 import PetCard from "../components/PetCard";
+import PetList from "../components/PetList";
 
 const petProfileInfo = {
   Name: "Garfield",
@@ -12,30 +13,21 @@ const petList = [
     Type: "Cat"
   },
   {
-    Name: "Garfield",
-    Type: "Cat"
+    Name: "Shawn",
+    Type: "Bird"
   },
   {
-    Name: "Garfield",
-    Type: "Cat"
+    Name: "Alex",
+    Type: "Dog"
   }
 ];
-
-const petName = "Garfield";
-const petType = "Cat";
 
 const Home = () => {
   return (
     <div>
       <h1>Hello World!!</h1>
       {/* <PetCard petName={petName} petType={petType} /> */}
-      <div>
-        <h2>Pet List</h2>
-        {petList.map((pet, index) => {
-          console.log("PET: ", pet);
-          return <PetCard pet={pet} key={index} />;
-        })}
-      </div>
+      <PetList heading="We did it" petList={petList} />
     </div>
   );
 };
