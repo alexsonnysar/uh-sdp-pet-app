@@ -1,22 +1,12 @@
 package com.sdp.petapi.models;
 
-public class Message {
-	
-	private String message;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-	public Message(String message) {
-		super();
-		this.message = message;
-	}
+@AllArgsConstructor
+@NoArgsConstructor
+public @Data class Message {
+  private String message;
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	
-	
 }
