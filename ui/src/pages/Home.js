@@ -11,7 +11,6 @@ const Home = () => {
     <div>
       <h1>This is the User Home Page</h1>
       <PetCard pet={petProfileInfo} />
-      {/* <PetCard petName={petName} petType={petType} /> */}
     </div>
   );
 };
