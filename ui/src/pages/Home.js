@@ -9,7 +9,7 @@ const petProfileInfo = {
 const Home = () => {
   return (
     <div>
-      <h1>This is the User Home Page</h1>
+      <h1 align="center">This is the User Home Page</h1>
       <PetCard pet={petProfileInfo} />
     </div>
   );
