@@ -1,6 +1,5 @@
 package com.sdp.petapi.models;
 
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
