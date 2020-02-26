@@ -1,6 +1,5 @@
 import React from "react";
 import PetCard from "../components/PetCard";
-import PetList from "../components/PetList";
 
 const petProfileInfo = {
   Name: "Garfield",
