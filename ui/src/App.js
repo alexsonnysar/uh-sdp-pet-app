@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App" data-testid="App">
         <Switch>
           <Route path="/petprofile">
             <PetProfile />

@@ -7,7 +7,7 @@ const PetList = ({ heading, petList }) => {
     <div data-testid="petlist">
       <h2>{heading}</h2>
       {petList.map((pet, index) => (
-        <CardColumns>
+        <CardColumns key={index}>
           <PetCard pet={pet} key={index} ifList={true} />
         </CardColumns>
       ))}
