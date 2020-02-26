@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
-import com.sdp.petapi.repositories.PetRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

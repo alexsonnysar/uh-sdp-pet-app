@@ -21,7 +21,6 @@ dependencyManagement {
 }
 
 
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'io.projectreactor:reactor-core'
@@ -33,17 +32,16 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testCompile 'io.projectreactor:reactor-test'
-	implementation 'org.projectlombok:lombok'
   implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	
 }
 
 sourceSets {
   main {
-    java.srcDirs("./src/main")
+    java.srcDirs("./src/main/java")
   }
    test {
-    java.srcDirs("./src/test")
+    java.srcDirs("./src/test/java")
   }
 }
 
