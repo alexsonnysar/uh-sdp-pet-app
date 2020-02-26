@@ -7,7 +7,11 @@ const PetCard = ({ pet, ifList }) => {
   const { Name, Type } = pet;
   return (
     <div data-testid="petcard">
-      <Card className="text-center" style={{ width: "18rem" }}>
+      <Card
+        className="text-center"
+        style={{ width: "18rem" }}
+        onClick={alertMessage}
+      >
         {!ifList ? (
           <Card.Img
             variant="bottom"
@@ -24,5 +28,9 @@ const PetCard = ({ pet, ifList }) => {
     </div>
   );
 };
+
+function alertMessage() {
+  return alert("Redirect to Pet Profile Page!");
+}
 
 export default PetCard;
