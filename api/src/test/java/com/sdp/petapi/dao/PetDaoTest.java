@@ -63,7 +63,7 @@ public class PetDaoTest {
 
   @Test
   public void PutPetShouldWork() throws Exception {
-    when(petDao.putPet(expected_pet).thenReturn(expected_message));
+    when(petDao.putPet(expected_pet)).thenReturn(expected_message);
 
     Message actual_message = petDao.putPet(expected_pet);
 
