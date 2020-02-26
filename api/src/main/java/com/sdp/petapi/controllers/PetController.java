@@ -22,38 +22,30 @@ import com.sdp.petapi.services.PetService;
 @RestController
 @RequestMapping("/pet")
 public class PetController {
-	
-	@Autowired
-	private PetService petService;
-	
-	
-	
-	
-	
-	
-	// make id required
-	@DeleteMapping("/{id}")
-	public Message deletePet(@PathVariable String id) {
-		return petService.deletePet(id);
-		
-	}
-	
-	
-	
-	
-	@GetMapping
-	public Collection<Pet> getAllPets() {
-		return petService.getPets();
-	}
-	
-	@PostMapping
-	public Pet postPet(@RequestBody Pet pet) {
-		return petService.createPet(pet);
-	}
-	
-	@PutMapping("/{id}")
-	public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
-		pet.setId(id);
-		return petService.putPet(pet);
-	}
+
+  @Autowired
+  private PetService petService;
+
+  // make id required
+  @DeleteMapping("/{id}")
+  public Message deletePet(@PathVariable String id) {
+    return petService.deletePet(id);
+
+  }
+
+  @GetMapping
+  public Collection<Pet> getAllPets() {
+    return petService.getPets();
+  }
+
+  @PostMapping
+  public Pet postPet(@RequestBody Pet pet) {
+    return petService.createPet(pet);
+  }
+
+  @PutMapping("/{id}")
+  public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
+    pet.setId(id);
+    return petService.putPet(pet);
+  }
 }
