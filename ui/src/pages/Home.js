@@ -7,21 +7,6 @@ const petProfileInfo = {
   Type: "Cat"
 };
 
-const petList = [
-  {
-    Name: "Garfield",
-    Type: "Cat"
-  },
-  {
-    Name: "Shawn",
-    Type: "Bird"
-  },
-  {
-    Name: "Alex",
-    Type: "Dog"
-  }
-];
-
 const Home = () => {
   return (
     <div>
