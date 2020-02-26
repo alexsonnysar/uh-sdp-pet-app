@@ -5,7 +5,7 @@ import CardColumns from "react-bootstrap/CardColumns";
 const PetList = ({ heading, petList }) => {
   return (
     <div data-testid="petlist">
-      <h2>{heading}</h2>
+      <h3>{heading}</h3>
       {petList.map((pet, index) => (
         <CardColumns key={index}>
           <PetListCard pet={pet} key={index} />
