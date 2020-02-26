@@ -3,8 +3,6 @@ package com.sdp.petapi.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 import com.sdp.petapi.dao.PetDao;
@@ -14,11 +12,9 @@ import com.sdp.petapi.models.Pet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ch.qos.logback.classic.pattern.MessageConverter;
 
 @SpringBootTest
 public class PetServiceTest {
