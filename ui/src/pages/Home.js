@@ -28,7 +28,6 @@ const Home = () => {
       <h1>This is the User Home Page</h1>
       <PetCard pet={petProfileInfo} />
       {/* <PetCard petName={petName} petType={petType} /> */}
-      {/* <PetList heading="Pet List" petList={petList} /> */}
     </div>
   );
 };
