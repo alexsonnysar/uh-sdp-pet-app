@@ -17,7 +17,7 @@ const petList = [
   }
 ];
 
-test("should render pet list", () => {
+test("should render a list of pets", () => {
   const { getByTestId } = render(
     <PetList heading="Pet List" petList={petList} />
   );

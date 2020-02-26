@@ -1,5 +1,5 @@
 import React from "react";
-import PetCard from "./PetCard";
+import PetListCard from "./PetListCard";
 import CardColumns from "react-bootstrap/CardColumns";
 
 const PetList = ({ heading, petList }) => {
@@ -8,7 +8,7 @@ const PetList = ({ heading, petList }) => {
       <h2>{heading}</h2>
       {petList.map((pet, index) => (
         <CardColumns key={index}>
-          <PetCard pet={pet} key={index} ifList={true} />
+          <PetListCard pet={pet} key={index} />
         </CardColumns>
       ))}
     </div>
