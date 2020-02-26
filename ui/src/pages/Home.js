@@ -25,9 +25,10 @@ const petList = [
 const Home = () => {
   return (
     <div>
-      <h1>Hello World!!</h1>
+      <h1>This is the User Home Page</h1>
+      <PetCard pet={petProfileInfo} />
       {/* <PetCard petName={petName} petType={petType} /> */}
-      <PetList heading="We did it" petList={petList} />
+      {/* <PetList heading="Pet List" petList={petList} /> */}
     </div>
   );
 };
