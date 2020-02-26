@@ -17,6 +17,9 @@ const PetListCard = ({ pet }) => {
               </Col>
               <Col></Col>
               <Col>
+                <Button variant="primary">Update</Button>
+              </Col>
+              <Col>
                 <Button variant="danger">Delete</Button>
               </Col>
             </Row>
