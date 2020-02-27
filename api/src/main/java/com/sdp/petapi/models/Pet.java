@@ -1,6 +1,5 @@
 package com.sdp.petapi.models;
 
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ public @Data class Pet {
   private String age; // newborn, young, adult
   private String size; // small, medium, large, extra large
   private Double weight;
-  private Date dateAdded;
+  private String dateAdded;
   private String description;
   private String[] imageNames; // link to photos
   private boolean isAdopted;
