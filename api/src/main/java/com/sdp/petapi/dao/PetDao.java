@@ -1,6 +1,6 @@
 package com.sdp.petapi.dao;
 
-import java.util.Collection;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,10 @@ public class PetDao {
 
   public Collection<Pet> getPets() {
     return repository.findAll();
+  }
+
+  public Pet getPet(UUID id){
+    return getPets().stream().filter(p -> p.getId().equals(id)).findFirst().get();
   }
 
   public Pet createPet(Pet pet) {

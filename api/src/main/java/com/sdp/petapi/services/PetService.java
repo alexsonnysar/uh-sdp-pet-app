@@ -1,6 +1,6 @@
 package com.sdp.petapi.services;
 
-import java.util.Collection;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,11 @@ public class PetService {
 	
 	public Collection<Pet> getPets() {
 		return petDao.getPets();
+	}
+
+
+	public Pet getPet(UUID id) {
+		return petDao.getPet(id);
 	}
 
 

@@ -1,15 +1,26 @@
 package com.sdp.petapi.models;
 
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
+import com.mongodb.annotations.Immutable;
+import com.sdp.petapi.repositories.PetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Pet {
-  private String id;
+
+  @Autowired
+  private PetRepository repository;
+  
+  private UUID id;
   private String name;
   private String type;
   private String sex; // M, F
@@ -18,7 +29,37 @@ public @Data class Pet {
   private Double weight;
   private Date dateAdded;
   private String description;
-  private String[] imageNames; // link to photos
+  private Set<String> imageNames; // link to photos
   private boolean isAdopted;
+
+  public Pet(String name, String type, String sex, String age, String size, Double weight, String date, String desc, Collection<String> images){
+    while(this.id==null || repository.findAll().stream().filter(p -> p.getId().equals(this.id)).findFirst().get()!=null){
+      this.id = UUID.randomUUID();
+    }
+    this.name = name;
+    this.type = type;
+    this.sex = sex;
+    this.age = age;
+    this.size = size;
+    this.weight = weight;
+    this.dateAdded = date;
+    this.description = desc;
+    this.imageNames = images.stream().collect(Collectors.toSet());
+    this.isAdopted = false;
+  }
+
+  public Pet(UUID id, String name, String type, String sex, String age, String size, Double weight, String date, String desc, Collection<String> images, boolean status){
+    this.id = id;
+    this.name = name;
+    this.type = type;
+    this.sex = sex;
+    this.age = age;
+    this.size = size;
+    this.weight = weight;
+    this.dateAdded = date;
+    this.description = desc;
+    this.imageNames = images.stream().collect(Collectors.toSet());
+    this.isAdopted = status;
+  }
 
 }
