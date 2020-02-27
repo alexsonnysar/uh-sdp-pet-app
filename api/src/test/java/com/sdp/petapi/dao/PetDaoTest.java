@@ -51,16 +51,6 @@ public class PetDaoTest {
   }
 
   @Test
-  public void deletePetShouldWork() throws Exception {
-    when(petDao.deletePet(expected_pet.getId())).thenReturn(expected_message);
-
-    Message actual_message = petDao.deletePet(expected_pet.getId());
-
-    assertEquals(expected_message, actual_message);
-
-  }
-
-  @Test
   public void PutPetShouldWork() throws Exception {
     when(petDao.putPet(expected_pet)).thenReturn(expected_message);
 

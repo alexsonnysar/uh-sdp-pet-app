@@ -47,16 +47,7 @@ public class PetServiceTest {
 
     assertEquals(expected_pet, actual_pet);
   }
-
-  @Test
-  public void DeletePetShouldWork() throws Exception {
-    when(petService.deletePet(expected_pet.getId())).thenReturn(expected_message);
-
-    Message actual_message = petService.deletePet(expected_pet.getId());
-
-    assertEquals(expected_message, actual_message);
-  }
-
+  
   @Test
   public void ReadPetShouldWork() throws Exception {
 

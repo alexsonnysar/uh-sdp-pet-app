@@ -27,11 +27,6 @@ public class PetDao {
     return repository.insert(pet);
   }
 
-  public Message deletePet(String id) {
-    repository.deleteById(id);
-    return new Message("Deleted Pet");
-  }
-
   public Message putPet(Pet pet) {
     repository.save(pet);
     return new Message("Updated Pet");
