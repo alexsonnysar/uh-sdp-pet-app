@@ -3,7 +3,7 @@ package com.sdp.petapi.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.sdp.petapi.dao.PetDao;
 import com.sdp.petapi.models.Message;
@@ -37,7 +37,7 @@ public class PetServiceTest {
   Message expected_message;
 
   @Mock
-  Collection<Pet> expected_collection_of_pets;
+  List<Pet> expected_collection_of_pets;
 
   @Test
   public void creates_pet_should_work() throws Exception {
@@ -62,7 +62,7 @@ public class PetServiceTest {
 
     when(petService.getPets()).thenReturn(expected_collection_of_pets);
 
-    Collection<Pet> actual_collection_of_pets = petService.getPets();
+    List<Pet> actual_collection_of_pets = petService.getPets();
 
     assertEquals(expected_collection_of_pets, actual_collection_of_pets);
   }

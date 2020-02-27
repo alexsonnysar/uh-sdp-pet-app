@@ -1,9 +1,9 @@
 package com.sdp.petapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyList;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.sdp.petapi.controllers.PetController;
 import com.sdp.petapi.models.Message;
@@ -28,8 +28,8 @@ class PetControllerTest {
 
   @Test
   public void get_pets_should_return_all_pets() {
-    Collection<Pet> pets = petController.getAllPets();
-    assertEquals(anyCollection(), pets);
+    List<Pet> pets = petController.getAllPets();
+    assertEquals(anyList(), pets);
   }
 
   @Test
@@ -38,7 +38,7 @@ class PetControllerTest {
     pet.setId("001");
     mockMessage.setMessage("Deleted Pet");
     Message message = petController.deletePet(pet.getId());
-    assertEquals("Deleted Pet" ,message.getMessage());
-   }
+    assertEquals("Deleted Pet", message.getMessage());
+  }
 
 }

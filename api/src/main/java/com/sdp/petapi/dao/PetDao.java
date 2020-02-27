@@ -1,6 +1,6 @@
 package com.sdp.petapi.dao;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class PetDao {
   @Autowired
   private PetRepository repository;
 
-  public Collection<Pet> getPets() {
+  public List<Pet> getPets() {
     return repository.findAll();
   }
 

@@ -1,6 +1,6 @@
 package com.sdp.petapi.controllers;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +30,7 @@ public class PetController {
   }
 
   @GetMapping
-  public Collection<Pet> getAllPets() {
+  public List<Pet> getAllPets() {
     return petService.getPets();
   }
 
