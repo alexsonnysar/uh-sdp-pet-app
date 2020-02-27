@@ -13,8 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 
 @SpringBootTest
 public class PetServiceTest {
@@ -27,7 +27,7 @@ public class PetServiceTest {
   @Mock
   Pet expected_pet;
 
-  @Mock
+  @Autowired
   PetService petService;
 
   @Mock
@@ -40,7 +40,7 @@ public class PetServiceTest {
   Collection<Pet> expected_collection_of_pets;
 
   @Test
-  public void CreatesPetShouldWork() throws Exception {
+  public void creates_pet_should_work() throws Exception {
     when(petService.createPet(expected_pet)).thenReturn(expected_pet);
 
     Pet actual_pet = petService.createPet(expected_pet);
@@ -49,7 +49,7 @@ public class PetServiceTest {
   }
 
   @Test
-  public void DeletePetShouldWork() throws Exception {
+  public void delete_pet_should_work() throws Exception {
     when(petService.deletePet(expected_pet.getId())).thenReturn(expected_message);
 
     Message actual_message = petService.deletePet(expected_pet.getId());
@@ -58,7 +58,7 @@ public class PetServiceTest {
   }
 
   @Test
-  public void ReadPetShouldWork() throws Exception {
+  public void read_pet_should_work() throws Exception {
 
     when(petService.getPets()).thenReturn(expected_collection_of_pets);
 
@@ -68,7 +68,7 @@ public class PetServiceTest {
   }
 
   @Test
-  public void UpdatePetShouldWork() throws Exception {
+  public void update_pet_should_work() throws Exception {
 
     when(petService.putPet(expected_pet)).thenReturn(expected_message);
 

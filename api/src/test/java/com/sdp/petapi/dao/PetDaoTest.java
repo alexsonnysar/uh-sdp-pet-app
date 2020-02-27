@@ -31,7 +31,7 @@ public class PetDaoTest {
   Message expected_message;
 
   @Test
-  public void getPetsShouldWork() throws Exception {
+  public void get_pets_should_work() throws Exception {
     when(petDao.getPets()).thenReturn(expected_collection_of_pets);
 
     Collection<Pet> actual_collection_of_pets = petDao.getPets();
@@ -41,7 +41,7 @@ public class PetDaoTest {
   }
 
   @Test
-  public void CreatePetShouldWork() throws Exception {
+  public void create_pet_should_work() throws Exception {
     when(petDao.createPet(expected_pet)).thenReturn(expected_pet);
 
     Pet actual_pet = petDao.createPet(expected_pet);
@@ -51,7 +51,7 @@ public class PetDaoTest {
   }
 
   @Test
-  public void deletePetShouldWork() throws Exception {
+  public void delete_pet_should_work() throws Exception {
     when(petDao.deletePet(expected_pet.getId())).thenReturn(expected_message);
 
     Message actual_message = petDao.deletePet(expected_pet.getId());
@@ -61,7 +61,7 @@ public class PetDaoTest {
   }
 
   @Test
-  public void PutPetShouldWork() throws Exception {
+  public void put_pet_should_work() throws Exception {
     when(petDao.putPet(expected_pet)).thenReturn(expected_message);
 
     Message actual_message = petDao.putPet(expected_pet);

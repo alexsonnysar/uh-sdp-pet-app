@@ -33,7 +33,7 @@ class PetControllerTest {
   }
 
   @Test
-  public void pet_should_delete() {
+  public void pet_should_delete_pet_by_id() {
     Pet pet = new Pet();
     pet.setId("001");
     mockMessage.setMessage("Deleted Pet");

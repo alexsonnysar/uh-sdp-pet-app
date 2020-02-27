@@ -23,7 +23,6 @@ public class PetController {
   @Autowired
   private PetService petService;
 
-  // make id required
   @DeleteMapping("/{id}")
   public Message deletePet(@PathVariable String id) {
     return petService.deletePet(id);
