@@ -34,7 +34,6 @@ dependencies {
 	}
 	testCompile 'io.projectreactor:reactor-test'
   implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-	
 }
 
 sourceSets {

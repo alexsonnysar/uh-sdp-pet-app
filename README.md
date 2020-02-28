@@ -30,8 +30,8 @@ The front end runs on port [localhost:3000](localhost:3000) just use
 
 ```sh
 cd uh-sdp-pet-app/ui
-npm i
-npm start
+yarn install
+yarn start
 ```
 
 You should see a <h2> Hello World</h2>

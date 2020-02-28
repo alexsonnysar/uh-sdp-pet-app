@@ -23,7 +23,7 @@ public class PetDaoTest {
 
   @Test
   public void get_pets_should_work() throws Exception {
-    List<Pet> actual_pets = petDao.getPets();
+    List<Pet> actual_pets = petDao.getAllPets();
     assertEquals(new ArrayList<Pet>(), actual_pets);
   }
 

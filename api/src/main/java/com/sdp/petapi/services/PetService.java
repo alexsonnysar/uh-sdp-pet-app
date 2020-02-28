@@ -12,22 +12,27 @@ import com.sdp.petapi.models.Pet;
 @Service
 public class PetService {
 
-  @Autowired
-  private PetDao petDao;
+	@Autowired
+	private PetDao petDao;
 
-  public List<Pet> getPets() {
-    return petDao.getPets();
-  }
+	public List<Pet> getAllPets() {
+		return petDao.getAllPets();
+	}
 
-  public Pet createPet(Pet pet) {
-    return petDao.createPet(pet);
-  }
+	public Pet getPetById(String id) {
+		return petDao.getPetById(id);
+	}
 
-  public Message deletePet(String id) {
-    return petDao.deletePet(id);
-  }
+	public Pet createPet(Pet pet) {
+		return petDao.createPet(pet);
+	}
 
-  public Message putPet(Pet pet) {
-    return petDao.putPet(pet);
-  }
+	public Message putPet(Pet pet) {
+		return petDao.putPet(pet);
+	}
+
+	public Message deletePet(String id) {
+		return petDao.deletePet(id);
+	}
+
 }
