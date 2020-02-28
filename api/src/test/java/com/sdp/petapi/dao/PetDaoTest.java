@@ -1,8 +1,6 @@
 package com.sdp.petapi.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,12 +20,6 @@ public class PetDaoTest {
 
   @Autowired
   PetDao petDao;
-
-  @Mock
-  Pet expected_pet;
-
-  @Mock
-  Message expected_message;
 
   @Test
   public void get_pets_should_work() throws Exception {
