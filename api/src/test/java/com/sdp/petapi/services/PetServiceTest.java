@@ -60,9 +60,9 @@ public class PetServiceTest {
   @Test
   public void read_pet_should_work() throws Exception {
 
-    when(petService.getPets()).thenReturn(expected_collection_of_pets);
+    when(petService.getAllPets()).thenReturn(expected_collection_of_pets);
 
-    List<Pet> actual_collection_of_pets = petService.getPets();
+    List<Pet> actual_collection_of_pets = petService.getAllPets();
 
     assertEquals(expected_collection_of_pets, actual_collection_of_pets);
   }

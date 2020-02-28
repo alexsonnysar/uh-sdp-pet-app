@@ -22,20 +22,19 @@ public class PetController {
 
   @Autowired
   private PetService petService;
-
-  @DeleteMapping("/{id}")
-  public Message deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
-
-  }
-
+  
   @GetMapping
   public List<Pet> getAllPets() {
-    return petService.getPets();
+    return petService.getAllPets();
+  }
+
+  @GetMapping("/{id}")
+  public Pet getPetById(@PathVariable String id) {
+    return petService.getPetById(id);
   }
 
   @PostMapping
-  public Pet postPet(@RequestBody Pet pet) {
+  public Pet createPet(@RequestBody Pet pet) {
     return petService.createPet(pet);
   }
 
@@ -44,4 +43,11 @@ public class PetController {
     pet.setId(id);
     return petService.putPet(pet);
   }
+
+  @DeleteMapping("/{id}")
+  public Message deletePet(@PathVariable String id) {
+    return petService.deletePet(id);
+  }
+
+
 }

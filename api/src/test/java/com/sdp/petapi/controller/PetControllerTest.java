@@ -23,25 +23,8 @@ class PetControllerTest {
   @Autowired
   PetController petController;
 
-  @Mock
-  PetController mockController;
-
-  @Mock
-  Message mockMessage;
-
   @Autowired
   PetRepository petRepository;
-
-  @Test
-  public void get_pets_should_return_all_pets() {
-    List<Pet> pets = petController.getAllPets();
-    assertEquals(anyList(), pets);
-  }
-
-
-
-
-
 
   @Test
   public void pet_should_delete() {
@@ -52,6 +35,21 @@ class PetControllerTest {
     assertEquals(false, petRepository.existsById(pet.getId()), "PetController failed delete by id");
   }
 
+  @Test
+  public void get_pet_by_id() {
+    petRepository.insert(pet);
+    Pet returnedPet = petController.getPetById(pet.getId());
+    // comparison between two objects needs further investigation
+    assertEquals(pet, returnedPet, "PetController failed getPetById");
+  }
 
-
+  // testing if id passed not found in db
+  @Test
+  public void get_pet_by_id_not_found() {
+    petRepository.insert(pet);
+    String invalidId = pet.getId() + "001";
+    Pet returnedPet = petController.getPetById(invalidId);
+    // comparison between two objects needs further investigation
+    assertEquals(new Pet(), returnedPet, "PetController failed getPetById");
+  }
 }
