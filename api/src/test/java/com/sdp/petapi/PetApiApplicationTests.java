@@ -6,13 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PetApiApplicationTests {
 
-	@Test
-	void Canary() {
-		assert(true);
-	}
-
-	@Test
-	void contextLoads() {
-	}
-
+  @Test
+  void canary() {
+    assert (true);
+  }
 }

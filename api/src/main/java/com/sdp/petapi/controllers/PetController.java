@@ -1,6 +1,5 @@
 package com.sdp.petapi.controllers;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.petapi.models.Message;
@@ -25,21 +22,18 @@ public class PetController {
 
   @Autowired
   private PetService petService;
-
-  // make id required
-  @DeleteMapping("/{id}")
-  public Message deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
-
+  @GetMapping
+  public List<Pet> getAllPets() {
+    return petService.getAllPets();
   }
 
-  @GetMapping
-  public Collection<Pet> getAllPets() {
-    return petService.getPets();
+  @GetMapping("/{id}")
+  public Pet getPetById(@PathVariable String id) {
+    return petService.getPetById(id);
   }
 
   @PostMapping
-  public Pet postPet(@RequestBody Pet pet) {
+  public Pet createPet(@RequestBody Pet pet) {
     return petService.createPet(pet);
   }
 
@@ -48,4 +42,10 @@ public class PetController {
     pet.setId(id);
     return petService.putPet(pet);
   }
+
+  @DeleteMapping("/{id}")
+  public Message deletePet(@PathVariable String id) {
+    return petService.deletePet(id);
+  }
+
 }

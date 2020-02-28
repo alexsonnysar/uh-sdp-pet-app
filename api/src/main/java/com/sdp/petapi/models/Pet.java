@@ -1,47 +1,23 @@
 package com.sdp.petapi.models;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
-import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+@AllArgsConstructor
+@NoArgsConstructor
+public @Data class Pet {
+  private String id;
+  private String name;
+  private String type;
+  private String sex; // M, F
+  private String age; // newborn, young, adult
+  private String size; // small, medium, large, extra large
+  private Double weight;
+  private String dateAdded;
+  private String description;
+  private String[] imageNames; // link to photos
+  private boolean isAdopted;
 
-@Document
-public class Pet {
-	@Id
-	private String id;
-	@NotBlank
-	private String name;
-	
-	
-	public Pet() {
-		
-	}
-	
-	public Pet(String id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	
 }
