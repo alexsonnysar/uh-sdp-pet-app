@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.Message;
@@ -63,6 +64,29 @@ public class PetDaoTest {
     assertEquals(pet, actual_pet);
   }
 
+  @Test
+  public void create_pet() {
+    pet.setId("99999");
+    pet.setName("Changed Pet");
+    Pet actual_pet = petDao.createPet(pet);
+    assertEquals(pet, actual_pet);
+  }
  
+  @Test
+  public void put_pet() {
+    pet.setName("Changed Pet");
+    Message message = petDao.putPet(pet);
+    assertEquals("Updated Pet", message.getMessage());
 
+    Optional<Pet> updatedPet = petRepository.findById(pet.getId());
+    assertEquals(pet, updatedPet.get());
+  }
+
+  @Test
+  public void delete_pet() {
+    Message message = petDao.deletePet(pet.getId());
+    assertEquals("Deleted Pet", message.getMessage());
+
+    assertEquals(false, petRepository.existsById(pet.getId()));
+  }
 }
