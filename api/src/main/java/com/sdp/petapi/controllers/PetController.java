@@ -22,7 +22,6 @@ public class PetController {
 
   @Autowired
   private PetService petService;
-  
   @GetMapping
   public List<Pet> getAllPets() {
     return petService.getAllPets();
@@ -48,6 +47,5 @@ public class PetController {
   public Message deletePet(@PathVariable String id) {
     return petService.deletePet(id);
   }
-
 
 }

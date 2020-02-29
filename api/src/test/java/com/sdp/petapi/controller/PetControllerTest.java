@@ -54,14 +54,12 @@ class PetControllerTest {
     Pet returnPet = petController.createPet(pet);
     assertEquals(pet, returnPet);
   }
-  
   @Test
   public void put_pet() {
     when(petService.putPet(pet)).thenReturn(new Message("Updated Pet") );
     Message returnMessage = petController.putPet(pet.getId(), pet);
     assertEquals("Updated Pet", returnMessage.getMessage());
   }
-  
   @Test
   public void delete_pet() {
     when(petService.deletePet(pet.getId())).thenReturn(new Message("Deleted Pet") );
