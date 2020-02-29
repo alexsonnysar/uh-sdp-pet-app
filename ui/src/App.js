@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
+import Test from "./pages/Test";
 import PetProfile from "./pages/PetProfile";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           </Route>
           <Route path="/">
             <Home />
+            {/* <Test/> */}
           </Route>
         </Switch>
       </div>

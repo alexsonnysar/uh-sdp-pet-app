@@ -1,7 +1,7 @@
 import React from "react";
 import PetListCard from "./PetListCard";
 import CardColumns from "react-bootstrap/CardColumns";
-import { Card, Button, Container, Col, Row } from "react-bootstrap";
+import { Button, Container, Col, Row } from "react-bootstrap";
 
 const PetList = ({ heading, petList }) => {
   return (
