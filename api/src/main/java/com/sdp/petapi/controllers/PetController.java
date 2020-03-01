@@ -1,8 +1,9 @@
 package com.sdp.petapi.controllers;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,26 +24,40 @@ public class PetController {
   @Autowired
   private PetService petService;
 
-  // make id required
-  @DeleteMapping("/{id}")
-  public Message deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
-
+  @GetMapping
+  @CrossOrigin
+  public List<Pet> getAllPets() {
+    return petService.getAllPets();
   }
 
-  @GetMapping
-  public Collection<Pet> getAllPets() {
-    return petService.getPets();
+  @GetMapping("/{id}")
+  public Pet getPetById(@PathVariable String id) {
+    return petService.getPetById(id);
   }
 
   @PostMapping
-  public Pet postPet(@RequestBody Pet pet) {
+  public Pet createPet(@RequestBody Pet pet) {
     return petService.createPet(pet);
   }
 
   @PutMapping("/{id}")
   public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
     pet.setId(id);
-    return petService.putPet(pet);
+    Pet returnedPet = petService.putPet(pet);
+    if (returnedPet != null) {
+      return new Message("Updated Pet");
+    } else {
+      return new Message("Couldn't update pet");
+    }
   }
+
+  @DeleteMapping("/{id}")
+  public Message deletePet(@PathVariable String id) {
+    if (petService.deletePet(id)) {
+      return new Message("Deleted Pet");
+    } else {
+      return new Message("Couldn't delete pet");
+    }
+  }
+
 }
