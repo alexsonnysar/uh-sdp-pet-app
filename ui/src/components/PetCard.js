@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 
 const PetCard = ({ pet }) => {
-  const { id, name, type, sex, age, size, weight, dateAdded, description, imageNames, adopted } = pet;
+  const { name, type } = pet;
   console.log(name);
   return (
-    <div data-testid="petcard">
-      <Card className="text-center" style={{ width: "18rem" }}>
+    <div>
+      <Card className="text-center" style={{ width: "12rem" }}>
         <a href="/petprofile">
           <Card.Img variant="top" src="/images/garfield.jpg" alt="Pet Image" />
         </a>

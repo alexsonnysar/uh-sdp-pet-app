@@ -18,10 +18,8 @@ const PetList = ({ heading, petList }) => {
       </Container>
       <Row>
         <Col>
-          {petList.map((pet, index) => (
-            <CardColumns key={index}>
-              <PetListCard pet={pet} key={index} />
-            </CardColumns>
+          {petList.map(pet => (
+            <PetListCard pet={pet} key={pet.id} />
           ))}
         </Col>
       </Row>
