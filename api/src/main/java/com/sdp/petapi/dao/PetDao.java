@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.repositories.PetRepository;
 
@@ -34,14 +33,14 @@ public class PetDao {
     return repository.insert(pet);
   }
 
-  public Message putPet(Pet pet) {
-    repository.save(pet);
-    return new Message("Updated Pet");
+  public Pet putPet(Pet pet) {
+    return repository.save(pet);
   }
 
-  public Message deletePet(String id) {
+  public Boolean deletePet(String id) {
     repository.deleteById(id);
-    return new Message("Deleted Pet");
+    // maybe check if delete worked?
+    return true;
   }
 
 }

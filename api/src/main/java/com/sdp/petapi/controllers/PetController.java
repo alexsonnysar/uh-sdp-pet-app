@@ -43,12 +43,21 @@ public class PetController {
   @PutMapping("/{id}")
   public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
     pet.setId(id);
-    return petService.putPet(pet);
+    Pet returnedPet = petService.putPet(pet);
+    if (returnedPet != null) {
+      return new Message("Updated Pet");
+    } else {
+      return new Message("Couldn't update pet");
+    }
   }
 
   @DeleteMapping("/{id}")
   public Message deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
+    if (petService.deletePet(id)) {
+      return new Message("Deleted Pet");
+    } else {
+      return new Message("Couldn't delete pet");
+    }
   }
 
 }
