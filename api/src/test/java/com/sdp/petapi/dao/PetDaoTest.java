@@ -49,7 +49,6 @@ public class PetDaoTest {
     petRepository.deleteAll();
   }
 
-
   @Test
   public void get_all_pets() {
     List<Pet> actual_pets = petDao.getAllPets();
@@ -64,7 +63,7 @@ public class PetDaoTest {
 
   @Test
   public void create_pet() {
-    pet.setId("99999");
+    pet.setId(pet.getId() + "999");
     pet.setName("Changed Pet");
     Pet actual_pet = petDao.createPet(pet);
     assertEquals(pet, actual_pet);
@@ -72,8 +71,8 @@ public class PetDaoTest {
   @Test
   public void put_pet() {
     pet.setName("Changed Pet");
-    Message message = petDao.putPet(pet);
-    assertEquals("Updated Pet", message.getMessage());
+    Pet returnedPet = petDao.putPet(pet);
+    assertEquals(pet, returnedPet);
 
     Optional<Pet> updatedPet = petRepository.findById(pet.getId());
     assertEquals(pet, updatedPet.get());
@@ -81,9 +80,13 @@ public class PetDaoTest {
 
   @Test
   public void delete_pet() {
-    Message message = petDao.deletePet(pet.getId());
-    assertEquals("Deleted Pet", message.getMessage());
+    Boolean deleteSuccess = petDao.deletePet(pet.getId());
 
-    assertEquals(false, petRepository.existsById(pet.getId()));
+    if (deleteSuccess) {
+      assertEquals(false, petRepository.existsById(pet.getId()));
+    } else {
+      assertEquals(true, petRepository.existsById(pet.getId()));
+    }
+
   }
 }
