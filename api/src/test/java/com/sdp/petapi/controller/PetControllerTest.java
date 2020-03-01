@@ -70,10 +70,25 @@ class PetControllerTest {
     Message returnMessage = petController.putPet(pet.getId(), pet);
     assertEquals("Updated Pet", returnMessage.getMessage());
   }
+
+  @Test
+  public void put_pet_returns_null() {
+    when(petService.putPet(pet)).thenReturn(null);
+    Message returnMessage = petController.putPet(pet.getId(), pet);
+    assertEquals("Couldn't update pet", returnMessage.getMessage());
+  }
+
   @Test
   public void delete_pet() {
     when(petService.deletePet(pet.getId())).thenReturn(true);
     Message returnMessage = petController.deletePet(pet.getId());
     assertEquals("Deleted Pet", returnMessage.getMessage());
+  }
+
+  @Test
+  public void delete_pet_returns_false() {
+    when(petService.deletePet(pet.getId())).thenReturn(false);
+    Message returnMessage = petController.deletePet(pet.getId());
+    assertEquals("Couldn't delete pet", returnMessage.getMessage());
   }
 }

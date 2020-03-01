@@ -28,7 +28,7 @@ dependencies {
 	testImplementation 'org.apache.httpcomponents:httpclient'
 	testCompile "org.mockito:mockito-core:2.+"
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
