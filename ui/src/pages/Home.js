@@ -1,5 +1,6 @@
 import React from "react";
 import PetCard from "../components/PetCard";
+import Navigation from "../components/Navigation";
 
 const petProfileInfo = {
   Name: "Garfield",
@@ -9,7 +10,7 @@ const petProfileInfo = {
 const Home = () => {
   return (
     <div>
-      <h1 align="center">This is the User Home Page</h1>
+      <Navigation />
       <PetCard pet={petProfileInfo} />
     </div>
   );

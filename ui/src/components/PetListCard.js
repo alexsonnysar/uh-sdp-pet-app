@@ -10,7 +10,7 @@ const PetListCard = ({ pet }) => {
           <Container>
             <Row>
               <Col>
-                <a href="/petprofile" style={{ textDecorationLine: "none" }}>
+                <a href="/pet-profile" style={{ textDecorationLine: "none" }}>
                   <Card.Title>{Name}</Card.Title>
                   <Card.Subtitle>{Type}</Card.Subtitle>
                 </a>

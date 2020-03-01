@@ -1,5 +1,6 @@
 import React from "react";
 import PetList from "../components/PetList";
+import Navigation from "../components/Navigation";
 
 const petList = [
   {
@@ -19,7 +20,7 @@ const petList = [
 const EmployeeDashboard = () => {
   return (
     <div data-testid="empdash">
-      <h1 align="center">This is the Employee Dashboard Page</h1>
+      <Navigation />
       <PetList heading="Pet List" petList={petList} />
     </div>
   );
