@@ -5,7 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sdp.petapi.models.Message;
+// import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.repositories.PetRepository;
 
@@ -23,13 +23,13 @@ public class PetDao {
     return getPets().stream().filter(p -> p.getId().equals(id)).findFirst().get();
   }
 
-  public Pet createPet(Pet pet) {
-    return repository.insert(pet);
+  public Pet addPet(Pet pet) {
+    return repository.save(pet);
   }
 
-  public Message putPet(Pet pet) {
-    repository.save(pet);
-    return new Message("Updated Pet");
+  // public Message putPet(Pet pet) {
+  //   repository.save(pet);
+  //   return new Message("Updated Pet");
 
-  }
+  // }
 }

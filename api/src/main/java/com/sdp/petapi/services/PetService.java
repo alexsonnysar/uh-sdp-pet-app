@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.PetDao;
-import com.sdp.petapi.models.Message;
+// import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 
 @Service
@@ -25,11 +25,11 @@ public class PetService {
 	}
 
 
-	public Pet createPet(Pet pet) {
-		return petDao.createPet(pet);
+	public Pet addPet(Pet pet) {
+		return petDao.addPet(pet);
 	}
 
-	public Message putPet(Pet pet) {
-		return petDao.putPet(pet);
-	}
+	// public Message putPet(Pet pet) {
+	// 	return petDao.putPet(pet);
+	// }
 }

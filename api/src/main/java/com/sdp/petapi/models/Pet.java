@@ -9,6 +9,7 @@ import lombok.Data;
 
 import com.sdp.petapi.repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
 
 
 @AllArgsConstructor
@@ -18,7 +19,9 @@ public @Data class Pet {
   @Autowired
   private PetRepository repository;
   
+  @Id
   private UUID id;
+
   private String name;
   private String type;
   private String sex; // M, F

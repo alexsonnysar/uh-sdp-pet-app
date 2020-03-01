@@ -5,7 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.sdp.petapi.models.Message;
+// import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.services.PetService;
 
@@ -28,11 +28,11 @@ public class PetController {
 
   @PostMapping
   public Pet postPet(@RequestBody Pet pet) {
-    return petService.createPet(pet);
+    return petService.addPet(pet);
   }
 
-  @PutMapping("/{id}")
-  public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
-    return petService.putPet(pet);
-  }
+  // @PutMapping("/{id}")
+  // public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
+  //   return petService.putPet(pet);
+  // }
 }
