@@ -1,24 +1,50 @@
-import React, { useState } from "react";
-import { Card, Button } from "react-bootstrap";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia
+} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 180
+  }
+});
 
 const PetCard = ({ pet }) => {
   const { name, type } = pet;
-  console.log(name);
+  const classes = useStyles();
+
   return (
-    <div>
-      <Card className="text-center" style={{ width: "12rem" }}>
-        <a href="/petprofile">
-          <Card.Img variant="top" src="/images/garfield.jpg" alt="Pet Image" />
-        </a>
-        <Card.Body>
-          <a href="/petprofile" style={{ textDecorationLine: "none" }}>
-            <Card.Title>{name}</Card.Title>
-            <Card.Text>Type:{type}</Card.Text>
-          </a>
-          <Button variant="primary">Favorite</Button>
-        </Card.Body>
-      </Card>
-    </div>
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          alt="Pet Image"
+          height="140"
+          image="/images/garfield.jpg"
+          title="Pet Image"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {type}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button size="small" color="primary">
+          Favorite
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
 
