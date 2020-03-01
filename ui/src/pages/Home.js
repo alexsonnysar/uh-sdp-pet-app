@@ -1,35 +1,27 @@
 import React, { useEffect, useState } from "react";
 import PetCard from "../components/PetCard";
-
-const petProfileInfo = {
-  Name: "Garfield",
-  Type: "Cat"
-};
+import axios from "axios";
 
 const Home = () => {
-  const [petList, setPet] = useState(null);
-  // const [searchQuery, setSearchQuery] = useState('Bret');
+  const [petList, setPetList] = useState([]);
+
+  async function fetchData() {
+    const res = await fetch("http://localhost:8080/pet"); // fetch("https://swapi.co/api/planets/4/");
+    res
+      .json()
+      .then(res => setPetList(res))
+  }
 
   useEffect(() => {
-    const fetchFunc = async () => {
-      const res = await fetch(`http://localhost:8080/pet`);
-      res.then(res => res.json).then((res = setPet(res)));
-    };
-
-    fetchFunc();
-    console.log(petList);
-    // console.log(fetchFunc());
-  }, [petList]);
+    fetchData();
+  }, []);
 
   return (
     <div>
-      <PetCard pet={petList} />
+      {petList.map(p => (
+        <PetCard key={p.id} pet={p} />
+      ))}
     </div>
-    // <div>
-    //   <h1 align="center">This is the User Home Page</h1>
-
-    //   <PetCard pet={petProfileInfo} />
-    // </div>
   );
 };
 
