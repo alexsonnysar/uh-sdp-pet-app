@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.Collection;
 
 import com.sdp.petapi.dao.PetDao;
-import com.sdp.petapi.models.Message;
+// import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,16 +34,16 @@ public class PetServiceTest {
   PetDao petDao;
 
   @Mock
-  Message expected_message;
+  String expected_message;
 
   @Mock
   Collection<Pet> expected_collection_of_pets;
 
   @Test
   public void CreatesPetShouldWork() throws Exception {
-    when(petService.createPet(expected_pet)).thenReturn(expected_pet);
+    when(petService.addPet(expected_pet)).thenReturn(expected_pet);
 
-    Pet actual_pet = petService.createPet(expected_pet);
+    Pet actual_pet = petService.addPet(expected_pet);
 
     assertEquals(expected_pet, actual_pet);
   }
@@ -61,9 +61,9 @@ public class PetServiceTest {
   @Test
   public void UpdatePetShouldWork() throws Exception {
 
-    when(petService.putPet(expected_pet)).thenReturn(expected_message);
+    when(petService.updatePet(expected_pet)).thenReturn(expected_message);
 
-    Message actual_message = petService.putPet(expected_pet);
+    String actual_message = petService.updatePet(expected_pet);
 
     assertEquals(expected_message, actual_message);
   }

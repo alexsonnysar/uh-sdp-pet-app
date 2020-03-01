@@ -16,13 +16,13 @@ public class PetController {
   @Autowired
   private PetService petService;
 
-  @GetMapping
-  public Collection<Pet> getAllPets() {
-    return petService.getPets();
+  // @GetMapping
+  public List<String> getAllPets() {
+    return petService.getAllIds();
   }
 
   @GetMapping("/{id}")
-  public Pet getOnePet(@PathVariable UUID id) {
+  public Pet getOnePet(@PathVariable String id) {
     return petService.getPet(id);
   }
 
@@ -31,8 +31,13 @@ public class PetController {
     return petService.addPet(pet);
   }
 
-  // @PutMapping("/{id}")
-  // public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
-  //   return petService.putPet(pet);
-  // }
+  @PutMapping("/{id}")
+  public String updatePet(@PathVariable String id, @RequestBody Pet pet) {
+    return petService.updatePet(pet);
+  }
+
+  @DeleteMapping("/{id}")
+  public String deletePet(@PathVariable String id) {
+    return petService.deletePet(getOnePet(id).get());
+  }
 }

@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
-	id 'io.freefair.lombok' version '5.0.0-rc2'
+  id 'org.springframework.boot' version '2.2.4.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+  id 'java'
+  id 'io.freefair.lombok' version '5.0.0-rc2'
   id 'jacoco'
 }
 
@@ -11,29 +11,30 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '13'
 
 repositories {
-	mavenCentral()
+  mavenCentral()
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "io.projectreactor:reactor-bom:Bismuth-RELEASE"
-	}
+  imports {
+    mavenBom "io.projectreactor:reactor-bom:Bismuth-RELEASE"
+  }
 }
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'io.projectreactor:reactor-core'
-	testCompile "org.mockito:mockito-core:2.+"
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
-	
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testCompile 'io.projectreactor:reactor-test'
+  testCompile "org.mockito:mockito-core:2.+"
+  implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+  implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+  implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+  
+  testImplementation('org.springframework.boot:spring-boot-starter-test') {
+    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+  }
+  testCompile 'io.projectreactor:reactor-test'
   implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-	
+  
 }
 
 sourceSets {
@@ -46,7 +47,7 @@ sourceSets {
 }
 
 test {
-	useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 defaultTasks("clean", "test", "jacocoTestReport")
