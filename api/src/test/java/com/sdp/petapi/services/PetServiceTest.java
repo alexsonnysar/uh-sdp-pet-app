@@ -75,7 +75,7 @@ public class PetServiceTest {
   @Test
   public void delete_pet() {
     when(petDao.deletePet(pet.getId())).thenReturn(true);
-    Boolean deleteSuccess = petDao.deletePet(pet.getId());
+    Boolean deleteSuccess = petService.deletePet(pet.getId());
     assertEquals(true, deleteSuccess);
   }
 

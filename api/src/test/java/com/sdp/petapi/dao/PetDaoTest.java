@@ -64,6 +64,13 @@ public class PetDaoTest {
   }
 
   @Test
+  public void get_pet_by_id_returns_empty_pet() {
+    // This id should not be in the database
+    Pet actual_pet = petDao.getPetById(pet.getId()+"999");
+    assertEquals(new Pet(), actual_pet);
+  }
+
+  @Test
   public void create_pet() {
     pet.setId(pet.getId() + "999");
     pet.setName("Changed Pet");
