@@ -26,14 +26,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'io.projectreactor:reactor-core'
 	testImplementation 'org.apache.httpcomponents:httpclient'
-	testCompile "org.mockito:mockito-core:2.+"
+	testImplementation "org.mockito:mockito-core:2.+"
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
-	
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	testCompile 'io.projectreactor:reactor-test'
+	testImplementation 'io.projectreactor:reactor-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 }
 
