@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PetCard from "../components/PetCard";
-import { CardDeck } from "react-bootstrap";
 import ManyPetCards from "../components/ManyPetCards";
 
 const Home = () => {
