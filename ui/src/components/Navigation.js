@@ -1,15 +1,6 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import styled from "styled-components";
-
-const Styles = styled.div`
-  .navbar {
-  }
-
-  .navbar-brand {
-  }
-`;
 
 const Navigation = () => {
   return (

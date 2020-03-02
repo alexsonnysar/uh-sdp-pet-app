@@ -1,8 +1,9 @@
 package com.sdp.petapi.controllers;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,20 +24,19 @@ public class PetController {
   @Autowired
   private PetService petService;
 
-  // make id required
-  @DeleteMapping("/{id}")
-  public Message deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
-
+  @GetMapping
+  @CrossOrigin
+  public List<Pet> getAllPets() {
+    return petService.getAllPets();
   }
 
-  @GetMapping
-  public Collection<Pet> getAllPets() {
-    return petService.getPets();
+  @GetMapping("/{id}")
+  public Pet getPetById(@PathVariable String id) {
+    return petService.getPetById(id);
   }
 
   @PostMapping
-  public Pet postPet(@RequestBody Pet pet) {
+  public Pet createPet(@RequestBody Pet pet) {
     return petService.createPet(pet);
   }
 
@@ -45,4 +45,10 @@ public class PetController {
     pet.setId(id);
     return petService.putPet(pet);
   }
+
+  @DeleteMapping("/{id}")
+  public Message deletePet(@PathVariable String id) {
+    return petService.deletePet(id);
+  }
+
 }

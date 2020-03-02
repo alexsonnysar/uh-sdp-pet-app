@@ -3,8 +3,9 @@ import { render } from "@testing-library/react";
 import PetCard from "../components/PetCard";
 
 const pet = {
-  Name: "Garfield",
-  Type: "Cat"
+  id: 1,
+  name: "Garfield",
+  type: "Cat"
 };
 
 test("should render pet card", () => {
