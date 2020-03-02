@@ -13,7 +13,7 @@ const PetListItem = ({ pet }) => {
   const classes = useStyles();
 
   return (
-    <ListItemLink href="petprofile" data-testid="petlistitem">
+    <ListItemLink href="pet-profile" data-testid="petlistitem">
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
         <Button

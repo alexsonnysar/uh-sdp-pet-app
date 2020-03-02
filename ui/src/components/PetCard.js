@@ -18,7 +18,7 @@ const PetCard = ({ pet }) => {
 
   return (
     <Card className={classes.root} data-testid="petcard">
-      <ButtonBase href="petprofile" style={{ textDecorationLine: "none" }}>
+      <ButtonBase href="pet-profile" style={{ textDecorationLine: "none" }}>
         <CardActionArea>
           <CardMedia
             component="img"
