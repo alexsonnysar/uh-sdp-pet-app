@@ -38,10 +38,13 @@ const Navigation = () => {
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               UH Pet App
+              <Button color="inherit" href="/">
+                Home
+              </Button>
+              <Button color="inherit" href="/employee-dashboard">
+                Employee Dashboard
+              </Button>
             </Typography>
-            <Button color="inherit" href="/">
-              Home
-            </Button>
             <Button color="inherit">Login</Button>
             <Button color="inherit">Sign Up</Button>
           </Toolbar>
