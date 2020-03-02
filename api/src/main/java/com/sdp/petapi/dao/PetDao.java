@@ -1,6 +1,7 @@
 package com.sdp.petapi.dao;
 
 import java.util.*;
+// import org.bson.types.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,7 +66,7 @@ public class PetDao {
 
   public String updatePet(Pet pet) {
     if(pet==null) {
-      return "Pet does not exist";
+      return "Pet does not exist. Try to add new pet instead.";
     }
     repository.save(pet);
     return "Updated Pet";

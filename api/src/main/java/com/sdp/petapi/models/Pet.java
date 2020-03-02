@@ -2,6 +2,7 @@ package com.sdp.petapi.models;
 
 import java.util.*;
 import java.util.stream.*;
+import org.bson.types.*;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
