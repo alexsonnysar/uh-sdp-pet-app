@@ -21,16 +21,38 @@ public class PetDao {
     return allPets;
   }
 
-  public Optional<Pet> getPet(String id){
-    return repository.findById(id);
+  public Pet getUserOnePet(String id){
+    try {
+      Pet p = repository.findById(id).get();
+      return (p != null && p.isActive()) ? p : null;
+    }
+    catch (Exception e) {
+      return null;
+    }
+    
   }
 
-  public List<String> getAllIds(){
+  public Pet getEmployeeOnePet(String id) {
+    try {
+      return repository.findById(id).get();
+    }
+    catch (Exception e) {
+      return null;
+    }
+  }
+  
+  public List<String> getUserAllIds(){
     List<String> petIds = new ArrayList<String>();
     getPets().stream().filter(p -> p.isActive()).forEach(p -> petIds.add(p.getId()));
     return petIds;
   }
 
+  public List<String> getEmployeeAllIds() {
+    List<String> petIds = new ArrayList<String>();
+    getPets().forEach(p -> petIds.add(p.getId()));
+    return petIds;
+  }
+  
   public Pet addPet(Pet pet) {
     if(pet == null){
       return pet;
@@ -42,7 +64,7 @@ public class PetDao {
   }
 
   public String updatePet(Pet pet) {
-    if(pet==null || !pet.isActive()) {
+    if(pet==null) {
       return "Pet does not exist";
     }
     repository.save(pet);
@@ -50,12 +72,13 @@ public class PetDao {
 
   }
 
-  public String deletePet(Pet pet) {
-    if(pet==null || !pet.isActive()){
-      return "Pet does not exist";
-    }
-    pet.setActive(false);
-    repository.save(pet);
-    return "Deleted Pet";
-  }
+  // public String deletePet(Pet pet) {
+  //   if(pet==null){
+  //     return "Pet does not exist";
+  //   }
+  //   pet.setActive(false);
+  //   repository.save(pet);
+  //   return "Deleted Pet";
+  // }
+
 }

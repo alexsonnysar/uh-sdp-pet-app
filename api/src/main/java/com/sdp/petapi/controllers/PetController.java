@@ -10,34 +10,44 @@ import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.services.PetService;
 
 @RestController
-@RequestMapping("/pet")
 public class PetController {
 
   @Autowired
   private PetService petService;
 
   // @GetMapping
-  public List<String> getAllPets() {
-    return petService.getAllIds();
+  @RequestMapping("/user/pet")
+  public List<String> getUserAllPets() {
+    return petService.getUserAllIds();
   }
 
-  @GetMapping("/{id}")
-  public Pet getOnePet(@PathVariable String id) {
-    return petService.getPet(id);
+  @RequestMapping("/employee/pet")
+  public List<String> getEmployeeAllPets() {
+    return petService.getEmployeeAllIds();
   }
 
-  @PostMapping
+  @GetMapping("/user/pet/{id}")
+  public Pet getUserOnePet(@PathVariable String id) {
+    return petService.getUserOnePet(id);
+  }
+
+  @GetMapping("/employee/pet/{id}")
+  public Pet getEmployeeOnePet(@PathVariable String id) {
+    return petService.getEmployeeOnePet(id);
+  }
+
+  @PostMapping("/employee/pet")
   public Pet postPet(@RequestBody Pet pet) {
     return petService.addPet(pet);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/employee/pet/{id}")
   public String updatePet(@PathVariable String id, @RequestBody Pet pet) {
     return petService.updatePet(pet);
   }
 
-  @DeleteMapping("/{id}")
-  public String deletePet(@PathVariable String id) {
-    return petService.deletePet(getOnePet(id));
-  }
+  // @DeleteMapping("/employee/pet/{id}")
+  // public String deletePet(@PathVariable String id) {
+  //   return petService.deletePet(getEmployeeOnePet(id));
+  // }
 }

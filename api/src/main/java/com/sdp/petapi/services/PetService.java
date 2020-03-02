@@ -20,12 +20,20 @@ public class PetService {
   }
 
 
-  public Pet getPet(String id) {
-    return petDao.getPet(id).get();
+  public Pet getUserOnePet(String id) {
+    return petDao.getUserOnePet(id);
   }
 
-  public List<String> getAllIds(){
-    return petDao.getAllIds();
+  public Pet getEmployeeOnePet(String id) {
+    return petDao.getEmployeeOnePet(id);
+  }
+  
+  public List<String> getUserAllIds(){
+    return petDao.getUserAllIds();
+  }
+  
+  public List<String> getEmployeeAllIds() {
+    return petDao.getEmployeeAllIds();
   }
   
   public Pet addPet(Pet pet) {
@@ -37,7 +45,8 @@ public class PetService {
   }
 
 
-  public String deletePet(Pet pet) {
-    return petDao.deletePet(pet);
-  }
+  // public String deletePet(Pet pet) {
+  //   return petDao.deletePet(pet);
+  // }
+
 }
