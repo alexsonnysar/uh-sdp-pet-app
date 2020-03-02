@@ -38,6 +38,6 @@ public class PetController {
 
   @DeleteMapping("/{id}")
   public String deletePet(@PathVariable String id) {
-    return petService.deletePet(getOnePet(id).get());
+    return petService.deletePet(getOnePet(id));
   }
 }

@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Collection;
+import java.util.List;
 
-import com.sdp.petapi.models.Message;
+// import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,11 +25,11 @@ public class PetDaoTest {
   @Mock
   PetDao petDao;
   @Mock
-  Collection<Pet> expected_collection_of_pets;
+  List<Pet> expected_collection_of_pets;
   @Mock
   Pet expected_pet;
   @Mock
-  Message expected_message;
+  String expected_message;
 
   @Test
   public void getPetsShouldWork() throws Exception {
@@ -42,9 +43,9 @@ public class PetDaoTest {
 
   @Test
   public void CreatePetShouldWork() throws Exception {
-    when(petDao.createPet(expected_pet)).thenReturn(expected_pet);
+    when(petDao.addPet(expected_pet)).thenReturn(expected_pet);
 
-    Pet actual_pet = petDao.createPet(expected_pet);
+    Pet actual_pet = petDao.addPet(expected_pet);
 
     assertEquals(expected_pet, actual_pet);
 
@@ -52,9 +53,9 @@ public class PetDaoTest {
 
   @Test
   public void PutPetShouldWork() throws Exception {
-    when(petDao.putPet(expected_pet)).thenReturn(expected_message);
+    when(petDao.updatePet(expected_pet)).thenReturn(expected_message);
 
-    Message actual_message = petDao.putPet(expected_pet);
+    String actual_message = petDao.updatePet(expected_pet);
 
     assertEquals(expected_message, actual_message);
 
