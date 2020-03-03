@@ -12,6 +12,7 @@ import com.sdp.petapi.models.Pet;
 
 @Service
 public class PetService {
+<<<<<<< Updated upstream
   
   @Autowired
   private PetDao petDao;
@@ -49,5 +50,30 @@ public class PetService {
   // public String deletePet(Pet pet) {
   //   return petDao.deletePet(pet);
   // }
+=======
+
+	@Autowired
+	private PetDao petDao;
+
+	public List<Pet> getAllPets() {
+		return petDao.getAllPets();
+	}
+
+	public Pet getPetById(String id) {
+		return petDao.getPetById(id);
+	}
+
+	public Pet createPet(Pet pet) {
+		return petDao.createPet(pet);
+	}
+
+	public Pet putPet(Pet pet) {
+		return petDao.putPet(pet);
+	}
+	/*
+	public Boolean deletePet(String id) {
+		return petDao.deletePet(id);
+	}*/
+>>>>>>> Stashed changes
 
 }

@@ -7,6 +7,8 @@ import org.bson.types.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import java.util.*;
+import java.util.stream.*;
 
 
 import org.springframework.data.annotation.Id;
@@ -15,9 +17,23 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Pet {
+<<<<<<< Updated upstream
 
   
   @Id
+=======
+  public Pet(String name, String type, String sex, String age, String size, double weight, String description,
+			ArrayList<String> imageNames) {
+        this.name = name;
+        this.type = type;
+        this.sex = sex;
+        this.age = age;
+        this.size = size;
+        this.weight = weight;
+        this.description = description;
+        this.imageNames = imageNames.stream().collect(Collectors.toSet());
+	}
+>>>>>>> Stashed changes
   private String id;
 
   private String name;
@@ -31,6 +47,7 @@ public @Data class Pet {
   private Set<String> imageNames; // link to photos
   private boolean isAdopted;
   private boolean isActive;
+<<<<<<< Updated upstream
 
   public Pet(String name, String type, String sex, String age, String size, Double weight, String desc, ArrayList<String> images){
     this.id = UUID.randomUUID().toString();
@@ -61,5 +78,7 @@ public @Data class Pet {
     this.isAdopted = adopt;
     this.isActive = status;
   }
+=======
+>>>>>>> Stashed changes
 
 }

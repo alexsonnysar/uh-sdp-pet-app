@@ -1,0 +1,14 @@
+{
+  "id": "5e5da48cbcc476360e9798a3",
+  "name": "Buddy",
+  "type": "doge",
+  "sex": "M",
+  "age": "Child",
+  "size": "large",
+  "weight": 123.4,
+  "dateAdded": "2020-03-03T00:27:56.539+0000",
+  "description": "He is very wet. Just like all the time",
+  "imageNames": [ "walking in the park", "catching a frisbee", "biting the neighbors kid..." ],
+  "isAdopted": false,
+  "isActive": true
+}

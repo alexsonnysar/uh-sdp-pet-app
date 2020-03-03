@@ -41,11 +41,23 @@ public class PetController {
   public Pet postPet(@RequestBody Pet pet) {
     return petService.addPet(pet);
   }
+<<<<<<< Updated upstream
 
   @PutMapping("/employee/pet/{id}")
   public String updatePet(@PathVariable String id, @RequestBody Pet pet) {
     return petService.updatePet(pet);
   }
+=======
+  /*
+  @DeleteMapping("/{id}")
+  public Message deletePet(@PathVariable String id) {
+    if (petService.deletePet(id)) {
+      return new Message("Deleted Pet");
+    } else {
+      return new Message("Couldn't delete pet");
+    }
+  }*/
+>>>>>>> Stashed changes
 
   // @DeleteMapping("/employee/pet/{id}")
   // public String deletePet(@PathVariable String id) {

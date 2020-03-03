@@ -3,8 +3,17 @@ package com.sdp.petapi.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+<<<<<<< Updated upstream
 import java.util.Collection;
 import java.util.List;
+=======
+import java.io.File;
+//import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+//import java.util.stream.*;
+>>>>>>> Stashed changes
 
 // import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
@@ -42,8 +51,16 @@ public class PetDaoTest {
   }
 
   @Test
+<<<<<<< Updated upstream
   public void CreatePetShouldWork() throws Exception {
     when(petDao.addPet(expected_pet)).thenReturn(expected_pet);
+=======
+  public void get_pet_by_id_returns_empty_pet() {
+    // This id should not be in the database
+    Pet actual_pet = petDao.getPetById(pet.getId()+"999");
+    assertEquals(null, actual_pet);
+  }
+>>>>>>> Stashed changes
 
     Pet actual_pet = petDao.addPet(expected_pet);
 
@@ -51,6 +68,7 @@ public class PetDaoTest {
 
   }
 
+  /*
   @Test
   public void PutPetShouldWork() throws Exception {
     when(petDao.updatePet(expected_pet)).thenReturn(expected_message);
@@ -59,6 +77,10 @@ public class PetDaoTest {
 
     assertEquals(expected_message, actual_message);
 
+<<<<<<< Updated upstream
   }
 
+=======
+  }*/
+>>>>>>> Stashed changes
 }

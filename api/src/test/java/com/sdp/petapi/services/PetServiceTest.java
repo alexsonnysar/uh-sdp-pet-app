@@ -57,9 +57,17 @@ public class PetServiceTest {
 
     assertEquals(expected_collection_of_pets, actual_collection_of_pets);
   }
-
+  /*
   @Test
+<<<<<<< Updated upstream
   public void UpdatePetShouldWork() throws Exception {
+=======
+  public void delete_pet() {
+    when(petDao.deletePet(pet.getId())).thenReturn(true);
+    Boolean deleteSuccess = petService.deletePet(pet.getId());
+    assertEquals(true, deleteSuccess);
+  }*/
+>>>>>>> Stashed changes
 
     when(petService.updatePet(expected_pet)).thenReturn(expected_message);
 
