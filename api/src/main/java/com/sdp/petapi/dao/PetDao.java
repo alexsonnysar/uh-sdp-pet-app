@@ -17,47 +17,26 @@ public class PetDao {
   @Autowired
   private PetRepository repository;
 
-  public List<Pet> getPets() {
-    List<Pet> allPets = new ArrayList<Pet>();
-    repository.findAll().stream().filter(p -> p.isActive()).forEach(p -> allPets.add(p));
-    return allPets;
-  }
-
   public Pet getUserOnePet(String id){
-    try {
-      Pet p = repository.findById(id).get();
-      return (p != null && p.isActive()) ? p : null;
-    }
-<<<<<<< Updated upstream
-    catch (Exception e) {
-=======
-    else {
->>>>>>> Stashed changes
-      return null;
-    }
-    
+    if (id == null) return null;
+    Optional<Pet> pet = repository.findById(id);
+    return (pet.isPresent() && pet.get().isActive()) ? pet.get() : null;
   }
 
-<<<<<<< Updated upstream
   public Pet getEmployeeOnePet(String id) {
-    try {
-      return repository.findById(id).get();
-    }
-    catch (Exception e) {
-      return null;
-    }
+    if (id == null) return null;
+    Optional<Pet> pet = repository.findById(id);
+    return pet.isPresent() ? pet.get() : null;
   }
   
-  public List<String> getUserAllIds(){
-    List<String> petIds = new ArrayList<String>();
-    getPets().stream().filter(p -> p.isActive()).forEach(p -> petIds.add(p.getId()));
-    return petIds;
+  public List<Pet> getUserAllPets(){
+    List<Pet> pets = new ArrayList<Pet>();
+    repository.findAll().stream().filter(p -> p.isActive()).forEach(p -> pets.add(p));;
+    return pets;
   }
 
-  public List<String> getEmployeeAllIds() {
-    List<String> petIds = new ArrayList<String>();
-    getPets().forEach(p -> petIds.add(p.getId()));
-    return petIds;
+  public List<Pet> getEmployeeAllPets(){
+    return repository.findAll();
   }
   
   public Pet addPet(Pet pet) {
@@ -67,49 +46,15 @@ public class PetDao {
     pet.setDateAdded(new Date());
     pet.setActive(true);
     pet.setAdopted(false);
-    return repository.save(pet);
-  }
-
-  public String updatePet(Pet pet) {
-    if(pet==null) {
-      return "Pet does not exist. Try to add new pet instead.";
-    }
-    repository.save(pet);
-    return "Updated Pet";
-
-  }
-=======
-  public Pet createPet(Pet pet) {
-    if(pet == null){
-      return pet;
-    }
-    pet.setDateAdded(new Date());
-    pet.setActive(true);
-    pet.setAdopted(false);
     return repository.insert(pet);
   }
 
-  public Pet putPet(Pet pet) {
-    if(pet == null){
-      return pet;
+  public Pet updatePet(Pet pet) {
+    if(pet==null) {
+      return null;
     }
     return repository.save(pet);
+
   }
-  /*
-  public Boolean deletePet(String id) {
-    repository.deleteById(id);
-    // maybe check if delete worked?
-    return true;
-  }*/
->>>>>>> Stashed changes
-
-  // public String deletePet(Pet pet) {
-  //   if(pet==null){
-  //     return "Pet does not exist";
-  //   }
-  //   pet.setActive(false);
-  //   repository.save(pet);
-  //   return "Deleted Pet";
-  // }
-
+  
 }

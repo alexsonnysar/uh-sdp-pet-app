@@ -1,14 +1,11 @@
 package com.sdp.petapi.repositories;
 
-import java.util.Optional;
-// import org.bson.types.*;
-
 import com.sdp.petapi.models.Pet;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface PetRepository extends MongoRepository<Pet, String> {
-    public Optional<Pet> findById(String id);
+    
 }
 
 // implements ExampleDao {
