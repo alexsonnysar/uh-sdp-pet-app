@@ -1,13 +1,12 @@
 import React from "react";
 import Navigation from "../components/Navigation";
 
-const PetProfile = () => {
+const TestPage = () => {
   return (
-    <div data-testid="petprofile">
+    <div>
       <Navigation />
-      This is the Pet Profile page!
     </div>
   );
 };
 
-export default PetProfile;
+export default TestPage;
