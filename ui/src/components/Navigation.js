@@ -31,7 +31,7 @@ const Navigation = () => {
   const classes = useStyles();
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <Button className={classes.button} href="/">
