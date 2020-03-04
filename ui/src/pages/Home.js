@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ManyPetCards from "../components/ManyPetCards";
 import Navigation from "../components/Navigation";
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 
 const Home = () => {
   const [petList, setPetList] = useState([]);
@@ -17,8 +16,6 @@ const Home = () => {
 
   return (
     <div>
-      <CssBaseline />
-      <Navigation />
       <ManyPetCards petList={petList} />
     </div>
   );
