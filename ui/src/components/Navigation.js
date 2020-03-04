@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Link from "@material-ui/core/Link";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,6 +18,12 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  button: {
+    color: "inherit",
+    "&:hover": {
+      color: "white"
+    }
   }
 }));
 
@@ -27,11 +34,10 @@ const Navigation = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            UH Pet App
-            <Button color="inherit" href="/">
+            <Button className={classes.button} href="/">
               Home
             </Button>
-            <Button color="inherit" href="/employee-dashboard">
+            <Button className={classes.button} href="/employee-dashboard">
               Employee Dashboard
             </Button>
           </Typography>
