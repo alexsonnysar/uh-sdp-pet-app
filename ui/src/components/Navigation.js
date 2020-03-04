@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Link from "@material-ui/core/Link";
-import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,31 +24,21 @@ const Navigation = () => {
   const classes = useStyles();
   return (
     <div>
-      {/* Old Bootstrap Navbar */}
-      {/* <Navbar bg="primary" variant="dark">
-        <Navbar.Brand>UH Pet App</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/employee-dashboard">Employee Dashboard</Nav.Link>
-        </Nav>
-      </Navbar> */}
-      <ScopedCssBaseline>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              UH Pet App
-              <Button color="inherit" href="/">
-                Home
-              </Button>
-              <Button color="inherit" href="/employee-dashboard">
-                Employee Dashboard
-              </Button>
-            </Typography>
-            <Button color="inherit">Login</Button>
-            <Button color="inherit">Sign Up</Button>
-          </Toolbar>
-        </AppBar>
-      </ScopedCssBaseline>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            UH Pet App
+            <Button color="inherit" href="/">
+              Home
+            </Button>
+            <Button color="inherit" href="/employee-dashboard">
+              Employee Dashboard
+            </Button>
+          </Typography>
+          <Button color="inherit">Login</Button>
+          <Button color="inherit">Sign Up</Button>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 };
