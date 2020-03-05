@@ -1,6 +1,5 @@
 package com.sdp.petapi.models;
 
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -19,5 +18,6 @@ public @Data class Pet {
   private String description;
   private String[] imageNames; // link to photos
   private boolean isAdopted;
+  private String status; // Available, Requested, Sold
 
 }
