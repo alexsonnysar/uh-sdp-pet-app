@@ -1,5 +1,7 @@
 package com.sdp.petapi.models;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -10,7 +12,7 @@ public @Data class Requested {
   private String email;
   private String petID;
   private String userID;
-  private String dateApplied;
+  private Date dateApplied;
   private String status; // Requested, Cancelled, Adopted
 
 }
