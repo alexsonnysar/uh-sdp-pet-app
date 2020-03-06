@@ -1,22 +1,17 @@
 package com.sdp.petapi.dao;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.repositories.PetRepository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -29,13 +24,7 @@ public class PetDaoTest {
   @Autowired
   PetRepository petRepository;
 
-  @Mock
-  Pet expected_pet;
-
   Pet pet;
-
-  @Mock
-  Message expected_message;
 
   @BeforeEach
   public void init() throws Exception {
@@ -50,50 +39,144 @@ public class PetDaoTest {
   }
 
   @Test
-  public void get_all_pets() {
-    List<Pet> actual_pets = petDao.getAllPets();
+  public void get_user_all_pets() {
+    List<Pet> actual_pets = petDao.getUserAllPets();
     assertEquals(Collections.singletonList(pet), actual_pets);
   }
 
   @Test
-  public void get_pet_by_id() {
-    Pet actual_pet = petDao.getPetById(pet.getId());
+  public void get_employee_all_pets() {
+    List<Pet> actual_pets = petDao.getEmployeeAllPets();
+    assertEquals(Collections.singletonList(pet), actual_pets);
+  }
+
+  @Test
+  public void get_user_no_inactive_pets() {
+    List<Pet> start_pets = petDao.getUserAllPets();
+    assertEquals(Collections.singletonList(pet), start_pets);
+
+    start_pets.forEach(pet -> pet.setActive(false));
+    start_pets.forEach(pet -> assertFalse(pet.isActive()));
+
+    start_pets.forEach(pet -> petDao.putPet(pet));
+
+    List<Pet> actual_pets = petDao.getUserAllPets();
+    assertEquals(new ArrayList<Pet>(), actual_pets);
+  }
+
+  @Test
+  public void get_employee_all_inactive_pets() {
+    List<Pet> start_pets = petDao.getEmployeeAllPets();
+    assertEquals(Collections.singletonList(pet), start_pets);
+
+    start_pets.forEach(pet -> pet.setActive(false));
+    start_pets.forEach(pet -> assertFalse(pet.isActive()));
+
+    start_pets.forEach(pet -> petDao.putPet(pet));
+
+    List<Pet> actual_pets = petDao.getEmployeeAllPets();
+    assertEquals(start_pets, actual_pets);
+  }
+
+  @Test
+  public void get_user_one_active_pet() {
+    String id = pet.getId();
+    Pet actual_pet = petDao.getUserPetById(id);
     assertEquals(pet, actual_pet);
   }
 
   @Test
-  public void get_pet_by_id_returns_empty_pet() {
-    // This id should not be in the database
-    Pet actual_pet = petDao.getPetById(pet.getId()+"999");
-    assertEquals(new Pet(), actual_pet);
+  public void get_employee_one_active_pet() {
+    String id = pet.getId();
+    Pet actual_pet = petDao.getEmployeePetById(id);
+    assertEquals(pet, actual_pet);
   }
 
   @Test
-  public void create_pet() {
-    pet.setId(pet.getId() + "999");
-    pet.setName("Changed Pet");
-    Pet actual_pet = petDao.createPet(pet);
-    assertEquals(pet, actual_pet);
-  }
-  @Test
-  public void put_pet() {
-    pet.setName("Changed Pet");
+  public void get_user_null_pet_for_inactive_pet() {
+    String id = pet.getId();
+    
+    pet.setActive(false);
+    assertFalse(pet.isActive());
+
     Pet returnedPet = petDao.putPet(pet);
     assertEquals(pet, returnedPet);
 
-    Optional<Pet> updatedPet = petRepository.findById(pet.getId());
-    assertEquals(pet, updatedPet.get());
+    Pet null_pet = petDao.getUserPetById(id);
+    assertNull(null_pet);
   }
 
   @Test
-  public void delete_pet() {
-    Boolean deleteSuccess = petDao.deletePet(pet.getId());
+  public void get_employee_one_inactive_pet() {
+    String id = pet.getId();
+    
+    pet.setActive(false);
+    assertFalse(pet.isActive());
 
-    if (deleteSuccess) {
-      assertEquals(false, petRepository.existsById(pet.getId()));
-    } else {
-      assertEquals(true, petRepository.existsById(pet.getId()));
-    }
+    Pet returnedPet = petDao.putPet(pet);
+    assertEquals(pet, returnedPet);
 
+    Pet actual_pet = petDao.getEmployeePetById(id);
+    assertEquals(pet, actual_pet);
+  }
+
+  @Test
+  public void get_user_null_pet_for_nonexistent_pet() {
+    String id = pet.getId() + "999";
+    Pet null_pet = petDao.getUserPetById(id);
+    assertNull(null_pet);
+  }
+
+  @Test
+  public void get_employee_null_pet_for_nonexistent_pet() {
+    String id = pet.getId() + "999";
+    Pet null_pet = petDao.getEmployeePetById(id);
+    assertNull(null_pet);
+  }
+
+  @Test
+  public void get_user_null_pet_with_null_id() {
+    Pet null_pet = petDao.getUserPetById(null);
+    assertNull(null_pet);
+  }
+
+  @Test
+  public void get_employee_null_pet_with_null_id() {
+    Pet null_pet = petDao.getEmployeePetById(null);
+    assertNull(null_pet);
+  }
+
+  @Test
+  public void create_real_pet() {
+    String id = pet.getId();
+    pet.setId(pet.getId() + "999");
+    assertEquals(pet.getId(), id + "999");
+
+    Pet actual_pet = petDao.createPet(pet);
+    assertEquals(pet, actual_pet);
+  }
+
+  @Test
+  public void create_null_pet() {
+    Pet null_pet = petDao.createPet(null);
+    assertNull(null_pet);
+  }
+  
+  @Test
+  public void put_real_pet() {
+    pet.setName("Changed Pet");
+    assertEquals(pet.getName(), "Changed Pet");
+    
+    Pet returnedPet = petDao.putPet(pet);
+    assertEquals(pet, returnedPet);
+
+    Pet updatedPet = petDao.getUserPetById(pet.getId());
+    assertEquals(pet, updatedPet);
+  }
+
+  @Test
+  public void put_null_pet() {
+    Pet null_pet = petDao.putPet(null);
+    assertNull(null_pet);
   }
 }
