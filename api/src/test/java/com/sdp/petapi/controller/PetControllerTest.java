@@ -89,16 +89,39 @@ class PetControllerTest {
   }
   
   @Test
-  public void put_pet_good() {
+  public void put_pet_id_of_pet_in_db() {
     when(petService.putPet(pet)).thenReturn(pet);
     Pet returnPet = petController.putPet(pet.getId(), pet);
     assertEquals(pet, returnPet);
   }
 
   @Test
-  public void put_pet_returns_null() {
+  public void put_pet_id_of_pet_not_in_db() {
+    String id = pet.getId();
+    pet.setId(id + "999");
     when(petService.putPet(pet)).thenReturn(null);
     Pet returnPet = petController.putPet(pet.getId(), pet);
+    assertNull(returnPet);
+  }
+
+  @Test
+  public void put_pet_id_not_of_pet() {
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnPet = petController.putPet("1234", pet);
+    assertNull(returnPet);
+  }
+
+  @Test
+  public void put_pet_id_with_null_pet() {
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnPet = petController.putPet(pet.getId(), null);
+    assertNull(returnPet);
+  }
+
+  @Test
+  public void put_pet_pet_with_null_id() {
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnPet = petController.putPet(null, pet);
     assertNull(returnPet);
   }
 }

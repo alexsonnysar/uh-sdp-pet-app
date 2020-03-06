@@ -40,9 +40,6 @@ public class PetController {
 
   @PutMapping("/{id}")
   public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
-    if (pet.getId() != id) return null;
-
-    Pet returnedPet = petService.putPet(pet);
-    return (returnedPet != null) ? returnedPet : null;
+    return (id == null | pet == null || pet.getId() != id) ? null : petService.putPet(pet);
   }
 }
