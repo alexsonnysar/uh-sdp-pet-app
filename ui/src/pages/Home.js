@@ -7,7 +7,10 @@ const Home = () => {
 
   async function fetchData() {
     const res = await fetch("http://localhost:8080/pet"); // fetch("https://swapi.co/api/planets/4/");
-    res.json().then(res => setPetList(res));
+    res
+      .json()
+      .then(res => setPetList(res))
+      .catch(err => console.log(err));
   }
 
   useEffect(() => {
@@ -16,7 +19,11 @@ const Home = () => {
 
   return (
     <div>
-      <ManyPetCards petList={petList} />
+      {petList.length > 0 ? (
+        <ManyPetCards petList={petList} />
+      ) : (
+        <h3>No pets to show :(</h3>
+      )}
     </div>
   );
 };
