@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.services.PetService;
 
@@ -27,12 +25,12 @@ public class PetController {
   @GetMapping
   @CrossOrigin
   public List<Pet> getAllPets() {
-    return petService.getAllPets();
+    return petService.getEmployeeAllPets();
   }
 
   @GetMapping("/{id}")
   public Pet getPetById(@PathVariable String id) {
-    return petService.getPetById(id);
+    return petService.getEmployeePetById(id);
   }
 
   @PostMapping
@@ -41,23 +39,10 @@ public class PetController {
   }
 
   @PutMapping("/{id}")
-  public Message putPet(@PathVariable String id, @RequestBody Pet pet) {
-    pet.setId(id);
+  public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
+    if (pet.getId() != id) return null;
+
     Pet returnedPet = petService.putPet(pet);
-    if (returnedPet != null) {
-      return new Message("Updated Pet");
-    } else {
-      return new Message("Couldn't update pet");
-    }
+    return (returnedPet != null) ? returnedPet : null;
   }
-
-  @DeleteMapping("/{id}")
-  public Message deletePet(@PathVariable String id) {
-    if (petService.deletePet(id)) {
-      return new Message("Deleted Pet");
-    } else {
-      return new Message("Couldn't delete pet");
-    }
-  }
-
 }

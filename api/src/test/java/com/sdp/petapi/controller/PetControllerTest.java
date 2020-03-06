@@ -1,6 +1,6 @@
 package com.sdp.petapi.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.controllers.PetController;
-import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.services.PetService;
 
@@ -46,49 +45,60 @@ class PetControllerTest {
   public void get_all_pets() {
     // Since the petService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petService.getAllPets()).thenReturn(Collections.singletonList(pet));
+    when(petService.getEmployeeAllPets()).thenReturn(Collections.singletonList(pet));
     List<Pet> list = petController.getAllPets();
     assertEquals(Collections.singletonList(pet), list);
   }
 
   @Test
-  public void get_pet_by_id() {
-    when(petService.getPetById(pet.getId())).thenReturn(pet);
+  public void get_pet_by_id_exists() {
+    when(petService.getEmployeePetById(pet.getId())).thenReturn(pet);
     Pet returnPet = petController.getPetById(pet.getId());
     assertEquals(pet, returnPet);
   }
 
   @Test
-  public void create_pet() {
+  public void get_pet_by_id_nonexistent() {
+    String id = pet.getId();
+    pet.setId(id + "999");
+
+    when(petService.getEmployeePetById(pet.getId())).thenReturn(null);
+    Pet updatePet = petController.getPetById(pet.getId());
+    assertNull(updatePet);
+  }
+
+  @Test
+  public void get_pet_by_id_null() {
+    when(petService.getEmployeePetById(null)).thenReturn(null);
+    Pet returnPet = petController.getPetById(null);
+    assertNull(returnPet);
+  }
+
+  @Test
+  public void create_pet_good() {
     when(petService.createPet(pet)).thenReturn(pet);
     Pet returnPet = petController.createPet(pet);
     assertEquals(pet, returnPet);
   }
+
   @Test
-  public void put_pet() {
+  public void create_pet_null() {
+    when(petService.createPet(null)).thenReturn(null);
+    Pet returnPet = petController.createPet(null);
+    assertNull(returnPet);
+  }
+  
+  @Test
+  public void put_pet_good() {
     when(petService.putPet(pet)).thenReturn(pet);
-    Message returnMessage = petController.putPet(pet.getId(), pet);
-    assertEquals("Updated Pet", returnMessage.getMessage());
+    Pet returnPet = petController.putPet(pet.getId(), pet);
+    assertEquals(pet, returnPet);
   }
 
   @Test
   public void put_pet_returns_null() {
     when(petService.putPet(pet)).thenReturn(null);
-    Message returnMessage = petController.putPet(pet.getId(), pet);
-    assertEquals("Couldn't update pet", returnMessage.getMessage());
-  }
-
-  @Test
-  public void delete_pet() {
-    when(petService.deletePet(pet.getId())).thenReturn(true);
-    Message returnMessage = petController.deletePet(pet.getId());
-    assertEquals("Deleted Pet", returnMessage.getMessage());
-  }
-
-  @Test
-  public void delete_pet_returns_false() {
-    when(petService.deletePet(pet.getId())).thenReturn(false);
-    Message returnMessage = petController.deletePet(pet.getId());
-    assertEquals("Couldn't delete pet", returnMessage.getMessage());
+    Pet returnPet = petController.putPet(pet.getId(), pet);
+    assertNull(returnPet);
   }
 }
