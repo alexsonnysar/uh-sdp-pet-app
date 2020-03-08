@@ -2,7 +2,7 @@
   "name": "uh-sdp-pet-ui",
   "version": "0.1.0",
   "private": true,
-  "proxy":"http://localhost:8080",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "concurrently": "^5.1.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",

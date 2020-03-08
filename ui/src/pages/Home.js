@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ManyPetCards from "../components/ManyPetCards";
 import Navigation from "../components/Navigation";
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
 
 const Home = () => {
   const [petList, setPetList] = useState([]);
 
   async function fetchData() {
     const res = await fetch("http://localhost:8080/pet"); // fetch("https://swapi.co/api/planets/4/");
-    res.json().then(res => setPetList(res));
+    res
+      .json()
+      .then(res => setPetList(res))
+      .catch(err => console.log(err));
   }
 
   useEffect(() => {
@@ -17,9 +19,11 @@ const Home = () => {
 
   return (
     <div>
-      <CssBaseline />
-      <Navigation />
-      <ManyPetCards petList={petList} />
+      {petList.length > 0 ? (
+        <ManyPetCards petList={petList} />
+      ) : (
+        <h3>No pets to show :(</h3>
+      )}
     </div>
   );
 };
