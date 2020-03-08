@@ -17,7 +17,6 @@ const EmployeeDashboard = () => {
 
   return (
     <div data-testid="empdash">
-      <Navigation />
       <h1 align="center">This is the Employee Dashboard Page</h1>
       <div>
         <Grid container spacing={3}>
