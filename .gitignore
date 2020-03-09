@@ -7,6 +7,9 @@ HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 !/api/src/main/**
 !/api/src/test/**
+## Root Directory ###
+node_modules/
+yarn.lock
 
 ### STS ###
 .apt_generated
