@@ -99,7 +99,7 @@ class UserControllerTest {
   @Test
   public void request_adoption() {
     when(userService.requestAdoption(request)).thenReturn(request);
-    Requested adoptionRequestSuccess = userService.requestAdoption(request);
+    Requested adoptionRequestSuccess = userController.requestAdoption(request);
     assertEquals(request, adoptionRequestSuccess);
   }
 
