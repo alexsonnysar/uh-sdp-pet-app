@@ -10,6 +10,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.controllers.UserController;
 import com.sdp.petapi.models.Message;
+import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
 import com.sdp.petapi.services.UserService;
 
@@ -24,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class UserControllerTest {
 
   User user;
+  Requested request;
 
   @Mock
   UserService userService;
@@ -36,6 +38,7 @@ class UserControllerTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     user = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/userObject.json"), User.class);
+    request = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestedObject.json"), Requested.class);
   }
 
   @AfterEach
@@ -92,4 +95,14 @@ class UserControllerTest {
     Message returnMessage = userController.deleteUser(user.getId());
     assertEquals("Couldn't delete User", returnMessage.getMessage());
   }
+
+  @Test
+  public void request_adoption() {
+    when(userService.requestAdoption(request)).thenReturn(request);
+    Requested adoptionRequestSuccess = userService.requestAdoption(request);
+    assertEquals(request, adoptionRequestSuccess);
+  }
+
+  
+
 }

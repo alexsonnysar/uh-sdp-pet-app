@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.petapi.models.Message;
+import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
+
 import com.sdp.petapi.services.UserService;
 
 @RestController
-@RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
 
   @Autowired
@@ -58,6 +60,11 @@ public class UserController {
     } else {
       return new Message("Couldn't delete User");
     }
+  }
+
+  @PostMapping("/requestadoption")
+  public Requested requestAdoption(@RequestBody Requested request) {
+    return userService.requestAdoption(request);
   }
 
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Requested {
+  private String id;
   private String email;
   private String petID;
   private String userID;

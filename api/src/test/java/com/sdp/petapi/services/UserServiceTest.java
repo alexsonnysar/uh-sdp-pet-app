@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.dao.UserDao;
+import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
 
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class UserServiceTest {
   User user;
+  Requested request;
 
   @Mock
   UserDao userDao;
@@ -33,6 +35,7 @@ public class UserServiceTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     user = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/userObject.json"), User.class);
+    request = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestedObject.json"), Requested.class);
   }
 
   @AfterEach
@@ -74,6 +77,20 @@ public class UserServiceTest {
     when(userDao.deleteUser(user.getId())).thenReturn(true);
     Boolean deleteSuccess = userService.deleteUser(user.getId());
     assertEquals(true, deleteSuccess);
+  }
+  
+  @Test
+  public void delete_user_false() {
+    when(userDao.deleteUser(user.getId())).thenReturn(false);
+    Boolean deleteSuccess = userService.deleteUser(user.getId());
+    assertEquals(false, deleteSuccess);
+  }
+  
+  @Test
+  public void request_adoption() {
+    when(userDao.requestAdoption(request)).thenReturn(request);
+    Requested adoptionRequestSuccess = userService.requestAdoption(request);
+    assertEquals(request, adoptionRequestSuccess);
   }
 
 }

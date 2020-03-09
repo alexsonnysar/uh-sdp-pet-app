@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.UserDao;
+import com.sdp.petapi.models.Message;
+import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
 
 @Service
@@ -32,6 +34,10 @@ public class UserService {
 
   public Boolean deleteUser(String id) {
     return UserDao.deleteUser(id);
+  }
+
+  public Requested requestAdoption(Requested request) {
+    return UserDao.requestAdoption(request);
   }
 
 }

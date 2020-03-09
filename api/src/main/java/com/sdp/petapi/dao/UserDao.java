@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
+import com.sdp.petapi.repositories.RequestedRepository;
 import com.sdp.petapi.repositories.UserRepository;
 
 @Component
@@ -14,6 +16,9 @@ public class UserDao {
 
   @Autowired
   private UserRepository repository;
+
+  @Autowired
+  private RequestedRepository requestedRepository;
 
   public List<User> getAllUsers() {
     return repository.findAll();
@@ -38,9 +43,21 @@ public class UserDao {
   }
 
   public Boolean deleteUser(String id) {
-    repository.deleteById(id);
-    // maybe check if delete worked?
-    return true;
+    try {
+      repository.deleteById(id);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
   }
+
+public Requested requestAdoption(Requested request) {
+  try {
+    return requestedRepository.insert(request);
+  } catch (Exception e) {
+    return new Requested();
+  }
+
+}
 
 }
