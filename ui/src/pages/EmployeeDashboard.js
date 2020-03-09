@@ -18,19 +18,20 @@ const EmployeeDashboard = () => {
   return (
     <div data-testid="empdash">
       <h1 align="center">This is the Employee Dashboard Page</h1>
-      <div>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm>
-            <PetList heading="Pet List" petList={petList} />
+      {petList.length > 0 ? (
+        <div>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm>
+              <PetList heading="Requested for Adoption" petList={petList} />
+            </Grid>
+            <Grid item xs={12} sm>
+              <PetList heading="Adoptable Animals" petList={petList} />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm>
-            <PetList heading="Pet List 2" petList={petList} />
-          </Grid>
-          <Grid item xs={12} sm>
-            <PetList heading="Pet List 3" petList={petList} />
-          </Grid>
-        </Grid>
-      </div>
+        </div>
+      ) : (
+        <div>No List of Pets to Show :(</div>
+      )}
     </div>
   );
 };
