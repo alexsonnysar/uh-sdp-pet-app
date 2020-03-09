@@ -14,12 +14,20 @@ public class PetService {
 	@Autowired
 	private PetDao petDao;
 
-	public List<Pet> getAllPets() {
-		return petDao.getAllPets();
+	public List<Pet> getUserAllPets() {
+		return petDao.getUserAllPets();
 	}
 
-	public Pet getPetById(String id) {
-		return petDao.getPetById(id);
+	public List<Pet> getEmployeeAllPets() {
+		return petDao.getEmployeeAllPets();
+	}
+	
+	public Pet getUserPetById(String id) {
+		return petDao.getUserPetById(id);
+	}
+
+	public Pet getEmployeePetById(String id) {
+		return petDao.getEmployeePetById(id);
 	}
 
 	public Pet createPet(Pet pet) {
@@ -28,10 +36,6 @@ public class PetService {
 
 	public Pet putPet(Pet pet) {
 		return petDao.putPet(pet);
-	}
-
-	public Boolean deletePet(String id) {
-		return petDao.deletePet(id);
 	}
 
 }
