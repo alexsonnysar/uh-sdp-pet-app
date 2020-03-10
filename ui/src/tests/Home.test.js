@@ -41,13 +41,13 @@ test("should render pet cards from mocked API call", async () => {
   expect(axiosMock.get).toHaveBeenCalledTimes(1);
 });
 
-// test('should return error',  async () => {
-//   const errorMessage = 'Network Error';
+const result = {
+  errorCode: 401,
+  errorMessage: "Unauthorized"
+};
 
-//   axiosMock.get.mockImplementationOnce(() => {
-//     Promise.reject(new Error(errorMessage))
-//   },
-//   );
-
-//   await expect(render(<Home />)).rejects.toThrow(errorMessage);
-// });
+test("should return error", async () => {
+  const res = axiosMock.get.mockReturnValue(Promise.reject(new Error(result)));
+  //await expect(Promise.reject(new Error('octopus'))).rejects.toThrow('octopus');
+  await expect(res).rejects.toThrow(result);
+});
