@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +82,19 @@ class PetControllerTest {
     assertEquals(pet, returnPet);
   }
 
+  @Test
+  public void create_real_pet_no_id_given() {
+    // Since the petService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    List<String> images = new ArrayList<String>(pet.getImageNames());
+    Pet new_pet = new Pet(pet.getName(), pet.getType(), pet.getSex(), pet.getAge(), pet.getSize(), pet.getWeight(), pet.getDescription(), images);
+    
+    when(petService.createPet(new_pet)).thenReturn(pet);
+    
+    Pet returnPet = petController.createPet(new_pet);
+    assertEquals(pet, returnPet);
+  }
+  
   @Test
   public void create_pet_null() {
     when(petService.createPet(null)).thenReturn(null);

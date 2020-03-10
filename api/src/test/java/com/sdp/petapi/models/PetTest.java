@@ -47,7 +47,7 @@ class PetTest {
 
     String[] imagesInserted = {"walking in the park", "catching a frisbee", "biting the neighbors kid..."};
     ArrayList<String> picsInserted = new ArrayList<String>();
-    Collections.addAll(petPics, imagesInserted);
+    Collections.addAll(picsInserted, imagesInserted);
 
     Pet sample_pet = new Pet( "009", "Buddy", "dog", "M", "old_af", "medium", 123.4, sample_date,
         "He is very wet. Just like all the time", petPics.stream().collect(Collectors.toSet()), false, true);
