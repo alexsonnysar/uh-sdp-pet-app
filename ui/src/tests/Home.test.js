@@ -47,7 +47,6 @@ const result = {
 };
 
 test("should return error", async () => {
-  const res = axiosMock.get.mockReturnValue(Promise.reject(new Error(result)));
-  //await expect(Promise.reject(new Error('octopus'))).rejects.toThrow('octopus');
-  await expect(res).rejects.toThrow(result);
+  axiosMock.get.mockReturnValue(Promise.reject(new Error(result)));
+  await expect(axiosMock.get).rejects.toThrow(result);
 });
