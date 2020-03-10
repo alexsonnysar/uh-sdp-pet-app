@@ -1,15 +1,14 @@
-# Start with a base image containing Java runtime
-FROM openjdk:13-jdk-slim
+FROM gradle:6.0.1-jdk13 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
-# Add Maintainer Info
-LABEL maintainer="conradlparker@gmail.com"
+FROM openjdk:13-jdk
 
-COPY ./target/pet-api-0.0.1-SNAPSHOT.jar /usr/src/pet/
-
-WORKDIR /usr/src/pet
-
-# Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Run the jar file
-ENTRYPOINT ["java","-jar", "pet-api-0.0.1-SNAPSHOT.jar"]
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]

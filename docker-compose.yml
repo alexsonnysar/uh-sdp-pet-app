@@ -1,0 +1,23 @@
+version: '3.0'
+services:
+  web:
+    build:
+      context: ./ui/
+      dockerfile: Dockerfile
+    image: wednesday/pet-app-pwa
+    ports:
+    - '3000:3000'
+    volumes:
+    - ./ui/:/usr/src/pet/pwc/
+    links:
+    - api
+  api:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    image: wednesday/pet-app-api
+    restart: unless-stopped
+    ports:
+    - '8080:8080'
+    volumes:
+    - ./api/:/usr/src/pet/api

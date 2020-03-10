@@ -1,66 +1,45 @@
 package com.sdp.petapi.controllers;
 
-import java.util.*;
-// import org.bson.types.*;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-// import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.services.PetService;
 
 @RestController
+@RequestMapping("/pet")
 public class PetController {
 
   @Autowired
   private PetService petService;
 
-  // @GetMapping
-  @RequestMapping("/user/pet")
-  public List<String> getUserAllPets() {
-    return petService.getUserAllIds();
+  @GetMapping
+  @CrossOrigin
+  public List<Pet> getAllPets() {
+    return petService.getEmployeeAllPets();
   }
 
-  @RequestMapping("/employee/pet")
-  public List<String> getEmployeeAllPets() {
-    return petService.getEmployeeAllIds();
+  @GetMapping("/{id}")
+  public Pet getPetById(@PathVariable String id) {
+    return petService.getEmployeePetById(id);
   }
 
-  @GetMapping("/user/pet/{id}")
-  public Pet getUserOnePet(@PathVariable String id) {
-    return petService.getUserOnePet(id);
+  @PostMapping
+  public Pet createPet(@RequestBody Pet pet) {
+    return petService.createPet(pet);
   }
 
-  @GetMapping("/employee/pet/{id}")
-  public Pet getEmployeeOnePet(@PathVariable String id) {
-    return petService.getEmployeeOnePet(id);
+  @PutMapping("/{id}")
+  public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
+    return (id == null | pet == null || pet.getId() != id) ? null : petService.putPet(pet);
   }
-
-  @PostMapping("/employee/pet")
-  public Pet postPet(@RequestBody Pet pet) {
-    return petService.addPet(pet);
-  }
-<<<<<<< Updated upstream
-
-  @PutMapping("/employee/pet/{id}")
-  public String updatePet(@PathVariable String id, @RequestBody Pet pet) {
-    return petService.updatePet(pet);
-  }
-=======
-  /*
-  @DeleteMapping("/{id}")
-  public Message deletePet(@PathVariable String id) {
-    if (petService.deletePet(id)) {
-      return new Message("Deleted Pet");
-    } else {
-      return new Message("Couldn't delete pet");
-    }
-  }*/
->>>>>>> Stashed changes
-
-  // @DeleteMapping("/employee/pet/{id}")
-  // public String deletePet(@PathVariable String id) {
-  //   return petService.deletePet(getEmployeeOnePet(id));
-  // }
 }

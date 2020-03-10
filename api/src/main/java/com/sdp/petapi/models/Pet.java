@@ -7,15 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
-
 import org.springframework.data.annotation.Id;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Pet {
-
-  
   @Id
   private String id;
 
@@ -32,7 +28,7 @@ public @Data class Pet {
   private boolean active;
   
   public Pet(String name, String type, String sex, String age, String size, double weight, String description,
-			ArrayList<String> imageNames) {
+			List<String> images) {
         this.name = name;
         this.type = type;
         this.sex = sex;
@@ -40,9 +36,11 @@ public @Data class Pet {
         this.size = size;
         this.weight = weight;
         this.description = description;
-        this.imageNames = imageNames.stream().collect(Collectors.toSet());
-	}
-
+        this.imageNames = images.stream().collect(Collectors.toSet());
+        this.dateAdded = new Date();
+        this.active = true;
+  }
+  
   public Pet(String id, String name, String type, String sex, String age, String size, Double weight, Date date, String desc, ArrayList<String> images, boolean adopt, boolean status){
     this.id = id;
     this.name = name;

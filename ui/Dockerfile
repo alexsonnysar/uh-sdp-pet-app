@@ -1,14 +1,15 @@
-FROM node:12-slim
+FROM node:13.5.0
+# Create working location
+WORKDIR /usr/src/app
 
-WORKDIR /usr/src/pet/
-ENV NODE_ENV development
+# Install app dependencies
 
-COPY package.json /usr/src/pet/package.json
+COPY package*.json ./
 
-RUN yarn
+RUN yarn install
 
-COPY . /usr/src/pet/
-
-CMD ["yarn","start"]
+COPY . .
 
 EXPOSE 3000
+
+CMD [ "yarn", "start" ]
