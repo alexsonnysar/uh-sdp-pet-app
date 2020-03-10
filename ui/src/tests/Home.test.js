@@ -1,20 +1,14 @@
 import React from "react";
 import { render, cleanup, waitForElement } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import EmployeeDashboard from "../pages/EmployeeDashboard";
+import Home from "../pages/Home";
 import axiosMock from "axios";
 
 jest.mock("axios");
 
 afterEach(cleanup);
 
-test("should render employee dashboard page", () => {
-  const { getByTestId } = render(<EmployeeDashboard />);
-  const empDash = getByTestId("empdash");
-  expect(empDash).toBeInTheDocument();
-});
-
-test("should render employee dashboard with mock API", async () => {
+test("should render pet cards from mocked API call", async () => {
   axiosMock.get.mockResolvedValue({
     data: [
       {
@@ -38,13 +32,22 @@ test("should render employee dashboard with mock API", async () => {
     ]
   });
 
-  const { getByTestId } = render(<EmployeeDashboard />);
+  const { getByTestId } = render(<Home />);
 
-  expect(getByTestId("loading")).toHaveTextContent(
-    "No List of Pets to Show :("
-  );
+  expect(getByTestId("loading")).toHaveTextContent("No pets to show :(");
 
-  const loadedPetList = await waitForElement(() => getByTestId("loadedList"));
-  expect(loadedPetList).toBeInTheDocument();
+  const loadedPetCardList = await waitForElement(() => getByTestId("loaded"));
+  expect(loadedPetCardList).toBeInTheDocument();
   expect(axiosMock.get).toHaveBeenCalledTimes(1);
 });
+
+// test('should return error',  async () => {
+//   const errorMessage = 'Network Error';
+
+//   axiosMock.get.mockImplementationOnce(() => {
+//     Promise.reject(new Error(errorMessage))
+//   },
+//   );
+
+//   await expect(render(<Home />)).rejects.toThrow(errorMessage);
+// });

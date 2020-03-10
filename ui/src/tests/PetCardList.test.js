@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import ManyPetCards from "../components/ManyPetCards";
+import PetCardList from "../components/PetCardList";
 
 const petList = [
   {
@@ -21,7 +21,7 @@ const petList = [
 ];
 
 test("should render multiple pet cards", () => {
-  const { getByTestId } = render(<ManyPetCards petList={petList} />);
+  const { getByTestId } = render(<PetCardList petList={petList} />);
   const manyPetCards = getByTestId("manypetcards");
   expect(manyPetCards).toBeInTheDocument();
 });
