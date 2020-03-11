@@ -1,15 +1,16 @@
 import React from "react";
 import { render, cleanup, waitForElement } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import Home from "../pages/Home";
+import Home from "../../pages/Home";
 import axiosMock from "axios";
+import { FetchData } from "../../api/FetchData";
 
-jest.mock("axios");
+jest.mock();
 
 afterEach(cleanup);
 
 test("should render pet cards from mocked API call", async () => {
-  axiosMock.get.mockResolvedValue({
+  FetchDataMock.mockResolvedValue({
     data: [
       {
         id: 1,

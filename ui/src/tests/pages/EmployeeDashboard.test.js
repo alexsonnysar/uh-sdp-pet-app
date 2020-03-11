@@ -1,7 +1,7 @@
 import React from "react";
 import { render, cleanup, waitForElement } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import EmployeeDashboard from "../pages/EmployeeDashboard";
+import EmployeeDashboard from "../../pages/EmployeeDashboard";
 import axiosMock from "axios";
 
 jest.mock("axios");
