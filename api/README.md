@@ -1,3 +1,5 @@
+# README
+
 This project was bootstrapped with [Spring Initializr](https://start.spring.io/).
 
 ## Available Scripts
