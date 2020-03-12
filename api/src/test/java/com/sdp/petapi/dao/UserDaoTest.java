@@ -3,14 +3,15 @@ package com.sdp.petapi.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.Message;
+import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
+import com.sdp.petapi.repositories.RequestedRepository;
 import com.sdp.petapi.repositories.UserRepository;
 
 import org.junit.jupiter.api.AfterEach;
@@ -29,10 +30,14 @@ public class UserDaoTest {
   @Autowired
   UserRepository userRepository;
 
+  @Autowired
+  RequestedRepository requestRepository;
+
   @Mock
   User expected_user;
 
   User user;
+  Requested request;
 
   @Mock
   Message expected_message;
@@ -41,12 +46,14 @@ public class UserDaoTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     user = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/userObject.json"), User.class);
+    request = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestedObject.json"), Requested.class);
     userRepository.insert(user);
   }
 
   @AfterEach
   public void cleanup() {
     userRepository.deleteAll();
+    requestRepository.deleteAll();
   }
 
   @Test
@@ -89,12 +96,27 @@ public class UserDaoTest {
   @Test
   public void delete_user() {
     Boolean deleteSuccess = userDao.deleteUser(user.getId());
+    assertEquals(true, deleteSuccess);
+    assertEquals(false, userRepository.existsById(user.getId()));
+  }
 
-    if (deleteSuccess) {
-      assertEquals(false, userRepository.existsById(user.getId()));
-    } else {
-      assertEquals(true, userRepository.existsById(user.getId()));
-    }
+  @Test
+  public void delete_user_thrown_exception() {
+    Boolean deleteSuccess = userDao.deleteUser(null);
+    assertEquals(false, deleteSuccess);
+    assertEquals(true, userRepository.existsById(user.getId()));
+  }
 
+  @Test
+  public void request_adoption() {
+    Requested returnedRequest = userDao.requestAdoption(request);
+    assertEquals(request, returnedRequest);
+    assertEquals(true, requestRepository.existsById(request.getId()));
+  }
+
+  @Test
+  public void request_adoption_exception() {
+    Requested returnedRequest = userDao.requestAdoption(null);
+    assertEquals(new Requested(), returnedRequest);
   }
 }

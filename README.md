@@ -4,7 +4,7 @@ Pet Web Application for UH SDP Project
 
 ## To Get Started
 
-Couple tips to get you up and running quickly!
+Here are a couple tips to get you up and running quickly!
 
 ```sh
 git clone <this repo>
@@ -26,7 +26,11 @@ gradle BootRun
 
 ```
 
-The front end runs on port [localhost:3000](localhost:3000) just use
+If you would like you can checkout the pets at  [/pet](localhost:8080/pet)
+
+The front end runs on port [localhost:3000](localhost:3000)
+
+To see this
 
 ```sh
 cd uh-sdp-pet-app/ui
@@ -34,4 +38,4 @@ yarn install
 yarn start
 ```
 
-You should see a <h2> Hello World</h2>
+You should see a user dashboard that shows off all the pets in the database
