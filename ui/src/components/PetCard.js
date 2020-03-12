@@ -52,7 +52,9 @@ const PetCard = ({ pet }) => {
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 180
+    margin: 5,
+    maxWidth: 180,
+    minWidth: 180
   }
 });
 

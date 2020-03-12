@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-//import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from "@material-ui/icons/Delete";
 import UpdateRoundedIcon from "@material-ui/icons/UpdateRounded";
 import Button from "@material-ui/core/Button";
@@ -25,9 +24,6 @@ const PetListItem = ({ pet }) => {
         >
           Delete
         </Button>
-        {/* <IconButton color="secondary" aria-label="delete">
-            <DeleteIcon/>
-          </IconButton> */}
         <Button
           variant="contained"
           className={classes.button}
@@ -37,9 +33,6 @@ const PetListItem = ({ pet }) => {
         >
           Update
         </Button>
-        {/* <IconButton color="primary" aria-label="update">
-            <UpdateRoundedIcon/>
-          </IconButton> */}
       </ListItemSecondaryAction>
     </ListItemLink>
   );

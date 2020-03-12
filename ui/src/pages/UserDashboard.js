@@ -1,8 +1,9 @@
 import React from "react";
 import PetCardList from "../components/PetCardList";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { FetchData } from "../api/FetchData";
 import { makeStyles } from "@material-ui/core/styles";
+import PetCardSlider from "../components/PetCardSlider";
 
 const UserDashboard = () => {
   const url = "http://localhost:8080/pet";
@@ -11,7 +12,7 @@ const UserDashboard = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div>
       {/* <Grid container >
         <Grid item xs={12} md={12}>
           <PetCardList petList={petList} />
@@ -27,15 +28,18 @@ const UserDashboard = () => {
           <PetCardList petList={petList} />
         </Grid>
       </Grid> */}
-      <div>
-        <PetCardList petList={petList} />
-      </div>
-      <div>
-        <PetCardList petList={petList} />
-      </div>
-      <div>
-        <PetCardList petList={petList} />
-      </div>
+      <Typography gutterBottom variant="h5" component="h2">
+        Favorites
+      </Typography>
+      <PetCardSlider petList={petList} />
+      <Typography gutterBottom variant="h5" component="h2">
+        Recently Viewed
+      </Typography>
+      <PetCardSlider petList={petList} />
+      <Typography gutterBottom variant="h5" component="h2">
+        Adopted
+      </Typography>
+      <PetCardSlider petList={petList} />
     </div>
   );
 };
