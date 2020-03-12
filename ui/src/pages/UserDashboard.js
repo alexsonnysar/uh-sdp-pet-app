@@ -42,7 +42,7 @@ const UserDashboard = () => {
 
 const useStyles = makeStyles({
   root: {
-    overflowX: "auto"
+    overflowX: "scroll"
   }
 });
 
