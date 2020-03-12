@@ -1,44 +1,21 @@
 import React from "react";
-import PetCardList from "../components/PetCardList";
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { FetchData } from "../api/FetchData";
-import { makeStyles } from "@material-ui/core/styles";
 import PetCardSlider from "../components/PetCardSlider";
+import { makeStyles } from "@material-ui/core/styles";
 
 const UserDashboard = () => {
+  const classes = useStyles();
   const url = "http://localhost:8080/pet";
   const petList = FetchData(url);
 
-  const classes = useStyles();
-
   return (
-    <div>
-      {/* <Grid container >
-        <Grid item xs={12} md={12}>
-          <PetCardList petList={petList} />
-        </Grid>
-      </Grid>
-      <Grid container >
-        <Grid item xs={12} md={12}>
-          <PetCardList petList={petList} />
-        </Grid>
-      </Grid>
-      <Grid container >
-        <Grid item xs={12} md={12}>
-          <PetCardList petList={petList} />
-        </Grid>
-      </Grid> */}
-      <Typography gutterBottom variant="h5" component="h2">
-        Favorites
-      </Typography>
+    <div className={classes.root}>
+      <Typography variant="h4">Favorites</Typography>
       <PetCardSlider petList={petList} />
-      <Typography gutterBottom variant="h5" component="h2">
-        Recently Viewed
-      </Typography>
+      <Typography variant="h4">Recently Viewed</Typography>
       <PetCardSlider petList={petList} />
-      <Typography gutterBottom variant="h5" component="h2">
-        Adopted
-      </Typography>
+      <Typography variant="h4">Adopted</Typography>
       <PetCardSlider petList={petList} />
     </div>
   );
@@ -46,7 +23,7 @@ const UserDashboard = () => {
 
 const useStyles = makeStyles({
   root: {
-    overflowX: "scroll"
+    alignContent: "left"
   }
 });
 

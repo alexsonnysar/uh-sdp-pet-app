@@ -9,26 +9,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Link from "@material-ui/core/Link";
 import { red } from "@material-ui/core/colors";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  },
-  button: {
-    color: "inherit",
-    "&:hover": {
-      color: "white"
-    }
-  }
-}));
-
 const Navigation = () => {
   const classes = useStyles();
+
   return (
     <div>
       <AppBar position="sticky">
@@ -48,5 +31,23 @@ const Navigation = () => {
     </div>
   );
 };
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  },
+  button: {
+    color: "inherit",
+    "&:hover": {
+      color: "white"
+    }
+  }
+}));
 
 export default Navigation;
