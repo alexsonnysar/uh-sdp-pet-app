@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
+import PetForm from "./pages/PetForm"
 import PetProfile from "./pages/PetProfile";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import UserDashboard from "./pages/UserDashboard";
@@ -20,6 +21,9 @@ function App() {
             </Route>
             <Route path="/pet-profile">
               <PetProfile />
+            </Route>
+            <Route path="/pet-register">
+              <PetForm/>
             </Route>
             <Route path="/employee-dashboard">
               <EmployeeDashboard />
