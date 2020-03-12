@@ -11,22 +11,31 @@ const UserDashboard = () => {
   const classes = useStyles();
 
   return (
-    <div>
-      <Grid container className={classes.root}>
+    <div className={classes.root}>
+      {/* <Grid container >
         <Grid item xs={12} md={12}>
           <PetCardList petList={petList} />
         </Grid>
       </Grid>
-      <Grid container className={classes.root}>
+      <Grid container >
         <Grid item xs={12} md={12}>
           <PetCardList petList={petList} />
         </Grid>
       </Grid>
-      <Grid container className={classes.root}>
+      <Grid container >
         <Grid item xs={12} md={12}>
           <PetCardList petList={petList} />
         </Grid>
-      </Grid>
+      </Grid> */}
+      <div>
+        <PetCardList petList={petList} />
+      </div>
+      <div>
+        <PetCardList petList={petList} />
+      </div>
+      <div>
+        <PetCardList petList={petList} />
+      </div>
     </div>
   );
 };
