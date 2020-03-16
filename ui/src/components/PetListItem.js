@@ -25,6 +25,7 @@ const PetListItem = ({ pet }) => {
           Delete
         </Button>
         <Button
+          href="pet-profile"
           variant="contained"
           className={classes.button}
           color="primary"

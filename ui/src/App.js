@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import PetForm from "./pages/PetForm"
+import PetForm from "./pages/PetForm";
 import PetProfile from "./pages/PetProfile";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import UserDashboard from "./pages/UserDashboard";
@@ -16,14 +16,14 @@ function App() {
       <Router>
         <div className="App" data-testid="App">
           <Switch>
-            <Route path="/user-profile">
+            <Route path="/user-dashboard">
               <UserDashboard />
             </Route>
             <Route path="/pet-profile">
               <PetProfile />
             </Route>
             <Route path="/pet-register">
-              <PetForm/>
+              <PetForm />
             </Route>
             <Route path="/employee-dashboard">
               <EmployeeDashboard />

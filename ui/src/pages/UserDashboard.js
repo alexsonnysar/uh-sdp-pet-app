@@ -11,11 +11,11 @@ const UserDashboard = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h4">Favorites</Typography>
+      <Typography variant="h6">Favorites</Typography>
       <PetCardSlider petList={petList} />
-      <Typography variant="h4">Recently Viewed</Typography>
+      <Typography variant="h6">Recently Viewed</Typography>
       <PetCardSlider petList={petList} />
-      <Typography variant="h4">Adopted</Typography>
+      <Typography variant="h6">Adopted</Typography>
       <PetCardSlider petList={petList} />
     </div>
   );

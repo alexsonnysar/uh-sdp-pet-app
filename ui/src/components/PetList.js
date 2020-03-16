@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(4, 0, 2)
   },
   paper: {
-    maxHeight: 305,
+    maxHeight: 440,
     overflow: "auto"
   }
 }));
