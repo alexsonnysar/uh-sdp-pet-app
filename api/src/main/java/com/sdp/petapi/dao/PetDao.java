@@ -1,11 +1,13 @@
 package com.sdp.petapi.dao;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sdp.petapi.models.Pet;
+import com.sdp.petapi.models.User;
 import com.sdp.petapi.repositories.PetRepository;
 
 @Component
@@ -14,36 +16,49 @@ public class PetDao {
   @Autowired
   private PetRepository repository;
 
-  public List<Pet> getUserAllPets(){
-    List<Pet> pets = new ArrayList<Pet>();
-    repository.findAll().stream().filter(p -> p.isActive()).forEach(p -> pets.add(p));;
-    return pets;
+  @Autowired
+  private UserDao userDao;
+
+  public List<Pet> getAllPets(User user) {
+    return (user.isEmployee()) ? repository.findAll() : 
+      repository.findAll().stream().filter(p -> p.isActive()).collect(Collectors.toList());
   }
 
-  public List<Pet> getEmployeeAllPets(){
-    return repository.findAll();
+  public Pet getPetById(User user, String petid){
+    if (petid == null) return null;
+    
+    Optional<Pet> pet = repository.findById(petid);
+    return (pet.isPresent() && (user.isEmployee() || pet.get().isActive())) ? pet.get() : null;
   }
 
-  public Pet getUserPetById(String pet_id){
-    if (pet_id == null) return null;
-    Optional<Pet> pet = repository.findById(pet_id);
-    return (pet.isPresent() && pet.get().isActive()) ? pet.get() : null;
-  }
-  
-  public Pet getEmployeePetById(String pet_id){
-    if (pet_id == null) return null;
-    Optional<Pet> pet = repository.findById(pet_id);
-    return pet.isPresent() ? pet.get() : null;
+  public Pet createPet(User user, Pet pet) {
+    if(user == null || !user.isEmployee() || pet == null || pet.getId() != null ) return null;
+
+    User userdb = userDao.getUserById(user.getId());
+    return (userdb != user) ? null : repository.insert(pet);
   }
 
-  public Pet createPet(Pet pet) {
-    if(pet == null) return pet;
-    return repository.insert(pet);
+  public Pet putPet(User user, Pet pet) {
+    if(user == null || !user.isEmployee() || pet == null) return null;
+    
+    User userdb = userDao.getUserById(user.getId());
+    if (userdb != user) return null;
+    
+    Pet petdb = getPetById(user, pet.getId());
+    return (petdb == null) ? null : repository.save(pet);
   }
 
-  public Pet putPet(Pet pet) {
-    if(pet == null) return pet;
-    return repository.save(pet);
+  public Pet deletePet(User user, String petid) {
+    if(user == null || petid != null || !user.isEmployee()) return null;
+
+    User userdb = userDao.getUserById(user.getId());
+    if (userdb != user) return null;
+
+    Pet pet = getPetById(user, petid);
+    if (pet == null) return null;
+    
+    repository.delete(pet);
+    return pet;
   }
   
 }

@@ -24,8 +24,8 @@ public @Data class Pet {
   private Date dateAdded;
   private String description;
   private Set<String> imageNames; // link to photos
-  private boolean adopted;
-  private boolean active;
+  private boolean isAdopted;
+  private boolean isActive;
   
   public Pet(String name, String type, String sex, String age, String size, double weight, String description,
 			List<String> images) {
@@ -38,7 +38,7 @@ public @Data class Pet {
         this.description = description;
         this.imageNames = images.stream().collect(Collectors.toSet());
         this.dateAdded = new Date();
-        this.active = true;
+        this.isActive = true;
   }
   
   public Pet(String id, String name, String type, String sex, String age, String size, Double weight, Date date, String desc, ArrayList<String> images, boolean adopt, boolean status){
@@ -52,8 +52,8 @@ public @Data class Pet {
     this.dateAdded = date;
     this.description = desc;
     this.imageNames = images.stream().collect(Collectors.toSet());
-    this.adopted = adopt;
-    this.active = status;
+    this.isAdopted = adopt;
+    this.isActive = status;
   }
 
 }
