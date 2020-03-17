@@ -7,35 +7,29 @@ Pet Web Application for UH SDP Project
 Here are a couple tips to get you up and running quickly!
 
 ```sh
-git clone <this repo>
-
-cd <this repo>
-
-```
-
-Install the VScode [Spring Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)
-
-then click the play button next to 'SPRING-BOOT DASHBOARD' to start the pet-api. you should now be able to see it a `Whitelabel Error Page` on [localhost:8080](localhost:8080)
-
-alternatively you can run this
-
-```sh
-cd api
-gradle
-gradle BootRun
-
-```
-
-If you would like you can checkout the pets at  [/pet](localhost:8080/pet)
-
-The front end runs on port [localhost:3000](localhost:3000)
-
-To see this
-
-```sh
+git clone https://github.com/grant-williams/uh-sdp-pet-app.git
 cd uh-sdp-pet-app/ui
 yarn install
-yarn start
+yarn dev
 ```
+When running `yarn dev` it will run the frontend and backend for you using the [concurrently](https://github.com/kimmobrunfeldt/concurrently) dependency, therefore
+you will not need to open another terminal window to start backend. 
 
-You should see a user dashboard that shows off all the pets in the database
+NOTE: If you see a message "No pets to show :(" when running `yarn dev` for the first time, refresh the page and you should see cards at [homepage](localhost:3000) 
+
+## Extra Commands
+
+If you would like to run the backend seperately from the you may run:
+
+```sh
+cd uh-sdp-pet-app/api
+./gradlew bootRun
+```
+NOTE: If you are using VScode and dont want to run the backend in the terminal, you can install the [Spring Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)
+then click the play button next to 'SPRING-BOOT DASHBOARD' to start the pet api. 
+
+If you would like to run all default tasks for gradle:
+From the api folder run:
+```sh
+./gradlew
+```
