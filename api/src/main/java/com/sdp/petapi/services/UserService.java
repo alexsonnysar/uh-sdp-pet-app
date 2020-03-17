@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.UserDao;
-import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Requested;
 import com.sdp.petapi.models.User;
 

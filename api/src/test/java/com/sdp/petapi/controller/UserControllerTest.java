@@ -86,7 +86,7 @@ class UserControllerTest {
   public void delete_user() {
     when(userService.deleteUser(user.getId())).thenReturn(true);
     Message returnMessage = userController.deleteUser(user.getId());
-    assertEquals("Yeeted User", returnMessage.getMessage());
+    assertEquals("deleted User", returnMessage.getMessage());
   }
 
   @Test
