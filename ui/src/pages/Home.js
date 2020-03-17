@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from "react";
-import ManyPetCards from "../components/ManyPetCards";
-import Navigation from "../components/Navigation";
-import CssBaseline from "@material-ui/core/CssBaseline/CssBaseline";
+import React from "react";
+import PetCardList from "../components/PetCardList";
+import { FetchData } from "../api/FetchData";
 
 const Home = () => {
-  const [petList, setPetList] = useState([]);
+  const url = "http://localhost:8080/pet";
 
-  async function fetchData() {
-    const res = await fetch("http://localhost:8080/pet"); // fetch("https://swapi.co/api/planets/4/");
-    res.json().then(res => setPetList(res));
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  const petList = FetchData(url);
   return (
     <div>
-      <CssBaseline />
-      <Navigation />
-      <ManyPetCards petList={petList} />
+      {petList.length > 0 ? (
+        <div data-testid="loaded">
+          <PetCardList petList={petList} />
+        </div>
+      ) : (
+        <h3 data-testid="loading">No pets to show :(</h3>
+      )}
     </div>
   );
 };

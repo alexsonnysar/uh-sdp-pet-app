@@ -21,9 +21,9 @@ const PetCard = ({ pet }) => {
       <ButtonBase href="pet-profile" style={{ textDecorationLine: "none" }}>
         <CardActionArea>
           <CardMedia
+            className={classes.media}
             component="img"
             alt="Pet Image"
-            height="140"
             image="/images/garfield.jpg"
             title="Pet Image"
           />
@@ -31,7 +31,7 @@ const PetCard = ({ pet }) => {
             <Typography gutterBottom variant="h5" component="h2">
               {name}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="subtitle1" color="textSecondary" component="p">
               {type}
             </Typography>
           </CardContent>
@@ -39,7 +39,7 @@ const PetCard = ({ pet }) => {
       </ButtonBase>
       <CardActions>
         <Button
-          size="medium"
+          size="small"
           color="secondary"
           startIcon={<FavoriteRoundedIcon />}
         >
@@ -52,7 +52,15 @@ const PetCard = ({ pet }) => {
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 180
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    maxWidth: 170,
+    minWidth: 170
+  },
+  media: {
+    height: 120
   }
 });
 
