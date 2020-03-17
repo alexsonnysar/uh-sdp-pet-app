@@ -20,6 +20,11 @@ public class PetDao {
   private UserDao userDao;
 
   public List<Pet> getAllPets(User user) {
+    if (user == null) return null;
+
+    User userdb = userDao.getUserById(user.getId());
+    if (userdb != user) return null;
+
     return (user.isEmployee()) ? repository.findAll() : 
       repository.findAll().stream().filter(p -> p.isActive()).collect(Collectors.toList());
   }
