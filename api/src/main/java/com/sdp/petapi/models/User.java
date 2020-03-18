@@ -1,6 +1,7 @@
 package com.sdp.petapi.models;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ public @Data class User {
   private String firstName;
   private String lastName;
   private boolean isEmployee;
-  private Set<String> favorites;
-  private Queue<String> recents;
+  private String[] favorites;
+  private String[] recents;
   
   public User(String email, String passHash, String firstName, String lastName, Boolean employee) {
     this.email = email;
@@ -28,30 +29,39 @@ public @Data class User {
     this.firstName = firstName;
     this.lastName = lastName;
     this.isEmployee = employee;
-    if (employee) {
-        favorites = new HashSet<String>();
-        recents = new LinkedList<String>();
-    }
   }
   
   public Boolean addToFavorites(String petid) {
     if (isEmployee) return false;
 
-    favorites.add(petid);
+    Set<String> temp = Arrays.asList(favorites).stream().collect(Collectors.toSet());
+    temp.add(petid);
+    favorites = new String[temp.size()];
+    temp.toArray(favorites);
+    
     return true;
   }
 
   public Boolean removeFromFavorites(String petid) {
     if (isEmployee) return false;
+
+    Set<String> temp = new HashSet<String>(Arrays.asList(favorites));
+    Boolean result = temp.remove(petid);
+    temp.toArray(favorites);
     
-    return favorites.remove(petid);
+    return result;
   }
 
   public Boolean addToRecents(String petid) {
-    if (isEmployee || recents.contains(petid)) return false;
+    if (isEmployee) return false;
+    
+    Queue<String> temp = new LinkedList<String>(Arrays.asList(recents));
+    if (temp.contains(petid)) return false;
 
-    if (recents.size() == 10) recents.remove();
-    recents.add(petid);
+    if (temp.size() == 10) temp.remove();
+    temp.add(petid);
+    temp.toArray(recents);
+    
     return true;
   }
 

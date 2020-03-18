@@ -19,6 +19,9 @@ public class PetDao {
   @Autowired
   private UserDao userDao;
 
+  @Autowired
+  private RequestsDao reqDao;
+
   public List<Pet> getAllPets(User user) {
     if (user == null) return null;
 
@@ -33,7 +36,16 @@ public class PetDao {
     if (petid == null) return null;
     
     Optional<Pet> pet = repository.findById(petid);
-    return (pet.isPresent() && (user.isEmployee() || pet.get().isActive())) ? pet.get() : null;
+
+    if (!pet.isPresent()) return null;
+
+    Boolean userCond = (user.isEmployee() || pet.get().isActive()
+      || reqDao.getAllRequests(user)
+        .stream()
+        .anyMatch(r -> r.getUserid() == user.getId() && r.getPetid() == petid)
+    );
+
+    return userCond ? pet.get() : null;
   }
 
   public Pet createPet(User user, Pet pet) {
@@ -64,6 +76,10 @@ public class PetDao {
     
     repository.delete(pet);
     return pet;
+  }
+
+  public Pet putPetByRequest(Pet pet) {
+    return repository.save(pet);
   }
   
 }

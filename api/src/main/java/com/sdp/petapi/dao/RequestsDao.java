@@ -68,8 +68,19 @@ public class RequestsDao {
       || reqdb.getPetid() != req.getPetid()
       || reqdb.getRequestDate() != req.getRequestDate()) return null;
 
-    return (!user.isEmployee() && req.getStatus() == "CANCELED") ? repository.save(req) :
-      (user.isEmployee() && req.getStatus() != "PENDING") ? repository.save(req) : null;
+    // WebUser canceling request means pet may be available for adoption again
+    if (!user.isEmployee() && req.getStatus() == "CANCELED") {
+      String petid = req.getPetid();
+      if (!repository.findAll().stream().anyMatch(r -> r.getPetid() == petid && r.getUserid() != user.getId())) {
+        /* To undo Conrad's earlier comment */
+        Pet pet = petDao.getPetById(user, petid);
+        pet.setActive(true);
+        pet.setAdopted(false);
+        petDao.putPetByRequest(pet);
+      }
+      repository.save(req);
+    }
+    return (user.isEmployee() && req.getStatus() != "PENDING") ? repository.save(req) : null;
   }
 
   public Requests deleteRequest(User user, String reqid) {

@@ -96,7 +96,10 @@ public class UserDao {
     User userdb = getUserById(user.getId());
     if (userdb != user) return null;
 
-    return user.getFavorites().stream().map(pid -> petDao.getPetById(user, pid)).collect(Collectors.toList());
+    return Arrays.asList(user.getFavorites())
+      .stream()
+      .map(pid -> petDao.getPetById(user, pid))
+      .collect(Collectors.toList());
   }
 
   public List<Pet> getRecentPets(User user) {
@@ -105,6 +108,9 @@ public class UserDao {
     User userdb = getUserById(user.getId());
     if (userdb != user) return null;
 
-    return user.getRecents().stream().map(pid -> petDao.getPetById(user, pid)).collect(Collectors.toList());
+    return Arrays.asList(user.getRecents())
+      .stream()
+      .map(pid -> petDao.getPetById(user, pid))
+      .collect(Collectors.toList());
   }
 }
