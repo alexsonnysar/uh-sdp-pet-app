@@ -20,6 +20,7 @@ import com.sdp.petapi.models.User;
 import com.sdp.petapi.services.UserService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 public class UserController {
 
@@ -27,7 +28,6 @@ public class UserController {
   private UserService userService;
 
   @GetMapping
-  @CrossOrigin
   public List<User> getAllUsers() {
     return userService.getAllUsers();
   }
