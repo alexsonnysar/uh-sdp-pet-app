@@ -7,6 +7,9 @@ HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 !/api/src/main/**
 !/api/src/test/**
+## Root Directory ###
+node_modules/
+yarn.lock
 
 ### STS ###
 .apt_generated
@@ -54,6 +57,7 @@ HELP.md
 .env.development.local
 .env.test.local
 .env.production.local
+/api/src/main/resources/
 
 **/npm-debug.log*
 **/yarn-debug.log*

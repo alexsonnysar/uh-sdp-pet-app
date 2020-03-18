@@ -2,36 +2,61 @@
 
 Pet Web Application for UH SDP Project
 
+Application Stack:
+- Frontend: ReactJS
+- Backend: Java Spring
+- Database: MongoDB
+
 ## To Get Started
 
-Couple tips to get you up and running quickly!
+Here are a couple tips to get you up and running quickly!
 
-```sh
-git clone <this repo>
-
-cd <this repo>
-
+```bash
+git clone https://github.com/grant-williams/uh-sdp-pet-app.git
+cd uh-sdp-pet-app
 ```
 
-Install the VScode [Spring Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)
+To add MongoDB URI please do:
 
-then click the play button next to 'SPRING-BOOT DASHBOARD' to start the pet-api. you should now be able to see it a `Whitelabel Error Page` on [localhost:8080](localhost:8080)
-
-alternatively you can run this
-
-```sh
-cd api
-gradle
-gradle BootRun
-
+```bash
+cd api/src/main/resources
 ```
 
-The front end runs on port [localhost:3000](localhost:3000) just use
+Edit the `application.properties` file with your favorite editor and add your MongoDB URI to the variable `spring.data.mongodb.uri`:
 
-```sh
-cd uh-sdp-pet-app/ui
+```java
+spring.data.mongodb.uri="<your-URI>"
+```
+
+After adding MongoDB URI then run (from the ```resources``` directory):
+
+```bash
+cd ../../../../ui/
 yarn install
-yarn start
+yarn dev
 ```
 
-You should see a <h2> Hello World</h2>
+When running `yarn dev` it will run the frontend and backend for you using the [concurrently](https://github.com/kimmobrunfeldt/concurrently) dependency, therefore
+you will not need to open another terminal window to start backend.
+
+NOTE: If you see a message `No pets to show :(` when running `yarn dev` for the first time, refresh the page and you should see cards at [homepage](localhost:3000)
+
+## Extra Commands
+
+If you would like to run the backend separately from the terminal, you may run (from the `uh-sdp-pet-app` directory):
+
+```bash
+cd api
+./gradlew bootRun
+```
+
+NOTE: If you are using VScode and don't want to run the backend in the terminal, you can install the [Spring Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)
+then click the play button next to 'SPRING-BOOT DASHBOARD' to start the pet api.
+
+If you would like to run all default tasks for gradle:
+
+From the `api` folder run:
+
+```bash
+./gradlew
+```

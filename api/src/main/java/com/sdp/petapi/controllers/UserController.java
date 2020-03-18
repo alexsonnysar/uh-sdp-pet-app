@@ -56,7 +56,7 @@ public class UserController {
   @DeleteMapping("/{id}")
   public Message deleteUser(@PathVariable String id) {
     if (userService.deleteUser(id)) {
-      return new Message("Yeeted User");
+      return new Message("deleted User");
     } else {
       return new Message("Couldn't delete User");
     }
