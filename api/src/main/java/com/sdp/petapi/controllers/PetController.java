@@ -16,6 +16,7 @@ import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.services.PetService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/pet")
 public class PetController {
 
@@ -23,7 +24,6 @@ public class PetController {
   private PetService petService;
 
   @GetMapping
-  @CrossOrigin
   public List<Pet> getAllPets() {
     return petService.getEmployeeAllPets();
   }
