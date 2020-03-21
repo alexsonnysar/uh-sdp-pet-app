@@ -26,13 +26,13 @@ public class RequestsController {
   @Autowired
   private RequestsService reqService;
 
-  @GetMapping
+  @PostMapping
   @CrossOrigin
   public List<Requests> getAllRequests(@RequestBody User user) {
     return reqService.getAllRequests(user);
   }
 
-  @GetMapping("/{id}")
+  @PostMapping("/{id}")
   public Requests getRequestById(@PathVariable String id, @RequestBody User user) {
     return reqService.getRequestById(user, id);
   }
@@ -50,7 +50,7 @@ public class RequestsController {
     return (id == null || req.getId() != id) ? null : reqService.putRequest(user, req);
   }
 
-  @DeleteMapping("/{id}")
+  @PostMapping("/delete/{id}")
   public Requests deleteRequest(@PathVariable String id, @RequestBody User user) {
     return reqService.deleteRequest(user, id);
   }

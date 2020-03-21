@@ -24,18 +24,18 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @GetMapping
+  @PostMapping
   @CrossOrigin
   public List<User> getAllUser(@RequestBody User user) {
     return userService.getAllUsers();
   }
 
-  @GetMapping("/{id}")
+  @PostMapping("/{id}")
   public User getUserById(@PathVariable String id) {
     return userService.getUserById(id);
   }
 
-  @PostMapping
+  @PostMapping("/new")
   public User createUser(@RequestBody User user) {
     return userService.createUser(user);
   }
@@ -45,7 +45,7 @@ public class UserController {
     return (id == null || id != user.getId()) ? null : userService.putUser(user);
   }
 
-  @DeleteMapping("/{id}")
+  @PostMapping("/delete/{id}")
   public User deletePet(@PathVariable String id) {
     return userService.deleteUser(id);
   }
@@ -55,7 +55,7 @@ public class UserController {
     return userService.addPetToFavorites(user, id);
   }
 
-  @DeleteMapping("/fav/{id}")
+  @PutMapping("/fav/{id}")
   public Boolean removePetFromFavorites(@PathVariable String id, @RequestBody User user) {
     return userService.removePetFromFavorites(user, id);
   }

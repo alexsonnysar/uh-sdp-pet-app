@@ -26,18 +26,18 @@ public class PetController {
   @Autowired
   private PetService petService;
 
-  @GetMapping
+  @PostMapping
   @CrossOrigin
   public List<Pet> getAllPets(@RequestBody User user) {
     return petService.getAllPets(user);
   }
 
-  @GetMapping("/{id}")
+  @PostMapping("/{id}")
   public Pet getPetById(@PathVariable String id, @RequestBody User user) {
     return petService.getPetById(user, id);
   }
 
-  @PostMapping
+  @PostMapping("/new")
   public Pet createPet(@RequestBody PetUser combo) {
     Pet pet = combo.getPet();
     User user = combo.getUser();
@@ -53,7 +53,7 @@ public class PetController {
     return (id == null || pet.getId() != id) ? null : petService.putPet(user, pet);
   }
 
-  @DeleteMapping("/{id}")
+  @PostMapping("/{id}/delete")
   public Pet deletePet(@PathVariable String id, @RequestBody User user) {
     return petService.deletePet(user, id);
   }
