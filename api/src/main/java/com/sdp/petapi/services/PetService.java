@@ -16,12 +16,12 @@ public class PetService {
   @Autowired
   private PetDao petDao;
 
-  public List<Pet> getAllPets(User user) {
-    return petDao.getAllPets(user);
+  public List<Pet> getAllPets() {
+    return petDao.getAllPets();
   }
   
-  public Pet getPetById(User user, String id) {
-    return petDao.getPetById(user, id);
+  public Pet getPetById(String id) {
+    return petDao.getPetById(id);
   }
 
   public Pet createPet(User user, Pet pet) {
@@ -32,7 +32,7 @@ public class PetService {
     return petDao.putPet(user, pet);
   }
 
-  public Pet deletePet(User user, String petid) {
-    return petDao.deletePet(user, petid);
+  public Pet deletePet(String petid) {
+    return petDao.deletePet(petid);
   }
 }

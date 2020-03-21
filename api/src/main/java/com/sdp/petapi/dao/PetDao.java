@@ -22,30 +22,16 @@ public class PetDao {
   @Autowired
   private RequestsDao reqDao;
 
-  public List<Pet> getAllPets(User user) {
-    if (user == null) return null;
-
-    User userdb = userDao.getUserById(user.getId());
-    if (userdb != user) return null;
-
-    return (user.isEmployee()) ? repository.findAll() : 
-      repository.findAll().stream().filter(p -> p.isActive()).collect(Collectors.toList());
+  public List<Pet> getAllPets() {
+    return repository.findAll();
   }
 
-  public Pet getPetById(User user, String petid){
+  public Pet getPetById(String petid){
     if (petid == null) return null;
     
     Optional<Pet> pet = repository.findById(petid);
 
-    if (!pet.isPresent()) return null;
-
-    Boolean userCond = (user.isEmployee() || pet.get().isActive()
-      || reqDao.getAllRequests(user)
-        .stream()
-        .anyMatch(r -> r.getUserid() == user.getId() && r.getPetid() == petid)
-    );
-
-    return userCond ? pet.get() : null;
+    return pet.isPresent() ? pet.get() : null;
   }
 
   public Pet createPet(User user, Pet pet) {
@@ -56,22 +42,19 @@ public class PetDao {
   }
 
   public Pet putPet(User user, Pet pet) {
-    if(user == null || !user.isEmployee() || pet == null) return null;
+    if(user == null || !user.isEmployee()) return null;
     
     User userdb = userDao.getUserById(user.getId());
     if (userdb != user) return null;
     
-    Pet petdb = getPetById(user, pet.getId());
+    Pet petdb = getPetById(pet.getId());
     return (petdb == null) ? null : repository.save(pet);
   }
 
-  public Pet deletePet(User user, String petid) {
-    if(user == null || petid != null || !user.isEmployee()) return null;
+  public Pet deletePet(String petid) {
+    if(petid != null) return null;
 
-    User userdb = userDao.getUserById(user.getId());
-    if (userdb != user) return null;
-
-    Pet pet = getPetById(user, petid);
+    Pet pet = getPetById(petid);
     if (pet == null) return null;
     
     repository.delete(pet);

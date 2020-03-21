@@ -16,12 +16,12 @@ public class RequestsService {
   @Autowired
   private RequestsDao reqDao;
 
-  public List<Requests> getAllRequests(User user) {
-    return reqDao.getAllRequests(user);
+  public List<Requests> getAllRequests() {
+    return reqDao.getAllRequests();
   }
 
-  public Requests getRequestById(User user, String reqid){
-    return reqDao.getRequestById(user, reqid);
+  public Requests getRequestById(String reqid){
+    return reqDao.getRequestById(reqid);
   }
 
   public Requests createRequest(User user, String petid) {
@@ -32,11 +32,7 @@ public class RequestsService {
     return reqDao.putRequests(user, req);
   }
 
-  public Requests deleteRequest(User user, String reqid) {
-    return reqDao.deleteRequest(user, reqid);
-  }
-
-  public List<Requests> approveRequest(User user, String reqid) {
-    return reqDao.approveRequest(user, reqid);
+  public Requests deleteRequest(String reqid) {
+    return reqDao.deleteRequest(reqid);
   }
 }

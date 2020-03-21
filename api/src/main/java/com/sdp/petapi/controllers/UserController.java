@@ -24,9 +24,9 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @PostMapping
+  @GetMapping
   @CrossOrigin
-  public List<User> getAllUser(@RequestBody User user) {
+  public List<User> getAllUser() {
     return userService.getAllUsers();
   }
 
@@ -42,7 +42,7 @@ public class UserController {
 
   @PutMapping("/{id}")
   public User putUser(@PathVariable String id, @RequestBody User user) {
-    return (id == null || id != user.getId()) ? null : userService.putUser(user);
+    return (id == null || user == null || id != user.getId()) ? null : userService.putUser(user);
   }
 
   @PostMapping("/delete/{id}")

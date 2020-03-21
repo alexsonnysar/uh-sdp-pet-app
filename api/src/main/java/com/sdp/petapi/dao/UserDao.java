@@ -36,8 +36,6 @@ public class UserDao {
   }
 
   public User putUser(User user) {
-    if(user == null) return null;
-
     User userdb = getUserById(user.getId());
     return (userdb == null) ? null : repository.save(user);
   }
@@ -57,8 +55,8 @@ public class UserDao {
     User userdb = getUserById(user.getId());
     if (userdb != user) return false;
 
-    Pet pet = petDao.getPetById(user, petid);
-    if (pet == null) return false;
+    Pet pet = petDao.getPetById(petid);
+    if (pet == null || !pet.isActive()) return false;
 
     user.addToFavorites(petid);
     putUser(user);
@@ -82,8 +80,8 @@ public class UserDao {
     User userdb = getUserById(user.getId());
     if (userdb != user) return false;
     
-    Pet pet = petDao.getPetById(user, petid);
-    if (pet == null) return false;
+    Pet pet = petDao.getPetById(petid);
+    if (pet == null || !pet.isActive()) return false;
 
     user.addToRecents(petid);
     putUser(user);
@@ -98,7 +96,8 @@ public class UserDao {
 
     return Arrays.asList(user.getFavorites())
       .stream()
-      .map(pid -> petDao.getPetById(user, pid))
+      .map(pid -> petDao.getPetById(pid))
+      .filter(p -> p == null || !p.isActive())
       .collect(Collectors.toList());
   }
 
@@ -110,7 +109,8 @@ public class UserDao {
 
     return Arrays.asList(user.getRecents())
       .stream()
-      .map(pid -> petDao.getPetById(user, pid))
+      .map(pid -> petDao.getPetById(pid))
+      .filter(p -> p == null || !p.isActive())
       .collect(Collectors.toList());
   }
 }

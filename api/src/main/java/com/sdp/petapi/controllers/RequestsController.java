@@ -26,15 +26,15 @@ public class RequestsController {
   @Autowired
   private RequestsService reqService;
 
-  @PostMapping
+  @GetMapping
   @CrossOrigin
-  public List<Requests> getAllRequests(@RequestBody User user) {
-    return reqService.getAllRequests(user);
+  public List<Requests> getAllRequests() {
+    return reqService.getAllRequests();
   }
 
-  @PostMapping("/{id}")
-  public Requests getRequestById(@PathVariable String id, @RequestBody User user) {
-    return reqService.getRequestById(user, id);
+  @GetMapping("/{id}")
+  public Requests getRequestById(@PathVariable String id) {
+    return reqService.getRequestById(id);
   }
 
   @PostMapping("/pet/{id}")
@@ -50,13 +50,8 @@ public class RequestsController {
     return (id == null || req.getId() != id) ? null : reqService.putRequest(user, req);
   }
 
-  @PostMapping("/delete/{id}")
-  public Requests deleteRequest(@PathVariable String id, @RequestBody User user) {
-    return reqService.deleteRequest(user, id);
-  }
-
-  @PutMapping("/approve/{id}")
-  public List<Requests> approveRequest(@PathVariable String id, @RequestBody User user) {
-    return reqService.approveRequest(user, id);
+  @DeleteMapping("/{id}")
+  public Requests deleteRequest(@PathVariable String id) {
+    return reqService.deleteRequest(id);
   }
 }
