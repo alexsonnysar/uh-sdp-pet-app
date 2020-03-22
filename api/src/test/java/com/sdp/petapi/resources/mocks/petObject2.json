@@ -1,0 +1,14 @@
+{
+  "id": "002",
+  "name": "Garfield",
+  "type": "cat",
+  "sex": "M",
+  "age": "Adult",
+  "size": "Large",
+  "weight": 80.5,
+  "dateAdded": "2020-02-26T00:16:17.472-0600",
+  "description": "Lazes around and eats pizza and lasagna",
+  "imageNames": [ "sleeping", "eating", "lazing around", "more eating" ],
+  "active": true,
+  "adopted": false
+}
