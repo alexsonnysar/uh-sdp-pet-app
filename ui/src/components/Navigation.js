@@ -28,7 +28,7 @@ const Navigation = () => {
             Login
           </Button>
           <Button color="inherit" href="/register">
-            Sign Up
+            Register
           </Button>
         </Toolbar>
       </AppBar>
