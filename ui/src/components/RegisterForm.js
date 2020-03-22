@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   const classes = useStyles();
@@ -45,7 +46,7 @@ const RegisterForm = () => {
           Complete Registration
         </Button>
         <small className={classes.text}>
-          Already have an account? Log in <a href="/login">here</a>
+          Already have an account? Log in <Link to="/login">here</Link>
         </small>
       </form>
     </div>

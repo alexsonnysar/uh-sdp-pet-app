@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const classes = useStyles();
@@ -26,7 +27,7 @@ const LoginForm = () => {
           Log In
         </Button>
         <small className={classes.text}>
-          Don't have an account? Register <a href="/register">here</a>
+          Don't have an account? Register <Link to="/register">here</Link>
         </small>
       </form>
     </div>
