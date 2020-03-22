@@ -30,12 +30,12 @@ public class UserController {
     return userService.getAllUsers();
   }
 
-  @PostMapping("/{id}")
+  @GetMapping("/{id}")
   public User getUserById(@PathVariable String id) {
     return userService.getUserById(id);
   }
 
-  @PostMapping("/new")
+  @PostMapping
   public User createUser(@RequestBody User user) {
     return userService.createUser(user);
   }
@@ -45,7 +45,7 @@ public class UserController {
     return (id == null || user == null || id != user.getId()) ? null : userService.putUser(user);
   }
 
-  @PostMapping("/delete/{id}")
+  @DeleteMapping("/{id}")
   public User deletePet(@PathVariable String id) {
     return userService.deleteUser(id);
   }

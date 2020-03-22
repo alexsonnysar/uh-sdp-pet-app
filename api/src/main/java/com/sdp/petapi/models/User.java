@@ -34,6 +34,7 @@ public @Data class User {
   public Boolean addToFavorites(String petid) {
     if (isEmployee) return false;
 
+    if (favorites == null) favorites = new String[0];
     Set<String> temp = Arrays.asList(favorites).stream().collect(Collectors.toSet());
     temp.add(petid);
     favorites = new String[temp.size()];
@@ -43,10 +44,11 @@ public @Data class User {
   }
 
   public Boolean removeFromFavorites(String petid) {
-    if (isEmployee) return false;
+    if (isEmployee || favorites == null) return false;
 
     Set<String> temp = new HashSet<String>(Arrays.asList(favorites));
     Boolean result = temp.remove(petid);
+    favorites = new String[temp.size()];
     temp.toArray(favorites);
     
     return result;
@@ -55,11 +57,13 @@ public @Data class User {
   public Boolean addToRecents(String petid) {
     if (isEmployee) return false;
     
+    if (recents == null) recents = new String[0];
     Queue<String> temp = new LinkedList<String>(Arrays.asList(recents));
     if (temp.contains(petid)) return false;
 
     if (temp.size() == 10) temp.remove();
     temp.add(petid);
+    recents = new String[temp.size()];
     temp.toArray(recents);
     
     return true;
