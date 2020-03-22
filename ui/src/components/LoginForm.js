@@ -25,9 +25,9 @@ const LoginForm = () => {
         <Button variant="outlined" className={classes.button}>
           Log In
         </Button>
-        <a className={classes.text}>
+        <small className={classes.text}>
           Don't have an account? Register <a href="/register">here</a>
-        </a>
+        </small>
       </form>
     </div>
   );
