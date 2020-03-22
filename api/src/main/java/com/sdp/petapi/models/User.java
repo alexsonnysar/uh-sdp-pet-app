@@ -36,11 +36,13 @@ public @Data class User {
 
     if (favorites == null) favorites = new String[0];
     Set<String> temp = Arrays.asList(favorites).stream().collect(Collectors.toSet());
-    temp.add(petid);
-    favorites = new String[temp.size()];
-    temp.toArray(favorites);
+    Boolean result = temp.add(petid);
+    if (result) {
+      favorites = new String[temp.size()];
+      temp.toArray(favorites);
+    }
     
-    return true;
+    return result;
   }
 
   public Boolean removeFromFavorites(String petid) {
@@ -48,8 +50,10 @@ public @Data class User {
 
     Set<String> temp = new HashSet<String>(Arrays.asList(favorites));
     Boolean result = temp.remove(petid);
-    favorites = new String[temp.size()];
-    temp.toArray(favorites);
+    if (result) {
+      favorites = new String[temp.size()];
+      temp.toArray(favorites);
+    }
     
     return result;
   }

@@ -36,6 +36,8 @@ public class UserDao {
   }
 
   public User putUser(User user) {
+    if (user == null) return null;
+    
     User userdb = getUserById(user.getId());
     return (userdb == null) ? null : repository.save(user);
   }
@@ -53,51 +55,51 @@ public class UserDao {
     if (user == null || user.isEmployee()) return false;
 
     User userdb = getUserById(user.getId());
-    if (userdb != user) return false;
+    if (!user.equals(userdb)) return false;
 
     Pet pet = petDao.getPetById(petid);
     if (pet == null || !pet.isActive()) return false;
 
-    user.addToFavorites(petid);
-    putUser(user);
-    return true;
+    Boolean result = user.addToFavorites(petid);
+    if (result) putUser(user);
+    return result;
   }
 
   public Boolean removePetFromFavorites(User user, String petid) {
     if (user == null || user.isEmployee()) return false;
     
     User userdb = getUserById(user.getId());
-    if (userdb != user) return false;
+    if (!user.equals(userdb)) return false;
 
-    user.removeFromFavorites(petid);
-    putUser(user);
-    return true;
+    Boolean result = user.removeFromFavorites(petid);
+    if (result) putUser(user);
+    return result;
   }
 
   public Boolean addPetToRecents(User user, String petid) {
     if (user == null || user.isEmployee()) return false;
 
     User userdb = getUserById(user.getId());
-    if (userdb != user) return false;
+    if (!user.equals(userdb)) return false;
     
     Pet pet = petDao.getPetById(petid);
     if (pet == null || !pet.isActive()) return false;
 
-    user.addToRecents(petid);
-    putUser(user);
-    return true;
+    Boolean result = user.addToRecents(petid);
+    if (result) putUser(user);
+    return result;
   }
 
   public List<Pet> getFavoritePets(User user) {
     if (user == null || user.isEmployee()) return null;
 
     User userdb = getUserById(user.getId());
-    if (userdb != user) return null;
+    if (!user.equals(userdb)) return null;
 
     return Arrays.asList(user.getFavorites())
       .stream()
       .map(pid -> petDao.getPetById(pid))
-      .filter(p -> p == null || !p.isActive())
+      .filter(p -> p != null)
       .collect(Collectors.toList());
   }
 
@@ -105,12 +107,12 @@ public class UserDao {
     if (user == null || user.isEmployee()) return null;
 
     User userdb = getUserById(user.getId());
-    if (userdb != user) return null;
+    if (!user.equals(userdb)) return null;
 
     return Arrays.asList(user.getRecents())
       .stream()
       .map(pid -> petDao.getPetById(pid))
-      .filter(p -> p == null || !p.isActive())
+      .filter(p -> p != null)
       .collect(Collectors.toList());
   }
 }

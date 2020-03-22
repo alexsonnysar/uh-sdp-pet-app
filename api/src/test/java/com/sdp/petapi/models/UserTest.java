@@ -81,6 +81,19 @@ class UserTest {
   }
 
   @Test
+  public void addDuplicatePetToWebUserFavorites() throws Exception {
+    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    assertNull(webUser.getFavorites());
+    
+    String[] setup = new String[] {"124352"};
+    webUser.setFavorites(setup);
+    assertArrayEquals(webUser.getFavorites(), setup);
+
+    assertFalse(webUser.addToFavorites("124352"));
+    assertArrayEquals(webUser.getFavorites(), setup);
+  }
+
+  @Test
   public void removeFromEmployeeFavorites() throws Exception {
     User webUser = new User("1234@mail.com", "1234", "Mandy", "Brawn", true);
     assertNull(webUser.getFavorites());
