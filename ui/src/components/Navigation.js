@@ -24,8 +24,12 @@ const Navigation = () => {
               Employee Dashboard
             </Button>
           </Typography>
-          <Button color="inherit">Login</Button>
-          <Button color="inherit">Sign Up</Button>
+          <Button color="inherit" href="/login">
+            Login
+          </Button>
+          <Button color="inherit" href="/register">
+            Sign Up
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

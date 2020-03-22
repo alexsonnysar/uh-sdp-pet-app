@@ -5,6 +5,8 @@ import PetForm from "./pages/PetForm";
 import PetProfile from "./pages/PetProfile";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import UserDashboard from "./pages/UserDashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Navigation from "./components/Navigation";
@@ -27,6 +29,12 @@ function App() {
             </Route>
             <Route path="/employee-dashboard">
               <EmployeeDashboard />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
             </Route>
             <Route path="/">
               <Home />
