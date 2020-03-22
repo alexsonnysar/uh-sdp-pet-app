@@ -25,7 +25,7 @@ cd api/src/main/resources
 Edit the `application.properties` file with your favorite editor and add your MongoDB URI to the variable `spring.data.mongodb.uri`:
 
 ```java
-spring.data.mongodb.uri="<your-URI>"
+spring.data.mongodb.uri=<your-URI>
 ```
 
 After adding MongoDB URI then run (from the ```resources``` directory):
