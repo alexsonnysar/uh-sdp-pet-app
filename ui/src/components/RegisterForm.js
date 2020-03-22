@@ -3,12 +3,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const classes = useStyles();
   return (
     <div>
       <form className={classes.container}>
-        <h1 align="center">Log In</h1>
+        <h1 align="center">Register</h1>
+        <TextField
+          id="outlined-basic"
+          label="First Name"
+          variant="outlined"
+          m={20}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Last Name"
+          variant="outlined"
+          m={20}
+        />
         <TextField
           id="outlined-basic"
           label="Email"
@@ -22,11 +34,18 @@ const LoginForm = () => {
           autoComplete="current-password"
           variant="outlined"
         />
+        <TextField
+          id="outlined-password-input"
+          label="Confirm Password"
+          type="password"
+          autoComplete="current-password"
+          variant="outlined"
+        />
         <Button variant="outlined" className={classes.button}>
-          Log In
+          Complete Registration
         </Button>
         <small className={classes.text}>
-          Don't have an account? Register <a href="/register">here</a>
+          Already have an account? Log in <a href="/login">here</a>
         </small>
       </form>
     </div>
@@ -50,4 +69,4 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default LoginForm;
+export default RegisterForm;
