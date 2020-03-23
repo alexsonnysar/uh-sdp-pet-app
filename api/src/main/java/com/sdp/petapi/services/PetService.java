@@ -35,4 +35,8 @@ public class PetService {
   public Pet deletePet(String petid) {
     return petDao.deletePet(petid);
   }
+
+  public Pet putPetByRequest(Pet pet) {
+    return petDao.putPetByRequest(pet);
+  }
 }

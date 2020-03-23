@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.UserDao;
-
+import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.User;
 
 @Service
@@ -45,5 +45,13 @@ public class UserService {
 
   public Boolean addPetToRecents(User user, String petid) {
     return userDao.addPetToRecents(user, petid);
+  }
+
+  public List<Pet> getFavoritePets(User user) {
+    return userDao.getFavoritePets(user);
+  }
+
+  public List<Pet> getRecentPets(User user) {
+    return userDao.getRecentPets(user);
   }
 }
