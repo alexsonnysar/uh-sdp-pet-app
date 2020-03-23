@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class UserControllerTest {
-  Pet pet, pet2;
+  Pet pet;
   User employee, webUser;
 
   @Mock
@@ -35,8 +35,6 @@ public class UserControllerTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    
-    pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
     
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     
