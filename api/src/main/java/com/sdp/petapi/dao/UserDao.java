@@ -90,26 +90,18 @@ public class UserDao {
     return result;
   }
 
-  public List<Pet> getFavoritePets(User user) {
-    if (user == null || user.isEmployee()) return null;
-
-    User userdb = getUserById(user.getId());
-    if (!user.equals(userdb)) return null;
-
-    return Arrays.asList(user.getFavorites())
+  public List<Pet> getFavoritePets(String userid) {
+    User user = getUserById(userid);
+    return (user == null || user.isEmployee()) ? null : Arrays.asList(user.getFavorites())
       .stream()
       .map(pid -> petDao.getPetById(pid))
       .filter(p -> p != null)
       .collect(Collectors.toList());
   }
 
-  public List<Pet> getRecentPets(User user) {
-    if (user == null || user.isEmployee()) return null;
-
-    User userdb = getUserById(user.getId());
-    if (!user.equals(userdb)) return null;
-
-    return Arrays.asList(user.getRecents())
+  public List<Pet> getRecentPets(String userid) {
+    User user = getUserById(userid);
+    return (user == null || user.isEmployee()) ? null : Arrays.asList(user.getRecents())
       .stream()
       .map(pid -> petDao.getPetById(pid))
       .filter(p -> p != null)

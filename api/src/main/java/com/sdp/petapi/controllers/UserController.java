@@ -66,13 +66,13 @@ public class UserController {
     return userService.addPetToRecents(user, id);
   }
 
-  @PutMapping("/fav")
-  public List<Pet> getFavoritePets(User user) {
-    return userService.getFavoritePets(user);
+  @GetMapping("/fav/{id}")
+  public List<Pet> getFavoritePets(@PathVariable String id) {
+    return userService.getFavoritePets(id);
   }
 
-  @PutMapping("/recents")
-  public List<Pet> getRecentPets(User user) {
-    return userService.getRecentPets(user);
+  @PutMapping("/recents/{id}")
+  public List<Pet> getRecentPets(@PathVariable String id) {
+    return userService.getRecentPets(id);
   }
 }

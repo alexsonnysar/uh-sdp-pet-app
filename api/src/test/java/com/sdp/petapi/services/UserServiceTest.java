@@ -115,16 +115,16 @@ public class UserServiceTest {
   public void add_pet_by_id_to_webUser_favorites_list() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getFavoritePets(webUser)).thenReturn(null);
-    List<Pet> list = userService.getFavoritePets(webUser);
+    when(userDao.getFavoritePets(webUser.getId())).thenReturn(null);
+    List<Pet> list = userService.getFavoritePets(webUser.getId());
     assertNull(list);
     
     when(userDao.addPetToFavorites(webUser, pet.getId())).thenReturn(true);
     Boolean result = userService.addPetToFavorites(webUser, pet.getId());
     assertTrue(result);
 
-    when(userDao.getFavoritePets(webUser)).thenReturn(Collections.singletonList(pet));
-    List<Pet> updated_list = userService.getFavoritePets(webUser);
+    when(userDao.getFavoritePets(webUser.getId())).thenReturn(Collections.singletonList(pet));
+    List<Pet> updated_list = userService.getFavoritePets(webUser.getId());
     assertEquals(updated_list, Collections.singletonList(pet));
   }
 
@@ -132,16 +132,16 @@ public class UserServiceTest {
   public void remove_pet_by_id_to_webUser_favorites_list() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getFavoritePets(webUser)).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userService.getFavoritePets(webUser);
+    when(userDao.getFavoritePets(webUser.getId())).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userService.getFavoritePets(webUser.getId());
     assertEquals(list, Collections.singletonList(pet));
     
     when(userDao.removePetFromFavorites(webUser, pet.getId())).thenReturn(true);
     Boolean result = userService.removePetFromFavorites(webUser, pet.getId());
     assertTrue(result);
 
-    when(userDao.getFavoritePets(webUser)).thenReturn(null);
-    List<Pet> updated_list = userService.getFavoritePets(webUser);
+    when(userDao.getFavoritePets(webUser.getId())).thenReturn(null);
+    List<Pet> updated_list = userService.getFavoritePets(webUser.getId());
     assertNull(updated_list);
   }
 
@@ -149,16 +149,16 @@ public class UserServiceTest {
   public void add_pet_by_id_to_webUser_recently_visited_list() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getRecentPets(webUser)).thenReturn(null);
-    List<Pet> list = userService.getRecentPets(webUser);
+    when(userDao.getRecentPets(webUser.getId())).thenReturn(null);
+    List<Pet> list = userService.getRecentPets(webUser.getId());
     assertNull(list);
     
     when(userDao.addPetToFavorites(webUser, pet.getId())).thenReturn(true);
     Boolean result = userService.addPetToRecents(webUser, pet.getId());
     assertTrue(result);
 
-    when(userDao.getRecentPets(webUser)).thenReturn(Collections.singletonList(pet));
-    List<Pet> updated_list = userService.getRecentPets(webUser);
+    when(userDao.getRecentPets(webUser.getId())).thenReturn(Collections.singletonList(pet));
+    List<Pet> updated_list = userService.getRecentPets(webUser.getId());
     assertEquals(updated_list, Collections.singletonList(pet));
   }
 
@@ -166,8 +166,8 @@ public class UserServiceTest {
   public void get_webUser_favorites_list() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getFavoritePets(webUser)).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userService.getFavoritePets(webUser);
+    when(userDao.getFavoritePets(webUser.getId())).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userService.getFavoritePets(webUser.getId());
     assertEquals(list, Collections.singletonList(pet));
   }
 
@@ -175,8 +175,8 @@ public class UserServiceTest {
   public void get_webUser_recently_visited_list() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getRecentPets(webUser)).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userService.getRecentPets(webUser);
+    when(userDao.getRecentPets(webUser.getId())).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userService.getRecentPets(webUser.getId());
     assertEquals(list, Collections.singletonList(pet));
   }
   

@@ -436,64 +436,47 @@ public class UserDaoTest {
   public void get_webUser_favorites_list() {
     userDao.addPetToFavorites(webUser, pet.getId());
     List<Pet> pet_list = Arrays.asList(new Pet[] {pet});
-    assertEquals(userDao.getFavoritePets(webUser), pet_list);
+    assertEquals(userDao.getFavoritePets(webUser.getId()), pet_list);
   }
 
   @Test
-  public void get_null_webUser_favorites_list_returns_null() {
+  public void get_nonexistent_webUser_favorites_list_returns_null() {
     assertNull(userDao.getFavoritePets(null));
   }
 
   @Test
   public void get_employee_favorites_list_returns_null() {
-    assertNull(userDao.getFavoritePets(employee));
-  }
-
-  @Test
-  public void get_bad_webUser_favorites_list_returns_null() {
-    webUser.setLastName("Davis");
-    assertEquals(webUser.getLastName(), "Davis");
-    assertNull(userDao.getFavoritePets(webUser));
+    assertNull(userDao.getFavoritePets(employee.getId()));
   }
 
   @Test
   public void get_webUser_favorites_list_without_bad_pets() {
     userDao.addPetToFavorites(webUser, pet.getId());
-    userDao.addPetToFavorites(webUser, pet.getId()+"1");
-    List<Pet> pet_list = Arrays.asList(new Pet[] {pet});
-    assertEquals(userDao.getFavoritePets(webUser), pet_list);
+    userDao.addPetToFavorites(webUser, pet.getId() + "1");
+    assertEquals(userDao.getFavoritePets(webUser.getId()), Collections.singletonList(pet));
   }
 
   @Test
   public void get_webUser_recent_list() {
     userDao.addPetToRecents(webUser, pet.getId());
-    List<Pet> pet_list = Arrays.asList(new Pet[] {pet});
-    assertEquals(userDao.getRecentPets(webUser), pet_list);
+    assertEquals(userDao.getRecentPets(webUser.getId()), Collections.singletonList(pet));
   }
 
   @Test
-  public void get_null_webUser_recent_list_returns_null() {
+  public void get_nonexistent_webUser_recent_list_returns_null() {
     assertNull(userDao.getRecentPets(null));
   }
 
   @Test
   public void get_employee_recent_list_returns_null() {
-    assertNull(userDao.getRecentPets(employee));
-  }
-
-  @Test
-  public void get_bad_webUser_recent_list_returns_null() {
-    webUser.setLastName("Davis");
-    assertEquals(webUser.getLastName(), "Davis");
-    assertNull(userDao.getRecentPets(webUser));
+    assertNull(userDao.getRecentPets(employee.getId()));
   }
 
   @Test
   public void get_webUser_recent_list_without_bad_pets() {
     userDao.addPetToRecents(webUser, pet.getId());
-    userDao.addPetToRecents(webUser, pet.getId()+"1");
-    List<Pet> pet_list = Arrays.asList(new Pet[] {pet});
-    assertEquals(userDao.getRecentPets(webUser), pet_list);
+    userDao.addPetToRecents(webUser, pet.getId() + "1");
+    assertEquals(userDao.getRecentPets(webUser.getId()), Collections.singletonList(pet));
   }
   
 }

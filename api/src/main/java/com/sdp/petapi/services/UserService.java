@@ -47,11 +47,11 @@ public class UserService {
     return userDao.addPetToRecents(user, petid);
   }
 
-  public List<Pet> getFavoritePets(User user) {
-    return userDao.getFavoritePets(user);
+  public List<Pet> getFavoritePets(String userid) {
+    return userDao.getFavoritePets(userid);
   }
 
-  public List<Pet> getRecentPets(User user) {
-    return userDao.getRecentPets(user);
+  public List<Pet> getRecentPets(String userid) {
+    return userDao.getRecentPets(userid);
   }
 }
