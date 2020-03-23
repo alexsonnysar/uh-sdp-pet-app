@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { useAuth0 } from "../react-auth0-spa";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const classes = useStyles();
@@ -40,6 +41,12 @@ const Navigation = () => {
               Log out
             </Button>
           )}
+
+          {/* {isAuthenticated && (
+            <span>
+              <Link to="/profile">Profile</Link>
+            </span>
+          )} */}
         </Toolbar>
       </AppBar>
     </div>

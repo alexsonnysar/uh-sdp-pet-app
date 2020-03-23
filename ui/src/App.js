@@ -8,6 +8,8 @@ import UserDashboard from "./pages/UserDashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Profile from "./components/Profile";
+import history from "./utils/history";
 import { useAuth0 } from "./react-auth0-spa";
 import Navigation from "./components/Navigation";
 
@@ -21,7 +23,7 @@ function App() {
   return (
     <div>
       <Navigation />
-      <Router>
+      <Router history={history}>
         <div className="App" data-testid="App">
           <Switch>
             <Route path="/user-dashboard">
@@ -42,6 +44,7 @@ function App() {
             <Route path="/register">
               <Register />
             </Route>
+            <Route path="/profile" component={Profile} />
             <Route path="/">
               <Home />
             </Route>
