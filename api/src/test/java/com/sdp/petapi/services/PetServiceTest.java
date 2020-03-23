@@ -22,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class PetServiceTest {
   Pet pet;
   User employee;
-  User webUser;
 
   @Mock
   PetDao petDao;
@@ -37,8 +36,6 @@ public class PetServiceTest {
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
     
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
-    
-    webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
   }
 
   @AfterEach
