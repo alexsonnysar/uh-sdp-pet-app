@@ -8,10 +8,16 @@ import UserDashboard from "./pages/UserDashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import { useAuth0 } from "./react-auth0-spa";
 import Navigation from "./components/Navigation";
 
 function App() {
+  const { loading } = useAuth0();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Navigation />

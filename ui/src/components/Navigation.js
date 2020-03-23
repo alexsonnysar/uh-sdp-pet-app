@@ -8,9 +8,11 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Link from "@material-ui/core/Link";
 import { red } from "@material-ui/core/colors";
+import { useAuth0 } from "../react-auth0-spa";
 
 const Navigation = () => {
   const classes = useStyles();
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
     <div>
@@ -24,12 +26,24 @@ const Navigation = () => {
               Employee Dashboard
             </Button>
           </Typography>
-          <Button color="inherit" href="/login">
+          {/* <Button color="inherit" href="/login">
             Login
           </Button>
           <Button color="inherit" href="/register">
             Register
-          </Button>
+          </Button> */}
+
+          {!isAuthenticated && (
+            <Button color="inherit" onClick={() => loginWithRedirect({})}>
+              Log in
+            </Button>
+          )}
+
+          {isAuthenticated && (
+            <Button color="inherit" onClick={() => logout()}>
+              Log out
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>
