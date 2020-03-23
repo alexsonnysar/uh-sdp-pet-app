@@ -42,11 +42,11 @@ const Navigation = () => {
             </Button>
           )}
 
-          {/* {isAuthenticated && (
+          {isAuthenticated && (
             <span>
               <Link to="/profile">Profile</Link>
             </span>
-          )} */}
+          )}
         </Toolbar>
       </AppBar>
     </div>

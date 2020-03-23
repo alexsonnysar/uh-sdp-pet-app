@@ -22,8 +22,8 @@ function App() {
 
   return (
     <div>
-      <Navigation />
       <Router history={history}>
+        <Navigation />
         <div className="App" data-testid="App">
           <Switch>
             <Route path="/user-dashboard">
