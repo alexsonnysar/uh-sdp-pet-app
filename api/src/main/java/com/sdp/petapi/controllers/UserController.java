@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.User;
 
 import com.sdp.petapi.services.UserService;
@@ -46,7 +47,7 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
-  public User deletePet(@PathVariable String id) {
+  public User deleteUser(@PathVariable String id) {
     return userService.deleteUser(id);
   }
 
@@ -63,5 +64,15 @@ public class UserController {
   @PostMapping("/recent/{id}")
   public Boolean addPetToRecents(@PathVariable String id, @RequestBody User user) {
     return userService.addPetToRecents(user, id);
+  }
+
+  @PutMapping("/fav")
+  public List<Pet> getFavoritePets(User user) {
+    return userService.getFavoritePets(user);
+  }
+
+  @PutMapping("/recents")
+  public List<Pet> getRecentPets(User user) {
+    return userService.getRecentPets(user);
   }
 }

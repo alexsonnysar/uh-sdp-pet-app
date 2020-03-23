@@ -154,11 +154,11 @@ public class UserServiceTest {
     assertNull(list);
     
     when(userDao.addPetToFavorites(webUser, pet.getId())).thenReturn(true);
-    Boolean result = userService.addPetToFavorites(webUser, pet.getId());
+    Boolean result = userService.addPetToRecents(webUser, pet.getId());
     assertTrue(result);
 
-    when(userDao.getFavoritePets(webUser)).thenReturn(Collections.singletonList(pet));
-    List<Pet> updated_list = userService.getFavoritePets(webUser);
+    when(userDao.getRecentPets(webUser)).thenReturn(Collections.singletonList(pet));
+    List<Pet> updated_list = userService.getRecentPets(webUser);
     assertEquals(updated_list, Collections.singletonList(pet));
   }
 
