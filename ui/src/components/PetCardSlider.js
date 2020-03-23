@@ -4,7 +4,7 @@ import "./PetCardSlider.css";
 
 const PetCardSlider = ({ petList }) => {
   return (
-    <div class="root">
+    <div className="root" data-testid="petCardSlider">
       {petList.map(pet => (
         <PetCard key={pet.id} pet={pet} />
       ))}
