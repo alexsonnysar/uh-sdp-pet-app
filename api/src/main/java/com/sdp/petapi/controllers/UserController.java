@@ -75,4 +75,5 @@ public class UserController {
   public List<Pet> getRecentPets(@PathVariable String id) {
     return userService.getRecentPets(id);
   }
+  
 }

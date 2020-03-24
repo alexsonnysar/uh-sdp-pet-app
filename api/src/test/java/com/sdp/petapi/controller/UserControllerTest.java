@@ -20,14 +20,14 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class UserControllerTest {
+class UserControllerTest {
   Pet pet;
   User employee, webUser;
 
   @Mock
   UserService userService;
 
-  // makes a userService whose userDao is the mock above
+  // makes a userController whose userService is the mock above
   @InjectMocks
   UserController userContoller;
 
@@ -123,7 +123,7 @@ public class UserControllerTest {
 
   @Test
   public void add_pet_by_id_to_webUser_favorites_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.addPetToFavorites(webUser, "001")).thenReturn(true);
     Boolean result = userContoller.addPetToFavorites("001", webUser);
@@ -132,7 +132,7 @@ public class UserControllerTest {
 
   @Test
   public void remove_pet_by_id_to_webUser_favorites_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.removePetFromFavorites(webUser, "001")).thenReturn(true);
     Boolean result = userContoller.removePetFromFavorites("001", webUser);
@@ -141,7 +141,7 @@ public class UserControllerTest {
 
   @Test
   public void add_pet_by_id_to_webUser_recently_visited_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.addPetToRecents(webUser, "001")).thenReturn(true);
     Boolean result = userContoller.addPetToRecents("001", webUser);
@@ -150,7 +150,7 @@ public class UserControllerTest {
 
   @Test
   public void get_webUser_favorites_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getFavoritePets("002")).thenReturn(Collections.singletonList(pet));
     List<Pet> list = userContoller.getFavoritePets("002");
@@ -159,7 +159,7 @@ public class UserControllerTest {
 
   @Test
   public void get_webUser_recently_visited_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getRecentPets("002")).thenReturn(Collections.singletonList(pet));
     List<Pet> list = userContoller.getRecentPets("002");

@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class UserServiceTest {
+class UserServiceTest {
   Pet pet;
   User employee, webUser;
 

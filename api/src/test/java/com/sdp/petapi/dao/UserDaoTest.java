@@ -29,10 +29,8 @@ public class UserDaoTest {
   @Autowired
   UserRepository userRepository;
 
-  Pet pet;
-  Pet pet2;
-  User employee;
-  User webUser;
+  Pet pet, pet2;
+  User employee, webUser;
 
   @BeforeEach
   public void init() throws Exception {

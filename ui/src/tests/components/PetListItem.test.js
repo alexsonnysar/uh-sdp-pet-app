@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import PetListItem from "../components/PetListItem";
+import PetListItem from "../../components/PetListItem";
 
 const pet = {
   Name: "Garfield",
