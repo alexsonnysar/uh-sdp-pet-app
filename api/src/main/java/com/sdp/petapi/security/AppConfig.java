@@ -43,9 +43,30 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/public").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/private").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/private-scoped").hasAuthority("read:messages");
+                // getAllPets
+                .antMatchers(HttpMethod.GET, "/pet").permitAll()
+                // getPetById
+                .antMatchers(HttpMethod.GET, "/pet/*").permitAll()
+                // createPet
+                .antMatchers(HttpMethod.POST, "/pet").hasAuthority("is:employee")
+                // putPet
+                .antMatchers(HttpMethod.PUT, "/pet").hasAuthority("is:employee")
+
+                // getAllUsers
+                .antMatchers(HttpMethod.GET, "/user").hasAuthority("is:employee")
+                // getUserById
+                .antMatchers(HttpMethod.GET, "/user/*").hasAuthority("is:employee")
+                // createUser
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
+                // putUser
+                .antMatchers(HttpMethod.PUT, "/user/*").hasAuthority("is:user")
+                // deleteUser
+                .antMatchers(HttpMethod.DELETE, "/user/*").permitAll()
+                // requestadoption
+                .antMatchers(HttpMethod.DELETE, "/requestadoption").hasAuthority("is:user");
+
+                // .antMatchers(HttpMethod.GET, "/api/private").authenticated()
+                // .antMatchers(HttpMethod.GET, "/api/private-scoped").hasAuthority("is:employee");
     }
 
 }
