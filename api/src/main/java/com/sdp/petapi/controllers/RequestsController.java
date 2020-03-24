@@ -47,7 +47,7 @@ public class RequestsController {
     Requests req = combo.getRequest();
     User user = combo.getUser();
     
-    return (id == null || req.getId() != id) ? null : reqService.putRequest(user, req);
+    return (id == null || !id.equals(req.getId())) ? null : reqService.putRequest(user, req);
   }
 
   @DeleteMapping("/{id}")

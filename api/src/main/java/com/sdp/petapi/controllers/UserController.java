@@ -43,7 +43,7 @@ public class UserController {
 
   @PutMapping("/{id}")
   public User putUser(@PathVariable String id, @RequestBody User user) {
-    return (id == null || user == null || id != user.getId()) ? null : userService.putUser(user);
+    return (id == null || user == null || !id.equals(user.getId())) ? null : userService.putUser(user);
   }
 
   @DeleteMapping("/{id}")

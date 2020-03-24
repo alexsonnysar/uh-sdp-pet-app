@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class UserServiceTest {
-  Pet pet, pet2;
+  Pet pet;
   User employee, webUser;
 
   @Mock
@@ -34,8 +34,6 @@ public class UserServiceTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    
-    pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
     
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     
@@ -57,7 +55,7 @@ public class UserServiceTest {
   
   @Test
   public void get_user_by_id() {
-    String id = employee.getId();
+    String id = "001";
 
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
@@ -73,110 +71,70 @@ public class UserServiceTest {
     User new_user = new User(webUser.getEmail(), webUser.getPassHash(), webUser.getFirstName(), webUser.getLastName(), false);
     
     when(userDao.createUser(new_user)).thenReturn(webUser);
-    
     User returnUser = userService.createUser(new_user);
     assertEquals(webUser, returnUser);
   }
 
   @Test
   public void put_pet() {
-    webUser.setFirstName("Changed Pet");
-    assertEquals(webUser.getFirstName(), "Changed Pet");
-
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.putUser(webUser)).thenReturn(webUser);
     User returnedUser = userService.putUser(webUser);
     assertEquals(webUser, returnedUser);
-
-    when(userDao.getUserById(webUser.getId())).thenReturn(webUser);
-    User updatedUser = userService.getUserById(webUser.getId());
-    assertEquals(webUser, updatedUser);
   }
 
   @Test
   public void delete_pet() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getAllUsers()).thenReturn(Arrays.asList(new User[] {employee, webUser}));
-    List<User> list = userService.getAllUsers();
-    assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
-    
-    when(userDao.deleteUser(webUser.getId())).thenReturn(webUser);
-    User returnedUser = userService.deleteUser(webUser.getId());
+    when(userDao.deleteUser("002")).thenReturn(webUser);
+    User returnedUser = userService.deleteUser("002");
     assertEquals(webUser, returnedUser);
-
-    when(userDao.getUserById(pet.getId())).thenReturn(null);
-    User updatedUser = userService.getUserById(webUser.getId());
-    assertNull(updatedUser);
   }
 
   @Test
   public void add_pet_by_id_to_webUser_favorites_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getFavoritePets(webUser.getId())).thenReturn(null);
-    List<Pet> list = userService.getFavoritePets(webUser.getId());
-    assertNull(list);
-    
-    when(userDao.addPetToFavorites(webUser, pet.getId())).thenReturn(true);
-    Boolean result = userService.addPetToFavorites(webUser, pet.getId());
+    when(userDao.addPetToFavorites(webUser, "001")).thenReturn(true);
+    Boolean result = userService.addPetToFavorites(webUser, "001");
     assertTrue(result);
-
-    when(userDao.getFavoritePets(webUser.getId())).thenReturn(Collections.singletonList(pet));
-    List<Pet> updated_list = userService.getFavoritePets(webUser.getId());
-    assertEquals(updated_list, Collections.singletonList(pet));
   }
 
   @Test
   public void remove_pet_by_id_to_webUser_favorites_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getFavoritePets(webUser.getId())).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userService.getFavoritePets(webUser.getId());
-    assertEquals(list, Collections.singletonList(pet));
-    
-    when(userDao.removePetFromFavorites(webUser, pet.getId())).thenReturn(true);
-    Boolean result = userService.removePetFromFavorites(webUser, pet.getId());
+    when(userDao.removePetFromFavorites(webUser, "001")).thenReturn(true);
+    Boolean result = userService.removePetFromFavorites(webUser, "001");
     assertTrue(result);
-
-    when(userDao.getFavoritePets(webUser.getId())).thenReturn(null);
-    List<Pet> updated_list = userService.getFavoritePets(webUser.getId());
-    assertNull(updated_list);
   }
 
   @Test
   public void add_pet_by_id_to_webUser_recently_visited_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getRecentPets(webUser.getId())).thenReturn(null);
-    List<Pet> list = userService.getRecentPets(webUser.getId());
-    assertNull(list);
-    
-    when(userDao.addPetToRecents(webUser, pet.getId())).thenReturn(true);
-    Boolean result = userService.addPetToRecents(webUser, pet.getId());
+    when(userDao.addPetToRecents(webUser, "001")).thenReturn(true);
+    Boolean result = userService.addPetToRecents(webUser, "001");
     assertTrue(result);
-
-    when(userDao.getRecentPets(webUser.getId())).thenReturn(Collections.singletonList(pet));
-    List<Pet> updated_list = userService.getRecentPets(webUser.getId());
-    assertEquals(updated_list, Collections.singletonList(pet));
   }
 
   @Test
   public void get_webUser_favorites_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getFavoritePets(webUser.getId())).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userService.getFavoritePets(webUser.getId());
+    when(userDao.getFavoritePets("002")).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userService.getFavoritePets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
 
   @Test
   public void get_webUser_recently_visited_list() {
-    // Since the petDao is a mock it will return null on method calls, so
+    // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userDao.getRecentPets(webUser.getId())).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userService.getRecentPets(webUser.getId());
+    when(userDao.getRecentPets("002")).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userService.getRecentPets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
   

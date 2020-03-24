@@ -19,8 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class RequestsServiceTest {
-  Pet pet, pet2;
-  User employee, webUser, webUser2;
+  User employee, webUser;
   Requests req, req2;
 
   @Mock
@@ -33,17 +32,9 @@ public class RequestsServiceTest {
   @BeforeEach
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
-    pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    pet.setActive(false);
-    pet.setAdopted(true);
-    
-    pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
-    
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
-    
-    webUser2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject2.json"), User.class);
     
     req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
     
@@ -56,7 +47,7 @@ public class RequestsServiceTest {
 
   @Test
   public void get_all_requests() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(reqDao.getAllRequests()).thenReturn(Arrays.asList(new Requests[] {req, req2}));
     List<Requests> list = reqService.getAllRequests();
@@ -65,9 +56,9 @@ public class RequestsServiceTest {
   
   @Test
   public void get_request_by_id() {
-    String id = req.getId();
+    String id = "001";
 
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(reqDao.getRequestById(id)).thenReturn(req);
     Requests actual_request = reqService.getRequestById(id);
@@ -76,47 +67,31 @@ public class RequestsServiceTest {
 
   @Test
   public void create_request() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    Requests new_req = new Requests(webUser.getId(), pet2.getId());
+    Requests new_req = new Requests("002", "002");
     
-    when(reqDao.createRequest(webUser, pet2.getId())).thenReturn(new_req);
-    
-    Requests returnRequest = reqService.createRequest(webUser, pet2.getId());
+    when(reqDao.createRequest(webUser, "002")).thenReturn(new_req);
+    Requests returnRequest = reqService.createRequest(webUser, "002");
     assertEquals(new_req, returnRequest);
   }
 
   @Test
   public void put_request() {
-    req.setStatus("APPROVED");
-    assertEquals(req.getStatus(), "APPROVED");
-
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(reqDao.putRequests(employee, req)).thenReturn(req);
     Requests returnedRequest = reqService.putRequest(employee, req);
     assertEquals(req, returnedRequest);
-
-    when(reqDao.getRequestById(req.getId())).thenReturn(req);
-    Requests updatedRequest = reqService.getRequestById(req.getId());
-    assertEquals(req, updatedRequest);
   }
 
   @Test
   public void delete_request() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(reqDao.getAllRequests()).thenReturn(Arrays.asList(new Requests[] {req, req2}));
-    List<Requests> list = reqService.getAllRequests();
-    assertEquals(Arrays.asList(new Requests[] {req, req2}), list);
-    
-    when(reqDao.deleteRequest(req.getId())).thenReturn(req);
-    Requests returnedRequest = reqService.deleteRequest(req.getId());
+    when(reqDao.deleteRequest("001")).thenReturn(req);
+    Requests returnedRequest = reqService.deleteRequest("001");
     assertEquals(req, returnedRequest);
-
-    when(reqDao.getRequestById(req.getId())).thenReturn(null);
-    Requests updatedRequest = reqService.getRequestById(webUser.getId());
-    assertNull(updatedRequest);
   }
   
 }

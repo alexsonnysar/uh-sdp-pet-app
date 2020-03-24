@@ -50,7 +50,7 @@ public class PetController {
     Pet pet = combo.getPet();
     User user = combo.getUser();
     
-    return (id == null || pet == null || pet.getId() != id) ? null : petService.putPet(user, pet);
+    return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(user, pet);
   }
 
   @DeleteMapping("/{id}")

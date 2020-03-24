@@ -62,14 +62,14 @@ public class PetDaoTest {
 
   @Test
   public void get_good_pet_by_id_returns_pet() {
-    String id = pet.getId();
+    String id = "001";
     Pet actual_pet = petDao.getPetById(id);
     assertEquals(pet, actual_pet);
   }
 
   @Test
   public void get_bad_pet_by_id_returns_null() {
-    String id = pet.getId()+"1";
+    String id = "010";
     Pet actual_pet = petDao.getPetById(id);
     assertNull(actual_pet);
   }
@@ -308,7 +308,7 @@ public class PetDaoTest {
 
   @Test
   public void delete_pet() {
-    String id = pet.getId();
+    String id = "001";
 
     List<Pet> orig_pet_list = petDao.getAllPets();
     
@@ -338,7 +338,7 @@ public class PetDaoTest {
 
   @Test
   public void delete_nonexistent_pet_returns_null() {
-    String id = pet.getId()+"1";
+    String id = "010";
 
     List<Pet> orig_pet_list = petDao.getAllPets();
     

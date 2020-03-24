@@ -53,7 +53,7 @@ public class PetServiceTest {
   
   @Test
   public void get_pet_by_id() {
-    String id = pet.getId();
+    String id = "001";
 
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
@@ -69,58 +69,35 @@ public class PetServiceTest {
     Pet new_pet = new Pet(pet.getName(), pet.getType(), pet.getSex(), pet.getAge(), pet.getSize(), pet.getWeight(), pet.getDescription(), pet.getImageNames());
     
     when(petDao.createPet(employee, new_pet)).thenReturn(pet);
-    
     Pet returnPet = petService.createPet(employee, new_pet);
     assertEquals(pet, returnPet);
   }
 
   @Test
   public void put_pet() {
-    pet.setName("Changed Pet");
-    assertEquals(pet.getName(), "Changed Pet");
-
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(petDao.putPet(employee, pet)).thenReturn(pet);
     Pet returnedPet = petService.putPet(employee, pet);
     assertEquals(pet, returnedPet);
-
-    when(petDao.getPetById(pet.getId())).thenReturn(pet);
-    Pet updatedPet = petService.getPetById(pet.getId());
-    assertEquals(pet, updatedPet);
   }
 
   @Test
   public void delete_pet() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petDao.getAllPets()).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = petService.getAllPets();
-    assertEquals(Collections.singletonList(pet), list);
-    
-    when(petDao.deletePet(pet.getId())).thenReturn(pet);
-    Pet returnedPet = petService.deletePet(pet.getId());
+    when(petDao.deletePet("001")).thenReturn(pet);
+    Pet returnedPet = petService.deletePet("001");
     assertEquals(pet, returnedPet);
-
-    when(petDao.getPetById(pet.getId())).thenReturn(null);
-    Pet updatedPet = petService.getPetById(pet.getId());
-    assertNull(updatedPet);
   }
 
   @Test
   public void put_pet_by_request() {
-    pet.setName("Changed Pet");
-    assertEquals(pet.getName(), "Changed Pet");
-
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(petDao.putPetByRequest(pet)).thenReturn(pet);
     Pet returnedPet = petService.putPetByRequest(pet);
     assertEquals(pet, returnedPet);
-
-    when(petDao.getPetById(pet.getId())).thenReturn(pet);
-    Pet updatedPet = petService.getPetById(pet.getId());
-    assertEquals(pet, updatedPet);
   }
   
 }
