@@ -72,7 +72,7 @@ public class PetControllerTest {
     
     when(petService.createPet(employee, new_pet)).thenReturn(pet);
     
-    Pet returnPet = petController.createPet(new PetUser(pet, employee));
+    Pet returnPet = petController.createPet(new PetUser(new_pet, employee));
     assertEquals(pet, returnPet);
   }
 

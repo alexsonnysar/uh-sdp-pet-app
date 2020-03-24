@@ -47,7 +47,7 @@ public class UserControllerTest {
 
   @Test
   public void get_all_users() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getAllUsers()).thenReturn(Arrays.asList(new User[] {employee, webUser}));
     List<User> list = userService.getAllUsers();
@@ -58,7 +58,7 @@ public class UserControllerTest {
   public void get_user_by_id() {
     String id = employee.getId();
 
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getUserById(id)).thenReturn(employee);
     User actual_user = userContoller.getUserById(id);
@@ -67,7 +67,7 @@ public class UserControllerTest {
 
   @Test
   public void create_user() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     User new_user = new User(webUser.getEmail(), webUser.getPassHash(), webUser.getFirstName(), webUser.getLastName(), false);
     
@@ -82,7 +82,7 @@ public class UserControllerTest {
     webUser.setFirstName("Joe");
     assertEquals(webUser.getFirstName(), "Joe");
 
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.putUser(webUser)).thenReturn(webUser);
     User returnedUser = userContoller.putUser(webUser.getId(), webUser);
@@ -101,7 +101,7 @@ public class UserControllerTest {
     webUser2.setId(webUser.getId());
     assertEquals(webUser2.getId(), webUser.getId());
 
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.putUser(webUser)).thenReturn(webUser);
     User returnedUser = userContoller.putUser(null, webUser2);
@@ -114,7 +114,7 @@ public class UserControllerTest {
 
   @Test
   public void put_user_with_null_user_returns_null() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.putUser(webUser)).thenReturn(webUser);
     User returnedUser = userContoller.putUser(webUser.getId(), null);
@@ -130,7 +130,7 @@ public class UserControllerTest {
     webUser.setFirstName("Joe");
     assertEquals(webUser.getFirstName(), "Joe");
 
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.putUser(webUser)).thenReturn(webUser);
     User returnedUser = userContoller.putUser(webUser.getId()+"1", webUser);
@@ -143,7 +143,7 @@ public class UserControllerTest {
 
   @Test
   public void delete_pet() {
-    // Since the userDao is a mock it will return null on method calls, so
+    // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getAllUsers()).thenReturn(Arrays.asList(new User[] {employee, webUser}));
     List<User> list = userContoller.getAllUser();

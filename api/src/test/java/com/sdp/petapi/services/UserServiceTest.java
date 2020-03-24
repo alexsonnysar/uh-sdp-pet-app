@@ -153,7 +153,7 @@ public class UserServiceTest {
     List<Pet> list = userService.getRecentPets(webUser.getId());
     assertNull(list);
     
-    when(userDao.addPetToFavorites(webUser, pet.getId())).thenReturn(true);
+    when(userDao.addPetToRecents(webUser, pet.getId())).thenReturn(true);
     Boolean result = userService.addPetToRecents(webUser, pet.getId());
     assertTrue(result);
 
