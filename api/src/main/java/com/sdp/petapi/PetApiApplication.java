@@ -15,9 +15,8 @@ import lombok.Generated;
 })
 public class PetApiApplication {
 
-	@Generated
-	public static void main(String[] args) {
-		SpringApplication.run(PetApiApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(PetApiApplication.class, args);
+  }
 
 }

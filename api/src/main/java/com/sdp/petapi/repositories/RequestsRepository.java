@@ -1,10 +1,12 @@
 package com.sdp.petapi.repositories;
 
-import com.sdp.petapi.models.User;
+import com.sdp.petapi.models.Requests;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {}
+public interface RequestsRepository extends MongoRepository<Requests, String> {
+    
+}
 
 // implements ExampleDao {
 // private static List<Example> fakeDB = new ArrayList<>();

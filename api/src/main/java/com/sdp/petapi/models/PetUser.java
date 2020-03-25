@@ -1,12 +1,12 @@
 package com.sdp.petapi.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public @Data class Message {
-  private String message;
-
+public @Data class PetUser {
+  private Pet pet;
+  private User user;
 }
