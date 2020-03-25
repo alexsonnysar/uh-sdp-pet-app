@@ -68,10 +68,8 @@ class UserServiceTest {
   public void create_user() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    User new_user = new User(webUser.getEmail(), webUser.getPassHash(), webUser.getFirstName(), webUser.getLastName(), false);
-    
-    when(userDao.createUser(new_user)).thenReturn(webUser);
-    User returnUser = userService.createUser(new_user);
+    when(userDao.createUser(webUser)).thenReturn(webUser);
+    User returnUser = userService.createUser(webUser);
     assertEquals(webUser, returnUser);
   }
 

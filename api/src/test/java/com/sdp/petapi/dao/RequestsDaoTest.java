@@ -175,8 +175,8 @@ public class RequestsDaoTest {
 
   @Test
   public void create_request_by_bad_webUser_returns_null() {
-    webUser2.setFirstName("Manny");
-    assertEquals(webUser2.getFirstName(), "Manny");
+    webUser2.setName("Manny");
+    assertEquals(webUser2.getName(), "Manny");
     
     List<Requests> orig_req_list = reqDao.getAllRequests();
     assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
@@ -334,8 +334,8 @@ public class RequestsDaoTest {
     req.setStatus("CANCELED");
     assertEquals(req.getStatus(), "CANCELED");
 
-    webUser.setFirstName("Joe");
-    assertEquals(webUser.getFirstName(), "Joe");
+    webUser.setName("Joe");
+    assertEquals(webUser.getName(), "Joe");
 
     Requests updated_req = reqDao.putRequests(webUser, req);
     assertNull(updated_req);
