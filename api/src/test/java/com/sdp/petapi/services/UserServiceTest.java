@@ -34,9 +34,7 @@ class UserServiceTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
-    
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
   }
 
@@ -52,7 +50,6 @@ class UserServiceTest {
     List<User> list = userService.getAllUsers();
     assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
   }
-  
   @Test
   public void get_user_by_id() {
     String id = "001";
@@ -69,7 +66,6 @@ class UserServiceTest {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     User new_user = new User(webUser.getEmail(), webUser.getPassHash(), webUser.getFirstName(), webUser.getLastName(), false);
-    
     when(userDao.createUser(new_user)).thenReturn(webUser);
     User returnUser = userService.createUser(new_user);
     assertEquals(webUser, returnUser);
@@ -137,5 +133,4 @@ class UserServiceTest {
     List<Pet> list = userService.getRecentPets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
-  
 }

@@ -34,7 +34,6 @@ public class PetServiceTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
   }
 
@@ -67,7 +66,6 @@ public class PetServiceTest {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     Pet new_pet = new Pet(pet.getName(), pet.getType(), pet.getSex(), pet.getAge(), pet.getSize(), pet.getWeight(), pet.getDescription(), pet.getImageNames());
-    
     when(petDao.createPet(employee, new_pet)).thenReturn(pet);
     Pet returnPet = petService.createPet(employee, new_pet);
     assertEquals(pet, returnPet);
@@ -99,5 +97,4 @@ public class PetServiceTest {
     Pet returnedPet = petService.putPetByRequest(pet);
     assertEquals(pet, returnedPet);
   }
-  
 }

@@ -41,7 +41,6 @@ public class PetController {
   public Pet createPet(@RequestBody PetUser combo) {
     Pet pet = combo.getPet();
     User user = combo.getUser();
-    
     return petService.createPet(user, pet);
   }
 
