@@ -6,37 +6,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.UserDao;
-import com.sdp.petapi.models.Requested;
+import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.User;
 
 @Service
 public class UserService {
 
   @Autowired
-  private UserDao UserDao;
+  private UserDao userDao;
 
   public List<User> getAllUsers() {
-    return UserDao.getAllUsers();
+    return userDao.getAllUsers();
   }
-
+  
   public User getUserById(String id) {
-    return UserDao.getUserById(id);
+    return userDao.getUserById(id);
   }
 
   public User createUser(User user) {
-    return UserDao.createUser(user);
+    return userDao.createUser(user);
   }
 
   public User putUser(User user) {
-    return UserDao.putUser(user);
+    return userDao.putUser(user);
   }
 
-  public Boolean deleteUser(String id) {
-    return UserDao.deleteUser(id);
+  public User deleteUser(String userid) {
+    return userDao.deleteUser(userid);
   }
 
-  public Requested requestAdoption(Requested request) {
-    return UserDao.requestAdoption(request);
+  public Boolean addPetToFavorites(User user, String petid) {
+    return userDao.addPetToFavorites(user, petid);
   }
 
+  public Boolean removePetFromFavorites(User user, String petid) {
+    return userDao.removePetFromFavorites(user, petid);
+  }
+
+  public Boolean addPetToRecents(User user, String petid) {
+    return userDao.addPetToRecents(user, petid);
+  }
+
+  public List<Pet> getFavoritePets(String userid) {
+    return userDao.getFavoritePets(userid);
+  }
+
+  public List<Pet> getRecentPets(String userid) {
+    return userDao.getRecentPets(userid);
+  }
+  
 }

@@ -13,49 +13,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdp.petapi.models.Pet;
-import com.sdp.petapi.models.PetUser;
+import com.sdp.petapi.models.RequestUser;
+import com.sdp.petapi.models.Requests;
 import com.sdp.petapi.models.User;
 
-import com.sdp.petapi.services.PetService;
+import com.sdp.petapi.services.RequestsService;
 
 @RestController
-@RequestMapping("/pet")
-public class PetController {
+@RequestMapping("/request")
+public class RequestsController {
 
   @Autowired
-  private PetService petService;
+  private RequestsService reqService;
 
   @GetMapping
   @CrossOrigin
-  public List<Pet> getAllPets() {
-    return petService.getAllPets();
+  public List<Requests> getAllRequests() {
+    return reqService.getAllRequests();
   }
 
   @GetMapping("/{id}")
-  public Pet getPetById(@PathVariable String id) {
-    return petService.getPetById(id);
+  public Requests getRequestById(@PathVariable String id) {
+    return reqService.getRequestById(id);
   }
 
-  @PostMapping()
-  public Pet createPet(@RequestBody PetUser combo) {
-    Pet pet = combo.getPet();
-    User user = combo.getUser();
-    
-    return petService.createPet(user, pet);
+  @PostMapping("/pet/{id}")
+  public Requests createRequest(@PathVariable String id, @RequestBody User user) {
+    return reqService.createRequest(user, id);
   }
 
   @PutMapping("/{id}")
-  public Pet putPet(@PathVariable String id, @RequestBody PetUser combo) {
-    Pet pet = combo.getPet();
+  public Requests putRequest(@PathVariable String id, @RequestBody RequestUser combo) {
+    Requests req = combo.getRequest();
     User user = combo.getUser();
     
-    return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(user, pet);
+    return (id == null || !id.equals(req.getId())) ? null : reqService.putRequest(user, req);
   }
 
   @DeleteMapping("/{id}")
-  public Pet deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
+  public Requests deleteRequest(@PathVariable String id) {
+    return reqService.deleteRequest(id);
   }
-  
 }
