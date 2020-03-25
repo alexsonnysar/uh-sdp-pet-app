@@ -8,7 +8,7 @@ const RegisterPetForm = () => {
   };
   const classes = useStyles();
   return (
-    <div>
+    <div data-testid="registerPetForm">
       <form className={classes.container}>
         <h1 align="center">Register Pet</h1>
         <TextField id="outlined-basic" label="Name" variant="outlined" m={20} />
