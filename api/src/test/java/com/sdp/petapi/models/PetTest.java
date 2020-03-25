@@ -12,114 +12,238 @@ import java.text.SimpleDateFormat;
 class PetTest {
 
   @Test
-  public void create() throws Exception {
-    ArrayList<String> petPics =  new ArrayList<String>();
-    petPics.add("walking in the park");
-    petPics.add("catching a frisbee");
-    petPics.add("biting the neighbors kid...");
+  public void createAllArgsImageArray() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid..."};
+
+    String[] petPics = new String[images.length];
+    Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
+    
     Date sample_date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse("26-FEB-2020 18:16:17");
 
     Pet sample_pet = new Pet( "009", "Buddy", "dog", "M", "old_af", "medium", 123.4, sample_date,
-        "He is very wet. Just like all the time", petPics.stream().collect(Collectors.toSet()), false, true);
+        "He is very wet. Just like all the time", images, false, true);
     
     assertAll(
-      () -> assertNotEquals(sample_pet, null),
+      () -> assertNotNull(sample_pet),
+      () -> assertEquals(sample_pet.getId(), "009"),
       () -> assertEquals(sample_pet.getName(), "Buddy"),
       () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
       () -> assertEquals(sample_pet.getDateAdded(), sample_date),
-      () -> assertEquals(sample_pet.getImageNames(), petPics.stream().collect(Collectors.toSet()))
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
     );
   }
 
   @Test
-  public void createImagesSameName() throws Exception {
-    ArrayList<String> petPics =  new ArrayList<String>();
-    petPics.add("walking in the park");
-    petPics.add("catching a frisbee");
-    petPics.add("biting the neighbors kid...");
-    petPics.add("catching a frisbee");
+  public void createAllArgsImageArrayWithSameImageNames() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid...", "catching a frisbee"};
+
+    String[] petPics = new String[images.length];
+    Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
+
     Date sample_date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse("26-FEB-2020 18:16:17");
 
-    ArrayList<String> picsInserted = new ArrayList<String>();
-    picsInserted.add("walking in the park");
-    picsInserted.add("catching a frisbee");
-    picsInserted.add("biting the neighbors kid...");
-
     Pet sample_pet = new Pet( "009", "Buddy", "dog", "M", "old_af", "medium", 123.4, sample_date,
-        "He is very wet. Just like all the time", petPics.stream().collect(Collectors.toSet()), false, true);
+        "He is very wet. Just like all the time", images, false, true);
     
     assertAll(
-      () -> assertNotEquals(sample_pet, null),
+      () -> assertNotNull(sample_pet),
+      () -> assertEquals(sample_pet.getId(), "009"),
       () -> assertEquals(sample_pet.getName(), "Buddy"),
       () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
       () -> assertEquals(sample_pet.getDateAdded(), sample_date),
-      () -> assertEquals(sample_pet.getImageNames(), picsInserted.stream().collect(Collectors.toSet()))
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
     );
   }
 
   @Test
-  public void eight_argument_constructor() throws Exception {
-    String name = "Buddy";
-    String type = "dog";
-    String sex = "M";
-    String age = "old_af";
-    String size = "medium";
-    double weight = 123.4;
-    String description = "He is very wet. Just like all the time";
-    ArrayList<String> petPics = new ArrayList<String>();
-    petPics.add("walking in the park");
-    petPics.add("catching a frisbee");
-    petPics.add("biting the neighbors kid...");
+  public void createAllArgsImageList() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid..."};
 
-    Pet pet = new Pet(name, type, sex, age, size, weight, description, petPics);
+    List<String> insImages = Arrays.asList(images);
+    String[] petPics = new String[images.length];
+    insImages.stream().collect(Collectors.toSet()).toArray(petPics);
+    
+    Date sample_date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse("26-FEB-2020 18:16:17");
+
+    Pet sample_pet = new Pet( "009", "Buddy", "dog", "M", "old_af", "medium", 123.4, sample_date,
+        "He is very wet. Just like all the time", insImages, false, true);
+    
     assertAll(
-      () -> assertNull(pet.getId()),
-      () -> assertEquals(pet.getName(), name),
-      () -> assertEquals(pet.getType(), type),
-      () -> assertEquals(pet.getSex(), sex),
-      () -> assertEquals(pet.getAge(), age),
-      () -> assertEquals(pet.getSize(), size),
-      () -> assertEquals(pet.getWeight(), weight),
-      () -> assertNull(pet.getDateAdded()),
-      () -> assertEquals(pet.getDescription(), description),
-      () -> assertEquals(pet.getImageNames(), petPics.stream().collect(Collectors.toSet())),
-      () -> assertFalse(pet.isActive()),
-      () -> assertFalse(pet.isAdopted())
+      () -> assertNotNull(sample_pet),
+      () -> assertEquals(sample_pet.getId(), "009"),
+      () -> assertEquals(sample_pet.getName(), "Buddy"),
+      () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
+      () -> assertEquals(sample_pet.getDateAdded(), sample_date),
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
     );
   }
 
   @Test
-  public void twelve_argument_constructor() throws Exception {
-    String id = "009";
-    String name = "Buddy";
-    String type = "dog";
-    String sex = "M";
-    String age = "old_af";
-    String size = "medium";
-    double weight = 123.4;
-    Date date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse("26-FEB-2020 18:16:17");
-    String description = "He is very wet. Just like all the time";
-    ArrayList<String> petPics = new ArrayList<String>();
-    petPics.add("walking in the park");
-    petPics.add("catching a frisbee");
-    petPics.add("biting the neighbors kid...");
-    Boolean adopt = false;
-    Boolean active = true;
+  public void createAllArgsImageListWithSameImageNames() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid...", "catching a frisbee"};
 
-    Pet pet = new Pet(id, name, type, sex, age, size, weight, date, description, petPics, adopt, active);
+    List<String> insImages = Arrays.asList(images);
+    String[] petPics = new String[images.length];
+    insImages.stream().collect(Collectors.toSet()).toArray(petPics);
+
+    Date sample_date = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss").parse("26-FEB-2020 18:16:17");
+
+    Pet sample_pet = new Pet( "009", "Buddy", "dog", "M", "old_af", "medium", 123.4, sample_date,
+        "He is very wet. Just like all the time", insImages, false, true);
+    
     assertAll(
-      () -> assertEquals(pet.getId(), id),
-      () -> assertEquals(pet.getName(), name),
-      () -> assertEquals(pet.getType(), type),
-      () -> assertEquals(pet.getSex(), sex),
-      () -> assertEquals(pet.getAge(), age),
-      () -> assertEquals(pet.getSize(), size),
-      () -> assertEquals(pet.getWeight(), weight),
-      () -> assertEquals(pet.getDateAdded(), date),
-      () -> assertEquals(pet.getDescription(), description),
-      () -> assertEquals(pet.getImageNames(), petPics.stream().collect(Collectors.toSet())),
-      () -> assertTrue(pet.isActive()),
-      () -> assertFalse(pet.isAdopted())
+      () -> assertNotNull(sample_pet),
+      () -> assertEquals(sample_pet.getId(), "009"),
+      () -> assertEquals(sample_pet.getName(), "Buddy"),
+      () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
+      () -> assertEquals(sample_pet.getDateAdded(), sample_date),
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
+    );
+  }
+
+  @Test
+  public void createEightArgsImageArray() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid..."};
+
+    String[] petPics = new String[images.length];
+    Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
+    
+    Date current = new Date();
+
+    Pet sample_pet = new Pet( "Buddy", "dog", "M", "old_af", "medium", 123.4,
+        "He is very wet. Just like all the time", images );
+    
+    assertAll(
+      () -> assertNotNull(sample_pet),
+      () -> assertNull(sample_pet.getId()),
+      () -> assertEquals(sample_pet.getName(), "Buddy"),
+      () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
+      () -> assertNotNull(sample_pet.getDateAdded()),
+      () -> assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current)),
+      () -> assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current)),
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
+    );
+  }
+
+  @Test
+  public void createEightArgsImageArrayWithSameImageNames() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid...", "catching a frisbee"};
+
+    String[] petPics = new String[images.length];
+    Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
+    
+    Date current = new Date();
+
+    Pet sample_pet = new Pet( "Buddy", "dog", "M", "old_af", "medium", 123.4,
+        "He is very wet. Just like all the time", images );
+    
+    assertAll(
+      () -> assertNotNull(sample_pet),
+      () -> assertNull(sample_pet.getId()),
+      () -> assertEquals(sample_pet.getName(), "Buddy"),
+      () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
+      () -> assertNotNull(sample_pet.getDateAdded()),
+      () -> assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current)),
+      () -> assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current)),
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
+    );
+  }
+
+  @Test
+  public void createEightArgsImageList() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid..."};
+
+    List<String> insImages = Arrays.asList(images);
+    String[] petPics = new String[images.length];
+    Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
+    
+    Date current = new Date();
+
+    Pet sample_pet = new Pet( "Buddy", "dog", "M", "old_af", "medium", 123.4,
+        "He is very wet. Just like all the time", insImages );
+    
+    assertAll(
+      () -> assertNotNull(sample_pet),
+      () -> assertNull(sample_pet.getId()),
+      () -> assertEquals(sample_pet.getName(), "Buddy"),
+      () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
+      () -> assertNotNull(sample_pet.getDateAdded()),
+      () -> assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current)),
+      () -> assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current)),
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
+    );
+  }
+
+  @Test
+  public void createEightArgsImageListWithSameImageNames() throws Exception {
+    String[] images = {"walking in the park", "catching a frisbee", "biting the neighbors kid...", "catching a frisbee"};
+
+    List<String> insImages = Arrays.asList(images);
+    String[] petPics = new String[images.length];
+    Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
+    
+    Date current = new Date();
+
+    Pet sample_pet = new Pet( "Buddy", "dog", "M", "old_af", "medium", 123.4,
+        "He is very wet. Just like all the time", insImages );
+    
+    assertAll(
+      () -> assertNotNull(sample_pet),
+      () -> assertNull(sample_pet.getId()),
+      () -> assertEquals(sample_pet.getName(), "Buddy"),
+      () -> assertEquals(sample_pet.getType(), "dog"),
+      () -> assertEquals(sample_pet.getSex(), "M"),
+      () -> assertEquals(sample_pet.getAge(), "old_af"),
+      () -> assertEquals(sample_pet.getSize(), "medium"),
+      () -> assertEquals(sample_pet.getWeight(), 123.4),
+      () -> assertNotNull(sample_pet.getDateAdded()),
+      () -> assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current)),
+      () -> assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current)),
+      () -> assertArrayEquals(sample_pet.getImageNames(), petPics),
+      () -> assertFalse(sample_pet.isAdopted()),
+      () -> assertTrue(sample_pet.isActive())
     );
   }
 
