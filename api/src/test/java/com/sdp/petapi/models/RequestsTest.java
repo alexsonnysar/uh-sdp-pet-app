@@ -13,7 +13,6 @@ class RequestsTest {
   public void createTwoArgs() throws Exception {
     Date current = new Date();
     Requests sample_request = new Requests("jacob", "juana");
-    
     assertAll(
       () -> assertNotNull(sample_request),
       () -> assertNull(sample_request.getId()),

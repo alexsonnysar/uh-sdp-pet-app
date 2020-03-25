@@ -22,6 +22,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+  implementation("com.auth0:auth0-spring-security-api:1.1.0")
 }
 
 tasks {
@@ -39,10 +40,10 @@ tasks {
  
 sourceSets {
   main {
-    java.srcDirs("src/main")
+    java.srcDirs("src/main/java")
   }
   test {
-    java.srcDirs("src/test")
+    java.srcDirs("src/test/java")
   }
 }
 

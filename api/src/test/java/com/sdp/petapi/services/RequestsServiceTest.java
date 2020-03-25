@@ -33,11 +33,8 @@ public class RequestsServiceTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
-    
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
-    
     req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
-    
     req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
   }
 
@@ -53,7 +50,6 @@ public class RequestsServiceTest {
     List<Requests> list = reqService.getAllRequests();
     assertEquals(Arrays.asList(new Requests[] {req, req2}), list);
   }
-  
   @Test
   public void get_request_by_id() {
     String id = "001";
@@ -70,7 +66,6 @@ public class RequestsServiceTest {
     // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     Requests new_req = new Requests("002", "002");
-    
     when(reqDao.createRequest(webUser, "002")).thenReturn(new_req);
     Requests returnRequest = reqService.createRequest(webUser, "002");
     assertEquals(new_req, returnRequest);
@@ -93,5 +88,4 @@ public class RequestsServiceTest {
     Requests returnedRequest = reqService.deleteRequest("001");
     assertEquals(req, returnedRequest);
   }
-  
 }

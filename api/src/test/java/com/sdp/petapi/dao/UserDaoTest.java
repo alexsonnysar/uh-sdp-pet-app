@@ -43,7 +43,6 @@ public class UserDaoTest {
     
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     userRepository.insert(employee);
-    
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
     userRepository.insert(webUser);
   }
@@ -132,7 +131,6 @@ public class UserDaoTest {
 
     User updated_user = userDao.putUser(webUser);
     List<User> updated_user_list = userDao.getAllUsers();
-  
     assertAll(
       () -> assertEquals(webUser, updated_user),
       () -> assertEquals(updated_user_list.size(), orig_user_list.size()),
@@ -180,7 +178,6 @@ public class UserDaoTest {
     String id = "002";
 
     List<User> orig_user_list = userDao.getAllUsers();
-    
     User deleted_user = userDao.deleteUser(id);
     List<User> updated_user_list = userDao.getAllUsers();
 
@@ -195,7 +192,6 @@ public class UserDaoTest {
   @Test
   public void delete_user_with_null_id_returns_null() {
     List<User> orig_user_list = userDao.getAllUsers();
-    
     User deleted_user = userDao.deleteUser(null);
     List<User> updated_user_list = userDao.getAllUsers();
 
@@ -210,7 +206,6 @@ public class UserDaoTest {
     String id = "010";
 
     List<User> orig_user_list = userDao.getAllUsers();
-    
     User deleted_user = userDao.deleteUser(id);
     List<User> updated_user_list = userDao.getAllUsers();
 
@@ -240,7 +235,6 @@ public class UserDaoTest {
     assertArrayEquals(employee.getFavorites(), new String[0]);
     assertFalse(userDao.addPetToFavorites(employee, "001"));
     assertArrayEquals(employee.getFavorites(), new String[0]);
-    
     User userdb = userDao.getUserById("001");
     assertEquals(employee, userdb);
   }
@@ -301,7 +295,6 @@ public class UserDaoTest {
     assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
     userDao.addPetToFavorites(webUser, "001");
     assertArrayEquals(webUser.getFavorites(), new String[] {"001"});
-    
     User userdb = userDao.getUserById("002");
     assertEquals(webUser, userdb);
 
@@ -323,7 +316,6 @@ public class UserDaoTest {
 
     assertFalse(userDao.removePetFromFavorites(employee, "001"));
     assertArrayEquals(employee.getFavorites(), new String[0]);
-    
     User updated_user = userDao.getUserById("001");
     assertEquals(employee, updated_user);
   }
@@ -349,7 +341,6 @@ public class UserDaoTest {
     assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
     
     User updated_user = userDao.getUserById("002");
-
     assertEquals(webUser, updated_user);
   }
 
@@ -373,7 +364,6 @@ public class UserDaoTest {
     assertArrayEquals(employee.getRecents(), new String[0]);
     assertFalse(userDao.addPetToRecents(employee, "001"));
     assertArrayEquals(employee.getRecents(), new String[0]);
-    
     User userdb = userDao.getUserById("001");
     assertEquals(employee, userdb);
   }
@@ -475,5 +465,4 @@ public class UserDaoTest {
     userDao.addPetToRecents(webUser, "010");
     assertEquals(userDao.getRecentPets("002"), Collections.singletonList(pet));
   }
-  
 }

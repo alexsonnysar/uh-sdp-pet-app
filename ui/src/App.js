@@ -5,15 +5,25 @@ import PetForm from "./pages/PetForm";
 import PetProfile from "./pages/PetProfile";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import UserDashboard from "./pages/UserDashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import Profile from "./components/Profile";
+import history from "./utils/history";
+import { useAuth0 } from "./react-auth0-spa";
 import Navigation from "./components/Navigation";
 
 function App() {
+  const { loading } = useAuth0();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
-      <Navigation />
-      <Router>
+      <Router history={history}>
+        <Navigation />
         <div className="App" data-testid="App">
           <Switch>
             <Route path="/user-dashboard">
@@ -28,6 +38,13 @@ function App() {
             <Route path="/employee-dashboard">
               <EmployeeDashboard />
             </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/profile" component={Profile} />
             <Route path="/">
               <Home />
             </Route>

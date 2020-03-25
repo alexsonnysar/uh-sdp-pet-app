@@ -19,6 +19,7 @@ import com.sdp.petapi.models.User;
 import com.sdp.petapi.services.UserService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 public class UserController {
 
