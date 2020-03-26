@@ -4,7 +4,7 @@ import { Grid } from "@material-ui/core";
 
 const PetCardList = ({ petList }) => {
   return (
-    <Grid container justify="flex-start" data-testid="manypetcards" xs={12}>
+    <Grid container justify="flex-start" data-testid="manypetcards">
       {petList.map(pet => (
         <Grid key={pet.id} item>
           <PetCard key={pet.id} pet={pet} />

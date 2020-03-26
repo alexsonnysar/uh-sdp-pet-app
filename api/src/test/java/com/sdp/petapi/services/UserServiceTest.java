@@ -34,9 +34,7 @@ class UserServiceTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
-    
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
   }
 
@@ -52,7 +50,6 @@ class UserServiceTest {
     List<User> list = userService.getAllUsers();
     assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
   }
-  
   @Test
   public void get_user_by_id() {
     String id = "001";
@@ -135,5 +132,4 @@ class UserServiceTest {
     List<Pet> list = userService.getRecentPets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
-  
 }
