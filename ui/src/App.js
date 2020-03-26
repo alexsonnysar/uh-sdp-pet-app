@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import PetForm from "./pages/PetForm";
+import RegisterPet from "./pages/RegisterPet";
 import PetProfile from "./pages/PetProfile";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import UserDashboard from "./pages/UserDashboard";
@@ -33,7 +33,7 @@ function App() {
               <PetProfile />
             </Route>
             <Route path="/pet-register">
-              <PetForm />
+              <RegisterPet />
             </Route>
             <Route path="/employee-dashboard">
               <EmployeeDashboard />

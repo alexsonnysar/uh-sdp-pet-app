@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const RegisterForm = () => {
   const classes = useStyles();
   return (
-    <div>
+    <div data-testid="registerForm">
       <form className={classes.container}>
         <h1 align="center">Register</h1>
         <TextField
