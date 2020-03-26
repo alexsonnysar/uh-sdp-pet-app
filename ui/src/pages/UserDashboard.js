@@ -1,22 +1,33 @@
-import React from "react";
-import { Typography } from "@material-ui/core";
-import { FetchData } from "../api/FetchData";
+import React, { useState, useEffect } from "react";
+import { fetchData } from "../api/fetchData";
 import PetCardSlider from "../components/PetCardSlider";
 import { makeStyles } from "@material-ui/core/styles";
 
 const UserDashboard = () => {
   const classes = useStyles();
   const url = "http://localhost:8080/pet";
-  const petList = FetchData(url);
+
+  const [petList, setPetList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData(url)
+      .then(petList => setPetList(petList))
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h6">Favorites</Typography>
-      <PetCardSlider petList={petList} />
-      <Typography variant="h6">Recently Viewed</Typography>
-      <PetCardSlider petList={petList} />
-      <Typography variant="h6">Adopted</Typography>
-      <PetCardSlider petList={petList} />
+    <div>
+      {loading ? (
+        <div data-testid="loading">No List of Pets to Show :(</div>
+      ) : (
+        <div className={classes.root}>
+          <PetCardSlider petList={petList} heading="Favorites" />
+          <PetCardSlider petList={petList} heading="Recently Viewed" />
+          <PetCardSlider petList={petList} heading="Adopted" />
+        </div>
+      )}
     </div>
   );
 };
