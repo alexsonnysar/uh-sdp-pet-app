@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PetCardList from "../components/PetCardList";
-import { FetchData } from "../api/FetchData";
+import { fetchData } from "../api/fetchData";
 
 const Home = () => {
   const url = "http://localhost:8080/pet";
 
-  const petList = FetchData(url);
+  const [petList, setPetList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData(url)
+      .then(petList => setPetList(petList))
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
   return (
     <div>
-      {petList.length > 0 ? (
+      {loading ? (
+        <h3 data-testid="loading">Loading ...</h3>
+      ) : (
         <div data-testid="loaded">
           <PetCardList petList={petList} />
         </div>
-      ) : (
-        <h3 data-testid="loading">No pets to show :(</h3>
       )}
     </div>
   );
