@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PetList from "../components/PetList";
 import Grid from "@material-ui/core/Grid";
-import { fetchData } from "../api/fetchData";
+import { fetchData } from "../api/FetchData";
 import { Button } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PetCardList from "../components/PetCardList";
-import { fetchData } from "../api/fetchData";
+import { fetchData } from "../api/FetchData";
 
 const Home = () => {
   const url = "http://localhost:8080/pet";

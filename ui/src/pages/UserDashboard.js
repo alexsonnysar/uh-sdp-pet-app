@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchData } from "../api/fetchData";
+import { fetchData } from "../api/FetchData";
 import PetCardSlider from "../components/PetCardSlider";
 import { makeStyles } from "@material-ui/core/styles";
 
