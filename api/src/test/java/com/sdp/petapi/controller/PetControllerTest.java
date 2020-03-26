@@ -85,6 +85,24 @@ public class PetControllerTest {
   }
 
   @Test
+  public void put_pet_null_id() {
+    // Since the petDao is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(petService.putPet(employee, pet)).thenReturn(pet);
+    Pet returnedPet = petController.putPet(null, new PetUser(pet, employee));
+    assertNull(returnedPet);
+  }
+
+  @Test
+  public void put_pet_null_pet() {
+    // Since the petDao is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(petService.putPet(employee, pet)).thenReturn(pet);
+    Pet returnedPet = petController.putPet("001", new PetUser(null, employee));
+    assertNull(returnedPet);
+  }
+
+  @Test
   public void put_pet_wrong_id() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call

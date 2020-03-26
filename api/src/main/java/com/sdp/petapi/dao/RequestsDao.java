@@ -43,7 +43,8 @@ public class RequestsDao {
 
     Boolean existing_req = getAllRequests()
       .stream()
-      .anyMatch(r -> r.getPetid().equals(petid) && r.getUserid().equals(user.getId()) && r.getStatus() != "CANCELED");
+      .anyMatch(r -> r.getPetid().equals(petid) && r.getUserid().equals(user.getId())
+        && !r.getStatus().equals("CANCELED"));
     if (existing_req) return null;
 
     /* Conrad: right now make it so request makes status "PENDING" (happens in constructor) 
@@ -55,7 +56,9 @@ public class RequestsDao {
   }
 
   public Requests putRequests(User user, Requests req) {
-    if(user == null || req == null || (!user.isEmployee() && !user.getId().equals(req.getUserid()))) return null;
+    if(user == null || req == null
+      || (!user.isEmployee() && !user.getId().equals(req.getUserid()))
+    ) return null;
 
     User userdb = userDao.getUserById(user.getId());
     if (!user.equals(userdb)) return null;
@@ -63,7 +66,8 @@ public class RequestsDao {
     Requests reqdb = getRequestById(req.getId());
     if (reqdb == null || !reqdb.getUserid().equals(req.getUserid())
       || !reqdb.getPetid().equals(req.getPetid())
-      || !reqdb.getRequestDate().equals(req.getRequestDate())) return null;
+      || !reqdb.getRequestDate().equals(req.getRequestDate()))
+        return null;
 
     // WebUser canceling request means pet may be available for adoption again
     return (req.getStatus() == "CANCELED") ? cancelRequest(req) :
@@ -80,7 +84,9 @@ public class RequestsDao {
 
   public Requests approveRequest(Requests req) {
     List<Requests> cancelReqs = repository.findAll().stream()
-      .filter(r -> !r.getUserid().equals(req.getUserid()) && r.getPetid().equals(req.getPetid()) && r.getStatus().equals("PENDING"))
+      .filter(r -> !r.getUserid().equals(req.getUserid())
+        && r.getPetid().equals(req.getPetid())
+        && r.getStatus().equals("PENDING"))
       .collect(Collectors.toList());
     
     if (!cancelReqs.isEmpty()) {

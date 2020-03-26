@@ -448,8 +448,10 @@ public class UserDaoTest {
 
   @Test
   public void get_webUser_favorites_list_without_bad_pets() {
-    userDao.addPetToFavorites(webUser, "001");
-    userDao.addPetToFavorites(webUser, "010");
+    webUser.addToFavorites("001");
+    webUser.addToFavorites("010");
+    User inserted_user = userRepository.save(webUser);
+    assertEquals(webUser, inserted_user);
     assertEquals(userDao.getFavoritePets("002"), Collections.singletonList(pet));
   }
 
@@ -471,8 +473,10 @@ public class UserDaoTest {
 
   @Test
   public void get_webUser_recent_list_without_bad_pets() {
-    userDao.addPetToRecents(webUser, "001");
-    userDao.addPetToRecents(webUser, "010");
+    webUser.addToRecents("001");
+    webUser.addToRecents("010");
+    User inserted_user = userRepository.save(webUser);
+    assertEquals(webUser, inserted_user);
     assertEquals(userDao.getRecentPets("002"), Collections.singletonList(pet));
   }
   
