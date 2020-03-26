@@ -1,10 +1,6 @@
 {
   "id": "002",
   "email": "ironman@mail.com",
-  "passHash": "here~comes~ironman",
-  "firstName": "Tony",
-  "lastName": "Stark",
-  "employee": false,
-  "favorites": [],
-  "recents": []
+  "name": "Tony Stark",
+  "employee": false
 }

@@ -1,8 +1,6 @@
 {
   "id": "003",
   "email": "stark@mail.com",
-  "passHash": "imagenius",
-  "firstName": "Anthony",
-  "lastName": "Stark",
+  "name": "Anthony Stark",
   "employee": false
 }

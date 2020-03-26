@@ -7,6 +7,8 @@ import org.springframework.context.annotation.PropertySources;
 
 import lombok.Generated;
 
+import lombok.Generated;
+
 @SpringBootApplication
 
 @PropertySources({
@@ -15,6 +17,7 @@ import lombok.Generated;
 })
 public class PetApiApplication {
 
+  @Generated
   public static void main(String[] args) {
     SpringApplication.run(PetApiApplication.class, args);
   }

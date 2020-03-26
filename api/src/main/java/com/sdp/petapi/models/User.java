@@ -16,18 +16,14 @@ public @Data class User {
   private String id;
 
   private String email;
-  private String passHash;
-  private String firstName;
-  private String lastName;
+  private String name;
   private boolean isEmployee;
   private String[] favorites;
   private String[] recents;
   
-  public User(String email, String passHash, String firstName, String lastName, Boolean employee) {
+  public User(String email, String name, Boolean employee) {
     this.email = email;
-    this.passHash = passHash;
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.name = name;
     this.isEmployee = employee;
   }
   

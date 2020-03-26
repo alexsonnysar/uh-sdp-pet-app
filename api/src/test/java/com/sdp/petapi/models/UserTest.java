@@ -16,14 +16,13 @@ class UserTest {
 
   @Test
   public void createWebUser() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
+    
     assertAll(
       () -> assertNotNull(webUser),
       () -> assertNull(webUser.getId()),
       () -> assertEquals(webUser.getEmail(), "1234@mail.com"),
-      () -> assertEquals(webUser.getPassHash(), "1234"),
-      () -> assertEquals(webUser.getFirstName(), "kandy"),
-      () -> assertEquals(webUser.getLastName(), "Brawn"),
+      () -> assertEquals(webUser.getName(), "kandy Brawn"),
       () -> assertFalse(webUser.isEmployee()),
       () -> assertNull(webUser.getFavorites()),
       () -> assertNull(webUser.getRecents())
@@ -32,14 +31,13 @@ class UserTest {
 
   @Test
   public void createEmployee() throws Exception {
-    User employee = new User("1234@mail.com", "1234", "Mandy", "Brawn", true);
+    User employee = new User("1234@mail.com", "Mandy Brawn", true);
+    
     assertAll(
       () -> assertNotNull(employee),
       () -> assertNull(employee.getId()),
       () -> assertEquals(employee.getEmail(), "1234@mail.com"),
-      () -> assertEquals(employee.getPassHash(), "1234"),
-      () -> assertEquals(employee.getFirstName(), "Mandy"),
-      () -> assertEquals(employee.getLastName(), "Brawn"),
+      () -> assertEquals(employee.getName(), "Mandy Brawn"),
       () -> assertTrue(employee.isEmployee()),
       () -> assertNull(employee.getFavorites()),
       () -> assertNull(employee.getRecents())
@@ -48,7 +46,7 @@ class UserTest {
 
   @Test
   public void addPetToEmployeeFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "Mandy", "Brawn", true);
+    User webUser = new User("1234@mail.com", "Mandy Brawn", true);
     assertNull(webUser.getFavorites());
     assertFalse(webUser.addToFavorites("124352"));
     assertNull(webUser.getFavorites());
@@ -56,7 +54,7 @@ class UserTest {
 
   @Test
   public void addPetToEmptyWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     assertTrue(webUser.addToFavorites("124352"));
     assertArrayEquals(webUser.getFavorites(), new String[] {"124352"});
@@ -64,7 +62,7 @@ class UserTest {
 
   @Test
   public void addPetToExistingWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     String[] setup = new String[] {"124352"};
     webUser.setFavorites(setup);
@@ -77,7 +75,7 @@ class UserTest {
 
   @Test
   public void addDuplicatePetToWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     String[] setup = new String[] {"124352"};
     webUser.setFavorites(setup);
@@ -89,7 +87,7 @@ class UserTest {
 
   @Test
   public void removeFromEmployeeFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "Mandy", "Brawn", true);
+    User webUser = new User("1234@mail.com", "Mandy Brawn", true);
     assertNull(webUser.getFavorites());
     assertFalse(webUser.removeFromFavorites("124352"));
     assertNull(webUser.getFavorites());
@@ -97,7 +95,7 @@ class UserTest {
 
   @Test
   public void removePetFromNullWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     assertFalse(webUser.removeFromFavorites("124352"));
     assertNull(webUser.getFavorites());
@@ -105,7 +103,7 @@ class UserTest {
 
   @Test
   public void removePetFromExistingWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     String[] setup = new String[] {"124352", "842167"};
     webUser.setFavorites(setup);
@@ -117,7 +115,7 @@ class UserTest {
 
   @Test
   public void removePetNotInWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     String[] setup = new String[] {"124352", "842167"};
     webUser.setFavorites(setup);
@@ -129,7 +127,7 @@ class UserTest {
 
   @Test
   public void removePetFromEmptyWebUserFavorites() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getFavorites());
     assertFalse(webUser.removeFromFavorites("124352"));
     assertNull(webUser.getFavorites());
@@ -137,7 +135,7 @@ class UserTest {
 
   @Test
   public void addPetToEmployeeRecents() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "Mandy", "Brawn", true);
+    User webUser = new User("1234@mail.com", "Mandy Brawn", true);
     assertNull(webUser.getRecents());
     assertFalse(webUser.addToRecents("124352"));
     assertNull(webUser.getRecents());
@@ -145,7 +143,7 @@ class UserTest {
 
   @Test
   public void addPetToEmptyWebUserRecents() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getRecents());
     assertTrue(webUser.addToRecents("124352"));
     assertArrayEquals(webUser.getRecents(), new String[] {"124352"});
@@ -153,7 +151,7 @@ class UserTest {
 
   @Test
   public void addPetToExistingWebUserRecents() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getRecents());
     String[] setup = new String[] {"124352"};
     webUser.setRecents(setup);
@@ -165,7 +163,7 @@ class UserTest {
 
   @Test
   public void checkWebUserRecentsMaxLength() throws Exception {
-    User webUser = new User("1234@mail.com", "1234", "kandy", "Brawn", false);
+    User webUser = new User("1234@mail.com", "kandy Brawn", false);
     assertNull(webUser.getRecents());
     String[] setup = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     webUser.setRecents(setup);

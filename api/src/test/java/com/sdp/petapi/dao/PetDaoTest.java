@@ -256,7 +256,7 @@ public class PetDaoTest {
     
     List<Pet> orig_pet_list = petDao.getAllPets();
 
-    Pet updated_pet = petDao.putPet(null, pet);
+    Pet updated_pet = petDao.putPet(employee, pet);
     List<Pet> updated_pet_list = petDao.getAllPets();
 
     assertAll(
@@ -267,7 +267,7 @@ public class PetDaoTest {
   }
 
   @Test
-  public void put_pet_by_nonexistant_employee_returns_null() {
+  public void put_pet_by_null_employee_returns_null() {
     pet.setName("Aymen");
     assertEquals(pet.getName(), "Aymen");
 
@@ -284,6 +284,26 @@ public class PetDaoTest {
       () -> assertEquals(updated_pet_list, orig_pet_list),
       () -> assertFalse(updated_pet_list.contains(pet))
     );
+  }
+
+    @Test
+    public void put_pet_by_nonexistent_employee_returns_null() {
+      pet.setName("Aymen");
+      assertEquals(pet.getName(), "Aymen");
+  
+      employee.setId(null);
+      assertNull(employee.getId());
+  
+      List<Pet> orig_pet_list = petDao.getAllPets();
+  
+      Pet updated_pet = petDao.putPet(new User("", "", true), pet);
+      List<Pet> updated_pet_list = petDao.getAllPets();
+  
+      assertAll(
+        () -> assertNull(updated_pet),
+        () -> assertEquals(updated_pet_list, orig_pet_list),
+        () -> assertFalse(updated_pet_list.contains(pet))
+      );
   }
 
   @Test

@@ -50,7 +50,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getAllUsers()).thenReturn(Arrays.asList(new User[] {employee, webUser}));
-    List<User> list = userService.getAllUsers();
+    List<User> list = userContoller.getAllUser();
     assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
   }
   
@@ -69,10 +69,8 @@ class UserControllerTest {
   public void create_user() {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    User new_user = new User(webUser.getEmail(), webUser.getPassHash(), webUser.getFirstName(), webUser.getLastName(), false);
-    
-    when(userService.createUser(new_user)).thenReturn(webUser);
-    User returnUser = userContoller.createUser(new_user);
+    when(userService.createUser(webUser)).thenReturn(webUser);
+    User returnUser = userContoller.createUser(webUser);
     assertEquals(webUser, returnUser);
   }
 
