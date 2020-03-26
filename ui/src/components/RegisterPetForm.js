@@ -15,9 +15,9 @@ const RegisterPetForm = () => {
     weight: "",
     dateAdded: "",
     description: "",
-    imageNames: "",
-    adopted: "",
-    active: ""
+    imageNames: [""],
+    adopted: false,
+    active: true
   });
   const date = {
     someDate: new Date().toISOString().substring(0, 10)
@@ -31,18 +31,23 @@ const RegisterPetForm = () => {
     });
     console.log("FormData: ", formData);
   };
+  const handleSelect = prop => event => {
+    console.log(event);
+    setFormData({
+      ...formData,
+      [prop]: event.target.value
+    });
+  };
 
   //Currently mapping info one at a time
   //Maybe there's a way to send whole object formatted correctly?
   const PostAddPet = petData => {
-    alert(petData["name"]);
-    axios
-      .post("http://localhost:8080/pet", {
-        name: petData.name,
-        weight: petData.weight,
-        description: petData.description
-      })
-      .then(response => console.log(response))
+    axios({
+    method: 'post',
+    url: "http://localhost:8080/pet",
+    data: petData,
+    headers: {'Content-Type':'application/json'}
+    }).then(response => console.log(response))
       .catch(error => console.log(error));
   };
 
@@ -57,8 +62,6 @@ const RegisterPetForm = () => {
 
   const classes = useStyles();
 
-  //handleChange does not correctly map for selector fields
-  //Maybe new handle change function is needed for them?
   return (
     <div data-testid="registerPetForm">
       <form className={classes.container}>
@@ -67,17 +70,17 @@ const RegisterPetForm = () => {
           id="name"
           label="Name"
           variant="outlined"
-          m={20}
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
           id="type"
-          label="Type"
+          label="type"
           variant="outlined"
+          onChange={handleSelect("type")}
+          value={formData.type}
           select
-          onChange={e => handleChange(e)}
         >
-          <MenuItem value="Dog">Dog</MenuItem>
+          <MenuItem value="Dog"> Dog </MenuItem>
           <MenuItem value="Cat">Cat</MenuItem>
           <MenuItem value="Bird">Bird</MenuItem>
           <MenuItem value="Fish">Fish</MenuItem>
@@ -88,20 +91,22 @@ const RegisterPetForm = () => {
         </TextField>
         <TextField
           id="sex"
-          label="Sex"
+          label="sex"
           variant="outlined"
+          onChange={handleSelect("sex")}
+          value={formData.sex}
           select
-          onChange={e => handleChange(e)}
         >
           <MenuItem value="M">Male</MenuItem>
           <MenuItem value="F">Female</MenuItem>
         </TextField>
         <TextField
           id="age"
-          label="Age"
+          label="age"
           variant="outlined"
+          onChange={handleSelect("age")}
+          value={formData.age}
           select
-          onChange={e => handleChange(e)}
         >
           <MenuItem value="Baby">Baby</MenuItem>
           <MenuItem value="Young">Young</MenuItem>
@@ -111,10 +116,11 @@ const RegisterPetForm = () => {
 
         <TextField
           id="size"
-          label="Size"
+          label="size"
           variant="outlined"
+          onChange={handleSelect("size")}
+          value={formData.size}
           select
-          onChange={e => handleChange(e)}
         >
           <MenuItem value="Small">Small</MenuItem>
           <MenuItem value="Medium">Medium</MenuItem>
@@ -124,7 +130,7 @@ const RegisterPetForm = () => {
           id="weight"
           label="Weight"
           variant="outlined"
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
           id="dateAdded"
@@ -135,7 +141,7 @@ const RegisterPetForm = () => {
             shrink: true
           }}
           variant="outlined"
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
           id="description"
@@ -143,25 +149,15 @@ const RegisterPetForm = () => {
           rowMax="4"
           label="Description"
           variant="outlined"
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
         />
         <TextField
-          id="active"
-          label="Active"
-          variant="outlined"
-          select
-          onChange={e => handleChange(e)}
-        >
-          <MenuItem value="true">True</MenuItem>
-          <MenuItem value="false">False</MenuItem>
-        </TextField>
-
-        <TextField
           id="adopted"
-          label="Adopted"
+          label="adopted"
           variant="outlined"
+          onChange={handleSelect("adopted")}
+          value={formData.adopted}
           select
-          onChange={e => handleChange(e)}
         >
           <MenuItem value="true">True</MenuItem>
           <MenuItem value="false">False</MenuItem>
@@ -172,7 +168,7 @@ const RegisterPetForm = () => {
           className={classes.button}
           onClick={() => handleSubmit()}
         >
-          Pet Registration
+          Create
         </Button>
       </form>
     </div>
