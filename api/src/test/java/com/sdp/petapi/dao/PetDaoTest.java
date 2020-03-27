@@ -7,7 +7,9 @@ import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.Pet;
+import com.sdp.petapi.models.User;
 import com.sdp.petapi.repositories.PetRepository;
+import com.sdp.petapi.repositories.UserRepository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,159 +26,367 @@ public class PetDaoTest {
   @Autowired
   PetRepository petRepository;
 
+  @Autowired
+  UserRepository userRepository;
+
   Pet pet;
+  User employee;
+  User webUser;
 
   @BeforeEach
   public void init() throws Exception {
+    petRepository.deleteAll();
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
     petRepository.insert(pet);
+    
+    userRepository.deleteAll();
+    employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
+    userRepository.insert(employee);
+    
+    webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
+    userRepository.insert(webUser);
   }
 
   @AfterEach
   public void cleanup() {
     petRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   @Test
-  public void get_user_all_pets() {
-    List<Pet> actual_pets = petDao.getUserAllPets();
+  public void get_all_pets() {
+    List<Pet> actual_pets = petDao.getAllPets();
     assertEquals(Collections.singletonList(pet), actual_pets);
   }
 
   @Test
-  public void get_employee_all_pets() {
-    List<Pet> actual_pets = petDao.getEmployeeAllPets();
-    assertEquals(Collections.singletonList(pet), actual_pets);
-  }
-
-  @Test
-  public void get_user_no_inactive_pets() {
-    List<Pet> start_pets = petDao.getUserAllPets();
-    assertEquals(Collections.singletonList(pet), start_pets);
-
-    start_pets.forEach(pet -> pet.setActive(false));
-    start_pets.forEach(pet -> assertFalse(pet.isActive()));
-
-    start_pets.forEach(pet -> petDao.putPet(pet));
-
-    List<Pet> actual_pets = petDao.getUserAllPets();
-    assertEquals(new ArrayList<Pet>(), actual_pets);
-  }
-
-  @Test
-  public void get_employee_all_inactive_pets() {
-    List<Pet> start_pets = petDao.getEmployeeAllPets();
-    assertEquals(Collections.singletonList(pet), start_pets);
-
-    start_pets.forEach(pet -> pet.setActive(false));
-    start_pets.forEach(pet -> assertFalse(pet.isActive()));
-
-    start_pets.forEach(pet -> petDao.putPet(pet));
-
-    List<Pet> actual_pets = petDao.getEmployeeAllPets();
-    assertEquals(start_pets, actual_pets);
-  }
-
-  @Test
-  public void get_user_one_active_pet() {
-    String id = pet.getId();
-    Pet actual_pet = petDao.getUserPetById(id);
+  public void get_good_pet_by_id_returns_pet() {
+    String id = "001";
+    Pet actual_pet = petDao.getPetById(id);
     assertEquals(pet, actual_pet);
   }
 
   @Test
-  public void get_employee_one_active_pet() {
-    String id = pet.getId();
-    Pet actual_pet = petDao.getEmployeePetById(id);
-    assertEquals(pet, actual_pet);
+  public void get_bad_pet_by_id_returns_null() {
+    String id = "010";
+    Pet actual_pet = petDao.getPetById(id);
+    assertNull(actual_pet);
   }
 
   @Test
-  public void get_user_null_pet_for_inactive_pet() {
-    String id = pet.getId();
+  public void get_pet_by_null_id_returns_null() {
+    Pet actual_pet = petDao.getPetById(null);
+    assertNull(actual_pet);
+  }
+
+  @Test
+  public void create_pet() {
+    pet.setId(null);
+    assertNull(pet.getId());
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet inserted_pet = petDao.createPet(employee, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+    assertAll(
+      () -> assertNotNull(inserted_pet),
+      () -> assertNotNull(inserted_pet.getId()),
+      () -> assertEquals(updated_pet_list.size(), orig_pet_list.size() + 1),
+      () -> assertFalse(orig_pet_list.contains(inserted_pet)),
+      () -> assertTrue(updated_pet_list.contains(inserted_pet))
+    );
+  }
+
+  @Test
+  public void create_pet_by_null_user_returns_null() {
+    pet.setId(null);
+    assertNull(pet.getId());
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet inserted_pet = petDao.createPet(null, pet);
+    assertAll(
+      () -> assertNull(inserted_pet),
+      () -> assertEquals(petDao.getAllPets(), orig_pet_list)
+    );
+  }
+
+  @Test
+  public void create_pet_by_webUser_returns_null() {
+    pet.setId(null);
+    assertNull(pet.getId());
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet inserted_pet = petDao.createPet(webUser, pet);
+    assertAll(
+      () -> assertNull(inserted_pet),
+      () -> assertEquals(petDao.getAllPets(), orig_pet_list)
+    );
+  }
+
+  @Test
+  public void create_pet_with_null_pet_returns_null() {
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet inserted_pet = petDao.createPet(employee, null);
+    assertAll(
+      () -> assertNull(inserted_pet),
+      () -> assertEquals(petDao.getAllPets(), orig_pet_list)
+    );
+  }
+
+  @Test
+  public void create_pet_with_id_returns_null() {
+    pet.setId("002");
+    assertEquals(pet.getId(), "002");
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet inserted_pet = petDao.createPet(employee, pet);
+    assertAll(
+      () -> assertNull(inserted_pet),
+      () -> assertEquals(petDao.getAllPets(), orig_pet_list)
+    );
+  }
+
+  @Test
+  public void create_pet_by_nonexistant_employee_returns_null() {
+    pet.setId(null);
+    assertNull(pet.getId());
+
+    employee.setId(null);
+    assertNull(employee.getId());
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet inserted_pet = petDao.createPet(employee, pet);
+    assertAll(
+      () -> assertNull(inserted_pet),
+      () -> assertEquals(petDao.getAllPets(), orig_pet_list)
+    );
+  }
+
+  @Test
+  public void create_pet_by_bad_employee_returns_null() {
+    pet.setId(null);
+    assertNull(pet.getId());
+
+    employee.setEmail("4321@mail.com");
+    assertEquals(employee.getEmail(), "4321@mail.com");
     
-    pet.setActive(false);
-    assertFalse(pet.isActive());
+    List<Pet> orig_pet_list = petDao.getAllPets();
 
-    Pet returnedPet = petDao.putPet(pet);
-    assertEquals(pet, returnedPet);
-
-    Pet null_pet = petDao.getUserPetById(id);
-    assertNull(null_pet);
+    Pet inserted_pet = petDao.createPet(employee, pet);
+    assertAll(
+      () -> assertNull(inserted_pet),
+      () -> assertEquals(petDao.getAllPets(), orig_pet_list)
+    );
   }
 
   @Test
-  public void get_employee_one_inactive_pet() {
-    String id = pet.getId();
+  public void put_pet() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(employee, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+  
+    assertAll(
+      () -> assertEquals(pet, updated_pet),
+      () -> assertEquals(updated_pet_list.size(), orig_pet_list.size()),
+      () -> assertFalse(orig_pet_list.contains(pet)),
+      () -> assertTrue(updated_pet_list.contains(pet))
+    );
+  }
+
+  @Test
+  public void put_pet_by_null_user_returns_null() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(null, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(updated_pet),
+      () -> assertEquals(updated_pet_list, orig_pet_list),
+      () -> assertFalse(updated_pet_list.contains(pet))
+    );
+  }
+
+  @Test
+  public void put_pet_by_webUser_returns_null() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(webUser, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(updated_pet),
+      () -> assertEquals(updated_pet_list, orig_pet_list),
+      () -> assertFalse(updated_pet_list.contains(pet))
+    );
+  }
+
+  @Test
+  public void put_pet_with_null_pet_returns_null() {
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(employee, null);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(updated_pet),
+      () -> assertEquals(updated_pet_list, orig_pet_list)
+    );
+  }
+
+  @Test
+  public void put_pet_with_bad_id_returns_null() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+    pet.setId(null);
+    assertNull(pet.getId());
     
-    pet.setActive(false);
-    assertFalse(pet.isActive());
+    List<Pet> orig_pet_list = petDao.getAllPets();
 
-    Pet returnedPet = petDao.putPet(pet);
-    assertEquals(pet, returnedPet);
+    Pet updated_pet = petDao.putPet(employee, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
 
-    Pet actual_pet = petDao.getEmployeePetById(id);
-    assertEquals(pet, actual_pet);
+    assertAll(
+      () -> assertNull(updated_pet),
+      () -> assertEquals(updated_pet_list, orig_pet_list),
+      () -> assertFalse(updated_pet_list.contains(pet))
+    );
   }
 
   @Test
-  public void get_user_null_pet_for_nonexistent_pet() {
-    String id = pet.getId() + "999";
-    Pet null_pet = petDao.getUserPetById(id);
-    assertNull(null_pet);
+  public void put_pet_by_null_employee_returns_null() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+
+    employee.setId(null);
+    assertNull(employee.getId());
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(null, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(updated_pet),
+      () -> assertEquals(updated_pet_list, orig_pet_list),
+      () -> assertFalse(updated_pet_list.contains(pet))
+    );
+  }
+
+    @Test
+    public void put_pet_by_nonexistent_employee_returns_null() {
+      pet.setName("Aymen");
+      assertEquals(pet.getName(), "Aymen");
+  
+      employee.setId(null);
+      assertNull(employee.getId());
+  
+      List<Pet> orig_pet_list = petDao.getAllPets();
+  
+      Pet updated_pet = petDao.putPet(new User("", "", true), pet);
+      List<Pet> updated_pet_list = petDao.getAllPets();
+  
+      assertAll(
+        () -> assertNull(updated_pet),
+        () -> assertEquals(updated_pet_list, orig_pet_list),
+        () -> assertFalse(updated_pet_list.contains(pet))
+      );
   }
 
   @Test
-  public void get_employee_null_pet_for_nonexistent_pet() {
-    String id = pet.getId() + "999";
-    Pet null_pet = petDao.getEmployeePetById(id);
-    assertNull(null_pet);
+  public void put_pet_by_bad_employee_returns_null() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+
+    employee.setEmail("4321@mail.com");
+    assertEquals(employee.getEmail(), "4321@mail.com");
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(null, pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(updated_pet),
+      () -> assertEquals(updated_pet_list, orig_pet_list),
+      () -> assertFalse(updated_pet_list.contains(pet))
+    );
   }
 
   @Test
-  public void get_user_null_pet_with_null_id() {
-    Pet null_pet = petDao.getUserPetById(null);
-    assertNull(null_pet);
+  public void delete_pet() {
+    String id = "001";
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+    
+    Pet deleted_pet = petDao.deletePet(id);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertEquals(pet, deleted_pet),
+      () -> assertTrue(orig_pet_list.contains(pet)),
+      () -> assertFalse(updated_pet_list.contains(pet)),
+      () -> assertEquals(orig_pet_list.size(), updated_pet_list.size() + 1)
+    );
   }
 
   @Test
-  public void get_employee_null_pet_with_null_id() {
-    Pet null_pet = petDao.getEmployeePetById(null);
-    assertNull(null_pet);
+  public void delete_pet_with_null_id_returns_null() {
+    List<Pet> orig_pet_list = petDao.getAllPets();
+    
+    Pet deleted_pet = petDao.deletePet(null);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(deleted_pet),
+      () -> assertEquals(orig_pet_list, updated_pet_list)
+    );
   }
 
   @Test
-  public void create_real_pet() {
-    String id = pet.getId();
-    pet.setId(pet.getId() + "999");
-    assertEquals(pet.getId(), id + "999");
+  public void delete_nonexistent_pet_returns_null() {
+    String id = "010";
 
-    Pet actual_pet = petDao.createPet(pet);
-    assertEquals(pet, actual_pet);
+    List<Pet> orig_pet_list = petDao.getAllPets();
+    
+    Pet deleted_pet = petDao.deletePet(id);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    assertAll(
+      () -> assertNull(deleted_pet),
+      () -> assertEquals(orig_pet_list, updated_pet_list)
+    );
   }
 
   @Test
-  public void create_null_pet() {
-    Pet null_pet = petDao.createPet(null);
-    assertNull(null_pet);
+  public void put_pet_by_request() {
+    pet.setName("Aymen");
+    assertEquals(pet.getName(), "Aymen");
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPetByRequest(pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+  
+    assertAll(
+      () -> assertEquals(pet, updated_pet),
+      () -> assertEquals(petDao.getAllPets().size(), orig_pet_list.size()),
+      () -> assertFalse(orig_pet_list.contains(pet)),
+      () -> assertTrue(updated_pet_list.contains(pet))
+    );
   }
   
-  @Test
-  public void put_real_pet() {
-    pet.setName("Changed Pet");
-    assertEquals(pet.getName(), "Changed Pet");
-    
-    Pet returnedPet = petDao.putPet(pet);
-    assertEquals(pet, returnedPet);
-
-    Pet updatedPet = petDao.getUserPetById(pet.getId());
-    assertEquals(pet, updatedPet);
-  }
-
-  @Test
-  public void put_null_pet() {
-    Pet null_pet = petDao.putPet(null);
-    assertNull(null_pet);
-  }
 }
