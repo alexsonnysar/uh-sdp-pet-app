@@ -1,12 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import RegisterForm from "../components/RegisterForm";
+import RegisterPetForm from "../components/RegisterPetForm";
 
 const Register = () => {
   const classes = useStyles();
   return (
     <div className={classes.root} data-testid="register">
-      <RegisterForm />
+      <RegisterPetForm />
     </div>
   );
 };

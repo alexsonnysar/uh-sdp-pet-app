@@ -11,7 +11,7 @@ const Navigation = () => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
-    <div>
+    <div data-testid="navbar">
       <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
