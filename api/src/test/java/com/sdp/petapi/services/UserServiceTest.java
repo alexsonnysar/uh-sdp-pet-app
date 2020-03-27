@@ -71,7 +71,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void put_pet() {
+  public void put_user() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.putUser(webUser)).thenReturn(webUser);
@@ -80,7 +80,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void delete_pet() {
+  public void delete_user() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.deleteUser("002")).thenReturn(webUser);
@@ -89,7 +89,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void add_pet_by_id_to_webUser_favorites_list() {
+  public void add_pet_by_id_to_user_favorites_list() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.addPetToFavorites(webUser, "001")).thenReturn(true);
@@ -98,7 +98,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void remove_pet_by_id_to_webUser_favorites_list() {
+  public void remove_pet_by_id_from_user_favorites_list() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.removePetFromFavorites(webUser, "001")).thenReturn(true);
@@ -107,7 +107,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void add_pet_by_id_to_webUser_recently_visited_list() {
+  public void add_pet_by_id_to_user_recently_visited_list() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.addPetToRecents(webUser, "001")).thenReturn(true);
@@ -116,7 +116,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void get_webUser_favorites_list() {
+  public void get_user_favorites_list() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.getFavoritePets("002")).thenReturn(Collections.singletonList(pet));
@@ -125,7 +125,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void get_webUser_recently_visited_list() {
+  public void get_user_recently_visited_list() {
     // Since the userDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userDao.getRecentPets("002")).thenReturn(Collections.singletonList(pet));

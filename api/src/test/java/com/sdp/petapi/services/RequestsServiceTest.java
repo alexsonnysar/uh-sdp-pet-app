@@ -8,7 +8,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.dao.RequestsDao;
-import com.sdp.petapi.models.*;
+import com.sdp.petapi.models.Requests;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class RequestsServiceTest {
-  User employee, webUser;
-  Requests req, req2;
+  Requests req;
 
   @Mock
   RequestsDao reqDao;
@@ -32,10 +31,7 @@ public class RequestsServiceTest {
   @BeforeEach
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
-    employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
-    webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
     req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
-    req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
   }
 
   @AfterEach
@@ -46,9 +42,9 @@ public class RequestsServiceTest {
   public void get_all_requests() {
     // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(reqDao.getAllRequests()).thenReturn(Arrays.asList(new Requests[] {req, req2}));
+    when(reqDao.getAllRequests()).thenReturn(Collections.singletonList(req));
     List<Requests> list = reqService.getAllRequests();
-    assertEquals(Arrays.asList(new Requests[] {req, req2}), list);
+    assertEquals(Collections.singletonList(req), list);
   }
   @Test
   public void get_request_by_id() {
@@ -65,18 +61,17 @@ public class RequestsServiceTest {
   public void create_request() {
     // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    Requests new_req = new Requests("002", "002");
-    when(reqDao.createRequest(webUser, "002")).thenReturn(new_req);
-    Requests returnRequest = reqService.createRequest(webUser, "002");
-    assertEquals(new_req, returnRequest);
+    when(reqDao.createRequest(req)).thenReturn(req);
+    Requests returnRequest = reqService.createRequest(req);
+    assertEquals(req, returnRequest);
   }
 
   @Test
   public void put_request() {
     // Since the reqDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(reqDao.putRequests(employee, req)).thenReturn(req);
-    Requests returnedRequest = reqService.putRequest(employee, req);
+    when(reqDao.putRequests(req)).thenReturn(req);
+    Requests returnedRequest = reqService.putRequest(req);
     assertEquals(req, returnedRequest);
   }
 
