@@ -4,11 +4,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { useAuth0 } from "../react-auth0-spa";
 
 const Navigation = () => {
   const classes = useStyles();
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
     <div data-testid="navbar">
@@ -22,14 +20,14 @@ const Navigation = () => {
               Employee Dashboard
             </Button>
           </Typography>
-          {/* <Button color="inherit" href="/login">
+          <Button color="inherit" href="/login">
             Login
           </Button>
           <Button color="inherit" href="/register">
             Register
-          </Button> */}
+          </Button>
 
-          {!isAuthenticated && (
+          {/* {!isAuthenticated && (
             <Button color="inherit" onClick={() => loginWithRedirect({})}>
               Log in
             </Button>
@@ -47,7 +45,7 @@ const Navigation = () => {
             <Button color="inherit" onClick={() => logout()}>
               Log out
             </Button>
-          )}
+          )} */}
         </Toolbar>
       </AppBar>
     </div>
