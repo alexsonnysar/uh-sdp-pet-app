@@ -65,14 +65,14 @@ public class RequestsDao {
     if (pet == null) return null;
 
     Requests reqdb = getRequestById(req.getId());
-    if (reqdb == null || !reqdb.getUserid().equals(req.getUserid())
-      || !reqdb.getPetid().equals(req.getPetid())
-      || !reqdb.getRequestDate().equals(req.getRequestDate()))
+    if (reqdb == null || !req.getUserid().equals(reqdb.getUserid())
+      || !req.getPetid().equals(reqdb.getPetid())
+      || !req.getRequestDate().equals(reqdb.getRequestDate()))
         return null;
 
-    // WebUser canceling request means pet may be available for adoption again
+    // user canceling request means pet may be available for adoption again
     return (req.getStatus() == "CANCELED") ? cancelRequest(req) :
-      (user.isEmployee() && req.getStatus() == "APPROVED") ? approveRequest(req) : null;
+      (req.getStatus() == "APPROVED") ? approveRequest(req) : null;
   }
 
   public Requests deleteRequest(String reqid) {
