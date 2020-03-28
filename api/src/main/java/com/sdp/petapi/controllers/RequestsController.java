@@ -36,7 +36,7 @@ public class RequestsController {
   }
 
   @PostMapping
-  public Requests createRequest(@PathVariable Requests req) {
+  public Requests createRequest(@RequestBody Requests req) {
     return reqService.createRequest(req);
   }
 
