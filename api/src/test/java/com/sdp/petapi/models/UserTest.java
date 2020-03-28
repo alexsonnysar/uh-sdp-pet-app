@@ -16,14 +16,29 @@ class UserTest {
 
   @Test
   public void createWebUser() throws Exception {
-    User webUser = new User("1234@mail.com", "kandy Brawn", false);
+    User webUser = new User("1234@mail.com", "P4$$vv0rd");
+
     
     assertAll(
       () -> assertNotNull(webUser),
       () -> assertNull(webUser.getId()),
       () -> assertEquals(webUser.getEmail(), "1234@mail.com"),
-      () -> assertEquals(webUser.getName(), "kandy Brawn"),
+      () -> assertEquals(webUser.getPassHash(), "P4$$vv0rd"),
       () -> assertFalse(webUser.isEmployee()),
+      () -> assertNull(webUser.getFavorites()),
+      () -> assertNull(webUser.getRecents())
+    );
+  }
+  public void createWebEmployee() throws Exception {
+    User webUser = new User("employee@mail.com", "Kandy Brawn", true);
+
+    
+    assertAll(
+      () -> assertNotNull(webUser),
+      () -> assertNull(webUser.getId()),
+      () -> assertEquals(webUser.getEmail(), "employee@mail.com"),
+      () -> assertEquals(webUser.getName(), "Kandy Brawn"),
+      () -> assertTrue(webUser.isEmployee()),
       () -> assertNull(webUser.getFavorites()),
       () -> assertNull(webUser.getRecents())
     );

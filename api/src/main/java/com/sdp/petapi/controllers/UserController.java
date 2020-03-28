@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.User;
 import com.sdp.petapi.security.UserDetailsImpl;
@@ -49,12 +48,6 @@ public class UserController {
       return userService.getUserById(userDetails.getId());
     }
   }
-
-  // // Should get rid of this because /signup in AuthController is kinda doing this already
-  // @PostMapping
-  // public User createUser(@RequestBody User user) {
-  //   return userService.createUser(user);
-  // }
 
   @PutMapping("/")
   @PreAuthorize("hasRole('User')")
