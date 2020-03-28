@@ -22,14 +22,14 @@ const Navigation = () => {
               Employee Dashboard
             </Button>
           </Typography>
-          {/* <Button color="inherit" href="/login">
+          <Button color="inherit" href="/login">
             Login
           </Button>
           <Button color="inherit" href="/register">
             Register
-          </Button> */}
+          </Button>
 
-          {!isAuthenticated && (
+          {/* {!isAuthenticated && (
             <Button color="inherit" onClick={() => loginWithRedirect({})}>
               Log in
             </Button>
@@ -47,7 +47,7 @@ const Navigation = () => {
             <Button color="inherit" onClick={() => logout()}>
               Log out
             </Button>
-          )}
+          )} */}
         </Toolbar>
       </AppBar>
     </div>
