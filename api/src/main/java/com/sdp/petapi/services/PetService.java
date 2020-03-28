@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.sdp.petapi.dao.PetDao;
 
 import com.sdp.petapi.models.Pet;
-import com.sdp.petapi.models.User;
 
 @Service
 public class PetService {
@@ -24,12 +23,12 @@ public class PetService {
     return petDao.getPetById(id);
   }
 
-  public Pet createPet(User user, Pet pet) {
-    return petDao.createPet(user, pet);
+  public Pet createPet(Pet pet) {
+    return petDao.createPet(pet);
   }
 
-  public Pet putPet(User user, Pet pet) {
-    return petDao.putPet(user, pet);
+  public Pet putPet(Pet pet) {
+    return petDao.putPet(pet);
   }
 
   public Pet deletePet(String petid) {

@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.services.PetService;
 import com.sdp.petapi.controllers.PetController;
 import com.sdp.petapi.models.Pet;
-import com.sdp.petapi.models.PetUser;
-import com.sdp.petapi.models.User;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class PetControllerTest {
   Pet pet;
-  User employee;
 
   @Mock
   PetService petService;
@@ -36,8 +33,6 @@ public class PetControllerTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    
-    employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
   }
 
   @AfterEach
@@ -68,10 +63,8 @@ public class PetControllerTest {
   public void create_real_pet() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    Pet new_pet = new Pet(pet.getName(), pet.getType(), pet.getSex(), pet.getAge(), pet.getSize(), pet.getWeight(), pet.getDescription(), pet.getImageNames());
-    
-    when(petService.createPet(employee, new_pet)).thenReturn(pet);
-    Pet returnPet = petController.createPet(new PetUser(new_pet, employee));
+    when(petService.createPet(pet)).thenReturn(pet);
+    Pet returnPet = petController.createPet(pet);
     assertEquals(pet, returnPet);
   }
 
@@ -79,8 +72,8 @@ public class PetControllerTest {
   public void put_pet() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petService.putPet(employee, pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet("001", new PetUser(pet, employee));
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnedPet = petController.putPet("001", pet);
     assertEquals(pet, returnedPet);
   }
 
@@ -88,8 +81,8 @@ public class PetControllerTest {
   public void put_pet_null_id() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petService.putPet(employee, pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet(null, new PetUser(pet, employee));
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnedPet = petController.putPet(null, pet);
     assertNull(returnedPet);
   }
 
@@ -97,8 +90,8 @@ public class PetControllerTest {
   public void put_pet_null_pet() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petService.putPet(employee, pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet("001", new PetUser(null, employee));
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnedPet = petController.putPet("001", null);
     assertNull(returnedPet);
   }
 
@@ -106,8 +99,8 @@ public class PetControllerTest {
   public void put_pet_wrong_id() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petService.putPet(employee, pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet("010", new PetUser(pet, employee));
+    when(petService.putPet(pet)).thenReturn(pet);
+    Pet returnedPet = petController.putPet("010", pet);
     assertNull(returnedPet);
   }
 

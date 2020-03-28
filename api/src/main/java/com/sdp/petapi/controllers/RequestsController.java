@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdp.petapi.models.RequestUser;
 import com.sdp.petapi.models.Requests;
-import com.sdp.petapi.models.User;
 
 import com.sdp.petapi.services.RequestsService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/request")
 public class RequestsController {
 
@@ -27,7 +26,6 @@ public class RequestsController {
   private RequestsService reqService;
 
   @GetMapping
-  @CrossOrigin
   public List<Requests> getAllRequests() {
     return reqService.getAllRequests();
   }
@@ -37,17 +35,14 @@ public class RequestsController {
     return reqService.getRequestById(id);
   }
 
-  @PostMapping("/pet/{id}")
-  public Requests createRequest(@PathVariable String id, @RequestBody User user) {
-    return reqService.createRequest(user, id);
+  @PostMapping
+  public Requests createRequest(@RequestBody Requests req) {
+    return reqService.createRequest(req);
   }
 
   @PutMapping("/{id}")
-  public Requests putRequest(@PathVariable String id, @RequestBody RequestUser combo) {
-    Requests req = combo.getRequest();
-    User user = combo.getUser();
-    
-    return (id == null || !id.equals(req.getId())) ? null : reqService.putRequest(user, req);
+  public Requests putRequest(@PathVariable String id, @RequestBody Requests req) {
+    return (id == null || !id.equals(req.getId())) ? null : reqService.putRequest(req);
   }
 
   @DeleteMapping("/{id}")

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.sdp.petapi.dao.RequestsDao;
 
 import com.sdp.petapi.models.Requests;
-import com.sdp.petapi.models.User;
 
 @Service
 public class RequestsService {
@@ -24,12 +23,12 @@ public class RequestsService {
     return reqDao.getRequestById(reqid);
   }
 
-  public Requests createRequest(User user, String petid) {
-    return reqDao.createRequest(user, petid);
+  public Requests createRequest(Requests req) {
+    return reqDao.createRequest(req);
   }
 
-  public Requests putRequest(User user, Requests req) {
-    return reqDao.putRequests(user, req);
+  public Requests putRequest(Requests req) {
+    return reqDao.putRequests(req);
   }
 
   public Requests deleteRequest(String reqid) {

@@ -32,18 +32,18 @@ public class RequestsDao {
     return req.isPresent() ? req.get() : null;
   }
 
-  public Requests createRequest(User user, String petid) {
-    if(user == null || user.isEmployee() || petid == null) return null;
+  public Requests createRequest(Requests req) {
+    if(req == null || req.getId() != null) return null;
 
-    User userdb = userDao.getUserById(user.getId());
-    if (!user.equals(userdb)) return null;
+    User user = userDao.getUserById(req.getUserid());
+    if (user == null || user.isEmployee()) return null;
 
-    Pet pet = petDao.getPetById(petid);
+    Pet pet = petDao.getPetById(req.getPetid());
     if (pet == null || !pet.isActive()) return null;
 
     Boolean existing_req = getAllRequests()
       .stream()
-      .anyMatch(r -> r.getPetid().equals(petid) && r.getUserid().equals(user.getId())
+      .anyMatch(r -> r.getPetid().equals(req.getPetid()) && r.getUserid().equals(user.getId())
         && !r.getStatus().equals("CANCELED"));
     if (existing_req) return null;
 
@@ -52,26 +52,27 @@ public class RequestsDao {
     pet.setActive(false);
     pet.setAdopted(true);
     petDao.putPetByRequest(pet);
-    return repository.insert(new Requests(user.getId(), petid));
+    return repository.insert(new Requests(user.getId(), pet.getId()));
   }
 
-  public Requests putRequests(User user, Requests req) {
-    if(user == null || req == null
-      || (!user.isEmployee() && !user.getId().equals(req.getUserid()))
-    ) return null;
+  public Requests putRequests(Requests req) {
+    if(req == null) return null;
 
-    User userdb = userDao.getUserById(user.getId());
-    if (!user.equals(userdb)) return null;
+    User user = userDao.getUserById(req.getUserid());
+    if (user == null) return null;
+
+    Pet pet = petDao.getPetById(req.getPetid());
+    if (pet == null) return null;
 
     Requests reqdb = getRequestById(req.getId());
-    if (reqdb == null || !reqdb.getUserid().equals(req.getUserid())
-      || !reqdb.getPetid().equals(req.getPetid())
-      || !reqdb.getRequestDate().equals(req.getRequestDate()))
+    if (reqdb == null || !req.getUserid().equals(reqdb.getUserid())
+      || !req.getPetid().equals(reqdb.getPetid())
+      || !req.getRequestDate().equals(reqdb.getRequestDate()))
         return null;
 
-    // WebUser canceling request means pet may be available for adoption again
+    // user canceling request means pet may be available for adoption again
     return (req.getStatus() == "CANCELED") ? cancelRequest(req) :
-      (user.isEmployee() && req.getStatus() == "APPROVED") ? approveRequest(req) : null;
+      (req.getStatus() == "APPROVED") ? approveRequest(req) : null;
   }
 
   public Requests deleteRequest(String reqid) {

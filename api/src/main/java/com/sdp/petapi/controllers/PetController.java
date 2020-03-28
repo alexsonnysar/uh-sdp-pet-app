@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.petapi.models.Pet;
-import com.sdp.petapi.models.PetUser;
-import com.sdp.petapi.models.User;
 
 import com.sdp.petapi.services.PetService;
 
@@ -37,19 +35,14 @@ public class PetController {
     return petService.getPetById(id);
   }
 
-  @PostMapping()
-  public Pet createPet(@RequestBody PetUser combo) {
-    Pet pet = combo.getPet();
-    User user = combo.getUser();
-    return petService.createPet(user, pet);
+  @PostMapping
+  public Pet createPet(@RequestBody Pet pet) {
+    return petService.createPet(pet);
   }
 
   @PutMapping("/{id}")
-  public Pet putPet(@PathVariable String id, @RequestBody PetUser combo) {
-    Pet pet = combo.getPet();
-    User user = combo.getUser();
-    
-    return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(user, pet);
+  public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
+    return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(pet);
   }
 
   @DeleteMapping("/{id}")
