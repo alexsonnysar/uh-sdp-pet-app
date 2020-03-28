@@ -18,6 +18,7 @@ import com.sdp.petapi.models.Requests;
 import com.sdp.petapi.services.RequestsService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/request")
 public class RequestsController {
 
@@ -25,7 +26,6 @@ public class RequestsController {
   private RequestsService reqService;
 
   @GetMapping
-  @CrossOrigin
   public List<Requests> getAllRequests() {
     return reqService.getAllRequests();
   }

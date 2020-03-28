@@ -27,7 +27,6 @@ public class UserController {
   private UserService userService;
 
   @GetMapping
-  @CrossOrigin
   public List<User> getAllUser() {
     return userService.getAllUsers();
   }
