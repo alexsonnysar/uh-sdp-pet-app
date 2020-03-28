@@ -155,23 +155,23 @@ public class UserDaoTest {
     );
   }
 
-  @Test
-  public void put_user_with_bad_id_returns_null() {
-    webUser.setName("Aymen");
-    assertEquals(webUser.getName(), "Aymen");
-    webUser.setId(null);
-    assertNull(webUser.getId());
+  // @Test
+  // public void put_user_with_bad_id_returns_null() {
+  //   webUser.setName("Aymen");
+  //   assertEquals(webUser.getName(), "Aymen");
+  //   webUser.setId(null);
+  //   assertNull(webUser.getId());
 
-    List<User> orig_user_list = userDao.getAllUsers();
+  //   List<User> orig_user_list = userDao.getAllUsers();
 
-    User updated_user = userDao.putUser(webUser);
-    List<User> updated_user_list = userDao.getAllUsers();
+  //   User updated_user = userDao.putUser(webUser);
+  //   List<User> updated_user_list = userDao.getAllUsers();
 
-    assertAll(
-      () -> assertNull(updated_user),
-      () -> assertEquals(updated_user_list, orig_user_list)
-    );
-  }
+  //   assertAll(
+  //     () -> assertNull(updated_user),
+  //     () -> assertEquals(updated_user_list, orig_user_list)
+  //   );
+  // }
 
   @Test
   public void delete_user() {

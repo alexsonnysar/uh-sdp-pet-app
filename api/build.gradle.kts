@@ -22,7 +22,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
-  implementation("com.auth0:auth0-spring-security-api:1.1.0")
+  
+  implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springframework.security:spring-security-test")
+  testImplementation("org.springframework.security:spring-security-test")
+  implementation("io.jsonwebtoken:jjwt:0.9.1")
 }
 
 tasks {
