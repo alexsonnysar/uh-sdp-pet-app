@@ -80,7 +80,7 @@ public class AuthController {
 		}
 
 		// Create new user's account
-		User user = new User(signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+		User user = new User(null, signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()), null, false, null, null);
 
 
 		// maybe call userService here instead of saving directly to database
