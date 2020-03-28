@@ -35,7 +35,7 @@ public class RequestsController {
     return reqService.getRequestById(id);
   }
 
-  @PostMapping("/req")
+  @PostMapping
   public Requests createRequest(@PathVariable Requests req) {
     return reqService.createRequest(req);
   }

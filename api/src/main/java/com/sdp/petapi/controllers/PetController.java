@@ -35,7 +35,7 @@ public class PetController {
     return petService.getPetById(id);
   }
 
-  @PostMapping()
+  @PostMapping
   public Pet createPet(@RequestBody Pet pet) {
     return petService.createPet(pet);
   }
