@@ -17,6 +17,34 @@ function App() {
         <Navigation />
         <div className="App" data-testid="App">
           <Switch>
+            <Route path="/user-dashboard">
+              <UserDashboard />
+            </Route>
+            <Route path="/pet-profile">
+              <PetProfile />
+            </Route>
+            <Route path="/pet-register">
+              <RegisterPet />
+            </Route>
+            <Route path="/employee-dashboard">
+              <EmployeeDashboard />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+      {/* <Router>
+        <Navigation />
+        <div className="App" data-testid="App">
+          <Switch>
             <Route path="/" component={Home} />
             <Route path="/user-dashboard" component={UserDashboard} />
             <Route path="/pet-profile" component={PetProfile} />
@@ -26,7 +54,7 @@ function App() {
             <Route path="/register" component={Register} />
           </Switch>
         </div>
-      </Router>
+      </Router> */}
     </div>
   );
 }
