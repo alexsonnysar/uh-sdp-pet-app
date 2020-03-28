@@ -4,6 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const classes = useStyles();
@@ -13,19 +14,19 @@ const Navigation = () => {
       <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Button className={classes.button} href="/">
-              Home
-            </Button>
-            <Button className={classes.button} href="/employee-dashboard">
-              Employee Dashboard
-            </Button>
+            <Link to="/" className={classes.button}>
+              <Button className={classes.button}>Home</Button>
+            </Link>
+            <Link to="/employee-dashboard" className={classes.button}>
+              <Button className={classes.button}>Employee Dashboard</Button>
+            </Link>
           </Typography>
-          <Button color="inherit" href="/login">
-            Login
-          </Button>
-          <Button color="inherit" href="/register">
-            Register
-          </Button>
+          <Link to="/login" className={classes.button}>
+            <Button className={classes.button}>Login</Button>
+          </Link>
+          <Link to="/register" className={classes.button}>
+            <Button className={classes.button}>Register</Button>
+          </Link>
 
           {/* {!isAuthenticated && (
             <Button color="inherit" onClick={() => loginWithRedirect({})}>

@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import { fetchData } from "../api/FetchData";
 import { Button } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { Link } from "react-router-dom";
 
 const EmployeeDashboard = () => {
   const url = "http://localhost:8080/pet";
@@ -28,14 +29,15 @@ const EmployeeDashboard = () => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm></Grid>
             <Grid item xs={12} sm>
-              <Button
-                href="pet-register"
-                variant="contained"
-                color="primary"
-                startIcon={<AddRoundedIcon />}
-              >
-                Add Pet
-              </Button>
+              <Link to="/pet-register">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddRoundedIcon />}
+                >
+                  Add Pet
+                </Button>
+              </Link>
             </Grid>
           </Grid>
           <Grid container spacing={3}>
