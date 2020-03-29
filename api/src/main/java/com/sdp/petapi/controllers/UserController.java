@@ -3,6 +3,9 @@ package com.sdp.petapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.petapi.models.Message;
-import com.sdp.petapi.models.Requested;
+import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.User;
-
+import com.sdp.petapi.security.UserDetailsImpl;
 import com.sdp.petapi.services.UserService;
 
 @RestController
@@ -28,43 +31,68 @@ public class UserController {
   private UserService userService;
 
   @GetMapping
-  public List<User> getAllUsers() {
+  @PreAuthorize("hasRole('Employee')")
+  public List<User> getAllUser() {
     return userService.getAllUsers();
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasRole('Employee') or hasRole('User')")
   public User getUserById(@PathVariable String id) {
-    return userService.getUserById(id);
-  }
-
-  @PostMapping
-  public User createUser(@RequestBody User user) {
-    return userService.createUser(user);
-  }
-
-  @PutMapping("/{id}")
-  public Message putUser(@PathVariable String id, @RequestBody User user) {
-    user.setId(id);
-    User returnedUser = userService.putUser(user);
-    if (returnedUser != null) {
-      return new Message("Updated User");
-    } else {
-      return new Message("Couldn't update User");
+    // Only Employees can access other users info
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return userService.getUserById(id);
     }
+    else {
+      // Users shouldnt have access to other users info so always return the signed in users own info
+      UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return userService.getUserById(userDetails.getId());
+    }
+  }
+
+  // // Should get rid of this because /signup in AuthController is kinda doing this already
+  // @PostMapping
+  // public User createUser(@RequestBody User user) {
+  //   return userService.createUser(user);
+  // }
+
+  @PutMapping("/")
+  @PreAuthorize("hasRole('User')")
+  public User putUser(@RequestBody User user) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    user.setId(userDetails.getId());
+    return userService.putUser(user);
   }
 
   @DeleteMapping("/{id}")
-  public Message deleteUser(@PathVariable String id) {
-    if (userService.deleteUser(id)) {
-      return new Message("deleted User");
-    } else {
-      return new Message("Couldn't delete User");
-    }
+  @PreAuthorize("hasRole('Employee')")
+  public User deleteUser(@PathVariable String id) {
+   return userService.deleteUser(id);
   }
 
-  @PostMapping("/requestadoption")
-  public Requested requestAdoption(@RequestBody Requested request) {
-    return userService.requestAdoption(request);
+  @PostMapping("/fav/{id}")
+  public Boolean addPetToFavorites(@PathVariable String id, @RequestBody User user) {
+    return userService.addPetToFavorites(user, id);
   }
 
+  @PutMapping("/fav/{id}")
+  public Boolean removePetFromFavorites(@PathVariable String id, @RequestBody User user) {
+    return userService.removePetFromFavorites(user, id);
+  }
+
+  @PostMapping("/recent/{id}")
+  public Boolean addPetToRecents(@PathVariable String id, @RequestBody User user) {
+    return userService.addPetToRecents(user, id);
+  }
+
+  @GetMapping("/fav/{id}")
+  public List<Pet> getFavoritePets(@PathVariable String id) {
+    return userService.getFavoritePets(id);
+  }
+
+  @PutMapping("/recents/{id}")
+  public List<Pet> getRecentPets(@PathVariable String id) {
+    return userService.getRecentPets(id);
+  }
+  
 }

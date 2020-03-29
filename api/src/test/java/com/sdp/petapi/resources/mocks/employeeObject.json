@@ -1,0 +1,8 @@
+{
+    "id": "001",
+    "email": "1234@mail.com",
+    "name": "Howard Stark",
+    "employee": true,
+    "favorites": [],
+    "recents": []
+}

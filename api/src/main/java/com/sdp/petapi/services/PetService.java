@@ -6,36 +6,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.PetDao;
+
 import com.sdp.petapi.models.Pet;
 
 @Service
 public class PetService {
 
-	@Autowired
-	private PetDao petDao;
+  @Autowired
+  private PetDao petDao;
 
-	public List<Pet> getUserAllPets() {
-		return petDao.getUserAllPets();
-	}
+  public List<Pet> getAllPets() {
+    return petDao.getAllPets();
+  }
+  
+  public Pet getPetById(String id) {
+    return petDao.getPetById(id);
+  }
 
-	public List<Pet> getEmployeeAllPets() {
-		return petDao.getEmployeeAllPets();
-	}
-	
-	public Pet getUserPetById(String id) {
-		return petDao.getUserPetById(id);
-	}
+  public Pet createPet(Pet pet) {
+    return petDao.createPet(pet);
+  }
 
-	public Pet getEmployeePetById(String id) {
-		return petDao.getEmployeePetById(id);
-	}
+  public Pet putPet(Pet pet) {
+    return petDao.putPet(pet);
+  }
 
-	public Pet createPet(Pet pet) {
-		return petDao.createPet(pet);
-	}
+  public Pet deletePet(String petid) {
+    return petDao.deletePet(petid);
+  }
 
-	public Pet putPet(Pet pet) {
-		return petDao.putPet(pet);
-	}
-
+  public Pet putPetByRequest(Pet pet) {
+    return petDao.putPetByRequest(pet);
+  }
 }

@@ -3,7 +3,6 @@ package com.sdp.petapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,44 +13,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdp.petapi.models.Pet;
+import com.sdp.petapi.models.Requests;
 
-import com.sdp.petapi.services.PetService;
+import com.sdp.petapi.services.RequestsService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/pet")
-public class PetController {
+@RequestMapping("/request")
+public class RequestsController {
 
   @Autowired
-  private PetService petService;
+  private RequestsService reqService;
 
   @GetMapping
-  public List<Pet> getAllPets() {
-    return petService.getAllPets();
+  public List<Requests> getAllRequests() {
+    return reqService.getAllRequests();
   }
 
   @GetMapping("/{id}")
-  public Pet getPetById(@PathVariable String id) {
-    return petService.getPetById(id);
+  public Requests getRequestById(@PathVariable String id) {
+    return reqService.getRequestById(id);
   }
 
-  // only employees
   @PostMapping
-  @PreAuthorize("hasRole('Employee')")
-  public Pet createPet(@RequestBody Pet pet) {
-    return petService.createPet(pet);
+  public Requests createRequest(@RequestBody Requests req) {
+    return reqService.createRequest(req);
   }
 
   @PutMapping("/{id}")
-  @PreAuthorize("hasRole('Employee')")
-  public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
-    return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(pet);
+  public Requests putRequest(@PathVariable String id, @RequestBody Requests req) {
+    return (id == null || !id.equals(req.getId())) ? null : reqService.putRequest(req);
   }
 
   @DeleteMapping("/{id}")
-  public Pet deletePet(@PathVariable String id) {
-    return petService.deletePet(id);
+  public Requests deleteRequest(@PathVariable String id) {
+    return reqService.deleteRequest(id);
   }
-  
 }
