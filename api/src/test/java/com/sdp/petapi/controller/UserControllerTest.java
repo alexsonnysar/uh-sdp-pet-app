@@ -23,19 +23,20 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 class UserControllerTest {
   Pet pet;
   User employee, webUser;
-
+  
   @Mock
   UserService userService;
 
   // makes a userController whose userService is the mock above
   @InjectMocks
-  UserController userContoller;
+  UserController userController;
 
   @BeforeEach
   public void init() throws Exception {
@@ -56,15 +57,35 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getAllUsers()).thenReturn(Arrays.asList(new User[] {employee, webUser}));
-    List<User> list = userContoller.getAllUser();
+    List<User> list = userController.getAllUser();
     assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
   }
+
+  // for some reason these test are failing 
+  // following the docs here: https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/test-method.html
+  // // user trying to get others -> their own
+  // @Test
+  // @WithMockUser
+  // public void get_by_users_id_returns_user() {
+  //   when(userService.getUserById(employee.getId())).thenReturn(webUser);
+  //   User actual_user = userController.getUserById(employee.getId());
+  //   assertEquals(webUser, actual_user);
+  // }
+
+  // // employee trying to get other -> others
+  // @Test
+  // @WithMockUser(username = "Employee@mail.com", roles = {"ROLE_Employee"})
+  // public void get_by_users_id_returns_any() {
+  //   when(userService.getUserById(employee.getId())).thenReturn(webUser);
+  //   User actual_user = userController.getUserById(webUser.getId());
+  //   assertEquals(webUser, actual_user);
+  // }
   
   // @Test
   // @WithMockUser(username = "myusername@example.com", roles = {"USER"})
   // public void user_should_get_all_users() {
   //   when(userService.getAllUsers()).thenReturn(Arrays.asList(new User[] {employee, webUser}));
-  //   List<User> list = userContoller.getAllUser();
+  //   List<User> list = userController.getAllUser();
   //   assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
   // }
 
@@ -77,7 +98,7 @@ class UserControllerTest {
   //   // Since the userService is a mock it will return null on method calls, so
   //   // we must specify what it will return given a specific method call
   //   when(userService.getUserById(id)).thenReturn(employee);
-  //   User actual_user = userContoller.getUserById(id);
+  //   User actual_user = userController.getUserById(id);
   //   assertEquals(employee, actual_user);
   // }
 
@@ -86,7 +107,7 @@ class UserControllerTest {
   //   // Since the userService is a mock it will return null on method calls, so
   //   // we must specify what it will return given a specific method call
   //   when(userService.createUser(webUser)).thenReturn(webUser);
-  //   User returnUser = userContoller.createUser(webUser);
+  //   User returnUser = userController.createUser(webUser);
   //   assertEquals(webUser, returnUser);
   // }
 
@@ -95,7 +116,7 @@ class UserControllerTest {
   //   // Since the userService is a mock it will return null on method calls, so
   //   // we must specify what it will return given a specific method call
   //   when(userService.putUser(webUser)).thenReturn(webUser);
-  //   User returnedUser = userContoller.putUser("002", webUser);
+  //   User returnedUser = userController.putUser("002", webUser);
   //   assertEquals(webUser, returnedUser);
   // }
 
@@ -104,7 +125,7 @@ class UserControllerTest {
   //   // Since the userService is a mock it will return null on method calls, so
   //   // we must specify what it will return given a specific method call
   //   when(userService.putUser(webUser)).thenReturn(webUser);
-  //   User returnedUser = userContoller.putUser(null, webUser);
+  //   User returnedUser = userController.putUser(null, webUser);
   //   assertNull(returnedUser);
   // }
 
@@ -113,7 +134,7 @@ class UserControllerTest {
   //   // Since the userService is a mock it will return null on method calls, so
   //   // we must specify what it will return given a specific method call
   //   when(userService.putUser(webUser)).thenReturn(webUser);
-  //   User returnedUser = userContoller.putUser("002", null);
+  //   User returnedUser = userController.putUser("002", null);
   //   assertNull(returnedUser);
   // }
 
@@ -122,7 +143,7 @@ class UserControllerTest {
   //   // Since the userService is a mock it will return null on method calls, so
   //   // we must specify what it will return given a specific method call
   //   when(userService.putUser(webUser)).thenReturn(webUser);
-  //   User returnedUser = userContoller.putUser("010", webUser);
+  //   User returnedUser = userController.putUser("010", webUser);
   //   assertNull(returnedUser);
   // }
 
@@ -131,7 +152,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.deleteUser("002")).thenReturn(webUser);
-    User returnedUser = userContoller.deleteUser("002");
+    User returnedUser = userController.deleteUser("002");
     assertEquals(webUser, returnedUser);
   }
 
@@ -140,7 +161,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.addPetToFavorites(webUser, "001")).thenReturn(true);
-    Boolean result = userContoller.addPetToFavorites("001", webUser);
+    Boolean result = userController.addPetToFavorites("001", webUser);
     assertTrue(result);
   }
 
@@ -149,7 +170,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.removePetFromFavorites(webUser, "001")).thenReturn(true);
-    Boolean result = userContoller.removePetFromFavorites("001", webUser);
+    Boolean result = userController.removePetFromFavorites("001", webUser);
     assertTrue(result);
   }
 
@@ -158,7 +179,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.addPetToRecents(webUser, "001")).thenReturn(true);
-    Boolean result = userContoller.addPetToRecents("001", webUser);
+    Boolean result = userController.addPetToRecents("001", webUser);
     assertTrue(result);
   }
 
@@ -167,7 +188,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getFavoritePets("002")).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userContoller.getFavoritePets("002");
+    List<Pet> list = userController.getFavoritePets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
 
@@ -176,7 +197,7 @@ class UserControllerTest {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getRecentPets("002")).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userContoller.getRecentPets("002");
+    List<Pet> list = userController.getRecentPets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
   
