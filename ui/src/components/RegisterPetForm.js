@@ -43,11 +43,12 @@ const RegisterPetForm = () => {
   //Maybe there's a way to send whole object formatted correctly?
   const PostAddPet = petData => {
     axios({
-    method: 'post',
-    url: "http://localhost:8080/pet",
-    data: petData,
-    headers: {'Content-Type':'application/json'}
-    }).then(response => console.log(response))
+      method: "post",
+      url: "http://localhost:8080/pet",
+      data: petData,
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(response => console.log(response))
       .catch(error => console.log(error));
   };
 

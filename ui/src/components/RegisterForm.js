@@ -10,18 +10,7 @@ const RegisterForm = () => {
     <div data-testid="registerForm">
       <form className={classes.container}>
         <h1 align="center">Register</h1>
-        <TextField
-          id="outlined-basic"
-          label="First Name"
-          variant="outlined"
-          m={20}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Last Name"
-          variant="outlined"
-          m={20}
-        />
+        <TextField id="outlined-basic" label="Name" variant="outlined" m={20} />
         <TextField
           id="outlined-basic"
           label="Email"
