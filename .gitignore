@@ -11,6 +11,8 @@ HELP.md
 node_modules/
 yarn.lock
 
+uh-sdp-pet/.gradle
+
 ### STS ###
 .apt_generated
 .classpath
@@ -57,7 +59,8 @@ yarn.lock
 .env.development.local
 .env.test.local
 .env.production.local
-/api/src/main/resources/
+
+/api/src/main/resources/*
 
 **/npm-debug.log*
 **/yarn-debug.log*
@@ -92,7 +95,7 @@ hs_err_pid*
 
 ### Gradle ###
 .gradle
-build/
+buied/
 
 # Ignore Gradle GUI config
 gradle-app.setting

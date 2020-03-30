@@ -1,16 +1,11 @@
 package com.sdp.petapi.repositories;
 
-import java.util.Optional;
-
-import com.sdp.petapi.models.User;
+import com.sdp.petapi.models.Requests;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface RequestsRepository extends MongoRepository<Requests, String> {
     
-    Optional<User> findByEmail(String username);
-    
-    Boolean existsByEmail(String username);
 }
 
 // implements ExampleDao {
