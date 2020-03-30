@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { fetchData } from "../api/FetchData";
 import PetCardSlider from "../components/PetCardSlider";
 import { makeStyles } from "@material-ui/core/styles";
+import getAllPets from "../api/petRequests";
 
 const UserDashboard = () => {
   const classes = useStyles();
@@ -11,7 +11,7 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData(url)
+    getAllPets(url)
       .then(petList => setPetList(petList))
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
