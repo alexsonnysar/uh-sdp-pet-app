@@ -17,7 +17,7 @@ const RegisterForm = () => {
   const PostAddUser = userData => {
     axios({
       method: "post",
-      url: "http://localhost:8080/user",
+      url: "http://localhost:8080/signup",
       data: userData,
       headers: { "Content-Type": "application/json" }
     })
