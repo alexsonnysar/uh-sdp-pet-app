@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PetCardList from "../components/PetCardList";
-import { fetchData } from "../api/FetchData";
+import { fetchData } from "../api/fetchData";
+import getAllPets from "../api/petRequests";
 
 const Home = () => {
   const url = "http://localhost:8080/pet";
@@ -9,7 +10,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData(url)
+    getAllPets(url)
       .then(petList => setPetList(petList))
       .catch(error => console.log(error))
       .finally(() => setLoading(false));

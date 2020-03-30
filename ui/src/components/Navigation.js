@@ -65,6 +65,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     color: "inherit",
+    textDecorationLine: "none",
     "&:hover": {
       color: "white"
     }
