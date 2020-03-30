@@ -11,7 +11,10 @@ const LoginForm = () => {
     password: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   const PostLoginUser = userData => {
+    setLoading(true);
     axios({
       method: "post",
       url: "http://localhost:8080/signin",
@@ -22,7 +25,13 @@ const LoginForm = () => {
         console.log(response.data);
         alert(JSON.stringify(response.data));
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        alert("Incorrect Username or Password");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleChange = e => {
@@ -61,6 +70,7 @@ const LoginForm = () => {
           variant="outlined"
           className={classes.button}
           onClick={() => handleSubmit()}
+          disabled={loading}
         >
           Log In
         </Button>
