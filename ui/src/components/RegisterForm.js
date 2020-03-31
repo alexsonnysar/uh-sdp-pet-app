@@ -24,8 +24,38 @@ const RegisterForm = () => {
       data: userData,
       headers: { "Content-Type": "application/json" }
     })
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response);
+        PostLoginUser(formData);
+      })
       .catch(error => console.log(error))
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const PostLoginUser = userData => {
+    setLoading(true);
+    axios({
+      method: "post",
+      url: "http://localhost:8080/signin",
+      data: userData,
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(response => {
+        console.log(response.data);
+        window.localStorage.setItem("jwt", response.data.jwt);
+        window.localStorage.setItem("roles", response.data.roles);
+        if (localStorage.getItem("roles") === "ROLE_User") {
+          window.location.replace("http://localhost:3000/user-dashboard");
+        } else {
+          window.location.replace("http://localhost:3000/employee-dashboard");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Incorrect Username or Password");
+      })
       .finally(() => {
         setLoading(false);
       });
