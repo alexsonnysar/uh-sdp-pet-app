@@ -17,9 +17,15 @@ const Navigation = () => {
             <Link to="/" className={classes.button}>
               <Button className={classes.button}>Home</Button>
             </Link>
-            <Link to="/employee-dashboard" className={classes.button}>
-              <Button className={classes.button}>Employee Dashboard</Button>
-            </Link>
+            {localStorage.getItem("roles") === "ROLE_User" ? (
+              <Link to="/user-dashboard" className={classes.button}>
+                <Button className={classes.button}>User Dashboard</Button>
+              </Link>
+            ) : (
+              <Link to="/employee-dashboard" className={classes.button}>
+                <Button className={classes.button}>Employee Dashboard</Button>
+              </Link>
+            )}
           </Typography>
           <Link to="/login" className={classes.button}>
             <Button className={classes.button}>Login</Button>
