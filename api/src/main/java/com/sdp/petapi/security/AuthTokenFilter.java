@@ -37,7 +37,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-				// token validated, now load user information from database based on username(we use email) 
+				// token validated, now load user information from database based on username(we use email), will hold everything from UserDetailsImpl
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 				// set the resulting Authentication object into the current SecurityContext used by the framework to hold the currently logged-in user 

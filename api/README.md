@@ -40,7 +40,8 @@ Send
 ```json
 {
 	"email": "victor@example.com",
-	"password: "123"
+	"password: "123",
+  "name": "victor"
 }
 ```
 

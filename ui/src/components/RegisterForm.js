@@ -14,19 +14,24 @@ const RegisterForm = () => {
     lastName: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   const PostAddUser = userData => {
+    setLoading(true);
     axios({
       method: "post",
-      url: "http://localhost:8080/user",
+      url: "http://localhost:8080/signup",
       data: userData,
       headers: { "Content-Type": "application/json" }
     })
       .then(response => console.log(response))
-      .catch(error => console.log(error));
+      .catch(error => console.log(error))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleChange = e => {
-    console.log(e.target.id);
     setFormData({
       ...formData,
       [e.target.id]: e.target.value
@@ -87,6 +92,7 @@ const RegisterForm = () => {
           variant="outlined"
           className={classes.button}
           onClick={() => handleSubmit()}
+          disabled={loading}
         >
           Complete Registration
         </Button>
