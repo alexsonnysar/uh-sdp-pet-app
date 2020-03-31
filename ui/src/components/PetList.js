@@ -5,7 +5,11 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 
-const PetList = ({ heading, petList }) => {
+const PetList = ({ heading, petList, deletePet }) => {
+  const RemovePet = id => {
+    console.log(id);
+    deletePet(id);
+  };
   const classes = useStyles();
   return (
     <div className={classes.root} data-testid="petlist">
@@ -15,7 +19,7 @@ const PetList = ({ heading, petList }) => {
       <Paper className={classes.paper}>
         <List>
           {petList.map(pet => (
-            <PetListItem pet={pet} key={pet.id} />
+            <PetListItem  pet={pet} key={pet.id} />
           ))}
         </List>
       </Paper>
