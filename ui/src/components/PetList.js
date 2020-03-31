@@ -26,7 +26,7 @@ const PetList = ({ heading, petList, deletePet }) => {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    maxWidth: 650,
+    maxWidth: "95%",
     minWidth: 320,
     flexBasis: "auto"
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(4, 0, 2)
   },
   paper: {
-    maxHeight: 440,
+    maxHeight: 555,
     overflow: "auto"
   }
 }));
