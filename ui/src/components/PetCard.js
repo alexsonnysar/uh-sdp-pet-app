@@ -38,13 +38,17 @@ const PetCard = ({ pet }) => {
         </CardActionArea>
       </ButtonBase>
       <CardActions>
-        <Button
-          size="small"
-          color="secondary"
-          startIcon={<FavoriteRoundedIcon />}
-        >
-          Favorite
-        </Button>
+        {localStorage.getItem("jwt") !== null ? (
+          <Button
+            size="small"
+            color="secondary"
+            startIcon={<FavoriteRoundedIcon />}
+          >
+            Favorite
+          </Button>
+        ) : (
+          []
+        )}
       </CardActions>
     </Card>
   );
