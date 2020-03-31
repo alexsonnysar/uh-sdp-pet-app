@@ -12,6 +12,7 @@ import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.SignupRequest;
 import com.sdp.petapi.models.User;
+import com.sdp.petapi.security.JwtUtils;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,10 @@ class AuthControllerTest {
 
 	@Mock
 	PasswordEncoder passwordEncoder;
+
+	@Mock
+	JwtUtils jwtUtils;
+
 
 	// makes a userController whose userService is the mock above
 	@InjectMocks
@@ -73,5 +78,15 @@ class AuthControllerTest {
 		Message returnedMessage = authController.registerUser(signUpRequest);
 		assertEquals(new Message("Error: Email is already in use!"), returnedMessage);
 	}
+
+	// @Test
+	// public void signin() {
+	// 	LoginRequest loginRequest = new LoginRequest("ironman@mail.com", "");
+	// 	//when(jwtUtils.generateJwtToken()).thenReturn("token");
+	// 	LoginResponse loginResponse = authController.authenticateUser(loginRequest);
+	// 	System.out.println(loginResponse);
+		
+	// }
+
 
 }
