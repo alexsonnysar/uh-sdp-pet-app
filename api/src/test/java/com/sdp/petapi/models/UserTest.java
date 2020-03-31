@@ -15,6 +15,22 @@ class UserTest {
   PetRepository petRepo;
 
   @Test
+  public void createWebUser_with_pass() throws Exception {
+    User webUser = new User("1234@mail.com", "P4$$vv0rd");
+
+    
+    assertAll(
+      () -> assertNotNull(webUser),
+      () -> assertNull(webUser.getId()),
+      () -> assertEquals(webUser.getEmail(), "1234@mail.com"),
+      () -> assertEquals(webUser.getPassHash(), "P4$$vv0rd"),
+      () -> assertFalse(webUser.isEmployee()),
+      () -> assertNull(webUser.getFavorites()),
+      () -> assertNull(webUser.getRecents())
+    );
+  }
+
+  @Test
   public void createWebUser() throws Exception {
     User webUser = new User("1234@mail.com", "kandy Brawn", false);
     

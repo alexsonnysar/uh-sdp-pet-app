@@ -10,12 +10,11 @@ import com.sdp.petapi.models.LoginResponse;
 import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.SignupRequest;
 import com.sdp.petapi.models.User;
-import com.sdp.petapi.repositories.UserRepository;
 import com.sdp.petapi.security.JwtUtils;
 import com.sdp.petapi.security.UserDetailsImpl;
+import com.sdp.petapi.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,7 +34,7 @@ public class AuthController {
 	AuthenticationManager authenticationManager;
 
 	@Autowired
-	UserRepository userRepository;
+	UserService userService;
 
 	// @Autowired
 	// RoleRepository roleRepository;
@@ -47,7 +46,7 @@ public class AuthController {
 	JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public LoginResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		// .authenticate will check that submitted info in LoginRequest is same as info in database throws exception otherwise
 		Authentication authentication = authenticationManager.authenticate(
@@ -63,20 +62,14 @@ public class AuthController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new LoginResponse(jwt, 
-												 userDetails.getId(),
-												 userDetails.getEmail(), 
-												 roles));
+		return new LoginResponse(jwt, userDetails.getId(), userDetails.getEmail(), roles);
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	public Message registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
-		// maybe user userService to check if email exists
-		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new Message("Error: Email is already in use!"));
+		if (userService.existsByEmail(signUpRequest.getEmail())) {
+			return new Message("Error: Email is already in use!");
 		}
 
 		// Create new user's account
@@ -84,8 +77,8 @@ public class AuthController {
 
 
 		// maybe call userService here instead of saving directly to database
-		userRepository.save(user);
+		userService.createUser(user);
 
-		return ResponseEntity.ok(new Message("User registered successfully!"));
+		return new Message("User registered successfully!");
 	}
 }

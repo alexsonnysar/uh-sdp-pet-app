@@ -23,7 +23,13 @@ const LoginForm = () => {
     })
       .then(response => {
         console.log(response.data);
-        alert(JSON.stringify(response.data));
+        window.localStorage.setItem("jwt", response.data.jwt);
+        window.localStorage.setItem("roles", response.data.roles);
+        if (localStorage.getItem("roles") === "ROLE_User") {
+          window.location.replace("http://localhost:3000/user-dashboard");
+        } else {
+          window.location.replace("http://localhost:3000/employee-dashboard");
+        }
       })
       .catch(error => {
         console.log(error);
