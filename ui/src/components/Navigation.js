@@ -18,20 +18,29 @@ const Navigation = () => {
     <div data-testid="navbar">
       <AppBar position="sticky">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            <Link to="/" className={classes.button}>
-              <Button className={classes.button}>Home</Button>
-            </Link>
-            {localStorage.getItem("roles") === "ROLE_User" ? (
-              <Link to="/user-dashboard" className={classes.button}>
-                <Button className={classes.button}>User Dashboard</Button>
+          {localStorage.getItem("jwt") !== null ? (
+            <Typography variant="h6" className={classes.title}>
+              <Link to="/" className={classes.button}>
+                <Button className={classes.button}>Home</Button>
               </Link>
-            ) : (
-              <Link to="/employee-dashboard" className={classes.button}>
-                <Button className={classes.button}>Employee Dashboard</Button>
+              {localStorage.getItem("roles") === "ROLE_User" ? (
+                <Link to="/user-dashboard" className={classes.button}>
+                  <Button className={classes.button}>User Dashboard</Button>
+                </Link>
+              ) : (
+                <Link to="/employee-dashboard" className={classes.button}>
+                  <Button className={classes.button}>Employee Dashboard</Button>
+                </Link>
+              )}
+            </Typography>
+          ) : (
+            <Typography variant="h6" className={classes.title}>
+              <Link to="/" className={classes.button}>
+                <Button className={classes.button}>Home</Button>
               </Link>
-            )}
-          </Typography>
+            </Typography>
+          )}
+
           {localStorage.getItem("jwt") === null ? (
             <React.Fragment>
               <Link to="/login" className={classes.button}>
