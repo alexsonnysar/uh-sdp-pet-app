@@ -29,7 +29,9 @@ const EmployeeDashboard = () => {
     <div data-testid="empdash">
       <h1 align="center">Employee Dashboard</h1>
       {loading ? (
-        <div data-testid="loading">Loading</div>
+        <div data-testid="loading">
+                 <h3>Loading ...</h3>
+                 </div>
       ) : (
         <div align="center" data-testid="loadedList">
           <Grid container>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PetCardList from "../components/PetCardList";
-import { fetchData } from "../api/fetchData";
 import getAllPets from "../api/petRequests";
 
 const Home = () => {
