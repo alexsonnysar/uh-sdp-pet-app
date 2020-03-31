@@ -6,6 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
+const Logout = () => {
+  localStorage.clear();
+  window.location.replace("http://localhost:3000/");
+};
+
 const Navigation = () => {
   const classes = useStyles();
 
@@ -27,12 +32,22 @@ const Navigation = () => {
               </Link>
             )}
           </Typography>
-          <Link to="/login" className={classes.button}>
-            <Button className={classes.button}>Login</Button>
-          </Link>
-          <Link to="/register" className={classes.button}>
-            <Button className={classes.button}>Register</Button>
-          </Link>
+          {localStorage.getItem("jwt") === null ? (
+            <React.Fragment>
+              <Link to="/login" className={classes.button}>
+                <Button className={classes.button}>Login</Button>
+              </Link>
+              <Link to="/register" className={classes.button}>
+                <Button className={classes.button}>Register</Button>
+              </Link>
+            </React.Fragment>
+          ) : (
+            <Link to="/employee-dashboard" className={classes.button}>
+              <Button onClick={Logout} className={classes.button}>
+                Logout
+              </Button>
+            </Link>
+          )}
 
           {/* {!isAuthenticated && (
             <Button color="inherit" onClick={() => loginWithRedirect({})}>
