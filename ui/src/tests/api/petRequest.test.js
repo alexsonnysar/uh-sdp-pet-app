@@ -1,6 +1,6 @@
 import getAllPets from "../../api/petRequests";
 
-jest.mock("../../api/fetchData");
+jest.mock("../../api/fetchData.js");
 const pets = [
   {
     id: "5e669d801dbdd96036ec3b8f",
