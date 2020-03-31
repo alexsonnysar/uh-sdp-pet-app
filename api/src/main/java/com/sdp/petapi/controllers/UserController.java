@@ -50,13 +50,7 @@ public class UserController {
     }
   }
 
-  // // Should get rid of this because /signup in AuthController is kinda doing this already
-  // @PostMapping
-  // public User createUser(@RequestBody User user) {
-  //   return userService.createUser(user);
-  // }
-
-  @PutMapping("/")
+  @PutMapping("")
   @PreAuthorize("hasRole('User')")
   public User putUser(@RequestBody User user) {
     UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

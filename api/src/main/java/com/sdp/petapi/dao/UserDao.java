@@ -35,8 +35,6 @@ public class UserDao {
     return repository.insert(user);
   }
 
-  // if the request user has null values for any of the fields, then saving it in the database will make those fields null
-  // instead we will replace request user null fields with info from the database 
   // does not allow changing of password or email, those should be handled in a different endpoint?
   public User putUser(User user) {
     if (user == null) return null;
@@ -124,5 +122,9 @@ public class UserDao {
       .filter(p -> p != null)
       .collect(Collectors.toList());
   }
+
+public Boolean existsByEmail(String email) {
+	return repository.existsByEmail(email);
+}
   
 }

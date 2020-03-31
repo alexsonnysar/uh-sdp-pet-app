@@ -131,23 +131,24 @@ class UserControllerTest {
   //   assertEquals(webUser, returnUser);
   // }
 
-  // @Test
-  // public void put_user() {
-  //   // Since the userService is a mock it will return null on method calls, so
-  //   // we must specify what it will return given a specific method call
-  //   when(userService.putUser(webUser)).thenReturn(webUser);
-  //   User returnedUser = userContoller.putUser("002", webUser);
-  //   assertEquals(webUser, returnedUser);
-  // }
+  @Test
+  @WithUserDetails(value="User", userDetailsServiceBeanName="TestingUserDetailsService")
+  public void put_user() {
+    when(userService.putUser(webUser)).thenReturn(webUser);
+    User returnedUser = userContoller.putUser(webUser);
+    assertEquals(webUser, returnedUser);
+  }
 
-  // @Test
-  // public void put_user_with_null_id_returns_null() {
-  //   // Since the userService is a mock it will return null on method calls, so
-  //   // we must specify what it will return given a specific method call
-  //   when(userService.putUser(webUser)).thenReturn(webUser);
-  //   User returnedUser = userContoller.putUser(null, webUser);
-  //   assertNull(returnedUser);
-  // }
+  @Test
+  @WithUserDetails(value="User", userDetailsServiceBeanName="TestingUserDetailsService")
+  public void put_user_with_null_id_returns_null() {
+    User nullIdUser = webUser;
+    nullIdUser.setId(null);
+
+    when(userService.putUser(webUser)).thenReturn(webUser);
+    User returnedUser = userContoller.putUser(nullIdUser);
+    assertEquals(webUser, returnedUser);
+  }
 
   // @Test
   // public void put_user_with_null_user_returns_null() {
