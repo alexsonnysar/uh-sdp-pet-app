@@ -7,9 +7,6 @@ import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import { Link } from "react-router-dom";
 
 const EmployeeDashboard = () => {
-
-  
-
   const url = "http://localhost:8080/pet";
 
   const [petList, setPetList] = useState([]);
@@ -22,11 +19,11 @@ const EmployeeDashboard = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const updatePetList = (id) => {
-  setPetList({
-    ...petList.filter(el => el != id)
-  });
-  }
+  const removePetFromList = id => {
+     setPetList(
+        petList.filter(el => el.id != id) 
+     );
+  };
 
   return (
     <div data-testid="empdash">
@@ -50,7 +47,11 @@ const EmployeeDashboard = () => {
           </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12} sm>
-              <PetList deletePet={updatePetList} heading="Requested for Adoption" petList={petList} />
+              <PetList
+                deletePet={removePetFromList}
+                heading="Requested for Adoption"
+                petList={petList}
+              />
             </Grid>
             <Grid item xs={12} sm>
               <PetList heading="Adoptable Animals" petList={petList} />

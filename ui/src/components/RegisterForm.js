@@ -10,8 +10,7 @@ const RegisterForm = () => {
     email: "",
     password: "",
     passwordConfirm: "",
-    firstName: "",
-    lastName: ""
+    name: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -82,15 +81,8 @@ const RegisterForm = () => {
       <form className={classes.container}>
         <h1 align="center">Register</h1>
         <TextField
-          id="firstName"
-          label="First Name"
-          variant="outlined"
-          m={20}
-          onChange={handleChange}
-        />
-        <TextField
-          id="lastName"
-          label="Last Name"
+          id="name"
+          label="Name"
           variant="outlined"
           m={20}
           onChange={handleChange}

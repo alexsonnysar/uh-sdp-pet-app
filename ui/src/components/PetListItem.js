@@ -8,27 +8,36 @@ import UpdateRoundedIcon from "@material-ui/icons/UpdateRounded";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 
-const PetListItem = ({ pet, deletePet }) => {
+const PetListItem = ({ pet, removePet }) => {
   const { name, type, id } = pet;
-  // console.log(id)
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
-  const CallDeletePet = () => {
+  const headers = {
+ 'Content-Type':'application/json',
+ 'Authorization':`Bearer ${localStorage.getItem('jwt')}`
+  }
+  const CallDeletePet = (petData) => {
     console.log("pet was deleted");
-    //   axios({
-    //     method: 'delete',
-    //     url: `http://localhost:8080/pet/${id}`,
-    //     headers: {'Content-Type':'application/json'}
-    //   }).then(response => console.log(response))
-    //   .catch(error => console.log(error));
+      axios({
+        method: 'put',
+        url: `http://localhost:8080/pet/${id}`,
+        headers: headers,
+        data: petData,
+      }).then(response => console.log(response))
+      .catch(error => console.log(error));
   };
   const RemoveThisPet = () => {
-    console.log(id)
+    console.log("petListItem:",id)
+    removePet(id)
   }
   const handleDelete = () => {
+    const petData = ({
+      ...pet,
+      isActive: false
+    })
     setLoading(true);
     RemoveThisPet(id);
-    CallDeletePet(id);
+    CallDeletePet(petData);
   };
 
   return (
@@ -36,7 +45,7 @@ const PetListItem = ({ pet, deletePet }) => {
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
         <Button
-          onClick={id => handleDelete()}
+          onClick={() => handleDelete()}
           disabled={loading}
           variant="contained"
           className={classes.button}
