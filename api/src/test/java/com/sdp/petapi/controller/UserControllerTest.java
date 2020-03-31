@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -69,17 +69,58 @@ class UserControllerTest {
   // }
 
 
-  // @Test
-  // @WithMockUser(username = "myusername@example.com", roles = {"User"})
-  // public void get_user_by_id_by_employee() {
-  //   String id = "001";
+  @Test
+  @WithUserDetails(value="Employee", userDetailsServiceBeanName="TestingUserDetailsService")
+  public void get_user_by_id_employee_gets_himself() {
+    String id = "001";
 
-  //   // Since the userService is a mock it will return null on method calls, so
-  //   // we must specify what it will return given a specific method call
-  //   when(userService.getUserById(id)).thenReturn(employee);
-  //   User actual_user = userContoller.getUserById(id);
-  //   assertEquals(employee, actual_user);
-  // }
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.getUserById("001")).thenReturn(employee);
+    when(userService.getUserById("002")).thenReturn(webUser);
+    User actual_user = userContoller.getUserById(id);
+    assertEquals(employee, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value="Employee", userDetailsServiceBeanName="TestingUserDetailsService")
+  public void get_user_by_id_employee_gets_other() {
+    String id = "002";
+
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.getUserById("001")).thenReturn(employee);
+    when(userService.getUserById("002")).thenReturn(webUser);
+    User actual_user = userContoller.getUserById(id);
+    assertEquals(webUser, actual_user);
+  }
+  
+  @Test
+  @WithUserDetails(value="User", userDetailsServiceBeanName="TestingUserDetailsService")
+  public void get_user_by_id_user_gets_himself() {
+    String id = "002";
+
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.getUserById("001")).thenReturn(employee);
+    when(userService.getUserById("002")).thenReturn(webUser);
+    User actual_user = userContoller.getUserById(id);
+    assertEquals(webUser, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value="User", userDetailsServiceBeanName="TestingUserDetailsService")
+  public void get_user_by_id_user_gets_other() {
+    String id = "001";
+
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.getUserById("001")).thenReturn(employee);
+    when(userService.getUserById("002")).thenReturn(webUser);
+    User actual_user = userContoller.getUserById(id);
+    assertEquals(webUser, actual_user);
+  }
+  
 
   // @Test
   // public void create_user() {
