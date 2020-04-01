@@ -49,6 +49,11 @@ public class UserController {
     }
   }
 
+  @GetMapping("/email/{email}")
+  public Boolean existsByEmail(@PathVariable String email) {
+    return userService.existsByEmail(email);
+  }
+
   @PutMapping("/")
   @PreAuthorize("hasRole('User')")
   public User putUser(@RequestBody User user) {

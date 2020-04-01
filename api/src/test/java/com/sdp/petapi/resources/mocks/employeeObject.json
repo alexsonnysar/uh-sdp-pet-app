@@ -1,6 +1,7 @@
 {
     "id": "001",
     "email": "1234@mail.com",
+    "passHash": "none",
     "name": "Howard Stark",
     "employee": true,
     "favorites": [],
