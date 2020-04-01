@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PetCardList from "../components/PetCardList";
-import getAllPets from "../api/petRequests";
+import { getAllPets } from "../api/petRequests";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 
