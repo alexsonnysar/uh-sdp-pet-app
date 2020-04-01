@@ -5,7 +5,7 @@ import RegisterPetForm from "../components/RegisterPetForm";
 const Register = () => {
   const classes = useStyles();
   return (
-    <div className={classes.root} data-testid="register">
+    <div className={classes.root} data-testid="registerPet">
       <RegisterPetForm />
     </div>
   );

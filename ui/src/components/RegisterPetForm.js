@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Button, makeStyles, MenuItem } from "@material-ui/core";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-//import { PostAddPet } from "../api/PostAddPet";
 import axios from "axios";
 
 const RegisterPetForm = () => {
-  const [formData, setFormData] = useState({
+  const [loading, setLoading] = useState(false);
+  const initialState = {
     name: "",
     type: "",
     sex: "",
@@ -18,7 +16,8 @@ const RegisterPetForm = () => {
     imageNames: [""],
     adopted: false,
     active: true
-  });
+  };
+  const [formData, setFormData] = useState(initialState);
   const date = {
     someDate: new Date().toISOString().substring(0, 10)
   };
@@ -39,24 +38,29 @@ const RegisterPetForm = () => {
     });
   };
 
-  //Currently mapping info one at a time
-  //Maybe there's a way to send whole object formatted correctly?
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("jwt")}`
+  };
+
   const PostAddPet = petData => {
     axios({
-    method: 'post',
-    url: "http://localhost:8080/pet",
-    data: petData,
-    headers: {'Content-Type':'application/json'}
-    }).then(response => console.log(response))
+      method: "post",
+      url: "http://localhost:8080/pet",
+      headers: headers,
+      data: petData
+    })
+      .then(response => {
+        console.log(response);
+        window.location.replace("http://localhost:3000/pet-register");
+      })
       .catch(error => console.log(error));
   };
 
-  //Have not handled validation at this part yet
   const handleSubmit = () => {
     // if(state is valid){
     //   make api call
-    // }
-
+    setLoading(true);
     PostAddPet(formData);
   };
 
@@ -146,7 +150,7 @@ const RegisterPetForm = () => {
         <TextField
           id="description"
           multiline
-          rowMax="4"
+          rowmax="4"
           label="Description"
           variant="outlined"
           onChange={handleChange}
@@ -167,6 +171,7 @@ const RegisterPetForm = () => {
           variant="outlined"
           className={classes.button}
           onClick={() => handleSubmit()}
+          disabled={loading}
         >
           Create
         </Button>

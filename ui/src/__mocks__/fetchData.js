@@ -39,6 +39,7 @@ const pets = [
 
 export const fetchData = url => {
   return new Promise((resolve, reject) => {
+    console.log(pets);
     process.nextTick(() =>
       pets
         ? resolve(pets)

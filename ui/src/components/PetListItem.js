@@ -12,29 +12,33 @@ const PetListItem = ({ pet, removePet }) => {
   const { name, type, id } = pet;
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
+
   const headers = {
- 'Content-Type':'application/json',
- 'Authorization':`Bearer ${localStorage.getItem('jwt')}`
-  }
-  const CallDeletePet = (petData) => {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("jwt")}`
+  };
+
+  const CallDeletePet = petData => {
     console.log("pet was deleted");
-      axios({
-        method: 'put',
-        url: `http://localhost:8080/pet/${id}`,
-        headers: headers,
-        data: petData,
-      }).then(response => console.log(response))
+    axios({
+      method: "put",
+      url: `http://localhost:8080/pet/${id}`,
+      headers: headers,
+      data: petData
+    })
+      .then(response => console.log(response))
       .catch(error => console.log(error));
   };
+
   const RemoveThisPet = () => {
-    console.log("petListItem:",id)
-    removePet(id)
-  }
+    console.log("petListItem:", id);
+    removePet(id);
+  };
   const handleDelete = () => {
-    const petData = ({
+    const petData = {
       ...pet,
       isActive: false
-    })
+    };
     setLoading(true);
     RemoveThisPet(id);
     CallDeletePet(petData);

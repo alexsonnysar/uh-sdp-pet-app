@@ -1,6 +1,8 @@
+import axios from "axios";
 import getAllPets from "../../api/petRequests";
 
-jest.mock("../../api/fetchData");
+jest.mock("axios");
+
 const pets = [
   {
     id: "5e669d801dbdd96036ec3b8f",
@@ -27,7 +29,7 @@ const pets = [
     sex: "M",
     age: "Child",
     size: "large",
-    weight: 123.4,
+    weight: 125.4,
     dateAdded: "2020-03-09T21:08:34.446+0000",
     description: "He is very wet. Just like all the time",
     imageNames: [
@@ -40,10 +42,10 @@ const pets = [
   }
 ];
 
-test("should run mocked api", async () => {
-  const url = "http://localhost:8080/pet";
-  expect.assertions(1);
-  const data = await getAllPets(url);
-  console.log("Data: " + data);
-  expect(data).toBe(pets);
+test("should return mocked data", () => {
+  const url = "/fetchURL";
+  const resp = { data: pets };
+  axios.get.mockResolvedValue(resp);
+
+  return getAllPets(url).then(data => expect(data).toEqual(pets));
 });
