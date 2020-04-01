@@ -132,4 +132,13 @@ class UserServiceTest {
     List<Pet> list = userService.getRecentPets("002");
     assertEquals(list, Collections.singletonList(pet));
   }
+
+  @Test
+  public void user_exists_by_email() {
+    // Since the userDao is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userDao.existsByEmail("1234@mail.com")).thenReturn(true);
+    Boolean resp = userService.existsByEmail("1234@mail.com");
+    assertTrue(resp);
+  }
 }
