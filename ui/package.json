@@ -44,7 +44,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server": "cd ../api && ./gradlew bootRun",
+    "server": "cd ../api && gradle bootRun",
     "dev": "concurrently \"yarn server\" \"yarn start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
