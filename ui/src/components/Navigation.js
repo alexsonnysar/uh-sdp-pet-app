@@ -54,26 +54,6 @@ const Navigation = () => {
               </Button>
             </Link>
           )}
-
-          {/* {!isAuthenticated && (
-            <Button color="inherit" onClick={() => loginWithRedirect({})}>
-              Log in
-            </Button>
-          )}
-
-          {isAuthenticated && (
-            <span>
-              <Button color="inherit" href="/profile">
-                Profile
-              </Button>
-            </span>
-          )}
-
-          {isAuthenticated && (
-            <Button color="inherit" onClick={() => logout()}>
-              Log out
-            </Button>
-          )} */}
         </Toolbar>
       </AppBar>
     </div>

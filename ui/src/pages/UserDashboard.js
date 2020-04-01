@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PetCardSlider from "../components/PetCardSlider";
 import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import getAllPets from "../api/petRequests";
+import { getAllPets } from "../api/petRequests";
 
 const UserDashboard = () => {
   const classes = useStyles();
@@ -25,7 +25,7 @@ const UserDashboard = () => {
           <CircularProgress color="secondary" />
         </div>
       ) : (
-        <div className={classes.root}>
+        <div data-testid="loaded" className={classes.root}>
           <PetCardSlider petList={petList} heading="Favorites" />
           <PetCardSlider petList={petList} heading="Recently Viewed" />
           <PetCardSlider petList={petList} heading="Adopted" />
