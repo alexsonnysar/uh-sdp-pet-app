@@ -150,7 +150,7 @@ const RegisterPetForm = () => {
         <TextField
           id="description"
           multiline
-          rowMax="4"
+          rowmax="4"
           label="Description"
           variant="outlined"
           onChange={handleChange}
