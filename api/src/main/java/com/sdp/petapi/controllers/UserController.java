@@ -43,7 +43,7 @@ public class UserController {
       return userService.getUserById(id);
     }
     else {
-      // Users shouldnt have access to other users info so always return the signed in users own info
+      // Users should not have access to other users info so always return the signed in users own info
       UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return userService.getUserById(userDetails.getId());
     }

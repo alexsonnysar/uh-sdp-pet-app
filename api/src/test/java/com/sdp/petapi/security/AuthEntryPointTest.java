@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 
-import javax.security.auth.message.AuthException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
