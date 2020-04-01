@@ -10,7 +10,7 @@ Application Stack:
 ## To Get Started
 
 To run the backend code, you will need to have `gradle` installed. You may go [here](https://gradle.org/install/)
-to install it for our respective OS.
+to install it for your respective OS.
 
 Here are a couple tips to get you up and running quickly!
 
