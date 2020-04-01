@@ -10,32 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class TestUserDetailsServiceImpl implements UserDetailsService {
 
-	// hardcoded user, not read from resources
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(String type) throws UsernameNotFoundException {
 
-	//   {
-	// 	"id": "001",
-	// 	"email": "1234@mail.com",
-	// 	"name": "Howard Stark",
-	// 	"employee": true,
-	// 	"favorites": [],
-	// 	"recents": []
-	// }
-	// {
-	// 	"id": "002",
-	// 	"email": "ironman@mail.com",
-	// 	"name": "Tony Stark",
-	// 	"employee": false
-	//   }
-
-    @Override
-	@Transactional
-	public UserDetails loadUserByUsername(String type) throws UsernameNotFoundException {
-		
-        if (type.equals("Employee")) {
-			return new UserDetailsImpl("001", "1234@mail.com", "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_Employee")));
-		} else {
-			return new UserDetailsImpl("002", "ironman@mail.com", "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
-		}
-	}
+    if (type.equals("Employee")) {
+      return new UserDetailsImpl("001", "1234@mail.com", "",
+          Collections.singletonList(new SimpleGrantedAuthority("ROLE_Employee")));
+    } else {
+      return new UserDetailsImpl("002", "ironman@mail.com", "",
+          Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
+    }
+  }
 
 }

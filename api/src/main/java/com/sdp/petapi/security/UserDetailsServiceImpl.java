@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		// build(user) will set the user authority based on the boolean value isEmployee
 		return UserDetailsImpl.build(user);
-		// return UserDetailsImpl.build(new User("12345", email, "password", "fname", "lastName", true));
+		// basically this builds a new User with an id, email, password, name, employee = true or false
 	}
 
 }

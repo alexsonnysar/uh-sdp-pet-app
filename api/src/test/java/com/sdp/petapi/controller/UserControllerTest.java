@@ -60,15 +60,6 @@ class UserControllerTest {
     assertEquals(Arrays.asList(new User[] { employee, webUser }), list);
   }
 
-  // @Test
-  // @WithMockUser(username = "myusername@example.com", roles = {"USER"})
-  // public void user_should_get_all_users() {
-  // when(userService.getAllUsers()).thenReturn(Arrays.asList(new User[]
-  // {employee, webUser}));
-  // List<User> list = userController.getAllUser();
-  // assertEquals(Arrays.asList(new User[] {employee, webUser}), list);
-  // }
-
   @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
   public void get_user_by_id_employee_gets_himself() {
@@ -121,14 +112,6 @@ class UserControllerTest {
     assertEquals(webUser, actual_user);
   }
 
-  // @Test
-  // public void create_user() {
-  // // Since the userService is a mock it will return null on method calls, so
-  // // we must specify what it will return given a specific method call
-  // when(userService.createUser(webUser)).thenReturn(webUser);
-  // User returnUser = userController.createUser(webUser);
-  // assertEquals(webUser, returnUser);
-  // }
 
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
@@ -148,24 +131,6 @@ class UserControllerTest {
     User returnedUser = userController.putUser(nullIdUser);
     assertEquals(webUser, returnedUser);
   }
-
-  // @Test
-  // public void put_user_with_null_user_returns_null() {
-  // // Since the userService is a mock it will return null on method calls, so
-  // // we must specify what it will return given a specific method call
-  // when(userService.putUser(webUser)).thenReturn(webUser);
-  // User returnedUser = userController.putUser("002", null);
-  // assertNull(returnedUser);
-  // }
-
-  // @Test
-  // public void put_user_with_wrong_id_returns_null() {
-  // // Since the userService is a mock it will return null on method calls, so
-  // // we must specify what it will return given a specific method call
-  // when(userService.putUser(webUser)).thenReturn(webUser);
-  // User returnedUser = userController.putUser("010", webUser);
-  // assertNull(returnedUser);
-  // }
 
   @Test
   public void delete_pet() {

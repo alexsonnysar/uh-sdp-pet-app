@@ -73,7 +73,6 @@ public class AuthController {
 		User user = new User(null, signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()), signUpRequest.getName(), false, null, null);
 
 
-		// maybe call userService here instead of saving directly to database
 		userService.createUser(user);
 
 		return new Message("User registered successfully!");

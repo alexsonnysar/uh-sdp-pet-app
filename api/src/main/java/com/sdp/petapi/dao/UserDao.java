@@ -35,7 +35,7 @@ public class UserDao {
     return repository.insert(user);
   }
 
-  // does not allow changing of password or email, those should be handled in a different endpoint?
+  // does not allow changing of password or email, those should be handled in a different endpoint
   public User putUser(User user) {
     if (user == null) return null;
 

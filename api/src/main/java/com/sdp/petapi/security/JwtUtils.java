@@ -32,13 +32,11 @@ public class JwtUtils {
 				.setSubject((userPrincipal.getUsername()))
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-				// .signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret)))
 				.compact();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
-		// return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 		return Jwts.parserBuilder()
 				.setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret)))
 				.build()

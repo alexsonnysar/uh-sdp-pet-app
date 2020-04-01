@@ -51,11 +51,6 @@ class AuthControllerTest {
 	@InjectMocks
 	AuthController authController;
 
-// 	@Before
-//   public void init() {
-//     MockitoAnnotations.initMocks(this);
-//   }
-
 	@Test
 	public void signup_new_user() {
 		SignupRequest signUpRequest = new SignupRequest("test@gmail.com", "password", "test name");
