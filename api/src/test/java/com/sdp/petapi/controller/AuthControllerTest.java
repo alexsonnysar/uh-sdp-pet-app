@@ -3,25 +3,28 @@ package com.sdp.petapi.controller;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
 import com.sdp.petapi.services.UserService;
 import com.sdp.petapi.controllers.AuthController;
+import com.sdp.petapi.models.LoginRequest;
+import com.sdp.petapi.models.LoginResponse;
 import com.sdp.petapi.models.Message;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.SignupRequest;
 import com.sdp.petapi.models.User;
 import com.sdp.petapi.security.JwtUtils;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -41,25 +44,17 @@ class AuthControllerTest {
 	@Mock
 	JwtUtils jwtUtils;
 
+	@Mock
+	AuthenticationManager authenticationManager;
 
-	// makes a userController whose userService is the mock above
+	// makes a authController whose userService is the mock above
 	@InjectMocks
 	AuthController authController;
 
-	@BeforeEach
-	public void init() throws Exception {
-		ObjectMapper om = new ObjectMapper();
-		pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-
-		employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"),
-				User.class);
-
-		webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
-	}
-
-	@AfterEach
-	public void cleanup() {
-	}
+// 	@Before
+//   public void init() {
+//     MockitoAnnotations.initMocks(this);
+//   }
 
 	@Test
 	public void signup_new_user() {
@@ -79,14 +74,24 @@ class AuthControllerTest {
 		assertEquals(new Message("Error: Email is already in use!"), returnedMessage);
 	}
 
-	// @Test
-	// public void signin() {
-	// 	LoginRequest loginRequest = new LoginRequest("ironman@mail.com", "");
-	// 	//when(jwtUtils.generateJwtToken()).thenReturn("token");
-	// 	LoginResponse loginResponse = authController.authenticateUser(loginRequest);
-	// 	System.out.println(loginResponse);
+	@Test
+	@WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
+	public void signin() {
+
+		LoginRequest loginRequest = new LoginRequest("ironman@mail.com", "");
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
-	// }
+		when(authenticationManager.authenticate(authenticationToken)).thenReturn(authentication);
+		when(jwtUtils.generateJwtToken(authentication)).thenReturn("tokenString");
+		
+		LoginResponse loginResponse = authController.authenticateUser(loginRequest);
+		
+		assertEquals("tokenString", loginResponse.getJwt());
+		assertEquals("002", loginResponse.getId());
+		assertEquals("ironman@mail.com", loginResponse.getEmail());
+		assertEquals(Arrays.asList("ROLE_User"), loginResponse.getRoles());
+	}
 
 
 }
