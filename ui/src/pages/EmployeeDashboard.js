@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PetList from "../components/PetList";
 import Grid from "@material-ui/core/Grid";
 import getAllPets from "../api/petRequests";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import { Link } from "react-router-dom";
 
@@ -22,16 +22,16 @@ const EmployeeDashboard = () => {
   }, []);
 
   const removePetFromList = id => {
-    setPetList(petList.filter(el => el.id != id));
+    setPetList(petList.filter(el => el.id !== id));
   };
 
   return (
     <div data-testid="empdash">
       <h1 align="center">Employee Dashboard</h1>
       {loading ? (
-        <div data-testid="loading">
-                 <h3>Loading ...</h3>
-                 </div>
+        <div data-testid="loading" className={classes.progress}>
+          <CircularProgress color="secondary" />
+        </div>
       ) : (
         <div align="center" data-testid="loadedList">
           <Grid container>
@@ -69,6 +69,11 @@ const EmployeeDashboard = () => {
 const useStyles = makeStyles({
   addButton: {
     textDecorationLine: "none"
+  },
+  progress: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 

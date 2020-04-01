@@ -68,7 +68,7 @@ const RegisterForm = () => {
   };
 
   const handleSubmit = () => {
-    if (formData.password == formData.passwordConfirm) {
+    if (formData.password === formData.passwordConfirm) {
       PostAddUser(formData);
     } else {
       alert("Your passwords don't match!");
