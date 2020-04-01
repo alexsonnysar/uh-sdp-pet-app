@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { fetchData } from "../api/FetchData";
 import PetCardSlider from "../components/PetCardSlider";
+import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import getAllPets from "../api/petRequests";
 
 const UserDashboard = () => {
   const classes = useStyles();
@@ -11,7 +12,7 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchData(url)
+    getAllPets(url)
       .then(petList => setPetList(petList))
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
@@ -20,7 +21,9 @@ const UserDashboard = () => {
   return (
     <div>
       {loading ? (
-        <div data-testid="loading">No List of Pets to Show :(</div>
+        <div data-testid="loading" className={classes.progress}>
+          <CircularProgress color="secondary" />
+        </div>
       ) : (
         <div className={classes.root}>
           <PetCardSlider petList={petList} heading="Favorites" />
@@ -35,6 +38,11 @@ const UserDashboard = () => {
 const useStyles = makeStyles({
   root: {
     alignContent: "left"
+  },
+  progress: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 

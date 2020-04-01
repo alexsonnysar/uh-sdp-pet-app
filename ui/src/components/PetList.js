@@ -5,7 +5,7 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 
-const PetList = ({ heading, petList }) => {
+const PetList = ({ heading, petList, deletePet }) => {
   const classes = useStyles();
   return (
     <div className={classes.root} data-testid="petlist">
@@ -15,7 +15,7 @@ const PetList = ({ heading, petList }) => {
       <Paper className={classes.paper}>
         <List>
           {petList.map(pet => (
-            <PetListItem pet={pet} key={pet.id} />
+            <PetListItem removePet={deletePet} pet={pet} key={pet.id} />
           ))}
         </List>
       </Paper>
@@ -26,7 +26,7 @@ const PetList = ({ heading, petList }) => {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    maxWidth: 650,
+    maxWidth: "95%",
     minWidth: 320,
     flexBasis: "auto"
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(4, 0, 2)
   },
   paper: {
-    maxHeight: 440,
+    maxHeight: 555,
     overflow: "auto"
   }
 }));

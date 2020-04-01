@@ -11,12 +11,10 @@ import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import { useAuth0 } from "../react-auth0-spa";
 
 const PetCard = ({ pet }) => {
   const { name, type } = pet;
   const classes = useStyles();
-  const { isAuthenticated } = useAuth0();
 
   return (
     <Card className={classes.root} data-testid="petcard">
@@ -40,7 +38,7 @@ const PetCard = ({ pet }) => {
         </CardActionArea>
       </ButtonBase>
       <CardActions>
-        {isAuthenticated && (
+        {localStorage.getItem("jwt") !== null ? (
           <Button
             size="small"
             color="secondary"
@@ -48,6 +46,8 @@ const PetCard = ({ pet }) => {
           >
             Favorite
           </Button>
+        ) : (
+          []
         )}
       </CardActions>
     </Card>

@@ -1,35 +1,61 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { useAuth0 } from "../react-auth0-spa";
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
+
+const Logout = () => {
+  localStorage.clear();
+  window.location.replace("http://localhost:3000/");
+};
 
 const Navigation = () => {
   const classes = useStyles();
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
     <div data-testid="navbar">
       <AppBar position="sticky">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            <Button className={classes.button} href="/">
-              Home
-            </Button>
-            <Button className={classes.button} href="/employee-dashboard">
-              Employee Dashboard
-            </Button>
-          </Typography>
-          {/* <Button color="inherit" href="/login">
-            Login
-          </Button>
-          <Button color="inherit" href="/register">
-            Register
-          </Button> */}
+          {localStorage.getItem("jwt") !== null ? (
+            <Typography variant="h6" className={classes.title}>
+              <Link to="/" className={classes.button}>
+                <Button className={classes.button}>Home</Button>
+              </Link>
+              {localStorage.getItem("roles") === "ROLE_User" ? (
+                <Link to="/user-dashboard" className={classes.button}>
+                  <Button className={classes.button}>User Dashboard</Button>
+                </Link>
+              ) : (
+                <Link to="/employee-dashboard" className={classes.button}>
+                  <Button className={classes.button}>Employee Dashboard</Button>
+                </Link>
+              )}
+            </Typography>
+          ) : (
+            <Typography variant="h6" className={classes.title}>
+              <Link to="/" className={classes.button}>
+                <Button className={classes.button}>Home</Button>
+              </Link>
+            </Typography>
+          )}
 
-          {!isAuthenticated && (
+          {localStorage.getItem("jwt") === null ? (
+            <React.Fragment>
+              <Link to="/login" className={classes.button}>
+                <Button className={classes.button}>Login</Button>
+              </Link>
+              <Link to="/register" className={classes.button}>
+                <Button className={classes.button}>Register</Button>
+              </Link>
+            </React.Fragment>
+          ) : (
+            <Link to="/employee-dashboard" className={classes.button}>
+              <Button onClick={Logout} className={classes.button}>
+                Logout
+              </Button>
+            </Link>
+          )}
+
+          {/* {!isAuthenticated && (
             <Button color="inherit" onClick={() => loginWithRedirect({})}>
               Log in
             </Button>
@@ -47,7 +73,7 @@ const Navigation = () => {
             <Button color="inherit" onClick={() => logout()}>
               Log out
             </Button>
-          )}
+          )} */}
         </Toolbar>
       </AppBar>
     </div>
@@ -66,6 +92,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     color: "inherit",
+    textDecorationLine: "none",
     "&:hover": {
       color: "white"
     }

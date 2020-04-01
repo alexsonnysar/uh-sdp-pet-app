@@ -3,13 +3,11 @@ package com.sdp.petapi.models;
 import java.util.*;
 import java.util.stream.*;
 
-// import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
 
-// @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Pet {
   @Id
