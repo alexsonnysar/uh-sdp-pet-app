@@ -24,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 class UserDetailsServiceImplTest {
 
   @Mock
-  // @Autowired
   UserRepository userRepo;
 
   @Mock
