@@ -6,8 +6,6 @@ import { getAllPets } from "../../api/petRequests";
 
 jest.mock("../../api/petRequests", () => ({ getAllPets: jest.fn() }));
 
-afterEach(cleanup);
-
 const pets = [
   {
     id: "5e669d801dbdd96036ec3b8f",
@@ -47,37 +45,45 @@ const pets = [
   }
 ];
 
-test("should render home with mock resolved API", async () => {
-  getAllPets.mockImplementation(() => Promise.resolve(pets));
+describe("<Home />", () => {
+  afterEach(() => {
+    cleanup;
+    jest.resetAllMocks();
+  });
 
-  const { getByTestId } = render(
-    <Router>
-      <Home />
-    </Router>
-  );
+  test("should render home with mock resolved API", async () => {
+    getAllPets.mockImplementation(() => Promise.resolve(pets));
 
-  expect(getByTestId("loading")).toBeInTheDocument();
+    const { getByTestId } = render(
+      <Router>
+        <Home />
+      </Router>
+    );
 
-  const loadedPetList = await waitForElement(() => getByTestId("loaded"));
-  expect(loadedPetList).toBeInTheDocument();
-  expect(getAllPets).toHaveBeenCalledTimes(1);
-});
+    expect(getByTestId("loading")).toBeInTheDocument();
 
-test("should render home with mock rejected API", async () => {
-  const NetworkError = {
-    Error: "Network Error"
-  };
+    const loadedPetList = await waitForElement(() => getByTestId("loaded"));
+    expect(loadedPetList).toBeInTheDocument();
+    expect(getAllPets).toHaveBeenCalledTimes(1);
+  });
 
-  getAllPets.mockImplementation(() => Promise.reject(NetworkError));
+  test("should render home with mock rejected API", async () => {
+    const NetworkError = {
+      Error: "Network Error"
+    };
 
-  const { getByTestId } = render(
-    <Router>
-      <Home />
-    </Router>
-  );
+    getAllPets.mockImplementation(() => Promise.reject(NetworkError));
 
-  expect(getByTestId("loading")).toBeInTheDocument();
+    const { getByTestId } = render(
+      <Router>
+        <Home />
+      </Router>
+    );
 
-  const loadedPetList = await waitForElement(() => getByTestId("loaded"));
-  expect(loadedPetList).toBeInTheDocument();
+    expect(getByTestId("loading")).toBeInTheDocument();
+
+    const loadedPetList = await waitForElement(() => getByTestId("loaded"));
+    expect(loadedPetList).toBeInTheDocument();
+    expect(getAllPets).toHaveBeenCalledTimes(1);
+  });
 });

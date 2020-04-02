@@ -6,8 +6,6 @@ import { getAllPets } from "../../api/petRequests";
 
 jest.mock("../../api/petRequests", () => ({ getAllPets: jest.fn() }));
 
-afterEach(cleanup);
-
 const pets = [
   {
     id: "5e669d801dbdd96036ec3b8f",
@@ -47,43 +45,45 @@ const pets = [
   }
 ];
 
-// test("should render employee dashboard page", () => {
-//   const { getByTestId } = render(<EmployeeDashboard />);
-//   const empDash = getByTestId("empdash");
-//   expect(empDash).toBeInTheDocument();
-// });
+describe("<EmployeeDashboard />", () => {
+  afterEach(() => {
+    cleanup;
+    jest.resetAllMocks();
+  });
 
-test("should render employee dashboard with mock resolved API", async () => {
-  getAllPets.mockImplementation(() => Promise.resolve(pets));
+  test("should render employee dashboard with mock resolved API", async () => {
+    getAllPets.mockImplementation(() => Promise.resolve(pets));
 
-  const { getByTestId } = render(
-    <Router>
-      <EmployeeDashboard />
-    </Router>
-  );
+    const { getByTestId } = render(
+      <Router>
+        <EmployeeDashboard />
+      </Router>
+    );
 
-  expect(getByTestId("loading")).toBeInTheDocument();
+    expect(getByTestId("loading")).toBeInTheDocument();
 
-  const loadedPetList = await waitForElement(() => getByTestId("loadedList"));
-  expect(loadedPetList).toBeInTheDocument();
-  expect(getAllPets).toHaveBeenCalledTimes(1);
-});
+    const loadedPetList = await waitForElement(() => getByTestId("loadedList"));
+    expect(loadedPetList).toBeInTheDocument();
+    expect(getAllPets).toHaveBeenCalledTimes(1);
+  });
 
-test("should render employee dashboard with mock rejected API", async () => {
-  const NetworkError = {
-    Error: "Network Error"
-  };
+  test("should render employee dashboard with mock rejected API", async () => {
+    const NetworkError = {
+      Error: "Network Error"
+    };
 
-  getAllPets.mockImplementation(() => Promise.reject(NetworkError));
+    getAllPets.mockImplementation(() => Promise.reject(NetworkError));
 
-  const { getByTestId } = render(
-    <Router>
-      <EmployeeDashboard />
-    </Router>
-  );
+    const { getByTestId } = render(
+      <Router>
+        <EmployeeDashboard />
+      </Router>
+    );
 
-  expect(getByTestId("loading")).toBeInTheDocument();
+    expect(getByTestId("loading")).toBeInTheDocument();
 
-  const loadedPetList = await waitForElement(() => getByTestId("loadedList"));
-  expect(loadedPetList).toBeInTheDocument();
+    const loadedPetList = await waitForElement(() => getByTestId("loadedList"));
+    expect(loadedPetList).toBeInTheDocument();
+    expect(getAllPets).toHaveBeenCalledTimes(1);
+  });
 });
