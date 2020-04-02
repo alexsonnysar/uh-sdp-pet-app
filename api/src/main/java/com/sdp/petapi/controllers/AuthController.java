@@ -31,16 +31,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 	@Autowired
-	AuthenticationManager authenticationManager;
+	transient AuthenticationManager authenticationManager;
 
 	@Autowired
-	UserService userService;
+	transient UserService userService;
 
 	@Autowired
-	PasswordEncoder encoder;
+	transient PasswordEncoder encoder;
 
 	@Autowired
-	JwtUtils jwtUtils;
+	transient JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
 	public LoginResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {

@@ -23,7 +23,7 @@ import com.sdp.petapi.services.RequestsService;
 public class RequestsController {
 
   @Autowired
-  private RequestsService reqService;
+  transient RequestsService reqService;
 
   @GetMapping
   public List<Requests> getAllRequests() {

@@ -13,7 +13,7 @@ import com.sdp.petapi.models.Pet;
 public class PetService {
 
   @Autowired
-  private PetDao petDao;
+  transient PetDao petDao;
 
   public List<Pet> getAllPets() {
     return petDao.getAllPets();

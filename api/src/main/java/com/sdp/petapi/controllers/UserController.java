@@ -27,7 +27,7 @@ import com.sdp.petapi.services.UserService;
 public class UserController {
 
   @Autowired
-  private UserService userService;
+  transient UserService userService;
 
   @GetMapping
   @PreAuthorize("hasRole('Employee')")
