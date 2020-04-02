@@ -23,7 +23,7 @@ const PetListItem = ({ pet, removePet }) => {
     axios({
       method: "put",
       url: `http://localhost:8080/pet/${id}`,
-      headers: headers,
+      headers,
       data: petData
     })
       .then(response => console.log(response))
@@ -80,8 +80,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ListItemLink = props => {
-  return <ListItem button component="a" {...props} />;
-};
+const ListItemLink = props => <ListItem button component="a" {...props} />;
 
 export default PetListItem;

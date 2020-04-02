@@ -37,8 +37,8 @@ const pets = [
   }
 ];
 
-export const fetchData = url => {
-  return new Promise((resolve, reject) => {
+export const fetchData = url =>
+  new Promise((resolve, reject) => {
     console.log(pets);
     process.nextTick(() =>
       pets
@@ -48,4 +48,3 @@ export const fetchData = url => {
           })
     );
   });
-};

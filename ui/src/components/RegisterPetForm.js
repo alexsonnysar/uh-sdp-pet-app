@@ -47,7 +47,7 @@ const RegisterPetForm = () => {
     axios({
       method: "post",
       url: "http://localhost:8080/pet",
-      headers: headers,
+      headers,
       data: petData
     })
       .then(response => {

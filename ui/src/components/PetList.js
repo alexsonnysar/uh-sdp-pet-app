@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import PetListItem from "./PetListItem";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import PetListItem from "./PetListItem";
 
 const PetList = ({ heading, petList, deletePet }) => {
   const classes = useStyles();

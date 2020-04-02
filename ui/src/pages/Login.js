@@ -1,6 +1,6 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
 import { makeStyles } from "@material-ui/core/styles";
+import LoginForm from "../components/LoginForm";
 
 const Login = () => {
   const classes = useStyles();
