@@ -41,7 +41,6 @@ const LoginForm = () => {
   };
 
   const handleChange = e => {
-    console.log(e.target.id);
     setFormData({
       ...formData,
       [e.target.id]: e.target.value

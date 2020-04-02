@@ -44,6 +44,5 @@ test("click on register button", () => {
 
   const submit = getByTestId("submit");
   fireEvent.click(submit);
-
   expect(localStorage.getItem("jwt")).toEqual(null);
 });
