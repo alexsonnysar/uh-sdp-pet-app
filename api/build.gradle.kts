@@ -4,7 +4,8 @@ plugins {
   id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	id("io.freefair.lombok") version "5.0.0-rc2"
 	
-  jacoco	
+  jacoco
+  pmd
 }       
 
 repositories {
@@ -57,6 +58,10 @@ sourceSets {
 
 val test by tasks.getting(Test::class) {
 	useJUnitPlatform {}
+}
+
+pmd {
+  isIgnoreFailures = false
 }
 
 defaultTasks("clean", "test", "jacocoTestReport")
