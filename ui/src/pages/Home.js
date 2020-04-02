@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 import PetCardList from "../components/PetCardList";
-import { getAllPets } from "../api/petRequests";
+import getAllPets from "../api/petRequests";
+
+const useStyles = makeStyles({
+  progress: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
 
 const Home = () => {
   const url = "http://localhost:8080/pet";
@@ -32,13 +40,5 @@ const Home = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles({
-  progress: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
 
 export default Home;

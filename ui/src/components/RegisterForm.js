@@ -5,6 +5,23 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    "& > *": {
+      margin: theme.spacing(1)
+    },
+    width: "20rem",
+    display: "flex",
+    flexDirection: "column"
+  },
+  button: {
+    color: "primary"
+  },
+  text: {
+    textAlign: "center"
+  }
+}));
+
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -126,22 +143,5 @@ const RegisterForm = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    "& > *": {
-      margin: theme.spacing(1)
-    },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column"
-  },
-  button: {
-    color: "primary"
-  },
-  text: {
-    textAlign: "center"
-  }
-}));
 
 export default RegisterForm;

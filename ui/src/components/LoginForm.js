@@ -5,6 +5,23 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    "& > *": {
+      margin: theme.spacing(1)
+    },
+    width: "20rem",
+    display: "flex",
+    flexDirection: "column"
+  },
+  button: {
+    color: "primary"
+  },
+  text: {
+    textAlign: "center"
+  }
+}));
+
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -22,7 +39,7 @@ const LoginForm = () => {
       headers: { "Content-Type": "application/json" }
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         window.localStorage.setItem("jwt", response.data.jwt);
         window.localStorage.setItem("roles", response.data.roles);
         if (localStorage.getItem("roles") === "ROLE_User") {
@@ -31,10 +48,10 @@ const LoginForm = () => {
           window.location.replace("http://localhost:3000/employee-dashboard");
         }
       })
-      .catch(error => {
-        console.log(error);
-        alert("Incorrect Username or Password");
-      })
+      .catch(
+        // (error) => { console.log(error);
+        alert("Incorrect Username or Password")
+      )
       .finally(() => {
         setLoading(false);
       });
@@ -87,22 +104,5 @@ const LoginForm = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    "& > *": {
-      margin: theme.spacing(1)
-    },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column"
-  },
-  button: {
-    color: "primary"
-  },
-  text: {
-    textAlign: "center"
-  }
-}));
 
 export default LoginForm;

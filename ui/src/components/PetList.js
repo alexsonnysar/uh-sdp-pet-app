@@ -5,6 +5,22 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import PetListItem from "./PetListItem";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    maxWidth: "95%",
+    minWidth: 320,
+    flexBasis: "auto"
+  },
+  title: {
+    margin: theme.spacing(4, 0, 2)
+  },
+  paper: {
+    maxHeight: 555,
+    overflow: "auto"
+  }
+}));
+
 const PetList = ({ heading, petList, deletePet }) => {
   const classes = useStyles();
   return (
@@ -22,21 +38,5 @@ const PetList = ({ heading, petList, deletePet }) => {
     </div>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    maxWidth: "95%",
-    minWidth: 320,
-    flexBasis: "auto"
-  },
-  title: {
-    margin: theme.spacing(4, 0, 2)
-  },
-  paper: {
-    maxHeight: 555,
-    overflow: "auto"
-  }
-}));
 
 export default PetList;

@@ -12,6 +12,20 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 
+const useStyles = makeStyles({
+  root: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    maxWidth: 170,
+    minWidth: 170
+  },
+  media: {
+    height: 120
+  }
+});
+
 const PetCard = ({ pet }) => {
   const { name, type } = pet;
   const classes = useStyles();
@@ -53,19 +67,5 @@ const PetCard = ({ pet }) => {
     </Card>
   );
 };
-
-const useStyles = makeStyles({
-  root: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 5,
-    marginBottom: 5,
-    maxWidth: 170,
-    minWidth: 170
-  },
-  media: {
-    height: 120
-  }
-});
 
 export default PetCard;

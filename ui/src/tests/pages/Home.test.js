@@ -2,7 +2,7 @@ import React from "react";
 import { render, cleanup, waitForElement } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Home from "../../pages/Home";
-import { getAllPets } from "../../api/petRequests";
+import getAllPets from "../../api/petRequests";
 
 jest.mock("../../api/petRequests", () => ({ getAllPets: jest.fn() }));
 
@@ -47,7 +47,7 @@ const pets = [
 
 describe("<Home />", () => {
   afterEach(() => {
-    cleanup;
+    cleanup();
     jest.resetAllMocks();
   });
 
