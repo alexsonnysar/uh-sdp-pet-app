@@ -58,6 +58,7 @@ const LoginForm = () => {
       <form className={classes.container}>
         <h1 align="center">Log In</h1>
         <TextField
+          data-testid="email"
           id="email"
           label="Email"
           variant="outlined"
