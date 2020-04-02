@@ -48,32 +48,14 @@ const Navigation = () => {
               </Link>
             </React.Fragment>
           ) : (
-            <Link to="/employee-dashboard" className={classes.button}>
-              <Button onClick={Logout} className={classes.button}>
-                Logout
-              </Button>
-            </Link>
-          )}
-
-          {/* {!isAuthenticated && (
-            <Button color="inherit" onClick={() => loginWithRedirect({})}>
-              Log in
+            <Button
+              onClick={Logout}
+              className={classes.button}
+              data-testid="logout"
+            >
+              Logout
             </Button>
           )}
-
-          {isAuthenticated && (
-            <span>
-              <Button color="inherit" href="/profile">
-                Profile
-              </Button>
-            </span>
-          )}
-
-          {isAuthenticated && (
-            <Button color="inherit" onClick={() => logout()}>
-              Log out
-            </Button>
-          )} */}
         </Toolbar>
       </AppBar>
     </div>

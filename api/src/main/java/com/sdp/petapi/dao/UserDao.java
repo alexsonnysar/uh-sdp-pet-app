@@ -40,18 +40,10 @@ public class UserDao {
     if (user == null) return null;
 
     User dbUser = getUserById(user.getId());
-    user.setPassHash(dbUser.getPassHash());
-    user.setEmail(dbUser.getEmail());
-
-    if (user.getFavorites() == null) {
-      user.setFavorites(dbUser.getFavorites());
-    }
-    if (user.getName() == null) {
-      user.setName(dbUser.getName());
-    }
-    if (user.getRecents() == null) {
-      user.setRecents(dbUser.getRecents());
-    }
+    if (!user.getEmail().equals(dbUser.getEmail())
+      || !Arrays.equals(user.getFavorites(),dbUser.getFavorites())
+      || !Arrays.equals(user.getRecents(), dbUser.getRecents())
+      || user.isEmployee() != dbUser.isEmployee()) return null;
     
     return repository.save(user);
 
@@ -76,7 +68,7 @@ public class UserDao {
     if (pet == null || !pet.isActive()) return false;
 
     Boolean result = user.addToFavorites(petid);
-    if (result) putUser(user);
+    if (result) repository.save(user);
     return result;
   }
 
@@ -87,7 +79,7 @@ public class UserDao {
     if (!user.equals(userdb)) return false;
 
     Boolean result = user.removeFromFavorites(petid);
-    if (result) putUser(user);
+    if (result) repository.save(user);
     return result;
   }
 
@@ -101,7 +93,7 @@ public class UserDao {
     if (pet == null || !pet.isActive()) return false;
 
     Boolean result = user.addToRecents(petid);
-    if (result) putUser(user);
+    if (result) repository.save(user);
     return result;
   }
 

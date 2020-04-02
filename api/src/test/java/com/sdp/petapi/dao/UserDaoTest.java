@@ -141,12 +141,81 @@ public class UserDaoTest {
 
   @Test
   public void put_user_with_null_user_returns_null() {
-    webUser.setName("Aymen");
-    assertEquals(webUser.getName(), "Aymen");
-
     List<User> orig_user_list = userDao.getAllUsers();
 
     User updated_user = userDao.putUser(null);
+    List<User> updated_user_list = userDao.getAllUsers();
+
+    assertAll(
+      () -> assertNull(updated_user),
+      () -> assertEquals(updated_user_list, orig_user_list)
+    );
+  }
+
+  @Test
+  public void put_user_with_wrong_email_returns_null() {
+    webUser.setName("Aymen");
+    assertEquals(webUser.getName(), "Aymen");
+    webUser.setEmail("4321@mail.com");
+    assertEquals(webUser.getEmail(), "4321@mail.com");
+
+    List<User> orig_user_list = userDao.getAllUsers();
+
+    User updated_user = userDao.putUser(webUser);
+    List<User> updated_user_list = userDao.getAllUsers();
+
+    assertAll(
+      () -> assertNull(updated_user),
+      () -> assertEquals(updated_user_list, orig_user_list)
+    );
+  }
+
+  @Test
+  public void put_user_with_wrong_favorites_list_returns_null() {
+    webUser.setName("Aymen");
+    assertEquals(webUser.getName(), "Aymen");
+    webUser.setFavorites(new String[] {"pet1"});
+    assertArrayEquals(webUser.getFavorites(), new String[] {"pet1"});
+
+    List<User> orig_user_list = userDao.getAllUsers();
+
+    User updated_user = userDao.putUser(webUser);
+    List<User> updated_user_list = userDao.getAllUsers();
+
+    assertAll(
+      () -> assertNull(updated_user),
+      () -> assertEquals(updated_user_list, orig_user_list)
+    );
+  }
+
+  @Test
+  public void put_user_with_wrong_recents_list_returns_null() {
+    webUser.setName("Aymen");
+    assertEquals(webUser.getName(), "Aymen");
+    webUser.setRecents(new String[] {"pet1"});
+    assertArrayEquals(webUser.getRecents(), new String[] {"pet1"});
+
+    List<User> orig_user_list = userDao.getAllUsers();
+
+    User updated_user = userDao.putUser(webUser);
+    List<User> updated_user_list = userDao.getAllUsers();
+
+    assertAll(
+      () -> assertNull(updated_user),
+      () -> assertEquals(updated_user_list, orig_user_list)
+    );
+  }
+
+  @Test
+  public void put_user_with_webUser_acting_as_employee_returns_null() {
+    webUser.setName("Aymen");
+    assertEquals(webUser.getName(), "Aymen");
+    webUser.setEmployee(true);
+    assertTrue(webUser.isEmployee());
+
+    List<User> orig_user_list = userDao.getAllUsers();
+
+    User updated_user = userDao.putUser(webUser);
     List<User> updated_user_list = userDao.getAllUsers();
 
     assertAll(
@@ -450,5 +519,15 @@ public class UserDaoTest {
     User inserted_user = userRepository.save(webUser);
     assertEquals(webUser, inserted_user);
     assertEquals(userDao.getRecentPets("002"), Collections.singletonList(pet));
+  }
+
+  @Test
+  public void user_exists_by_email() {
+    assertTrue(userDao.existsByEmail("1234@mail.com"));
+  }
+
+  @Test
+  public void user_exists_by_nonexistent_email_returns_false() {
+    assertFalse(userDao.existsByEmail("4321@mail.com"));
   }
 }

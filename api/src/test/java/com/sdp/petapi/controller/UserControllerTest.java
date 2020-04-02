@@ -186,4 +186,13 @@ class UserControllerTest {
     assertEquals(list, Collections.singletonList(pet));
   }
 
+  @Test
+  public void user_exists_by_email() {
+    // Since the userDao is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.existsByEmail("1234@mail.com")).thenReturn(true);
+    Boolean resp = userController.existsByEmail("1234@mail.com");
+    assertTrue(resp);
+  }
+
 }
