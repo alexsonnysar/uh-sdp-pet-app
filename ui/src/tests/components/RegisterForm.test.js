@@ -1,43 +1,27 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import Adapter from "enzyme-adapter-react-16";
-import Enzyme from "enzyme";
 import { BrowserRouter as Router } from "react-router-dom";
 import RegisterForm from "../../components/RegisterForm";
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const formDataCorrect = {
-  name: "mockName",
-  password: "password",
-  passwordConfirm: "password"
-};
-
-const formDataInvalid = {
-  name: "mockName",
-  password: "password",
-  passwordConfirm: "paswrd"
-};
-
 describe("<RegisterForm", () => {
-  let wrapper;
-
-  const setState = jest.fn();
-  const useStateSpy = jest.spyOn(React, "useState");
-  useStateSpy.mockImplementation(init => [init, setState]);
-
-  beforeEach(() => {
-    wrapper = Enzyme.mount(
-      Enzyme.shallow(
-        <Router>
-          <RegisterForm />
-        </Router>
-      ).get(0)
+  const setup = () => {
+    const utils = render(
+      <Router>
+        <RegisterForm />
+      </Router>
     );
-  });
+    const input = utils.getByLabelText("Name");
+    return {
+      input,
+      ...utils
+    };
+  };
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  test("handleChange should change formData", () => {
+    const { input } = setup();
+    fireEvent.change(input, { target: { value: "Roger" } });
+
+    expect(input.value).toBe("Roger");
   });
 
   test("should render register page", () => {
