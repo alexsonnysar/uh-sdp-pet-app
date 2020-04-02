@@ -48,11 +48,13 @@ const Navigation = () => {
               </Link>
             </React.Fragment>
           ) : (
-            <Link to="/employee-dashboard" className={classes.button}>
-              <Button onClick={Logout} className={classes.button}>
-                Logout
-              </Button>
-            </Link>
+            <Button
+              onClick={Logout}
+              className={classes.button}
+              data-testid="logout"
+            >
+              Logout
+            </Button>
           )}
         </Toolbar>
       </AppBar>
