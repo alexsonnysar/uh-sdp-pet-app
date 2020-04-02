@@ -74,13 +74,6 @@ class UserControllerTest {
   }
 
   @Test
-  public void nonexistent_role_exists_by_email_returns_false() {
-    when(userService.existsByEmail("1234@mail.com")).thenReturn(true);
-    Boolean resp = userController.existsByEmail("1234@mail.com");
-    assertTrue(resp);
-  }
-
-  @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
   public void get_user_by_id_employee_gets_other() {
     String id = "002";
