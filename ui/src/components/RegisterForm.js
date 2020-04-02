@@ -115,6 +115,7 @@ const RegisterForm = () => {
           className={classes.button}
           onClick={() => handleSubmit()}
           disabled={loading}
+          data-testid="submit"
         >
           Complete Registration
         </Button>

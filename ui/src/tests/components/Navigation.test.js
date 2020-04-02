@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  render,
-  getAllByText,
-  getByText,
-  fireEvent
-} from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Navigation from "../../components/Navigation";
-import Home from "../../pages/Home";
 
 test("should render navigation", () => {
   const { getByTestId } = render(

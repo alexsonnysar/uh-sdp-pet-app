@@ -6,7 +6,10 @@ import { getAllPets } from "../../api/petRequests";
 
 jest.mock("../../api/petRequests", () => ({ getAllPets: jest.fn() }));
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup;
+  jest.resetAllMocks();
+});
 
 const pets = [
   {
@@ -47,12 +50,6 @@ const pets = [
   }
 ];
 
-// test("should render employee dashboard page", () => {
-//   const { getByTestId } = render(<EmployeeDashboard />);
-//   const empDash = getByTestId("empdash");
-//   expect(empDash).toBeInTheDocument();
-// });
-
 test("should render employee dashboard with mock resolved API", async () => {
   getAllPets.mockImplementation(() => Promise.resolve(pets));
 
@@ -86,4 +83,5 @@ test("should render employee dashboard with mock rejected API", async () => {
 
   const loadedPetList = await waitForElement(() => getByTestId("loadedList"));
   expect(loadedPetList).toBeInTheDocument();
+  expect(getAllPets).toHaveBeenCalledTimes(1);
 });

@@ -6,7 +6,10 @@ import { getAllPets } from "../../api/petRequests";
 
 jest.mock("../../api/petRequests", () => ({ getAllPets: jest.fn() }));
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup;
+  jest.resetAllMocks();
+});
 
 const pets = [
   {
@@ -80,4 +83,5 @@ test("should render user dashboard with mock rejected API", async () => {
 
   const loadedPetList = await waitForElement(() => getByTestId("loaded"));
   expect(loadedPetList).toBeInTheDocument();
+  expect(getAllPets).toHaveBeenCalledTimes(1);
 });
