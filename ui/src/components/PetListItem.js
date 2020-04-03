@@ -8,6 +8,12 @@ import UpdateRoundedIcon from "@material-ui/icons/UpdateRounded";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1)
+  }
+}));
+
 const PetListItem = ({ pet, removePet }) => {
   const { name, type, id } = pet;
   const [loading, setLoading] = useState(false);
@@ -19,19 +25,27 @@ const PetListItem = ({ pet, removePet }) => {
   };
 
   const CallDeletePet = petData => {
-    console.log("pet was deleted");
     axios({
       method: "put",
       url: `http://localhost:8080/pet/${id}`,
-      headers: headers,
+      headers,
       data: petData
     })
-      .then(response => console.log(response))
-      .catch(error => console.log(error));
+      .then(
+        alert(
+          `${petData.name} is gone now...\n Please tell johnny he went to live with uncle Ben on the farm.`
+        )
+        // (response) => console.log(response)
+      )
+      .catch(
+        alert(
+          "Hey 🧐! Who let you in here? We are not deleting any pets till we get this sorted out.😤"
+        )
+        // (error) => console.log(error)
+      );
   };
 
   const RemoveThisPet = () => {
-    console.log("petListItem:", id);
     removePet(id);
   };
   const handleDelete = () => {
@@ -74,14 +88,6 @@ const PetListItem = ({ pet, removePet }) => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  }
-}));
-
-const ListItemLink = props => {
-  return <ListItem button component="a" {...props} />;
-};
+const ListItemLink = props => <ListItem button component="a" {...props} />;
 
 export default PetListItem;

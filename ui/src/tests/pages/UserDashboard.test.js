@@ -1,8 +1,8 @@
 import React from "react";
 import { render, cleanup, waitForElement } from "@testing-library/react";
-import UserDashboard from "../../pages/UserDashboard";
 import { BrowserRouter as Router } from "react-router-dom";
-import { getAllPets } from "../../api/petRequests";
+import UserDashboard from "../../pages/UserDashboard";
+import getAllPets from "../../api/petRequests";
 
 jest.mock("../../api/petRequests", () => ({ getAllPets: jest.fn() }));
 
@@ -47,7 +47,7 @@ const pets = [
 
 describe("<UserDashboard />", () => {
   afterEach(() => {
-    cleanup;
+    cleanup();
     jest.resetAllMocks();
   });
 

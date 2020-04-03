@@ -9,6 +9,9 @@ Application Stack:
 
 ## To Get Started
 
+To run the backend code, you will need to have `gradle` installed. You may go [here](https://gradle.org/install/)
+to install it for your respective OS.
+
 Here are a couple tips to get you up and running quickly!
 
 ```bash
@@ -28,7 +31,7 @@ Edit the `application.properties` file with your favorite editor and add your Mo
 spring.data.mongodb.uri=<your-URI>
 ```
 
-After adding MongoDB URI then run (from the ```resources``` directory):
+After adding MongoDB URI then run (from the `resources` directory):
 
 ```bash
 cd ../../../../ui/
@@ -39,15 +42,20 @@ yarn dev
 When running `yarn dev` it will run the frontend and backend for you using the [concurrently](https://github.com/kimmobrunfeldt/concurrently) dependency, therefore
 you will not need to open another terminal window to start backend.
 
-NOTE: If you see a message `No pets to show :(` when running `yarn dev` for the first time, refresh the page and you should see cards at [homepage](localhost:3000)
-
 ## Extra Commands
 
 If you would like to run the backend separately from the terminal, you may run (from the `uh-sdp-pet-app` directory):
 
 ```bash
 cd api
-./gradlew bootRun
+gradle bootRun
+```
+
+And in another terminal window, to run frontend code you will run (from `uh-sdp-pet-app` directory):
+
+```bash
+cd ui
+yarn start
 ```
 
 NOTE: If you are using VScode and don't want to run the backend in the terminal, you can install the [Spring Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)
@@ -58,5 +66,5 @@ If you would like to run all default tasks for gradle:
 From the `api` folder run:
 
 ```bash
-./gradlew
+gradle
 ```

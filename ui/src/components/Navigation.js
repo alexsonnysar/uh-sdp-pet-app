@@ -8,6 +8,25 @@ const Logout = () => {
   window.location.replace("http://localhost:3000/");
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  },
+  button: {
+    color: "inherit",
+    textDecorationLine: "none",
+    "&:hover": {
+      color: "white"
+    }
+  }
+}));
+
 const Navigation = () => {
   const classes = useStyles();
 
@@ -39,14 +58,14 @@ const Navigation = () => {
           )}
 
           {localStorage.getItem("jwt") === null ? (
-            <React.Fragment>
+            <>
               <Link to="/login" className={classes.button}>
                 <Button className={classes.button}>Login</Button>
               </Link>
               <Link to="/register" className={classes.button}>
                 <Button className={classes.button}>Register</Button>
               </Link>
-            </React.Fragment>
+            </>
           ) : (
             <Button
               onClick={Logout}
@@ -61,24 +80,5 @@ const Navigation = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  },
-  button: {
-    color: "inherit",
-    textDecorationLine: "none",
-    "&:hover": {
-      color: "white"
-    }
-  }
-}));
 
 export default Navigation;
