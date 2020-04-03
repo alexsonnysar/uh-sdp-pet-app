@@ -113,8 +113,6 @@ public class RequestsDao {
   }
 
   public Requests cancelRequest(Requests req) {
-    // String petid = req.getPetid();
-    // String userid = req.getUserid();
 
     if (!repository.findAll()
       .stream()
