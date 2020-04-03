@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
-import PetCardSlider from "../components/PetCardSlider";
 import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { getAllPets } from "../api/petRequests";
+import PetCardSlider from "../components/PetCardSlider";
+import getAllPets from "../api/petRequests";
+
+const useStyles = makeStyles({
+  root: {
+    alignContent: "left"
+  },
+  progress: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
 
 const UserDashboard = () => {
   const classes = useStyles();
@@ -34,16 +45,5 @@ const UserDashboard = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles({
-  root: {
-    alignContent: "left"
-  },
-  progress: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
 
 export default UserDashboard;

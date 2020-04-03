@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import { TextField, Button, makeStyles, MenuItem } from "@material-ui/core";
 import axios from "axios";
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    "& > *": {
+      margin: theme.spacing(1)
+    },
+    width: "20rem",
+    display: "flex",
+    flexDirection: "column"
+  },
+  button: {
+    color: "primary"
+  },
+  text: {
+    textAlign: "center"
+  }
+}));
+
 const RegisterPetForm = () => {
   const [loading, setLoading] = useState(false);
   const initialState = {
@@ -47,7 +64,7 @@ const RegisterPetForm = () => {
     axios({
       method: "post",
       url: "http://localhost:8080/pet",
-      headers: headers,
+      headers,
       data: petData
     })
       .then(response => {
@@ -179,22 +196,5 @@ const RegisterPetForm = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    "& > *": {
-      margin: theme.spacing(1)
-    },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column"
-  },
-  button: {
-    color: "primary"
-  },
-  text: {
-    textAlign: "center"
-  }
-}));
 
 export default RegisterPetForm;

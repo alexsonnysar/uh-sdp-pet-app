@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAllPets } from "../../api/petRequests";
+import getAllPets from "../../api/petRequests";
 
 jest.mock("axios");
 
