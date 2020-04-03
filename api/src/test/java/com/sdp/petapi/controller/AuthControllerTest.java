@@ -33,23 +33,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 class AuthControllerTest {
 	Pet pet;
-	User employee, webUser;
+	transient User webUser;
 
 	@Mock
-	UserService userService;
+	transient UserService userService;
 
 	@Mock
-	PasswordEncoder passwordEncoder;
+	transient PasswordEncoder passwordEncoder;
 
 	@Mock
-	JwtUtils jwtUtils;
+	transient JwtUtils jwtUtils;
 
 	@Mock
-	AuthenticationManager authenticationManager;
+	transient AuthenticationManager authenticationManager;
 
 	// makes a authController whose userService is the mock above
 	@InjectMocks
-	AuthController authController;
+	transient AuthController authController;
 
 	@Test
 	public void signup_new_user() {

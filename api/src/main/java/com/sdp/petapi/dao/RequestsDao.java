@@ -113,19 +113,19 @@ public class RequestsDao {
   }
 
   public Requests cancelRequest(Requests req) {
-    String petid = req.getPetid();
-    String userid = req.getUserid();
+    // String petid = req.getPetid();
+    // String userid = req.getUserid();
 
     if (!repository.findAll()
       .stream()
       .anyMatch(
-        r -> r.getPetid().equals(petid)
-        && !r.getUserid().equals(userid)
+        r -> r.getPetid().equals(req.getPetid())
+        && !r.getUserid().equals(req.getUserid())
         && !r.getStatus().equals(CANCELED_STRING)
       )
     ) {
       /* To undo Conrad's earlier comment */
-      Pet pet = petDao.getPetById(petid);
+      Pet pet = petDao.getPetById(req.getPetid());
       pet.setActive(true);
       pet.setAdopted(false);
       petDao.putPetByRequest(pet);
