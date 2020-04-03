@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import com.sdp.petapi.models.LoginRequest;
 import com.sdp.petapi.models.LoginResponse;
-import com.sdp.petapi.models.Message;
+import com.sdp.petapi.models.MessageResponse;
 import com.sdp.petapi.models.SignupRequest;
 import com.sdp.petapi.models.User;
 import com.sdp.petapi.security.JwtUtils;
@@ -63,10 +63,10 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public Message registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	public MessageResponse registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
 		if (userService.existsByEmail(signUpRequest.getEmail())) {
-			return new Message("Error: Email is already in use!");
+			return new MessageResponse("Error: Email is already in use!");
 		}
 
 		// Create new user's account
@@ -75,6 +75,6 @@ public class AuthController {
 
 		userService.createUser(user);
 
-		return new Message("User registered successfully!");
+		return new MessageResponse("User registered successfully!");
 	}
 }

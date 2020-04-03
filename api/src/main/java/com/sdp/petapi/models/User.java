@@ -22,6 +22,8 @@ public @Data class User {
   private String[] favorites;
   private String[] recents;
 
+  private static final int RECENT_SIZE = 10;
+
   public User(String email, String passHash) {
     this.email = email;
     this.passHash = passHash;
@@ -68,7 +70,7 @@ public @Data class User {
     Queue<String> temp = new LinkedList<String>(Arrays.asList(recents));
     if (temp.contains(petid)) return false;
 
-    if (temp.size() == 10) temp.remove();
+    if (temp.size() == RECENT_SIZE) temp.remove();
     temp.add(petid);
     recents = new String[temp.size()];
     temp.toArray(recents);
