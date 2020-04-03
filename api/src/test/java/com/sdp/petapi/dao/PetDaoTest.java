@@ -92,7 +92,7 @@ public class PetDaoTest {
     List<Pet> orig_pet_list = petDao.getAllPets();
 
     Pet inserted_pet = petDao.createPet(null);
- 
+
     assertNull(inserted_pet);
     assertEquals(petDao.getAllPets(), orig_pet_list);
   }
@@ -104,21 +104,21 @@ public class PetDaoTest {
     List<Pet> orig_pet_list = petDao.getAllPets();
 
     Pet inserted_pet = petDao.createPet(pet);
-    
+
     assertNull(inserted_pet);
     assertEquals(petDao.getAllPets(), orig_pet_list);
   }
 
   @Test
   public void put_pet() {
-    pet.setName("Aymen");
-    assertEquals(pet.getName(), "Aymen");
+    pet.setName("Rad Park");
+    assertEquals(pet.getName(), "Rad Park");
 
     List<Pet> orig_pet_list = petDao.getAllPets();
 
     Pet updated_pet = petDao.putPet(pet);
     List<Pet> updated_pet_list = petDao.getAllPets();
-  
+
     assertEquals(pet, updated_pet);
     assertEquals(updated_pet_list.size(), orig_pet_list.size());
     assertFalse(orig_pet_list.contains(pet));
@@ -143,7 +143,7 @@ public class PetDaoTest {
     assertEquals(pet.getName(), "Aymen");
     pet.setId(null);
     assertNull(pet.getId());
-    
+
     List<Pet> orig_pet_list = petDao.getAllPets();
 
     Pet updated_pet = petDao.putPet(pet);
@@ -159,7 +159,7 @@ public class PetDaoTest {
     String id = "001";
 
     List<Pet> orig_pet_list = petDao.getAllPets();
-    
+
     Pet deleted_pet = petDao.deletePet(id);
     List<Pet> updated_pet_list = petDao.getAllPets();
 
@@ -172,7 +172,7 @@ public class PetDaoTest {
   @Test
   public void delete_pet_with_null_id_returns_null() {
     List<Pet> orig_pet_list = petDao.getAllPets();
-    
+
     Pet deleted_pet = petDao.deletePet(null);
     List<Pet> updated_pet_list = petDao.getAllPets();
 
@@ -185,7 +185,7 @@ public class PetDaoTest {
     String id = "010";
 
     List<Pet> orig_pet_list = petDao.getAllPets();
-    
+
     Pet deleted_pet = petDao.deletePet(id);
     List<Pet> updated_pet_list = petDao.getAllPets();
 
@@ -195,18 +195,18 @@ public class PetDaoTest {
 
   @Test
   public void put_pet_by_request() {
-    pet.setName("Aymen");
-    assertEquals(pet.getName(), "Aymen");
+    pet.setName("Josie");
+    assertEquals(pet.getName(), "Josie");
 
     List<Pet> orig_pet_list = petDao.getAllPets();
 
     Pet updated_pet = petDao.putPetByRequest(pet);
     List<Pet> updated_pet_list = petDao.getAllPets();
-  
+
     assertEquals(pet, updated_pet);
     assertEquals(petDao.getAllPets().size(), orig_pet_list.size());
     assertFalse(orig_pet_list.contains(pet));
     assertTrue(updated_pet_list.contains(pet));
   }
-  
+
 }

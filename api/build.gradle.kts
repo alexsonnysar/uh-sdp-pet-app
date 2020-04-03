@@ -28,10 +28,11 @@ dependencies {
   testImplementation("org.springframework.security:spring-security-test")
   
   implementation("io.jsonwebtoken:jjwt-api:0.11.1")
-  runtime("io.jsonwebtoken:jjwt-impl:0.11.1")
+  implementation("io.jsonwebtoken:jjwt-impl:0.11.1")
             // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
             //'org.bouncycastle:bcprov-jdk15on:1.60',
-  runtime("io.jsonwebtoken:jjwt-jackson:0.11.1") // or 'io.jsonwebtoken:jjwt-gson:0.11.1' for gson
+  implementation("io.jsonwebtoken:jjwt-jackson:0.11.1") // or 'io.jsonwebtoken:jjwt-gson:0.11.1' for gson
+  
 }
 
 tasks {
@@ -64,4 +65,4 @@ pmd {
   isIgnoreFailures = false
 }
 
-defaultTasks("clean", "test", "jacocoTestReport")
+defaultTasks("clean", "test", "jacocoTestReport", "pmdMain")

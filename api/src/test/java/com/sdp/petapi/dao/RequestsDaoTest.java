@@ -24,23 +24,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class RequestsDaoTest {
 
   @Autowired
-  RequestsDao reqDao;
+  transient RequestsDao reqDao;
 
   @Autowired
-  PetDao petDao;
+  transient PetDao petDao;
 
   @Autowired
-  PetRepository petRepository;
+  transient PetRepository petRepository;
 
   @Autowired
-  UserRepository userRepository;
+  transient UserRepository userRepository;
 
   @Autowired
-  RequestsRepository reqRepository;
+  transient RequestsRepository reqRepository;
 
-  Pet pet, pet2;
-  User employee, webUser, webUser2;
-  Requests req, req2;
+ transient Pet pet, pet2;
+ transient User employee, webUser, webUser2;
+ transient Requests req, req2;
+
+  private static final String BADID = "010";
 
   @BeforeEach
   public void init() throws Exception {
@@ -51,14 +53,14 @@ public class RequestsDaoTest {
     petRepository.insert(pet);
     pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
     petRepository.insert(pet2);
-    
+
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     userRepository.insert(employee);
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
     userRepository.insert(webUser);
     webUser2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject2.json"), User.class);
     userRepository.insert(webUser2);
-    
+
     req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
     reqRepository.insert(req);
     req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
@@ -75,20 +77,18 @@ public class RequestsDaoTest {
   @Test
   public void get_all_requests() {
     List<Requests> actual_reqs = reqDao.getAllRequests();
-    assertEquals(Arrays.asList(new Requests[] {req, req2}), actual_reqs);
+    assertEquals(Arrays.asList(new Requests[] { req, req2 }), actual_reqs);
   }
 
   @Test
   public void get_good_request_by_id_returns_request() {
-    String id = "001";
-    Requests actual_req = reqDao.getRequestById(id);
+    Requests actual_req = reqDao.getRequestById(pet.getId());
     assertEquals(req, actual_req);
   }
 
   @Test
   public void get_request_by_bad_id_returns_null() {
-    String id = "010";
-    Requests actual_req = reqDao.getRequestById(id);
+    Requests actual_req = reqDao.getRequestById( BADID);
     assertNull(actual_req);
   }
 
@@ -101,51 +101,40 @@ public class RequestsDaoTest {
   @Test
   public void create_request() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
     Requests inserted_req = reqDao.createRequest(new Requests("002", "002"));
     List<Requests> updated_req_list = reqDao.getAllRequests();
     Pet updated_pet = petDao.getPetById("002");
     pet2.setActive(false);
     pet2.setAdopted(true);
-    assertAll(
-      () -> assertNotNull(inserted_req),
-      () -> assertNotNull(inserted_req.getId()),
-      () -> assertEquals(updated_req_list.size(), orig_req_list.size() + 1),
-      () -> assertFalse(orig_req_list.contains(inserted_req)),
-      () -> assertTrue(updated_req_list.contains(inserted_req)),
-      () -> assertTrue(pet2.isAdopted()),
-      () -> assertFalse(pet2.isActive()),
-      () -> assertEquals(updated_pet, pet2)
-    );
+    assertAll(() -> assertNotNull(inserted_req), () -> assertNotNull(inserted_req.getId()),
+        () -> assertEquals(updated_req_list.size(), orig_req_list.size() + 1),
+        () -> assertFalse(orig_req_list.contains(inserted_req)),
+        () -> assertTrue(updated_req_list.contains(inserted_req)), () -> assertTrue(pet2.isAdopted()),
+        () -> assertFalse(pet2.isActive()), () -> assertEquals(updated_pet, pet2));
   }
 
   @Test
   public void create_request_null_request_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
     Requests inserted_req = reqDao.createRequest(null);
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list)
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list));
   }
 
   @Test
   public void create_request_with_request_id_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
-    
-    req.setId("010");
-    assertEquals(req.getId(), "010");
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
+
+    req.setId(BADID);
+    assertEquals(req.getId(), BADID);
     Requests inserted_req = reqDao.createRequest(req);
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list)
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list));
   }
 
   @Test
@@ -154,69 +143,54 @@ public class RequestsDaoTest {
     new_req.setStatus("CANCELED");
     Requests req3 = reqRepository.insert(new_req);
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2, req3}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2, req3 }));
 
     Requests inserted_req = reqDao.createRequest(new Requests(null, "002"));
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list),
-      () -> assertFalse(orig_req_list.contains(inserted_req))
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list),
+        () -> assertFalse(orig_req_list.contains(inserted_req)));
   }
 
   @Test
   public void create_request_with_employee_id_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
     Requests inserted_req = reqDao.createRequest(new Requests("001", "002"));
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list)
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list));
   }
 
   @Test
   public void create_request_with_null_pet_id_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
     Requests inserted_req = reqDao.createRequest(new Requests("002", null));
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list)
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list));
   }
 
   @Test
   public void create_request_by_nonexistant_user_id_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
     Requests inserted_req = reqDao.createRequest(new Requests("009", "002"));
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list),
-      () -> assertFalse(orig_req_list.contains(inserted_req))
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list),
+        () -> assertFalse(orig_req_list.contains(inserted_req)));
   }
 
   @Test
   public void create_request_with_nonexistent_pet_id_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
-    Requests inserted_req = reqDao.createRequest(new Requests("003", "010"));
+    Requests inserted_req = reqDao.createRequest(new Requests("003", BADID));
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list),
-      () -> assertFalse(orig_req_list.contains(inserted_req))
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list),
+        () -> assertFalse(orig_req_list.contains(inserted_req)));
   }
 
   @Test
@@ -228,15 +202,12 @@ public class RequestsDaoTest {
     assertEquals(pet2, inserted_pet);
 
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2 }));
 
     Requests inserted_req = reqDao.createRequest(new Requests("003", "002"));
     List<Requests> updated_req_list = reqDao.getAllRequests();
-    assertAll(
-      () -> assertNull(inserted_req),
-      () -> assertEquals(updated_req_list, orig_req_list),
-      () -> assertFalse(orig_req_list.contains(inserted_req))
-    );
+    assertAll(() -> assertNull(inserted_req), () -> assertEquals(updated_req_list, orig_req_list),
+        () -> assertFalse(orig_req_list.contains(inserted_req)));
   }
 
   @Test
@@ -249,9 +220,9 @@ public class RequestsDaoTest {
     Requests req4 = reqRepository.insert(new_req2);
     Requests req5 = reqDao.createRequest(new Requests("003", "002"));
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    assertEquals(orig_req_list, Arrays.asList(new Requests[] {req, req2, req3, req4, req5}));
+    assertEquals(orig_req_list, Arrays.asList(new Requests[] { req, req2, req3, req4, req5 }));
     petDao.putPet(pet2);
-    
+
     Requests inserted_req = reqDao.createRequest(new Requests("003", "002"));
     List<Requests> updated_req_list = reqDao.getAllRequests();
     assertNull(inserted_req);
@@ -412,54 +383,44 @@ public class RequestsDaoTest {
     assertEquals(orig_req_list, updated_req_list);
   }
 
-
   @Test
   public void delete_request() {
     String id = req.getId();
 
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    
+
     Requests deleted_req = reqDao.deleteRequest(id);
     List<Requests> updated_req_list = reqDao.getAllRequests();
 
-    assertAll(
-      () -> assertEquals(req, deleted_req),
-      () -> assertTrue(orig_req_list.contains(req)),
-      () -> assertFalse(updated_req_list.contains(req)),
-      () -> assertEquals(orig_req_list.size(), updated_req_list.size() + 1)
-    );
+    assertAll(() -> assertEquals(req, deleted_req), () -> assertTrue(orig_req_list.contains(req)),
+        () -> assertFalse(updated_req_list.contains(req)),
+        () -> assertEquals(orig_req_list.size(), updated_req_list.size() + 1));
   }
 
   @Test
   public void delete_request_with_bad_id_returns_null() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
-    
+
     Requests deleted_req = reqDao.deleteRequest(null);
     List<Requests> updated_req_list = reqDao.getAllRequests();
 
-    assertAll(
-      () -> assertNull(deleted_req),
-      () -> assertEquals(orig_req_list, updated_req_list)
-    );
+    assertAll(() -> assertNull(deleted_req), () -> assertEquals(orig_req_list, updated_req_list));
   }
 
   @Test
   public void approve_request_other_requests_for_pet_exist() {
     Requests new_req = new Requests("003", "001");
     new_req.setStatus("CANCELED");
-    reqRepository.saveAll(Arrays.asList(new Requests[] {
-      new Requests("001", "002"),
-      new Requests("002", "002"),
-      new_req
-    }));
+    reqRepository
+        .saveAll(Arrays.asList(new Requests[] { new Requests("001", "002"), new Requests("002", "002"), new_req }));
     List<Requests> orig_req_list = reqDao.getAllRequests();
     assertTrue(orig_req_list.contains(req));
-    
+
     req.setStatus("APPROVED");
     assertEquals(req.getStatus(), "APPROVED");
     req2.setStatus("CANCELED");
     assertEquals(req2.getStatus(), "CANCELED");
-    
+
     Requests approved_req = reqDao.approveRequest(req);
     assertEquals(approved_req, req);
 
@@ -475,13 +436,13 @@ public class RequestsDaoTest {
   public void approve_request_no_other_requests_for_pet() {
     req.setStatus("CANCELED");
     assertEquals(req.getStatus(), "CANCELED");
-    
+
     Requests canceled_req = reqDao.cancelRequest(req);
     assertEquals(canceled_req, req);
-    
+
     List<Requests> orig_req_list = reqDao.getAllRequests();
     assertTrue(orig_req_list.contains(req));
-    
+
     req2.setStatus("APPROVED");
     assertEquals(req2.getStatus(), "APPROVED");
 
@@ -500,7 +461,7 @@ public class RequestsDaoTest {
   public void cancel_request_other_requests_for_pet_exist() {
     List<Requests> orig_req_list = reqDao.getAllRequests();
     assertTrue(orig_req_list.contains(req));
-    
+
     req.setStatus("CANCELED");
     Requests canceled_req = reqDao.cancelRequest(req);
     assertEquals(canceled_req, req);
@@ -514,15 +475,11 @@ public class RequestsDaoTest {
 
   @Test
   public void cancel_request_no_other_requests_for_pet() {
-    Requests req3 = reqRepository.insert(new Requests("003","002"));
-    assertEquals(
-      reqDao.getAllRequests(),
-      Arrays.asList(new Requests[] {
-        req, req2, req3
-    }));
+    Requests req3 = reqRepository.insert(new Requests("003", "002"));
+    assertEquals(reqDao.getAllRequests(), Arrays.asList(new Requests[] { req, req2, req3 }));
     req.setStatus("CANCELED");
     reqDao.cancelRequest(req);
-    
+
     req2.setStatus("CANCELED");
     Requests canceled_req_round2 = reqDao.cancelRequest(req2);
     assertEquals(canceled_req_round2, req2);
@@ -535,5 +492,4 @@ public class RequestsDaoTest {
     List<Requests> updated_req_list_round2 = reqDao.getAllRequests();
     assertTrue(updated_req_list_round2.contains(req2));
   }
-  
 }
