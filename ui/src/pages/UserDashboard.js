@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PetCardSlider from "../components/PetCardSlider";
-import getAllPets from "../api/petRequests";
+import { getAllPets } from "../api/petRequests";
 
 const useStyles = makeStyles({
   root: {

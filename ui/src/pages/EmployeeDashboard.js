@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import { Link } from "react-router-dom";
-import getAllPets from "../api/petRequests";
+import { getAllPets } from "../api/petRequests";
 import PetList from "../components/PetList";
 
 const useStyles = makeStyles({
