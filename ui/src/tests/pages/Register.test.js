@@ -1,14 +1,14 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
-import Register from "../../pages/Register";
+import React from 'react';
+import { render } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Register from '../../pages/Register';
 
-test("should render register pet page", () => {
+test('should render register pet page', () => {
   const { getByTestId } = render(
     <Router>
       <Register />
     </Router>
   );
-  const register = getByTestId("register");
+  const register = getByTestId('register');
   expect(register).toBeInTheDocument();
 });

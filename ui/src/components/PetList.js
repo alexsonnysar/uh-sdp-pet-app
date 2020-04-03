@@ -1,23 +1,23 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import PetListItem from "./PetListItem";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import PetListItem from './PetListItem';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    maxWidth: "95%",
+    maxWidth: '95%',
     minWidth: 320,
-    flexBasis: "auto"
+    flexBasis: 'auto'
   },
   title: {
     margin: theme.spacing(4, 0, 2)
   },
   paper: {
     maxHeight: 555,
-    overflow: "auto"
+    overflow: 'auto'
   }
 }));
 
