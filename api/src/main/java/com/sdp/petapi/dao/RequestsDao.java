@@ -75,9 +75,15 @@ public class RequestsDao {
       || !req.getRequestDate().equals(reqdb.getRequestDate()))
         return null;
 
-    // user canceling request means pet may be available for adoption again
-    return (req.getStatus() == CANCELED_STRING) ? cancelRequest(req) :
-      (req.getStatus() == APPROVED_STRING) ? approveRequest(req) : null;
+    if (req.getStatus().equals(CANCELED_STRING)) {
+      return cancelRequest(req);
+    }
+    else if (req.getStatus().equals(APPROVED_STRING)) {
+      return approveRequest(req);
+    }
+    else {
+      return null;
+    }
   }
 
   public Requests deleteRequest(String reqid) {
