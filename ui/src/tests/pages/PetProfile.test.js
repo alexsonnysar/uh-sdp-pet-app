@@ -1,9 +1,9 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import PetProfile from "../../pages/PetProfile";
+import React from 'react';
+import { render } from '@testing-library/react';
+import PetProfile from '../../pages/PetProfile';
 
-test("should render pet profile page", () => {
+test('should render pet profile page', () => {
   const { getByTestId } = render(<PetProfile />);
-  const petProfile = getByTestId("petprofile");
+  const petProfile = getByTestId('petprofile');
   expect(petProfile).toBeInTheDocument();
 });

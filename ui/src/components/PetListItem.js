@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
-import DeleteIcon from "@material-ui/icons/Delete";
-import UpdateRoundedIcon from "@material-ui/icons/UpdateRounded";
-import Button from "@material-ui/core/Button";
-import axios from "axios";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import DeleteIcon from '@material-ui/icons/Delete';
+import UpdateRoundedIcon from '@material-ui/icons/UpdateRounded';
+import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -20,13 +20,13 @@ const PetListItem = ({ pet, removePet }) => {
   const classes = useStyles();
 
   const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`
   };
 
   const CallDeletePet = petData => {
     axios({
-      method: "put",
+      method: 'put',
       url: `http://localhost:8080/pet/${id}`,
       headers,
       data: petData
@@ -39,7 +39,7 @@ const PetListItem = ({ pet, removePet }) => {
       )
       .catch(
         alert(
-          "Hey 🧐! Who let you in here? We are not deleting any pets till we get this sorted out.😤"
+          'Hey 🧐! Who let you in here? We are not deleting any pets till we get this sorted out.😤'
         )
         // (error) => console.log(error)
       );

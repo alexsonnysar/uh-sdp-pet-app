@@ -1,12 +1,12 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import LoginForm from "../components/LoginForm";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import LoginForm from '../components/LoginForm';
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 

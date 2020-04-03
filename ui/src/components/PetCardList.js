@@ -1,6 +1,6 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
-import PetCard from "./PetCard";
+import React from 'react';
+import { Grid } from '@material-ui/core';
+import PetCard from './PetCard';
 
 const PetCardList = ({ petList }) => (
   <Grid container justify="flex-start" data-testid="manypetcards">

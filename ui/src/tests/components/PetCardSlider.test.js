@@ -1,27 +1,27 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import PetCardSlider from "../../components/PetCardSlider";
+import React from 'react';
+import { render } from '@testing-library/react';
+import PetCardSlider from '../../components/PetCardSlider';
 
 const petList = [
   {
     id: 1,
-    name: "Garfield",
-    type: "Cat"
+    name: 'Garfield',
+    type: 'Cat'
   },
   {
     id: 2,
-    name: "Shawn",
-    type: "Bird"
+    name: 'Shawn',
+    type: 'Bird'
   },
   {
     id: 3,
-    name: "Alex",
-    type: "Dog"
+    name: 'Alex',
+    type: 'Dog'
   }
 ];
 
-test("should render a list of pet cards in horizontal slider", () => {
+test('should render a list of pet cards in horizontal slider', () => {
   const { getByTestId } = render(<PetCardSlider petList={petList} />);
-  const petLists = getByTestId("petCardSlider");
+  const petLists = getByTestId('petCardSlider');
   expect(petLists).toBeInTheDocument();
 });
