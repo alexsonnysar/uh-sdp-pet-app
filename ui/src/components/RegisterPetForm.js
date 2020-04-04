@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     '& > *': {
-      margin: theme.spacing(1)
+      margin: theme.spacing(1),
     },
     width: '20rem',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   button: {
-    color: 'primary'
+    color: 'primary',
   },
   text: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 }));
 
 const RegisterPetForm = () => {
@@ -32,46 +32,44 @@ const RegisterPetForm = () => {
     description: '',
     imageNames: [''],
     adopted: false,
-    active: true
+    active: true,
   };
   const [formData, setFormData] = useState(initialState);
   const date = {
-    someDate: new Date().toISOString().substring(0, 10)
+    someDate: new Date().toISOString().substring(0, 10),
   };
 
-  const handleChange = e => {
-    console.log(e.target.id);
+  const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
-    console.log('FormData: ', formData);
   };
-  const handleSelect = prop => event => {
-    console.log(event);
+  const handleSelect = (prop) => (event) => {
     setFormData({
       ...formData,
-      [prop]: event.target.value
+      [prop]: event.target.value,
     });
   };
 
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
-  const PostAddPet = petData => {
+  const PostAddPet = (petData) => {
     axios({
       method: 'post',
       url: 'http://localhost:8080/pet',
       headers,
-      data: petData
+      data: petData,
     })
-      .then(response => {
-        console.log(response);
+      .then(() => {
         window.location.replace('http://localhost:3000/pet-register');
       })
-      .catch(error => console.log(error));
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const handleSubmit = () => {

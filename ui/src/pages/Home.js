@@ -8,8 +8,8 @@ const useStyles = makeStyles({
   progress: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 const Home = () => {
@@ -20,8 +20,10 @@ const Home = () => {
 
   useEffect(() => {
     getAllPets(url)
-      .then(petList => setPetList(petList))
-      .catch(error => console.log(error))
+      .then(() => setPetList(petList))
+      .catch((error) => {
+        throw error;
+      })
       .finally(() => setLoading(false));
   }, []);
 
