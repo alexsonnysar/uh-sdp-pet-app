@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateRoundedIcon from '@material-ui/icons/UpdateRounded';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -15,6 +16,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PetListItem = ({ pet, removePet }) => {
+  pet.propTypes = {
+    name: PropTypes.string,
+    type: PropTypes.string,
+    sex: PropTypes.string,
+    age: PropTypes.string,
+    size: PropTypes.string,
+    weight: PropTypes.number,
+    dateAdded: PropTypes.date,
+    description: PropTypes.string,
+    imageNames: [PropTypes.string],
+    adopted: PropTypes.bool,
+    active: PropTypes.bool
+  };
+
   const { name, type, id } = pet;
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
@@ -32,29 +47,27 @@ const PetListItem = ({ pet, removePet }) => {
       data: petData
     })
       .then(
-        alert(
-          `${petData.name} is gone now...\n Please tell johnny he went to live with uncle Ben on the farm.`
-        )
+        () => {
+          alert(
+            `${petData.name} is gone now...\n Please tell johnny he went to live with uncle Ben on the farm.`
+          );
+        }
         // (response) => console.log(response)
       )
-      .catch(
+      .catch(() => {
         alert(
           'Hey 🧐! Who let you in here? We are not deleting any pets till we get this sorted out.😤'
-        )
-        // (error) => console.log(error)
-      );
+        );
+      });
   };
 
-  const RemoveThisPet = () => {
-    removePet(id);
-  };
   const handleDelete = () => {
     const petData = {
       ...pet,
       isActive: false
     };
     setLoading(true);
-    RemoveThisPet(id);
+    removePet(id);
     CallDeletePet(petData);
   };
 

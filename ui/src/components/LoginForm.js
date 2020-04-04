@@ -51,10 +51,10 @@ const LoginForm = () => {
           window.location.replace('http://localhost:3000/employee-dashboard');
         }
       })
-      .catch(
-        // (error) => { console.log(error);
-        alert('Incorrect Username or Password')
-      )
+      .catch(() => {
+        // console.log(error);
+        alert('Incorrect Username or Password');
+      })
       .finally(() => {
         setLoading(false);
       });

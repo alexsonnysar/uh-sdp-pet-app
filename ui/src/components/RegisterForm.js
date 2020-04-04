@@ -32,24 +32,6 @@ const RegisterForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const PostAddUser = userData => {
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/signup',
-      data: userData,
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => {
-        console.log(response);
-        PostLoginUser(formData);
-      })
-      .catch(error => console.log(error))
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   const PostLoginUser = userData => {
     setLoading(true);
     axios({
@@ -59,7 +41,7 @@ const RegisterForm = () => {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
         if (localStorage.getItem('roles') === 'ROLE_User') {
@@ -68,9 +50,30 @@ const RegisterForm = () => {
           window.location.replace('http://localhost:3000/employee-dashboard');
         }
       })
-      .catch(error => {
-        console.log(error);
-        alert('Incorrect Username or Password');
+      .catch(() => {
+        // console.log(error);
+        alert('You may already have an account here. Try logging in');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const PostAddUser = userData => {
+    setLoading(true);
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/signup',
+      data: userData,
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(() => {
+        // console.log(response);
+        PostLoginUser(formData);
+      })
+      .catch(() => {
+        // console.log(error)
+        alert('ur not getting an account today.');
       })
       .finally(() => {
         setLoading(false);

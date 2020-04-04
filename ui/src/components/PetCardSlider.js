@@ -1,7 +1,7 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 import PetCard from './PetCard';
 import './PetCardSlider.css';
-import { Typography } from '@material-ui/core';
 
 const PetCardSlider = ({ petList, heading }) => (
   <div data-testid="petCardSlider">
