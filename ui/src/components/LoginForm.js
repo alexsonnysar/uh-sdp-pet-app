@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     textAlign: 'center'
+  },
+  link: {
+    textDecorationLine: 'none'
   }
 }));
 
@@ -98,7 +101,10 @@ const LoginForm = () => {
           Log In
         </Button>
         <small className={classes.text}>
-          Don't have an account? Register <Link to="/register">here</Link>
+          Don't have an account? Register{' '}
+          <Link className={classes.link} to="/register">
+            here
+          </Link>
         </small>
       </form>
     </div>

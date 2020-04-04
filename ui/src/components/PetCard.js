@@ -11,6 +11,7 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   root: {
@@ -66,6 +67,13 @@ const PetCard = ({ pet }) => {
       </CardActions>
     </Card>
   );
+};
+
+PetCard.propTypes = {
+  pet: PropTypes.shape({
+    name: PropTypes.object,
+    type: PropTypes.string
+  }).isRequired
 };
 
 export default PetCard;
