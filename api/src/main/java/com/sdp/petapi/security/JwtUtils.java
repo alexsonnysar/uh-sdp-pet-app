@@ -19,10 +19,10 @@ public class JwtUtils {
 
 	// loaded from application.properties
 	@Value("${pet.app.jwtSecret}")
-	private String jwtSecret;
+	transient String jwtSecret;
 
 	@Value("${pet.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	transient int jwtExpirationMs;
 
 	public String generateJwtToken(Authentication authentication) {
 

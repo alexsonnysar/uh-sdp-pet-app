@@ -20,14 +20,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class PetControllerTest {
-  Pet pet;
+  transient Pet pet;
+
+  private static final String ID = "001";
 
   @Mock
-  PetService petService;
+  transient PetService petService;
 
   // makes a petService whose petDao is the mock above
   @InjectMocks
-  PetController petController;
+  transient PetController petController;
 
   @BeforeEach
   public void init() throws Exception {
@@ -50,7 +52,7 @@ public class PetControllerTest {
   
   @Test
   public void get_pet_by_id() {
-    String id = "001";
+    String id = ID;
 
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
@@ -73,7 +75,7 @@ public class PetControllerTest {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(petService.putPet(pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet("001", pet);
+    Pet returnedPet = petController.putPet(ID, pet);
     assertEquals(pet, returnedPet);
   }
 
@@ -91,7 +93,7 @@ public class PetControllerTest {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(petService.putPet(pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet("001", null);
+    Pet returnedPet = petController.putPet(ID, null);
     assertNull(returnedPet);
   }
 
@@ -108,8 +110,8 @@ public class PetControllerTest {
   public void delete_pet() {
     // Since the petDao is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(petService.deletePet("001")).thenReturn(pet);
-    Pet returnedPet = petController.deletePet("001");
+    when(petService.deletePet(ID)).thenReturn(pet);
+    Pet returnedPet = petController.deletePet(ID);
     assertEquals(pet, returnedPet);
   }
   

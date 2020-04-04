@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { CircularProgress } from "@material-ui/core";
-import PetCardList from "../components/PetCardList";
-import { getAllPets } from "../api/petRequests";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@material-ui/core';
+import PetCardList from '../components/PetCardList';
+import { getAllPets } from '../api/petRequests';
 
 const useStyles = makeStyles({
   progress: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
 const Home = () => {
-  const url = "http://localhost:8080/pet";
+  const url = 'http://localhost:8080/pet';
 
   const [petList, setPetList] = useState([]);
   const [loading, setLoading] = useState(true);

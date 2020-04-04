@@ -1,36 +1,36 @@
-import React, { useState } from "react";
-import { TextField, Button, makeStyles, MenuItem } from "@material-ui/core";
-import axios from "axios";
+import React, { useState } from 'react';
+import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    "& > *": {
+    '& > *': {
       margin: theme.spacing(1)
     },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column"
+    width: '20rem',
+    display: 'flex',
+    flexDirection: 'column'
   },
   button: {
-    color: "primary"
+    color: 'primary'
   },
   text: {
-    textAlign: "center"
+    textAlign: 'center'
   }
 }));
 
 const RegisterPetForm = () => {
   const [loading, setLoading] = useState(false);
   const initialState = {
-    name: "",
-    type: "",
-    sex: "",
-    age: "",
-    size: "",
-    weight: "",
-    dateAdded: "",
-    description: "",
-    imageNames: [""],
+    name: '',
+    type: '',
+    sex: '',
+    age: '',
+    size: '',
+    weight: '',
+    dateAdded: '',
+    description: '',
+    imageNames: [''],
     adopted: false,
     active: true
   };
@@ -45,7 +45,7 @@ const RegisterPetForm = () => {
       ...formData,
       [e.target.id]: e.target.value
     });
-    console.log("FormData: ", formData);
+    console.log('FormData: ', formData);
   };
   const handleSelect = prop => event => {
     console.log(event);
@@ -56,20 +56,20 @@ const RegisterPetForm = () => {
   };
 
   const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`
   };
 
   const PostAddPet = petData => {
     axios({
-      method: "post",
-      url: "http://localhost:8080/pet",
+      method: 'post',
+      url: 'http://localhost:8080/pet',
       headers,
       data: petData
     })
       .then(response => {
         console.log(response);
-        window.location.replace("http://localhost:3000/pet-register");
+        window.location.replace('http://localhost:3000/pet-register');
       })
       .catch(error => console.log(error));
   };
@@ -97,7 +97,7 @@ const RegisterPetForm = () => {
           id="type"
           label="type"
           variant="outlined"
-          onChange={handleSelect("type")}
+          onChange={handleSelect('type')}
           value={formData.type}
           select
         >
@@ -114,7 +114,7 @@ const RegisterPetForm = () => {
           id="sex"
           label="sex"
           variant="outlined"
-          onChange={handleSelect("sex")}
+          onChange={handleSelect('sex')}
           value={formData.sex}
           select
         >
@@ -125,7 +125,7 @@ const RegisterPetForm = () => {
           id="age"
           label="age"
           variant="outlined"
-          onChange={handleSelect("age")}
+          onChange={handleSelect('age')}
           value={formData.age}
           select
         >
@@ -139,7 +139,7 @@ const RegisterPetForm = () => {
           id="size"
           label="size"
           variant="outlined"
-          onChange={handleSelect("size")}
+          onChange={handleSelect('size')}
           value={formData.size}
           select
         >
@@ -176,7 +176,7 @@ const RegisterPetForm = () => {
           id="adopted"
           label="adopted"
           variant="outlined"
-          onChange={handleSelect("adopted")}
+          onChange={handleSelect('adopted')}
           value={formData.adopted}
           select
         >

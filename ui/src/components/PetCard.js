@@ -1,16 +1,16 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   CardMedia
-} from "@material-ui/core";
-import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
+} from '@material-ui/core';
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +32,7 @@ const PetCard = ({ pet }) => {
 
   return (
     <Card className={classes.root} data-testid="petcard">
-      <ButtonBase href="pet-profile" style={{ textDecorationLine: "none" }}>
+      <ButtonBase href="pet-profile" style={{ textDecorationLine: 'none' }}>
         <CardActionArea>
           <CardMedia
             className={classes.media}
@@ -52,7 +52,7 @@ const PetCard = ({ pet }) => {
         </CardActionArea>
       </ButtonBase>
       <CardActions>
-        {localStorage.getItem("jwt") !== null ? (
+        {localStorage.getItem('jwt') !== null ? (
           <Button
             size="small"
             color="secondary"

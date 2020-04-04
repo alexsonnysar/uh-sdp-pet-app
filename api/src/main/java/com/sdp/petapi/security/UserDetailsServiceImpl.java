@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    transient UserRepository userRepository;
 
     @Override
 	@Transactional

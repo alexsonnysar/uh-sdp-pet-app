@@ -13,7 +13,7 @@ import com.sdp.petapi.models.User;
 public class UserService {
 
   @Autowired
-  private UserDao userDao;
+  transient UserDao userDao;
 
   public List<User> getAllUsers() {
     return userDao.getAllUsers();

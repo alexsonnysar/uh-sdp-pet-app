@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { CircularProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import PetCardSlider from "../components/PetCardSlider";
-import { getAllPets } from "../api/petRequests";
+import React, { useState, useEffect } from 'react';
+import { CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import PetCardSlider from '../components/PetCardSlider';
+import { getAllPets } from '../api/petRequests';
 
 const useStyles = makeStyles({
   root: {
-    alignContent: "left"
+    alignContent: 'left'
   },
   progress: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
 const UserDashboard = () => {
   const classes = useStyles();
-  const url = "http://localhost:8080/pet";
+  const url = 'http://localhost:8080/pet';
 
   const [petList, setPetList] = useState([]);
   const [loading, setLoading] = useState(true);

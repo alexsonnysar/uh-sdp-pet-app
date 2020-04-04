@@ -8,7 +8,7 @@ import com.sdp.petapi.services.UserService;
 import com.sdp.petapi.controllers.AuthController;
 import com.sdp.petapi.models.LoginRequest;
 import com.sdp.petapi.models.LoginResponse;
-import com.sdp.petapi.models.Message;
+import com.sdp.petapi.models.MessageResponse;
 import com.sdp.petapi.models.Pet;
 import com.sdp.petapi.models.SignupRequest;
 import com.sdp.petapi.models.User;
@@ -33,23 +33,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 class AuthControllerTest {
 	Pet pet;
-	User employee, webUser;
+	transient User webUser;
 
 	@Mock
-	UserService userService;
+	transient UserService userService;
 
 	@Mock
-	PasswordEncoder passwordEncoder;
+	transient PasswordEncoder passwordEncoder;
 
 	@Mock
-	JwtUtils jwtUtils;
+	transient JwtUtils jwtUtils;
 
 	@Mock
-	AuthenticationManager authenticationManager;
+	transient AuthenticationManager authenticationManager;
 
 	// makes a authController whose userService is the mock above
 	@InjectMocks
-	AuthController authController;
+	transient AuthController authController;
 
 	@Test
 	public void signup_new_user() {
@@ -57,16 +57,16 @@ class AuthControllerTest {
 		when(userService.existsByEmail(signUpRequest.getEmail())).thenReturn(false);
 		when(userService.createUser(webUser)).thenReturn(webUser);
 		when(passwordEncoder.encode(signUpRequest.getPassword())).thenReturn("Encoded password");
-		Message returnedMessage = authController.registerUser(signUpRequest);
-		assertEquals(new Message("User registered successfully!"), returnedMessage);
+		MessageResponse returnedMessage = authController.registerUser(signUpRequest);
+		assertEquals(new MessageResponse("User registered successfully!"), returnedMessage);
 	}
 
 	@Test
 	public void signup_user_already_exists() {
 		SignupRequest signUpRequest = new SignupRequest("test@gmail.com", "password", "test name");
 		when(userService.existsByEmail(signUpRequest.getEmail())).thenReturn(true);
-		Message returnedMessage = authController.registerUser(signUpRequest);
-		assertEquals(new Message("Error: Email is already in use!"), returnedMessage);
+		MessageResponse returnedMessage = authController.registerUser(signUpRequest);
+		assertEquals(new MessageResponse("Error: Email is already in use!"), returnedMessage);
 	}
 
 	@Test
