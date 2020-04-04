@@ -1,6 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const Logout = () => {
@@ -8,23 +13,23 @@ const Logout = () => {
   window.location.replace('http://localhost:3000/');
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   button: {
     color: 'inherit',
     textDecorationLine: 'none',
     '&:hover': {
-      color: 'white'
-    }
-  }
+      color: 'white',
+    },
+  },
 }));
 
 const Navigation = () => {

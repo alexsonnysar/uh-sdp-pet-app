@@ -5,7 +5,7 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
-  CardMedia
+  CardMedia,
 } from '@material-ui/core';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import Button from '@material-ui/core/Button';
@@ -20,11 +20,11 @@ const useStyles = makeStyles({
     marginTop: 5,
     marginBottom: 5,
     maxWidth: 170,
-    minWidth: 170
+    minWidth: 170,
   },
   media: {
-    height: 120
-  }
+    height: 120,
+  },
 });
 
 const PetCard = ({ pet }) => {
@@ -72,8 +72,8 @@ const PetCard = ({ pet }) => {
 PetCard.propTypes = {
   pet: PropTypes.shape({
     name: PropTypes.object,
-    type: PropTypes.string
-  }).isRequired
+    type: PropTypes.string,
+  }).isRequired,
 };
 
 export default PetCard;
