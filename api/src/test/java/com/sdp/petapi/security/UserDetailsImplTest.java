@@ -24,6 +24,8 @@ class UserDetailsImplTest {
   transient User employee, webUser;
 
   private static final String ROLE_USER = "ROLE_User";
+  
+  private static final UserDetailsImpl NULL = null;
 
   @BeforeEach
   public void init() throws Exception {
@@ -124,7 +126,7 @@ class UserDetailsImplTest {
 
   @Test
   public void not_equals_with_null_returns_false() {
-    assertFalse(userDetailsImpl.equals(null));
+    assertFalse(userDetailsImpl.equals(NULL));
   }
 
   @Test
