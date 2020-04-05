@@ -19,16 +19,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class UserDetailsImplTest {
 
-  UserDetailsImpl userDetailsImpl;
+  transient UserDetailsImpl userDetailsImpl;
 
-  User employee, webUser;
+  transient User employee, webUser;
+
+  private static final String ROLE_USER = "ROLE_User";
 
   @BeforeEach
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
-    userDetailsImpl = new UserDetailsImpl(webUser.getId(), webUser.getEmail(), webUser.getPassHash(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
+    userDetailsImpl = new UserDetailsImpl(webUser.getId(), webUser.getEmail(), webUser.getPassHash(), Collections.singletonList(new SimpleGrantedAuthority(ROLE_USER)));
   }
 
   @AfterEach
@@ -37,7 +39,7 @@ class UserDetailsImplTest {
 
   @Test
   public void build_user() {
-    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_User"));
+    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(ROLE_USER));
 
     UserDetailsImpl expected = new UserDetailsImpl(webUser.getId(), webUser.getEmail(), webUser.getPassHash(), authorities);
 
@@ -55,7 +57,7 @@ class UserDetailsImplTest {
 
   @Test
   public void get_authorities() {
-    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_User"));
+    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(ROLE_USER));
     assertEquals(authorities, userDetailsImpl.getAuthorities());
   }
 
@@ -105,7 +107,7 @@ class UserDetailsImplTest {
 
   @Test
   public void equals_returns_true() {
-    UserDetailsImpl userDetailsImpl2 = new UserDetailsImpl(webUser.getId(), webUser.getEmail(), webUser.getPassHash(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
+    UserDetailsImpl userDetailsImpl2 = new UserDetailsImpl(webUser.getId(), webUser.getEmail(), webUser.getPassHash(), Collections.singletonList(new SimpleGrantedAuthority(ROLE_USER)));
     assertTrue(userDetailsImpl.equals(userDetailsImpl2));
   }
 

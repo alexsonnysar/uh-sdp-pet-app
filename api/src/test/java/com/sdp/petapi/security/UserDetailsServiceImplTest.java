@@ -24,17 +24,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 class UserDetailsServiceImplTest {
 
   @Mock
-  UserRepository userRepo;
+  transient UserRepository userRepo;
 
   @Mock
-  UserDetailsImpl udi;
+  transient UserDetailsImpl udi;
 
   @InjectMocks
-  // @Autowired
-  UserDetailsServiceImpl udsi;
+  transient UserDetailsServiceImpl udsi;
 
-  User employee, webUser;
-  UserDetailsImpl webUserDeets;
+  transient User employee, webUser;
+  transient UserDetailsImpl webUserDeets;
+
+  private static final String EMAIL = "1234@mail.com";
 
   @BeforeEach
   public void init() throws Exception {
@@ -52,16 +53,16 @@ class UserDetailsServiceImplTest {
 
   @Test
   public void load_existing_user_by_username_passes() {
-    when(userRepo.findByEmail("1234@mail.com")).thenReturn(Optional.of(webUser));
-    UserDetails expected = (UserDetails) udsi.loadUserByUsername("1234@mail.com");
+    when(userRepo.findByEmail(EMAIL)).thenReturn(Optional.of(webUser));
+    UserDetails expected = (UserDetails) udsi.loadUserByUsername(EMAIL);
     assertEquals(expected, (UserDetails) webUserDeets);
   }
 
   @Test
   public void load_nonexisting_user_by_username_fails() {
     Exception err = new UsernameNotFoundException("User Not Found with email: 1234@mail.com");
-    when(userRepo.findByEmail("1234@mail.com")).thenReturn(Optional.empty());
-    Exception actual_err = assertThrows(UsernameNotFoundException.class, () -> udsi.loadUserByUsername("1234@mail.com"));
+    when(userRepo.findByEmail(EMAIL)).thenReturn(Optional.empty());
+    Exception actual_err = assertThrows(UsernameNotFoundException.class, () -> udsi.loadUserByUsername(EMAIL));
     assertEquals(err.getMessage(), actual_err.getMessage());
   }
   
