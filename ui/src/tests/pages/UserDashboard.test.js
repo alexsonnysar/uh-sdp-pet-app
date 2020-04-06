@@ -20,10 +20,10 @@ const pets = [
     imageNames: [
       'runningOnTheBeach',
       'biting_the_neighbors_kid',
-      'SleepingOnTheCouch'
+      'SleepingOnTheCouch',
     ],
     active: false,
-    adopted: false
+    adopted: false,
   },
   {
     id: '5e66b0523c5d425f75ded9ec',
@@ -38,11 +38,11 @@ const pets = [
     imageNames: [
       'walking in the park',
       'biting the neighbors kid...',
-      'catching a frisbee'
+      'catching a frisbee',
     ],
     active: false,
-    adopted: false
-  }
+    adopted: false,
+  },
 ];
 
 describe('<UserDashboard />', () => {
@@ -57,7 +57,7 @@ describe('<UserDashboard />', () => {
     const { getByTestId } = render(
       <Router>
         <UserDashboard />
-      </Router>
+      </Router>,
     );
 
     expect(getByTestId('loading')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('<UserDashboard />', () => {
 
   test('should render user dashboard with mock rejected API', async () => {
     const NetworkError = {
-      Error: 'Network Error'
+      Error: 'Network Error',
     };
 
     getAllPets.mockImplementation(() => Promise.reject(NetworkError));
@@ -77,7 +77,7 @@ describe('<UserDashboard />', () => {
     const { getByTestId } = render(
       <Router>
         <UserDashboard />
-      </Router>
+      </Router>,
     );
 
     expect(getByTestId('loading')).toBeInTheDocument();

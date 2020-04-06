@@ -4,7 +4,7 @@ import PetListItem from '../../components/PetListItem';
 
 const pet = {
   Name: 'Garfield',
-  Type: 'Cat'
+  Type: 'Cat',
 };
 
 test('should render pet list item', () => {
