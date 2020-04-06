@@ -20,7 +20,7 @@ const Home = () => {
 
   useEffect(() => {
     getAllPets(url)
-      .then(() => setPetList(petList))
+      .then((petList) => setPetList(petList))
       .catch((error) => {
         throw error;
       })
