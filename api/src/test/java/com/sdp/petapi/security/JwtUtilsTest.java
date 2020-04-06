@@ -13,7 +13,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 class JwtUtilsTest {
 
     @Autowired
-    JwtUtils jwtUtils;
+    transient JwtUtils jwtUtils;
 
 
     @Test

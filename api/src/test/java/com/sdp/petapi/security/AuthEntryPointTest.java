@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 class AuthEntryPointTest {
 
     @Autowired
-    AuthEntryPointJwt authEntryPointJwt;
+    transient AuthEntryPointJwt authEntryPointJwt;
 
     @Test
     public void auth_Entry_Point_commence() throws IOException, ServletException {
