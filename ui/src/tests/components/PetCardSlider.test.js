@@ -21,7 +21,7 @@ const petList = [
 ];
 
 test('should render a list of pet cards in horizontal slider', () => {
-  const { getByTestId } = render(<PetCardSlider petList={petList} />);
+  const { getByTestId } = render(<PetCardSlider petList={petList} heading="" />);
   const petLists = getByTestId('petCardSlider');
   expect(petLists).toBeInTheDocument();
 });
