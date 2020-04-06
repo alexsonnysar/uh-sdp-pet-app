@@ -13,13 +13,10 @@ const PetCardList = ({ petList }) => (
   </Grid>
 );
 
-
 PetCardList.propTypes = {
-  petList: PropTypes.arrayOf({
-    pet: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
+  petList: PropTypes.arrayOf(
+    PropTypes.object,
+  ).isRequired,
 };
 
 export default PetCardList;

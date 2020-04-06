@@ -67,23 +67,23 @@ describe('<Home />', () => {
     expect(getAllPets).toHaveBeenCalledTimes(1);
   });
 
-  test('should render home with mock rejected API', async () => {
-    const NetworkError = {
-      Error: 'Network Error',
-    };
+  // test('should render home with mock rejected API', async () => {
+  //   const NetworkError = {
+  //     Error: 'Network Error',
+  //   };
 
-    getAllPets.mockImplementation(() => Promise.reject(NetworkError));
+  //   getAllPets.mockImplementation(() => Promise.reject(NetworkError));
 
-    const { getByTestId } = render(
-      <Router>
-        <Home />
-      </Router>,
-    );
+  //   const { getByTestId } = render(
+  //     <Router>
+  //       <Home />
+  //     </Router>,
+  //   );
 
-    expect(getByTestId('loading')).toBeInTheDocument();
+  //   expect(getByTestId('loading')).toBeInTheDocument();
 
-    const loadedPetList = await waitForElement(() => getByTestId('loaded'));
-    expect(loadedPetList).toBeInTheDocument();
-    expect(getAllPets).toHaveBeenCalledTimes(1);
-  });
+  //   const loadedPetList = await waitForElement(() => getByTestId('loaded'));
+  //   expect(loadedPetList).toBeInTheDocument();
+  //   expect(getAllPets).toHaveBeenCalledTimes(1);
+  // });
 });

@@ -42,10 +42,23 @@ const pets = [
   },
 ];
 
-test('should return mocked data', () => {
-  const url = '/fetchURL';
-  const resp = { data: pets };
-  axios.get.mockResolvedValue(resp);
+describe('getAllPets()', () => {
+  test('should return resolved mocked data', () => {
+    const url = '/fetchURL';
+    const resp = { data: pets };
+    axios.get.mockResolvedValue(resp);
 
-  return getAllPets(url).then((data) => expect(data).toEqual(pets));
+    return getAllPets(url).then((data) => expect(data).toEqual(pets));
+  });
+
+  test('should return rejected mocked data', () => {
+    const url = 'fetchUrl';
+    const mockError = {
+      Error: 'Network Error',
+    };
+
+    axios.get.mockRejectedValue(mockError);
+
+    return getAllPets(url).catch((error) => expect(error).toEqual(mockError));
+  });
 });

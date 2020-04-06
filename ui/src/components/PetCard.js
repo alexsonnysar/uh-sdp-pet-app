@@ -71,7 +71,7 @@ const PetCard = ({ pet }) => {
 
 PetCard.propTypes = {
   pet: PropTypes.shape({
-    name: PropTypes.object,
+    name: PropTypes.string,
     type: PropTypes.string,
   }).isRequired,
 };
