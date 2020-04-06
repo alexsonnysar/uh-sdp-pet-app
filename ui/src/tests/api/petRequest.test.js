@@ -17,10 +17,10 @@ const pets = [
     imageNames: [
       'runningOnTheBeach',
       'biting_the_neighbors_kid',
-      'SleepingOnTheCouch'
+      'SleepingOnTheCouch',
     ],
     active: false,
-    adopted: false
+    adopted: false,
   },
   {
     id: '5e66b0523c5d425f75ded9ec',
@@ -35,17 +35,30 @@ const pets = [
     imageNames: [
       'walking in the park',
       'biting the neighbors kid...',
-      'catching a frisbee'
+      'catching a frisbee',
     ],
     active: false,
-    adopted: false
-  }
+    adopted: false,
+  },
 ];
 
-test('should return mocked data', () => {
-  const url = '/fetchURL';
-  const resp = { data: pets };
-  axios.get.mockResolvedValue(resp);
+describe('getAllPets()', () => {
+  test('should return resolved mocked data', () => {
+    const url = '/fetchURL';
+    const resp = { data: pets };
+    axios.get.mockResolvedValue(resp);
 
-  return getAllPets(url).then(data => expect(data).toEqual(pets));
+    return getAllPets(url).then((data) => expect(data).toEqual(pets));
+  });
+
+  test('should return rejected mocked data', () => {
+    const url = 'fetchUrl';
+    const mockError = {
+      Error: 'Network Error',
+    };
+
+    axios.get.mockRejectedValue(mockError);
+
+    return getAllPets(url).catch((error) => expect(error).toEqual(mockError));
+  });
 });
