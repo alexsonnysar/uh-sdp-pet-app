@@ -13,13 +13,18 @@ import com.sdp.petapi.repositories.RequestsRepository;
 public class RequestsDao {
 
   @Autowired
-  private RequestsRepository repository;
+  transient RequestsRepository repository;
 
   @Autowired
-  private UserDao userDao;
+  transient UserDao userDao;
 
   @Autowired
-  private PetDao petDao;
+  transient PetDao petDao;
+
+  
+  private static final String CANCELED_STRING = "CANCELED";
+  private static final String APPROVED_STRING = "APPROVED";
+  private static final String PENDING_STRING  = "PENDING";
 
   public List<Requests> getAllRequests() {
     return repository.findAll();
@@ -44,7 +49,7 @@ public class RequestsDao {
     Boolean existing_req = getAllRequests()
       .stream()
       .anyMatch(r -> r.getPetid().equals(req.getPetid()) && r.getUserid().equals(user.getId())
-        && !r.getStatus().equals("CANCELED"));
+        && !r.getStatus().equals(CANCELED_STRING));
     if (existing_req) return null;
 
     /* Conrad: right now make it so request makes status "PENDING" (happens in constructor) 
@@ -70,9 +75,15 @@ public class RequestsDao {
       || !req.getRequestDate().equals(reqdb.getRequestDate()))
         return null;
 
-    // user canceling request means pet may be available for adoption again
-    return (req.getStatus() == "CANCELED") ? cancelRequest(req) :
-      (req.getStatus() == "APPROVED") ? approveRequest(req) : null;
+    if (req.getStatus().equals(CANCELED_STRING)) {
+      return cancelRequest(req);
+    }
+    else if (req.getStatus().equals(APPROVED_STRING)) {
+      return approveRequest(req);
+    }
+    else {
+      return null;
+    }
   }
 
   public Requests deleteRequest(String reqid) {
@@ -87,34 +98,32 @@ public class RequestsDao {
     List<Requests> cancelReqs = repository.findAll().stream()
       .filter(r -> !r.getUserid().equals(req.getUserid())
         && r.getPetid().equals(req.getPetid())
-        && r.getStatus().equals("PENDING"))
+        && r.getStatus().equals(PENDING_STRING))
       .collect(Collectors.toList());
     
     if (!cancelReqs.isEmpty()) {
-      cancelReqs.forEach(r -> r.setStatus("CANCELED"));
+      cancelReqs.forEach(r -> r.setStatus(CANCELED_STRING));
       repository.saveAll(cancelReqs);
     }
     
-    req.setStatus("APPROVED");
+    req.setStatus(APPROVED_STRING);
     repository.save(req);
 
     return req;
   }
 
   public Requests cancelRequest(Requests req) {
-    String petid = req.getPetid();
-    String userid = req.getUserid();
 
     if (!repository.findAll()
       .stream()
       .anyMatch(
-        r -> r.getPetid().equals(petid)
-        && !r.getUserid().equals(userid)
-        && !r.getStatus().equals("CANCELED")
+        r -> r.getPetid().equals(req.getPetid())
+        && !r.getUserid().equals(req.getUserid())
+        && !r.getStatus().equals(CANCELED_STRING)
       )
     ) {
       /* To undo Conrad's earlier comment */
-      Pet pet = petDao.getPetById(petid);
+      Pet pet = petDao.getPetById(req.getPetid());
       pet.setActive(true);
       pet.setAdopted(false);
       petDao.putPetByRequest(pet);

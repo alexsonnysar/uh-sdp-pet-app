@@ -24,7 +24,7 @@ import com.sdp.petapi.services.PetService;
 public class PetController {
 
   @Autowired
-  private PetService petService;
+  transient PetService petService;
 
   @GetMapping
   public List<Pet> getAllPets() {

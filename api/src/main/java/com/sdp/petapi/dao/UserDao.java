@@ -13,10 +13,10 @@ import com.sdp.petapi.repositories.UserRepository;
 public class UserDao {
 
   @Autowired
-  private UserRepository repository;
+  transient UserRepository repository;
 
   @Autowired
-  private PetDao petDao;
+  transient PetDao petDao;
 
   public List<User> getAllUsers(){
     return repository.findAll();
