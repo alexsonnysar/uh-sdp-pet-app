@@ -69,6 +69,7 @@ const LoginForm = () => {
   };
 
   const classes = useStyles();
+
   return (
     <div data-testid="loginForm">
       <form className={classes.container}>
