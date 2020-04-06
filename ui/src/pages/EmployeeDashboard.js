@@ -8,13 +8,13 @@ import PetList from '../components/PetList';
 
 const useStyles = makeStyles({
   addButton: {
-    textDecorationLine: 'none'
+    textDecorationLine: 'none',
   },
   progress: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 const EmployeeDashboard = () => {
@@ -27,13 +27,15 @@ const EmployeeDashboard = () => {
 
   useEffect(() => {
     getAllPets(url)
-      .then(petList => setPetList(petList))
-      .catch(error => console.log(error))
+      .then((petList) => setPetList(petList))
+      .catch((error) => {
+        throw error;
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  const removePetFromList = id => {
-    setPetList(petList.filter(el => el.id !== id));
+  const removePetFromList = (id) => {
+    setPetList(petList.filter((el) => el.id !== id));
   };
 
   return (

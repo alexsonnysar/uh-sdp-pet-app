@@ -5,7 +5,7 @@ import PetCard from '../../components/PetCard';
 const pet = {
   id: 1,
   name: 'Garfield',
-  type: 'Cat'
+  type: 'Cat',
 };
 
 test('should render pet card', () => {
