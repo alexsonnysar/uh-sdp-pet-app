@@ -45,8 +45,10 @@ const UserDashboard = () => {
         )}
       </div>
     );
+  } else if (localStorage.getItem('roles') === 'ROLE_Employee') {
+    window.location.replace('http://localhost:3000/employee-dashboard');
   } else {
-    window.location.replace('http://localhost:3000/login');
+    window.location.replace('http://localhost:8080/login');
   }
 };
 
