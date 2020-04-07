@@ -3,27 +3,14 @@ import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 
 const PetInfo = ({ pet }) => {
-  const {
-    name,
-    type,
-    sex,
-    description,
-  } = pet;
+  const { name, type, sex, description } = pet;
 
   return (
     <div>
-      <Typography variant="h3">
-        {name}
-      </Typography>
-      <Typography variant="h3">
-        {type}
-      </Typography>
-      <Typography variant="h3">
-        {sex}
-      </Typography>
-      <Typography variant="h3">
-        {description}
-      </Typography>
+      <Typography variant="h3">{name}</Typography>
+      <Typography variant="h3">{type}</Typography>
+      <Typography variant="h3">{sex}</Typography>
+      <Typography variant="h3">{description}</Typography>
     </div>
   );
 };
