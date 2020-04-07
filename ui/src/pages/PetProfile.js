@@ -21,7 +21,6 @@ const PetProfile = () => {
   const [loading, setLoading] = useState(true);
 
   const url = `http://localhost:8080/pet/${id}`;
-  console.log(window.location.pathname);
 
   useEffect(() => {
     getSinglePet(url)

@@ -17,17 +17,8 @@ function App() {
         <Navigation />
         <div className="App" data-testid="App">
           <Switch>
-            <Route exact path="/user-dashboard">
-              <UserDashboard />
-            </Route>
-            <Route path="/pet-profile:id">
-              <PetProfile />
-            </Route>
-            <Route exact path="/pet-register">
-              <RegisterPet />
-            </Route>
-            <Route exact path="/employee-dashboard">
-              <EmployeeDashboard />
+            <Route exact path="/">
+              <Home />
             </Route>
             <Route exact path="/login">
               <Login />
@@ -35,8 +26,17 @@ function App() {
             <Route exact path="/register">
               <Register />
             </Route>
-            <Route exact path="/">
-              <Home />
+            <Route exact path="/user-dashboard">
+              <UserDashboard />
+            </Route>
+            <Route exact path="/employee-dashboard">
+              <EmployeeDashboard />
+            </Route>
+            <Route path="/pet-profile/:id">
+              <PetProfile />
+            </Route>
+            <Route exact path="/pet-register">
+              <RegisterPet />
             </Route>
           </Switch>
         </div>

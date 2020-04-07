@@ -11,7 +11,6 @@ import {
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
@@ -26,40 +25,43 @@ const useStyles = makeStyles({
   media: {
     height: 120,
   },
+  text: {
+    alignItems: 'ceneter',
+    justifyContent: 'center',
+  },
 });
 
 const PetCard = ({ pet }) => {
   const { name, type, id } = pet;
 
-  // const history = useHistory();
+  const history = useHistory();
+  const petLink = `pet-profile/${id}`;
 
-  // const handleClick = () => {
-  //   history.push(petLink);
-  // };
+  const handleClick = () => {
+    history.push(petLink);
+  };
 
   const classes = useStyles();
 
   return (
     <Card className={classes.root} data-testid="petcard">
-      <ButtonBase href={`pet-profile/${id}`} style={{ textDecorationLine: 'none' }}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            component="img"
-            alt="Pet Image"
-            image="/images/garfield.jpg"
-            title="Pet Image"
-          />
-          <CardContent className={classes.text}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {name}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary" component="p">
-              {type}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </ButtonBase>
+      <CardActionArea onClick={() => handleClick()}>
+        <CardMedia
+          className={classes.media}
+          component="img"
+          alt="Pet Image"
+          image="/images/garfield.jpg"
+          title="Pet Image"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" component="p">
+            {type}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
       <CardActions>
         {localStorage.getItem('jwt') !== null ? (
           <Button
