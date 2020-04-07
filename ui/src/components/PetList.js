@@ -3,22 +3,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import PropTypes from 'prop-types';
 import PetListItem from './PetListItem';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     maxWidth: '95%',
     minWidth: 320,
-    flexBasis: 'auto'
+    flexBasis: 'auto',
   },
   title: {
-    margin: theme.spacing(4, 0, 2)
+    margin: theme.spacing(4, 0, 2),
   },
   paper: {
     maxHeight: 555,
-    overflow: 'auto'
-  }
+    overflow: 'auto',
+  },
 }));
 
 const PetList = ({ heading, petList, deletePet }) => {
@@ -30,13 +31,23 @@ const PetList = ({ heading, petList, deletePet }) => {
       </Typography>
       <Paper className={classes.paper}>
         <List>
-          {petList.map(pet => (
+          {petList.map((pet) => (
             <PetListItem removePet={deletePet} pet={pet} key={pet.id} />
           ))}
         </List>
       </Paper>
     </div>
   );
+};
+
+PetList.propTypes = {
+  heading: PropTypes.string
+    .isRequired,
+  petList: PropTypes.arrayOf(
+    PropTypes.object,
+  ).isRequired,
+  deletePet: PropTypes.func
+    .isRequired,
 };
 
 export default PetList;

@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  makeStyles,
+  MenuItem,
+} from '@material-ui/core';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -157,7 +162,7 @@ const RegisterPetForm = () => {
           type="date"
           defaultValue={date.someDate}
           InputLabelProps={{
-            shrink: true
+            shrink: true,
           }}
           variant="outlined"
           onChange={handleChange}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -28,12 +29,19 @@ const useStyles = makeStyles({
 });
 
 const PetCard = ({ pet }) => {
-  const { name, type } = pet;
+  const { name, type, id } = pet;
+
+  // const history = useHistory();
+
+  // const handleClick = () => {
+  //   history.push(petLink);
+  // };
+
   const classes = useStyles();
 
   return (
     <Card className={classes.root} data-testid="petcard">
-      <ButtonBase href="pet-profile" style={{ textDecorationLine: 'none' }}>
+      <ButtonBase href={`pet-profile/${id}`} style={{ textDecorationLine: 'none' }}>
         <CardActionArea>
           <CardMedia
             className={classes.media}
@@ -73,6 +81,7 @@ PetCard.propTypes = {
   pet: PropTypes.shape({
     name: PropTypes.string,
     type: PropTypes.string,
+    id: PropTypes.string,
   }).isRequired,
 };
 

@@ -17,25 +17,25 @@ function App() {
         <Navigation />
         <div className="App" data-testid="App">
           <Switch>
-            <Route path="/user-dashboard">
+            <Route exact path="/user-dashboard">
               <UserDashboard />
             </Route>
-            <Route path="/pet-profile">
+            <Route path="/pet-profile:id">
               <PetProfile />
             </Route>
-            <Route path="/pet-register">
+            <Route exact path="/pet-register">
               <RegisterPet />
             </Route>
-            <Route path="/employee-dashboard">
+            <Route exact path="/employee-dashboard">
               <EmployeeDashboard />
             </Route>
-            <Route path="/login">
+            <Route exact path="/login">
               <Login />
             </Route>
-            <Route path="/register">
+            <Route exact path="/register">
               <Register />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Home />
             </Route>
           </Switch>
