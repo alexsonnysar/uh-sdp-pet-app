@@ -1,26 +1,38 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   CardMedia
-} from "@material-ui/core";
-import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import { useAuth0 } from "../react-auth0-spa";
+} from '@material-ui/core';
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
+
+const useStyles = makeStyles({
+  root: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    maxWidth: 170,
+    minWidth: 170
+  },
+  media: {
+    height: 120
+  }
+});
 
 const PetCard = ({ pet }) => {
   const { name, type } = pet;
   const classes = useStyles();
-  const { isAuthenticated } = useAuth0();
 
   return (
     <Card className={classes.root} data-testid="petcard">
-      <ButtonBase href="pet-profile" style={{ textDecorationLine: "none" }}>
+      <ButtonBase href="pet-profile" style={{ textDecorationLine: 'none' }}>
         <CardActionArea>
           <CardMedia
             className={classes.media}
@@ -40,7 +52,7 @@ const PetCard = ({ pet }) => {
         </CardActionArea>
       </ButtonBase>
       <CardActions>
-        {isAuthenticated && (
+        {localStorage.getItem('jwt') !== null ? (
           <Button
             size="small"
             color="secondary"
@@ -48,24 +60,12 @@ const PetCard = ({ pet }) => {
           >
             Favorite
           </Button>
+        ) : (
+          []
         )}
       </CardActions>
     </Card>
   );
 };
-
-const useStyles = makeStyles({
-  root: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 5,
-    marginBottom: 5,
-    maxWidth: 170,
-    minWidth: 170
-  },
-  media: {
-    height: 120
-  }
-});
 
 export default PetCard;

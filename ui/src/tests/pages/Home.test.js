@@ -1,53 +1,89 @@
-import React from "react";
-import { render, cleanup, waitForElement } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import Home from "../../pages/Home";
-import axiosMock from "axios";
-import { FetchData } from "../../api/FetchData";
+import React from 'react';
+import { render, cleanup, waitForElement } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Home from '../../pages/Home';
+import { getAllPets } from '../../api/petRequests';
 
-jest.mock();
+jest.mock('../../api/petRequests', () => ({ getAllPets: jest.fn() }));
 
-afterEach(cleanup);
+const pets = [
+  {
+    id: '5e669d801dbdd96036ec3b8f',
+    name: 'Josie',
+    type: 'dog',
+    sex: 'F',
+    age: 'young',
+    size: 'medium',
+    weight: 43.4,
+    dateAdded: '2020-03-09T19:48:16.418+0000',
+    description: 'She is full of energy.',
+    imageNames: [
+      'runningOnTheBeach',
+      'biting_the_neighbors_kid',
+      'SleepingOnTheCouch'
+    ],
+    active: false,
+    adopted: false
+  },
+  {
+    id: '5e66b0523c5d425f75ded9ec',
+    name: 'Buddy',
+    type: 'dog',
+    sex: 'M',
+    age: 'Child',
+    size: 'large',
+    weight: 123.4,
+    dateAdded: '2020-03-09T21:08:34.446+0000',
+    description: 'He is very wet. Just like all the time',
+    imageNames: [
+      'walking in the park',
+      'biting the neighbors kid...',
+      'catching a frisbee'
+    ],
+    active: false,
+    adopted: false
+  }
+];
 
-test("should render pet cards from mocked API call", async () => {
-  FetchDataMock.mockResolvedValue({
-    data: [
-      {
-        id: 1,
-        name: "Garfield",
-        type: "Cat",
-        gender: "M"
-      },
-      {
-        id: 2,
-        name: "Charlotte",
-        type: "Bird",
-        gender: "F"
-      },
-      {
-        id: 3,
-        name: "Alex",
-        type: "Dog",
-        gender: "M"
-      }
-    ]
+describe('<Home />', () => {
+  afterEach(() => {
+    cleanup();
+    jest.resetAllMocks();
   });
 
-  const { getByTestId } = render(<Home />);
+  test('should render home with mock resolved API', async () => {
+    getAllPets.mockImplementation(() => Promise.resolve(pets));
 
-  expect(getByTestId("loading")).toHaveTextContent("No pets to show :(");
+    const { getByTestId } = render(
+      <Router>
+        <Home />
+      </Router>
+    );
 
-  const loadedPetCardList = await waitForElement(() => getByTestId("loaded"));
-  expect(loadedPetCardList).toBeInTheDocument();
-  expect(axiosMock.get).toHaveBeenCalledTimes(1);
-});
+    expect(getByTestId('loading')).toBeInTheDocument();
 
-const result = {
-  errorCode: 401,
-  errorMessage: "Unauthorized"
-};
+    const loadedPetList = await waitForElement(() => getByTestId('loaded'));
+    expect(loadedPetList).toBeInTheDocument();
+    expect(getAllPets).toHaveBeenCalledTimes(1);
+  });
 
-test("should return error", async () => {
-  axiosMock.get.mockReturnValue(Promise.reject(new Error(result)));
-  await expect(axiosMock.get).rejects.toThrow(result);
+  test('should render home with mock rejected API', async () => {
+    const NetworkError = {
+      Error: 'Network Error'
+    };
+
+    getAllPets.mockImplementation(() => Promise.reject(NetworkError));
+
+    const { getByTestId } = render(
+      <Router>
+        <Home />
+      </Router>
+    );
+
+    expect(getByTestId('loading')).toBeInTheDocument();
+
+    const loadedPetList = await waitForElement(() => getByTestId('loaded'));
+    expect(loadedPetList).toBeInTheDocument();
+    expect(getAllPets).toHaveBeenCalledTimes(1);
+  });
 });

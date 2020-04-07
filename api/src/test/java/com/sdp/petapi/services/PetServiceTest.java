@@ -19,14 +19,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class PetServiceTest {
-  Pet pet;
+  transient Pet pet;
 
   @Mock
-  PetDao petDao;
+  transient PetDao petDao;
 
-  // makes a petService whose petDao is the mock above
   @InjectMocks
-  PetService petService;
+  transient PetService petService;
 
   @BeforeEach
   public void init() throws Exception {
@@ -40,8 +39,6 @@ public class PetServiceTest {
 
   @Test
   public void get_all_pets() {
-    // Since the petDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(petDao.getAllPets()).thenReturn(Collections.singletonList(pet));
     List<Pet> list = petService.getAllPets();
     assertEquals(Collections.singletonList(pet), list);
@@ -50,9 +47,6 @@ public class PetServiceTest {
   @Test
   public void get_pet_by_id() {
     String id = "001";
-
-    // Since the petDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(petDao.getPetById(id)).thenReturn(pet);
     Pet actual_pet = petService.getPetById(id);
     assertEquals(pet, actual_pet);
@@ -60,8 +54,6 @@ public class PetServiceTest {
 
   @Test
   public void create_real_pet() {
-    // Since the petDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(petDao.createPet(pet)).thenReturn(pet);
     Pet returnPet = petService.createPet(pet);
     assertEquals(pet, returnPet);
@@ -69,8 +61,6 @@ public class PetServiceTest {
 
   @Test
   public void put_pet() {
-    // Since the petDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(petDao.putPet(pet)).thenReturn(pet);
     Pet returnedPet = petService.putPet(pet);
     assertEquals(pet, returnedPet);
@@ -78,8 +68,6 @@ public class PetServiceTest {
 
   @Test
   public void delete_pet() {
-    // Since the petDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(petDao.deletePet("001")).thenReturn(pet);
     Pet returnedPet = petService.deletePet("001");
     assertEquals(pet, returnedPet);
@@ -87,8 +75,6 @@ public class PetServiceTest {
 
   @Test
   public void put_pet_by_request() {
-    // Since the petDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(petDao.putPetByRequest(pet)).thenReturn(pet);
     Pet returnedPet = petService.putPetByRequest(pet);
     assertEquals(pet, returnedPet);

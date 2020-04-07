@@ -20,14 +20,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class RequestsControllerTest {
-  Requests req;
+
+  private static final String REQUEST_ID_STRING = "001";
+
+  transient Requests req;
 
   @Mock
-  RequestsService reqService;
+  transient RequestsService reqService;
 
   // makes a reqController whose reqService is the mock above
   @InjectMocks
-  RequestsController reqController;
+  transient RequestsController reqController;
 
   @BeforeEach
   public void init() throws Exception {
@@ -41,8 +44,6 @@ public class RequestsControllerTest {
 
   @Test
   public void get_all_requests() {
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(reqService.getAllRequests()).thenReturn(Collections.singletonList(req));
     List<Requests> list = reqController.getAllRequests();
     assertEquals(Collections.singletonList(req), list);
@@ -50,19 +51,13 @@ public class RequestsControllerTest {
   
   @Test
   public void get_request_by_id() {
-    String id = "001";
-
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
-    when(reqService.getRequestById(id)).thenReturn(req);
-    Requests actual_request = reqController.getRequestById(id);
+    when(reqService.getRequestById(REQUEST_ID_STRING)).thenReturn(req);
+    Requests actual_request = reqController.getRequestById(REQUEST_ID_STRING);
     assertEquals(req, actual_request);
   }
 
   @Test
   public void create_request() {
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(reqService.createRequest(req)).thenReturn(req);
     Requests returnRequest = reqController.createRequest(req);
     assertEquals(req, returnRequest);
@@ -70,17 +65,13 @@ public class RequestsControllerTest {
 
   @Test
   public void put_request() {
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(reqService.putRequest(req)).thenReturn(req);
-    Requests returnedRequest = reqController.putRequest("001", req);
+    Requests returnedRequest = reqController.putRequest(REQUEST_ID_STRING, req);
     assertEquals(req, returnedRequest);
   }
 
   @Test
   public void put_request_with_null_id_return_null() {
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(reqService.putRequest(req)).thenReturn(req);
     Requests returnedRequest = reqController.putRequest(null, req);
     assertNull(returnedRequest);
@@ -88,8 +79,6 @@ public class RequestsControllerTest {
 
   @Test
   public void put_request_with_incorrect_id_returns_null() {
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
     when(reqService.putRequest(req)).thenReturn(req);
     Requests returnedRequest = reqController.putRequest("010", req);
     assertNull(returnedRequest);
@@ -97,10 +86,8 @@ public class RequestsControllerTest {
 
   @Test
   public void delete_request() {
-    // Since the userDao is a mock it will return null on method calls, so
-    // we must specify what it will return given a specific method call
-    when(reqService.deleteRequest("001")).thenReturn(req);
-    Requests returnedRequest = reqController.deleteRequest("001");
+    when(reqService.deleteRequest(REQUEST_ID_STRING)).thenReturn(req);
+    Requests returnedRequest = reqController.deleteRequest(REQUEST_ID_STRING);
     assertEquals(req, returnedRequest);
   }
   

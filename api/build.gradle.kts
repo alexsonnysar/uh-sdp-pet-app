@@ -3,9 +3,10 @@ plugins {
   id("org.springframework.boot") version "2.2.4.RELEASE"
   id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	id("io.freefair.lombok") version "5.0.0-rc2"
-	
-  jacoco	
-}       
+
+  jacoco
+  pmd
+}
 
 repositories {
 	mavenCentral()
@@ -22,7 +23,16 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
-  implementation("com.auth0:auth0-spring-security-api:1.1.0")
+
+  implementation("org.springframework.boot:spring-boot-starter-security")
+  testImplementation("org.springframework.security:spring-security-test")
+
+  implementation("io.jsonwebtoken:jjwt-api:0.11.1")
+  implementation("io.jsonwebtoken:jjwt-impl:0.11.1")
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+  implementation("io.jsonwebtoken:jjwt-jackson:0.11.1") // or 'io.jsonwebtoken:jjwt-gson:0.11.1' for gson
+
 }
 
 tasks {
@@ -37,7 +47,7 @@ tasks {
         options.compilerArgs = treatWarningsAsError
     }
 }
- 
+
 sourceSets {
   main {
     java.srcDirs("src/main/java")
@@ -51,4 +61,8 @@ val test by tasks.getting(Test::class) {
 	useJUnitPlatform {}
 }
 
-defaultTasks("clean", "test", "jacocoTestReport")
+pmd {
+  isIgnoreFailures = false
+}
+
+defaultTasks("clean", "test", "jacocoTestReport", "pmdMain", "pmdTest")

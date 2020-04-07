@@ -13,7 +13,7 @@ import com.sdp.petapi.models.Requests;
 public class RequestsService {
 
   @Autowired
-  private RequestsDao reqDao;
+  transient RequestsDao reqDao;
 
   public List<Requests> getAllRequests() {
     return reqDao.getAllRequests();

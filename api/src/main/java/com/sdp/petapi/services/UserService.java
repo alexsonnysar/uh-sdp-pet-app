@@ -13,7 +13,7 @@ import com.sdp.petapi.models.User;
 public class UserService {
 
   @Autowired
-  private UserDao userDao;
+  transient UserDao userDao;
 
   public List<User> getAllUsers() {
     return userDao.getAllUsers();
@@ -25,6 +25,10 @@ public class UserService {
 
   public User createUser(User user) {
     return userDao.createUser(user);
+  }
+
+  public Boolean existsByEmail(String email) {
+    return userDao.existsByEmail(email);
   }
 
   public User putUser(User user) {

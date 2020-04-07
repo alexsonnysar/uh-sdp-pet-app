@@ -13,10 +13,10 @@ import com.sdp.petapi.repositories.UserRepository;
 public class UserDao {
 
   @Autowired
-  private UserRepository repository;
+  transient UserRepository repository;
 
   @Autowired
-  private PetDao petDao;
+  transient PetDao petDao;
 
   public List<User> getAllUsers(){
     return repository.findAll();
@@ -35,11 +35,18 @@ public class UserDao {
     return repository.insert(user);
   }
 
+  // does not allow changing of password or email, those should be handled in a different endpoint
   public User putUser(User user) {
     if (user == null) return null;
+
+    User dbUser = getUserById(user.getId());
+    if (!user.getEmail().equals(dbUser.getEmail())
+      || !Arrays.equals(user.getFavorites(),dbUser.getFavorites())
+      || !Arrays.equals(user.getRecents(), dbUser.getRecents())
+      || user.isEmployee() != dbUser.isEmployee()) return null;
     
-    User userdb = getUserById(user.getId());
-    return (userdb == null) ? null : repository.save(user);
+    return repository.save(user);
+
   }
 
   public User deleteUser(String userid) {
@@ -61,7 +68,7 @@ public class UserDao {
     if (pet == null || !pet.isActive()) return false;
 
     Boolean result = user.addToFavorites(petid);
-    if (result) putUser(user);
+    if (result) repository.save(user);
     return result;
   }
 
@@ -72,7 +79,7 @@ public class UserDao {
     if (!user.equals(userdb)) return false;
 
     Boolean result = user.removeFromFavorites(petid);
-    if (result) putUser(user);
+    if (result) repository.save(user);
     return result;
   }
 
@@ -86,7 +93,7 @@ public class UserDao {
     if (pet == null || !pet.isActive()) return false;
 
     Boolean result = user.addToRecents(petid);
-    if (result) putUser(user);
+    if (result) repository.save(user);
     return result;
   }
 
@@ -107,5 +114,9 @@ public class UserDao {
       .filter(p -> p != null)
       .collect(Collectors.toList());
   }
+
+public Boolean existsByEmail(String email) {
+	return repository.existsByEmail(email);
+}
   
 }

@@ -1,24 +1,40 @@
-import React, { useState } from "react";
-import { TextField, Button, makeStyles, MenuItem } from "@material-ui/core";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-//import { PostAddPet } from "../api/PostAddPet";
-import axios from "axios";
+import React, { useState } from 'react';
+import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
+import axios from 'axios';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    '& > *': {
+      margin: theme.spacing(1)
+    },
+    width: '20rem',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  button: {
+    color: 'primary'
+  },
+  text: {
+    textAlign: 'center'
+  }
+}));
 
 const RegisterPetForm = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    sex: "",
-    age: "",
-    size: "",
-    weight: "",
-    dateAdded: "",
-    description: "",
-    imageNames: [""],
+  const [loading, setLoading] = useState(false);
+  const initialState = {
+    name: '',
+    type: '',
+    sex: '',
+    age: '',
+    size: '',
+    weight: '',
+    dateAdded: '',
+    description: '',
+    imageNames: [''],
     adopted: false,
     active: true
-  });
+  };
+  const [formData, setFormData] = useState(initialState);
   const date = {
     someDate: new Date().toISOString().substring(0, 10)
   };
@@ -29,7 +45,7 @@ const RegisterPetForm = () => {
       ...formData,
       [e.target.id]: e.target.value
     });
-    console.log("FormData: ", formData);
+    console.log('FormData: ', formData);
   };
   const handleSelect = prop => event => {
     console.log(event);
@@ -39,25 +55,29 @@ const RegisterPetForm = () => {
     });
   };
 
-  //Currently mapping info one at a time
-  //Maybe there's a way to send whole object formatted correctly?
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+  };
+
   const PostAddPet = petData => {
     axios({
-      method: "post",
-      url: "http://localhost:8080/pet",
-      data: petData,
-      headers: { "Content-Type": "application/json" }
+      method: 'post',
+      url: 'http://localhost:8080/pet',
+      headers,
+      data: petData
     })
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response);
+        window.location.replace('http://localhost:3000/pet-register');
+      })
       .catch(error => console.log(error));
   };
 
-  //Have not handled validation at this part yet
   const handleSubmit = () => {
     // if(state is valid){
     //   make api call
-    // }
-
+    setLoading(true);
     PostAddPet(formData);
   };
 
@@ -77,7 +97,7 @@ const RegisterPetForm = () => {
           id="type"
           label="type"
           variant="outlined"
-          onChange={handleSelect("type")}
+          onChange={handleSelect('type')}
           value={formData.type}
           select
         >
@@ -94,7 +114,7 @@ const RegisterPetForm = () => {
           id="sex"
           label="sex"
           variant="outlined"
-          onChange={handleSelect("sex")}
+          onChange={handleSelect('sex')}
           value={formData.sex}
           select
         >
@@ -105,7 +125,7 @@ const RegisterPetForm = () => {
           id="age"
           label="age"
           variant="outlined"
-          onChange={handleSelect("age")}
+          onChange={handleSelect('age')}
           value={formData.age}
           select
         >
@@ -119,7 +139,7 @@ const RegisterPetForm = () => {
           id="size"
           label="size"
           variant="outlined"
-          onChange={handleSelect("size")}
+          onChange={handleSelect('size')}
           value={formData.size}
           select
         >
@@ -147,7 +167,7 @@ const RegisterPetForm = () => {
         <TextField
           id="description"
           multiline
-          rowMax="4"
+          rowmax="4"
           label="Description"
           variant="outlined"
           onChange={handleChange}
@@ -156,7 +176,7 @@ const RegisterPetForm = () => {
           id="adopted"
           label="adopted"
           variant="outlined"
-          onChange={handleSelect("adopted")}
+          onChange={handleSelect('adopted')}
           value={formData.adopted}
           select
         >
@@ -168,6 +188,7 @@ const RegisterPetForm = () => {
           variant="outlined"
           className={classes.button}
           onClick={() => handleSubmit()}
+          disabled={loading}
         >
           Create
         </Button>
@@ -175,22 +196,5 @@ const RegisterPetForm = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    "& > *": {
-      margin: theme.spacing(1)
-    },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column"
-  },
-  button: {
-    color: "primary"
-  },
-  text: {
-    textAlign: "center"
-  }
-}));
 
 export default RegisterPetForm;

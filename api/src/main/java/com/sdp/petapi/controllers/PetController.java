@@ -3,6 +3,7 @@ package com.sdp.petapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ import com.sdp.petapi.services.PetService;
 public class PetController {
 
   @Autowired
-  private PetService petService;
+  transient PetService petService;
 
   @GetMapping
   public List<Pet> getAllPets() {
@@ -35,12 +36,15 @@ public class PetController {
     return petService.getPetById(id);
   }
 
+  // only employees
   @PostMapping
+  @PreAuthorize("hasRole('Employee')")
   public Pet createPet(@RequestBody Pet pet) {
     return petService.createPet(pet);
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasRole('Employee')")
   public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
     return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(pet);
   }

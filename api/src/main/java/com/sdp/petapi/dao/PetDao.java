@@ -12,7 +12,7 @@ import com.sdp.petapi.repositories.PetRepository;
 public class PetDao {
 
   @Autowired
-  private PetRepository repository;
+  transient PetRepository repository;
 
   public List<Pet> getAllPets() {
     return repository.findAll();
