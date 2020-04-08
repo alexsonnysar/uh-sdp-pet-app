@@ -112,8 +112,8 @@ const LoginForm = () => {
           Log In
         </Button>
         <small className={classes.text}>
-          {/* eslint-disable-next-line prettier/prettier */}
-          Already have an account? Register <Link to="/register">here</Link>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          Dont have an account? Register <Link to="/register">here</Link>
         </small>
       </form>
     </div>

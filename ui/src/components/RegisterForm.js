@@ -164,7 +164,7 @@ const RegisterForm = () => {
         </Button>
         <small className={classes.text}>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-          Already have an account? Log in <Link to="/register">here</Link>
+          Already have an account? Log in <Link to="/login">here</Link>
         </small>
       </form>
     </div>
