@@ -86,7 +86,11 @@ PetListItem.propTypes = {
     name: PropTypes.string,
     type: PropTypes.string,
   }).isRequired,
-  removePet: PropTypes.func.isRequired,
+  removePet: PropTypes.func,
+};
+
+PetListItem.defaultProps = {
+  removePet: () => null,
 };
 
 export default PetListItem;

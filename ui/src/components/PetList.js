@@ -41,13 +41,13 @@ const PetList = ({ heading, petList, deletePet }) => {
 };
 
 PetList.propTypes = {
-  heading: PropTypes.string
-    .isRequired,
-  petList: PropTypes.arrayOf(
-    PropTypes.object,
-  ).isRequired,
-  deletePet: PropTypes.func
-    .isRequired,
+  heading: PropTypes.string.isRequired,
+  petList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deletePet: PropTypes.func,
+};
+
+PetList.defaultProps = {
+  deletePet: () => null,
 };
 
 export default PetList;

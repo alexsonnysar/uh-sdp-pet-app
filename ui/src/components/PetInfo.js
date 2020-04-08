@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 const PetInfo = ({ pet }) => {
   const { name, age, size, type, sex, description } = pet;
 
+  const fullSexName = sex === 'M' ? 'Male' : 'Female';
+
   const classes = useStyles();
 
   return (
@@ -63,33 +65,29 @@ const PetInfo = ({ pet }) => {
                 <Divider orientation="vertical" flexItem />
                 <Typography variant="subtitle1">{size}</Typography>
                 <Divider orientation="vertical" flexItem />
-                <Typography variant="subtitle1">{sex}</Typography>
+                <Typography variant="subtitle1">{fullSexName}</Typography>
               </Grid>
               <Divider variant="middle" className={classes.divider} />
               <Typography variant="body1">{description}</Typography>
               <Divider variant="middle" className={classes.divider} />
-              {localStorage.getItem('jwt') !== null ? (
-                <div className={classes.button}>
-                  <Button
-                    size="large"
-                    color="primary"
-                    variant="contained"
-                    startIcon={<PetsRoundedIcon />}
-                  >
-                    Adopt Me
-                  </Button>
-                  <Button
-                    size="large"
-                    color="secondary"
-                    variant="contained"
-                    startIcon={<FavoriteRoundedIcon />}
-                  >
-                    Favorite
-                  </Button>
-                </div>
-              ) : (
-                []
-              )}
+              <div className={classes.button}>
+                <Button
+                  size="large"
+                  color="primary"
+                  variant="contained"
+                  startIcon={<PetsRoundedIcon />}
+                >
+                  Adopt Me
+                </Button>
+                <Button
+                  size="large"
+                  color="secondary"
+                  variant="contained"
+                  startIcon={<FavoriteRoundedIcon />}
+                >
+                  Favorite
+                </Button>
+              </div>
             </div>
           </Grid>
         </Grid>

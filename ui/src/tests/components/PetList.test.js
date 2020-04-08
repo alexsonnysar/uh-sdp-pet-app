@@ -21,7 +21,9 @@ const petList = [
 ];
 
 test('should render a list of pets', () => {
-  const { getByTestId } = render(<PetList heading="Pet List" petList={petList} />);
+  const { getByTestId } = render(
+    <PetList heading="Pet List" petList={petList} deletePet={() => {}} />
+  );
   const petLists = getByTestId('petlist');
   expect(petLists).toBeInTheDocument();
 });
