@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  TextField,
-  Button,
-  makeStyles,
-  MenuItem,
-} from '@material-ui/core';
+import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -90,12 +85,7 @@ const RegisterPetForm = () => {
     <div data-testid="registerPetForm">
       <form className={classes.container}>
         <h1 align="center">Register Pet</h1>
-        <TextField
-          id="name"
-          label="Name"
-          variant="outlined"
-          onChange={handleChange}
-        />
+        <TextField id="name" label="Name" variant="outlined" onChange={handleChange} />
         <TextField
           id="type"
           label="type"
@@ -170,7 +160,6 @@ const RegisterPetForm = () => {
         <TextField
           id="description"
           multiline
-          rowmax="4"
           label="Description"
           variant="outlined"
           onChange={handleChange}
