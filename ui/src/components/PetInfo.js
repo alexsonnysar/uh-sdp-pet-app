@@ -40,7 +40,7 @@ const PetInfo = ({ pet }) => {
   const classes = useStyles();
 
   return (
-    <div>
+    <div data-testid="petInfo">
       <Paper>
         <Grid container>
           <Grid item sm={12} md={6} lg={6}>
