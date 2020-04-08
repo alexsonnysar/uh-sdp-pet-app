@@ -64,11 +64,7 @@ const PetCard = ({ pet }) => {
       </CardActionArea>
       <CardActions>
         {localStorage.getItem('jwt') !== null ? (
-          <Button
-            size="small"
-            color="secondary"
-            startIcon={<FavoriteRoundedIcon />}
-          >
+          <Button size="small" color="secondary" startIcon={<FavoriteRoundedIcon />}>
             Favorite
           </Button>
         ) : (

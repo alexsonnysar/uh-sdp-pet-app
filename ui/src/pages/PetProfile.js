@@ -39,17 +39,15 @@ const PetProfile = () => {
 
   return (
     <div data-testid="petprofile">
-      {
-        loading ? (
-          <div className={classes.progress} data-testid="loading">
-            <CircularProgress color="secondary" />
-          </div>
-        ) : (
-          <div data-testid="loaded">
-            <PetInfo pet={pet} />
-          </div>
-        )
-      }
+      {loading ? (
+        <div className={classes.progress} data-testid="loading">
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <div data-testid="loaded">
+          <PetInfo pet={pet} />
+        </div>
+      )}
     </div>
   );
 };
