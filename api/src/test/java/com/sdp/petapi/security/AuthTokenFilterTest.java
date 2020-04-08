@@ -65,7 +65,24 @@ public class AuthTokenFilterTest {
 
         verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
 
-        // Test
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+	public void testFilterIgnoresRequestsContainingAuthorizationHeaderNotStartingWithBearer() throws Exception {
+        String token = "NOT_A_VALID_TOKEN";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("Authorization",
+				"Bear " + token);
+        
+        request.setServletPath("/pet");
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+
+        FilterChain chain = mock(FilterChain.class);
+        authTokenFilter.doFilter(request, response, chain);
+
+        verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
+        
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     
@@ -85,7 +102,6 @@ public class AuthTokenFilterTest {
         verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
         
         assertNull(SecurityContextHolder.getContext().getAuthentication());
-
 		assertEquals(response.getStatus(), 200);
 	}
 }
