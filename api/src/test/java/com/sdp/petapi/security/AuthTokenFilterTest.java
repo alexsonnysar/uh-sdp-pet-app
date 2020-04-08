@@ -29,6 +29,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @SpringBootTest
 public class AuthTokenFilterTest {
 
@@ -133,6 +134,33 @@ public class AuthTokenFilterTest {
         verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
         
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+
+		assertEquals(response.getStatus(), 200);
+    }
+
+    @Test
+	public void test_token_valid_but_username_doesnt_exist_throws_excetion() throws Exception {
+		String token = "NOT_A_VALID_TOKEN";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("Authorization",
+				"Bearer " + token);
+        request.setServletPath("/pet");
+        
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+
+        FilterChain chain = mock(FilterChain.class);
+        
+        when(jwtUtils.validateJwtToken(token)).thenReturn(true);
+        when(jwtUtils.getUserNameFromJwtToken(token)).thenReturn(webUser.getEmail());
+        when(userDetailsService.loadUserByUsername(webUser.getEmail())).thenThrow(new UsernameNotFoundException("test"));
+
+
+		authTokenFilter.doFilter(request, response, chain);
+
+
+        verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
+        
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
 
 		assertEquals(response.getStatus(), 200);
     }
