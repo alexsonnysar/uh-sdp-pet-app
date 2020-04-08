@@ -101,7 +101,6 @@ const RegisterForm = () => {
     } else if (formData.password !== formData.passwordConfirm) {
       setError(true);
     } else {
-      // alert("Your passwords don't match!");
       PostAddUser(formData);
       setError(false);
     }
@@ -164,8 +163,8 @@ const RegisterForm = () => {
           Complete Registration
         </Button>
         <small className={classes.text}>
-          {/* eslint-disable-next-line prettier/prettier */}
-          Already have an account? Log in <Link to="/login">here</Link>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          Already have an account? Log in <Link to="/register">here</Link>
         </small>
       </form>
     </div>
