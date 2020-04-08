@@ -129,10 +129,13 @@ class PetTest {
 
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
-    Date current = new Date();
+    Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet(BUDDY, DOG, "M", OLD, MEDIUM, 123.4, WET, images);
-
+    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+        WET, images );
+    
+    Date latestDate = new Date();
+    
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
     assertEquals(sample_pet.getName(), BUDDY);
@@ -142,8 +145,8 @@ class PetTest {
     assertEquals(sample_pet.getSize(), MEDIUM);
     assertEquals(sample_pet.getWeight(), 123.4);
     assertNotNull(sample_pet.getDateAdded());
-    assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current));
-    assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current));
+    assertTrue(sample_pet.getDateAdded().after(earliestDate) || sample_pet.getDateAdded().equals(earliestDate));
+    assertTrue(sample_pet.getDateAdded().before(latestDate) || sample_pet.getDateAdded().equals(latestDate));
     assertArrayEquals(sample_pet.getImageNames(), petPics);
     assertFalse(sample_pet.isAdopted());
     assertTrue(sample_pet.isActive());
@@ -155,10 +158,13 @@ class PetTest {
 
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
-    Date current = new Date();
+    Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet(BUDDY, DOG, "M", OLD, MEDIUM, 123.4, WET, images);
-
+    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+        WET, images );
+    
+    Date latestDate = new Date();
+    
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
     assertEquals(sample_pet.getName(), BUDDY);
@@ -168,8 +174,8 @@ class PetTest {
     assertEquals(sample_pet.getSize(), MEDIUM);
     assertEquals(sample_pet.getWeight(), 123.4);
     assertNotNull(sample_pet.getDateAdded());
-    assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current));
-    assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current));
+    assertTrue(sample_pet.getDateAdded().after(earliestDate) || sample_pet.getDateAdded().equals(earliestDate));
+    assertTrue(sample_pet.getDateAdded().before(latestDate) || sample_pet.getDateAdded().equals(latestDate));
     assertArrayEquals(sample_pet.getImageNames(), petPics);
     assertFalse(sample_pet.isAdopted());
     assertTrue(sample_pet.isActive());
@@ -182,10 +188,13 @@ class PetTest {
     List<String> insImages = Arrays.asList(images);
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
-    Date current = new Date();
+    Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet(BUDDY, DOG, "M", OLD, MEDIUM, 123.4, WET, insImages);
-
+    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+        WET, insImages );
+    
+    Date latestDate = new Date();
+    
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
     assertEquals(sample_pet.getName(), BUDDY);
@@ -195,7 +204,8 @@ class PetTest {
     assertEquals(sample_pet.getSize(), MEDIUM);
     assertEquals(sample_pet.getWeight(), 123.4);
     assertNotNull(sample_pet.getDateAdded());
-    assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current));
+    assertTrue(sample_pet.getDateAdded().after(earliestDate) || sample_pet.getDateAdded().equals(earliestDate));
+    assertTrue(sample_pet.getDateAdded().before(latestDate) || sample_pet.getDateAdded().equals(latestDate));
     assertArrayEquals(sample_pet.getImageNames(), petPics);
     assertFalse(sample_pet.isAdopted());
     assertTrue(sample_pet.isActive());
@@ -208,10 +218,13 @@ class PetTest {
     List<String> insImages = Arrays.asList(images);
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
-    Date current = new Date();
+    Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet(BUDDY, DOG, "M", OLD, MEDIUM, 123.4, WET, insImages);
-
+    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+        WET, insImages );
+    
+    Date latestDate = new Date();
+    
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
     assertEquals(sample_pet.getName(), BUDDY);
@@ -221,8 +234,8 @@ class PetTest {
     assertEquals(sample_pet.getSize(), MEDIUM);
     assertEquals(sample_pet.getWeight(), 123.4);
     assertNotNull(sample_pet.getDateAdded());
-    assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current));
-    assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current));
+    assertTrue(sample_pet.getDateAdded().after(earliestDate) || sample_pet.getDateAdded().equals(earliestDate));
+    assertTrue(sample_pet.getDateAdded().before(latestDate) || sample_pet.getDateAdded().equals(latestDate));
     assertArrayEquals(sample_pet.getImageNames(), petPics);
     assertFalse(sample_pet.isAdopted());
     assertTrue(sample_pet.isActive());
