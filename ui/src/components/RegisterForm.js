@@ -124,6 +124,7 @@ const RegisterForm = () => {
           variant="outlined"
           m={20}
           onChange={handleChange}
+          required
         />
         <TextField
           error={isError}
@@ -133,6 +134,7 @@ const RegisterForm = () => {
           variant="outlined"
           m={20}
           onChange={handleChange}
+          required
         />
         <TextField
           error={isError}
@@ -143,6 +145,7 @@ const RegisterForm = () => {
           autoComplete="current-password"
           variant="outlined"
           onChange={handleChange}
+          required
         />
         <TextField
           error={isError}
@@ -153,6 +156,7 @@ const RegisterForm = () => {
           autoComplete="current-password"
           variant="outlined"
           onChange={handleChange}
+          required
         />
         <Button
           variant="outlined"
