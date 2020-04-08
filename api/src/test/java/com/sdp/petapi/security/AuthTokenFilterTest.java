@@ -1,6 +1,7 @@
 package com.sdp.petapi.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -70,7 +71,7 @@ public class AuthTokenFilterTest {
     }
     
     @Test
-	public void testInvalidBasicAuthorizationTokenIsIgnored() throws Exception {
+	public void testInvalidTokenIsIgnored() throws Exception {
 		String token = "NOT_A_VALID_TOKEN";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("Authorization",
@@ -87,5 +88,36 @@ public class AuthTokenFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
 
 		assertEquals(response.getStatus(), 200);
-	}
+    }
+    
+    @Test
+	public void testValidTokenAuthorization() throws Exception {
+		String token = "NOT_A_VALID_TOKEN";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("Authorization",
+				"Bearer " + token);
+        request.setServletPath("/pet");
+        
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+
+        FilterChain chain = mock(FilterChain.class);
+        
+        when(jwtUtils.validateJwtToken(token)).thenReturn(true);
+        when(jwtUtils.getUserNameFromJwtToken(token)).thenReturn(webUser.getEmail());
+        when(userDetailsService.loadUserByUsername(webUser.getEmail())).thenReturn(new UserDetailsImpl(
+            webUser.getId(), 
+            webUser.getEmail(), 
+            webUser.getPassHash(),
+            Collections.singletonList(new SimpleGrantedAuthority("ROLE_User"))));
+
+
+		authTokenFilter.doFilter(request, response, chain);
+
+
+        verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
+        
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+
+		assertEquals(response.getStatus(), 200);
+    }
 }
