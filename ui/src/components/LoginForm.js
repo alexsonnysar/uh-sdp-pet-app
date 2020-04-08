@@ -32,6 +32,7 @@ const LoginForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
 
   const PostLoginUser = (userData) => {
     setLoading(true);
@@ -50,8 +51,8 @@ const LoginForm = () => {
           window.location.replace('http://localhost:3000/employee-dashboard');
         }
       })
-      .catch((error) => {
-        throw error;
+      .catch(() => {
+        setError(true);
       })
       .finally(() => {
         setLoading(false);
@@ -66,15 +67,25 @@ const LoginForm = () => {
   };
 
   const handleSubmit = () => {
-    PostLoginUser(formData);
+    if (formData.email.length === 0 || formData.password.length === 0) {
+      setError(true);
+    }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+      setError(true);
+    } else {
+      PostLoginUser(formData);
+      setError(false);
+    }
   };
-
   const classes = useStyles();
+
   return (
     <div data-testid="loginForm">
-      <form className={classes.container}>
+      <form className={classes.container} onSubmit={handleSubmit}>
         <h1 align="center">Log In</h1>
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Email' : ''}
           data-testid="email"
           id="email"
           label="Email"
@@ -83,6 +94,8 @@ const LoginForm = () => {
           onChange={handleChange}
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Password' : ''}
           id="password"
           label="Password"
           type="password"
@@ -99,11 +112,8 @@ const LoginForm = () => {
           Log In
         </Button>
         <small className={classes.text}>
-          Don't have an account? Register
-          {' '}
-          <Link className={classes.link} to="/register">
-            here
-          </Link>
+          {/* eslint-disable-next-line prettier/prettier */}
+          Already have an account? Register <Link to="/register">here</Link>
         </small>
       </form>
     </div>
