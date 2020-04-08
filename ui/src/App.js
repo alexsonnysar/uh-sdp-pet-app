@@ -68,7 +68,7 @@ function App() {
               <Login handleAuth={setAuth} />
             </Route>
             <Route path="/register">
-              <Register />
+              <Register handleAuth={setAuth} />
             </Route>
             <Route path="/">
               <Home />
