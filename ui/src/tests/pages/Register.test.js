@@ -7,7 +7,7 @@ test('should render register pet page', () => {
   const { getByTestId } = render(
     <Router>
       <Register />
-    </Router>
+    </Router>,
   );
   const register = getByTestId('register');
   expect(register).toBeInTheDocument();

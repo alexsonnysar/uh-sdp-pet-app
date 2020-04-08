@@ -25,15 +25,14 @@ class PetTest {
 
   @Test
   public void createAllArgsImageArray() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING};
+    String[] images = { PARK, FRISBEE, BITING };
 
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet( ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date,
-        WET, images, false, true);
-    
+    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, images, false, true);
+
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
     assertEquals(sample_pet.getName(), BUDDY);
@@ -50,16 +49,15 @@ class PetTest {
 
   @Test
   public void createAllArgsImageArrayWithSameImageNames() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING, FRISBEE};
+    String[] images = { PARK, FRISBEE, BITING, FRISBEE };
 
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
 
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet( ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date,
-        WET, images, false, true);
-    
+    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, images, false, true);
+
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
     assertEquals(sample_pet.getName(), BUDDY);
@@ -76,16 +74,15 @@ class PetTest {
 
   @Test
   public void createAllArgsImageList() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING};
+    String[] images = { PARK, FRISBEE, BITING };
 
     List<String> insImages = Arrays.asList(images);
     String[] petPics = new String[images.length];
     insImages.stream().collect(Collectors.toSet()).toArray(petPics);
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet( ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date,
-        WET, insImages, false, true);
-    
+    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, insImages, false, true);
+
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
     assertEquals(sample_pet.getName(), BUDDY);
@@ -102,7 +99,7 @@ class PetTest {
 
   @Test
   public void createAllArgsImageListWithSameImageNames() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING, FRISBEE};
+    String[] images = { PARK, FRISBEE, BITING, FRISBEE };
 
     List<String> insImages = Arrays.asList(images);
     String[] petPics = new String[images.length];
@@ -110,9 +107,8 @@ class PetTest {
 
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet( ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date,
-        WET, insImages, false, true);
-    
+    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, insImages, false, true);
+
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
     assertEquals(sample_pet.getName(), BUDDY);
@@ -129,7 +125,7 @@ class PetTest {
 
   @Test
   public void createEightArgsImageArray() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING};
+    String[] images = { PARK, FRISBEE, BITING };
 
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
@@ -158,7 +154,7 @@ class PetTest {
 
   @Test
   public void createEightArgsImageArrayWithSameImageNames() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING, FRISBEE};
+    String[] images = { PARK, FRISBEE, BITING, FRISBEE };
 
     String[] petPics = new String[images.length];
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
@@ -187,7 +183,7 @@ class PetTest {
 
   @Test
   public void createEightArgsImageList() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING};
+    String[] images = { PARK, FRISBEE, BITING };
 
     List<String> insImages = Arrays.asList(images);
     String[] petPics = new String[images.length];
@@ -217,7 +213,7 @@ class PetTest {
 
   @Test
   public void createEightArgsImageListWithSameImageNames() throws Exception {
-    String[] images = {PARK, FRISBEE, BITING, FRISBEE};
+    String[] images = { PARK, FRISBEE, BITING, FRISBEE };
 
     List<String> insImages = Arrays.asList(images);
     String[] petPics = new String[images.length];

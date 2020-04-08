@@ -8,7 +8,7 @@ describe('<Navigation />', () => {
     const { getByTestId } = render(
       <Router>
         <Navigation />
-      </Router>
+      </Router>,
     );
     const navigation = getByTestId('navbar');
     expect(navigation).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe('<Navigation />', () => {
     const { getByTestId } = render(
       <Router>
         <Navigation />
-      </Router>
+      </Router>,
     );
 
     const logout = getByTestId('logout');

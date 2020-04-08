@@ -5,21 +5,21 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     '& > *': {
-      margin: theme.spacing(1)
+      margin: theme.spacing(1),
     },
     width: '20rem',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   button: {
-    color: 'primary'
+    color: 'primary',
   },
   text: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 }));
 
 const RegisterForm = () => {
@@ -27,21 +27,20 @@ const RegisterForm = () => {
     email: '',
     password: '',
     passwordConfirm: '',
-    name: ''
+    name: '',
   });
 
   const [loading, setLoading] = useState(false);
 
-  const PostLoginUser = userData => {
+  const PostLoginUser = (userData) => {
     setLoading(true);
     axios({
       method: 'post',
       url: 'http://localhost:8080/signin',
       data: userData,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then(response => {
-        // console.log(response.data);
+      .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
         if (localStorage.getItem('roles') === 'ROLE_User') {
@@ -50,40 +49,37 @@ const RegisterForm = () => {
           window.location.replace('http://localhost:3000/employee-dashboard');
         }
       })
-      .catch(() => {
-        // console.log(error);
-        alert('You may already have an account here. Try logging in');
+      .catch((error) => {
+        throw error;
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  const PostAddUser = userData => {
+  const PostAddUser = (userData) => {
     setLoading(true);
     axios({
       method: 'post',
       url: 'http://localhost:8080/signup',
       data: userData,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     })
       .then(() => {
-        // console.log(response);
         PostLoginUser(formData);
       })
-      .catch(() => {
-        // console.log(error)
-        alert('ur not getting an account today.');
+      .catch((error) => {
+        throw error;
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   };
 
@@ -91,7 +87,8 @@ const RegisterForm = () => {
     if (formData.password === formData.passwordConfirm) {
       PostAddUser(formData);
     } else {
-      alert("Your passwords don't match!");
+      const num = 'Passwords Dont Match!';
+      throw num;
     }
   };
 
@@ -140,7 +137,9 @@ const RegisterForm = () => {
           Complete Registration
         </Button>
         <small className={classes.text}>
-          Already have an account? Log in <Link to="/login">here</Link>
+          Already have an account? Log in
+          {' '}
+          <Link to="/login">here</Link>
         </small>
       </form>
     </div>
