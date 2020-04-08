@@ -29,53 +29,6 @@ const LoginForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
-
-  const PostLoginUser = userData => {
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/signin',
-      data: userData,
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => {
-        // console.log(response.data);
-        window.localStorage.setItem('jwt', response.data.jwt);
-        window.localStorage.setItem('roles', response.data.roles);
-        if (localStorage.getItem('roles') === 'ROLE_User') {
-          window.location.replace('http://localhost:3000/user-dashboard');
-        } else {
-          window.location.replace('http://localhost:3000/employee-dashboard');
-        }
-      })
-      .catch(() => {
-        // console.log(error);
-        alert('Incorrect Username or Password');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const handleChange = e => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    });
-  };
-
-  const handleSubmit = () => {
-    PostLoginUser(formData);
-  };
-
-  const classes = useStyles();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-
-  const [loading, setLoading] = useState(false);
-
   const [isError, setError] = useState(false);
 
   const PostLoginUser = userData => {
@@ -87,12 +40,16 @@ const LoginForm = () => {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {
-        console.log(response.data);
-        alert(JSON.stringify(response.data));
+        window.localStorage.setItem('jwt', response.data.jwt);
+        window.localStorage.setItem('roles', response.data.roles);
+        if (localStorage.getItem('roles') === 'ROLE_User') {
+          window.location.replace('http://localhost:3000/user-dashboard');
+        } else {
+          window.location.replace('http://localhost:3000/employee-dashboard');
+        }
       })
-      .catch(error => {
-        console.log(error);
-        alert('Incorrect Username or Password');
+      .catch(() => {
+        setError(true);
       })
       .finally(() => {
         setLoading(false);
@@ -100,7 +57,6 @@ const LoginForm = () => {
   };
 
   const handleChange = e => {
-    console.log(e.target.id);
     setFormData({
       ...formData,
       [e.target.id]: e.target.value
@@ -108,14 +64,25 @@ const LoginForm = () => {
   };
 
   const handleSubmit = () => {
-    PostLoginUser(formData);
+    if (formData.email.length === 0 || formData.password.length === 0) {
+      setError(true);
+    }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+      setError(true);
+    } else {
+      PostLoginUser(formData);
+      setError(false);
+    }
   };
+  const classes = useStyles();
 
   return (
     <div data-testid="loginForm">
-      <form className={classes.container}>
+      <form className={classes.container} onSubmit={handleSubmit}>
         <h1 align="center">Log In</h1>
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Email' : ''}
           data-testid="email"
           id="email"
           label="Email"
@@ -124,6 +91,8 @@ const LoginForm = () => {
           onChange={handleChange}
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Password' : ''}
           id="password"
           label="Password"
           type="password"

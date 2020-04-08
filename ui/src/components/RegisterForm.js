@@ -31,6 +31,7 @@ const RegisterForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
 
   const PostLoginUser = userData => {
     setLoading(true);
@@ -88,10 +89,29 @@ const RegisterForm = () => {
   };
 
   const handleSubmit = () => {
-    if (formData.password === formData.passwordConfirm) {
-      PostAddUser(formData);
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.passwordConfirm
+    ) {
+      setError(true);
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)
+    ) {
+      setError(true);
+    } else if (
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(
+        formData.password
+      )
+    ) {
+      setError(true);
+    } else if (formData.password !== formData.passwordConfirm) {
+      setError(true);
     } else {
-      alert("Your passwords don't match!");
+      // alert("Your passwords don't match!");
+      PostAddUser(formData);
+      setError(false);
     }
   };
 
@@ -101,6 +121,8 @@ const RegisterForm = () => {
       <form className={classes.container}>
         <h1 align="center">Register</h1>
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Name' : ''}
           id="name"
           label="Name"
           variant="outlined"
@@ -108,6 +130,8 @@ const RegisterForm = () => {
           onChange={handleChange}
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Email' : ''}
           id="email"
           label="Email"
           variant="outlined"
@@ -115,6 +139,8 @@ const RegisterForm = () => {
           onChange={handleChange}
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Password' : ''}
           id="password"
           label="Password"
           type="password"
@@ -123,6 +149,8 @@ const RegisterForm = () => {
           onChange={handleChange}
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Your Passwords Must Match' : ''}
           id="passwordConfirm"
           label="Confirm Password"
           type="password"
