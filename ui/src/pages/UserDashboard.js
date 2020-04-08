@@ -24,6 +24,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     getAllPets(url)
+      // eslint-disable-next-line no-shadow
       .then((petList) => setPetList(petList))
       .catch((error) => {
         throw error;
