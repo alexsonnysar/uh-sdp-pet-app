@@ -14,9 +14,7 @@ const PetCardList = ({ petList }) => (
 );
 
 PetCardList.propTypes = {
-  petList: PropTypes.arrayOf(
-    PropTypes.object,
-  ).isRequired,
+  petList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default PetCardList;

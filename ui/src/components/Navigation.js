@@ -1,11 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const Logout = () => {
@@ -72,11 +67,7 @@ const Navigation = () => {
               </Link>
             </>
           ) : (
-            <Button
-              onClick={Logout}
-              className={classes.button}
-              data-testid="logout"
-            >
+            <Button onClick={Logout} className={classes.button} data-testid="logout">
               Logout
             </Button>
           )}

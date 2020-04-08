@@ -20,7 +20,7 @@ const PetListItem = ({ pet, removePet }) => {
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
-  const headers = {
+  const headersAxios = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
@@ -29,7 +29,7 @@ const PetListItem = ({ pet, removePet }) => {
     axios({
       method: 'put',
       url: `http://localhost:8080/pet/${id}`,
-      headers,
+      headers: headersAxios,
       data: petData,
     })
       .then((response) => response.data)
@@ -41,7 +41,7 @@ const PetListItem = ({ pet, removePet }) => {
   const handleDelete = () => {
     const petData = {
       ...pet,
-      isActive: false,
+      active: false,
     };
     setLoading(true);
     removePet(id);
