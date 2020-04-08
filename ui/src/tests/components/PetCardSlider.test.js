@@ -6,22 +6,22 @@ const petList = [
   {
     id: 1,
     name: 'Garfield',
-    type: 'Cat'
+    type: 'Cat',
   },
   {
     id: 2,
     name: 'Shawn',
-    type: 'Bird'
+    type: 'Bird',
   },
   {
     id: 3,
     name: 'Alex',
-    type: 'Dog'
-  }
+    type: 'Dog',
+  },
 ];
 
 test('should render a list of pet cards in horizontal slider', () => {
-  const { getByTestId } = render(<PetCardSlider petList={petList} />);
+  const { getByTestId } = render(<PetCardSlider petList={petList} heading="" />);
   const petLists = getByTestId('petCardSlider');
   expect(petLists).toBeInTheDocument();
 });

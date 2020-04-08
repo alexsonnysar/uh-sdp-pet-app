@@ -6,13 +6,13 @@ import { getAllPets } from '../api/petRequests';
 
 const useStyles = makeStyles({
   root: {
-    alignContent: 'left'
+    alignContent: 'left',
   },
   progress: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 const UserDashboard = () => {
@@ -24,8 +24,10 @@ const UserDashboard = () => {
 
   useEffect(() => {
     getAllPets(url)
-      .then(petList => setPetList(petList))
-      .catch(error => console.log(error))
+      .then((petList) => setPetList(petList))
+      .catch((error) => {
+        throw error;
+      })
       .finally(() => setLoading(false));
   }, []);
 
