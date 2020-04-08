@@ -5,56 +5,63 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     '& > *': {
-      margin: theme.spacing(1)
+      margin: theme.spacing(1),
     },
     width: '20rem',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   button: {
-    color: 'primary'
+    color: 'primary',
   },
   text: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
+  link: {
+    textDecorationLine: 'none',
+  },
 }));
 
 const LoginForm = props => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const [loading, setLoading] = useState(false);
 
-  const PostLoginUser = userData => {
+  const PostLoginUser = (userData) => {
     setLoading(true);
     axios({
       method: 'post',
       url: 'http://localhost:8080/signin',
       data: userData,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then(response => {
-        // console.log(response.data);
+      .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
       })
+<<<<<<< HEAD
       .catch(() => {
         alert('Incorrect Username or Password');
+=======
+      .catch((error) => {
+        throw error;
+>>>>>>> 96abea273b19b644090c18c675a69fd806cddb9b
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   };
 
@@ -96,7 +103,11 @@ const LoginForm = props => {
           Log In
         </Button>
         <small className={classes.text}>
-          Don't have an account? Register <Link to="/register">here</Link>
+          Don't have an account? Register
+          {' '}
+          <Link className={classes.link} to="/register">
+            here
+          </Link>
         </small>
       </form>
     </div>
