@@ -49,7 +49,7 @@ const PetListItem = ({ pet, removePet }) => {
   };
 
   return (
-    <ListItemLink href="pet-profile" data-testid="petlistitem">
+    <ListItemLink href={`pet-profile/${id}`} data-testid="petlistitem">
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
         <Button
