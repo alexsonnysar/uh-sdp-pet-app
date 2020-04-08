@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LoginForm = () => {
+const LoginForm = props => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -42,14 +42,8 @@ const LoginForm = () => {
         // console.log(response.data);
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
-        if (localStorage.getItem('roles') === 'ROLE_User') {
-          window.location.replace('http://localhost:3000/user-dashboard');
-        } else {
-          window.location.replace('http://localhost:3000/employee-dashboard');
-        }
       })
       .catch(() => {
-        // console.log(error);
         alert('Incorrect Username or Password');
       })
       .finally(() => {
@@ -66,6 +60,9 @@ const LoginForm = () => {
 
   const handleSubmit = () => {
     PostLoginUser(formData);
+    if (localStorage.getItem('jwt') !== null) {
+      props.handleAuth(true);
+    }
   };
 
   const classes = useStyles();
@@ -93,7 +90,7 @@ const LoginForm = () => {
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
           disabled={loading}
         >
           Log In
