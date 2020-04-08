@@ -58,5 +58,9 @@ public class UserService {
   public List<Pet> getRecentPets(String userid) {
     return userDao.getRecentPets(userid);
   }
+
+  public User getUserByEmail(String email) {
+    return userDao.getUserByEmail(email);
+  }
   
 }
