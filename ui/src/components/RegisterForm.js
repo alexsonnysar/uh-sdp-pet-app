@@ -137,9 +137,8 @@ const RegisterForm = () => {
           Complete Registration
         </Button>
         <small className={classes.text}>
-          Already have an account? Log in
-          {' '}
-          <Link to="/login">here</Link>
+          {/* eslint-disable-next-line prettier/prettier */}
+          Already have an account? Log in <Link to="/login">here</Link>
         </small>
       </form>
     </div>

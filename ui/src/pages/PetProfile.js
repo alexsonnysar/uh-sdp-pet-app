@@ -15,7 +15,6 @@ const useStyles = makeStyles({
 
 const PetProfile = () => {
   const { id } = useParams();
-  console.log(`id: ${id}`);
 
   const [pet, setPet] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +25,6 @@ const PetProfile = () => {
     getSinglePet(url)
       // eslint-disable-next-line no-shadow
       .then((pet) => {
-        console.log(`pet: ${pet}`);
         setPet(pet);
       })
       .catch((error) => {
