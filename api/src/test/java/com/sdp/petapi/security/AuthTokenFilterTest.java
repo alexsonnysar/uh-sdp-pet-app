@@ -1,8 +1,10 @@
 package com.sdp.petapi.security;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,6 +14,7 @@ import java.util.Collections;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.User;
@@ -64,5 +67,25 @@ public class AuthTokenFilterTest {
 
         // Test
         assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+    
+    @Test
+	public void testInvalidBasicAuthorizationTokenIsIgnored() throws Exception {
+		String token = "NOT_A_VALID_TOKEN";
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("Authorization",
+				"Bearer " + token);
+        request.setServletPath("/pet");
+        
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+
+		FilterChain chain = mock(FilterChain.class);
+		authTokenFilter.doFilter(request, response, chain);
+
+        verify(chain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
+        
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+
+		assertEquals(response.getStatus(), 200);
 	}
 }
