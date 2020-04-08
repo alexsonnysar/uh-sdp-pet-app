@@ -46,7 +46,8 @@
     "printWidth": 90,
     "trailingComma": "es5",
     "tabWidth": 2,
-    "singleQuote": true
+    "singleQuote": true,
+    "arrowParens": "always"
   },
   "husky": {
     "hooks": {
