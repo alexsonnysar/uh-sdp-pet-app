@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 import Home from './pages/Home';
 import RegisterPet from './pages/RegisterPet';
 import PetProfile from './pages/PetProfile';
@@ -11,29 +16,59 @@ import Register from './pages/Register';
 import Navigation from './components/Navigation';
 
 function App() {
+  const [auth, setAuth] = useState(false);
+
+  useEffect(
+    () => {
+      //check local storage
+      //setAuth if JWT in local
+      if (localStorage.getItem('jwt') !== null) {
+        setAuth(true);
+      }
+    },
+    [
+      //this empty array meands it will only run once
+    ]
+  );
+
+  const PrivateRoute = ({ children, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) =>
+          auth ? (
+            children
+          ) : (
+            <Redirect to={{ pathname: '/login', state: { from: location } }} />
+          )
+        }
+      />
+    );
+  };
+
   return (
     <div>
       <Router>
         <Navigation />
         <div className="App" data-testid="App">
           <Switch>
-            <Route path="/user-dashboard">
+            <PrivateRoute path="/user-dashboard">
               <UserDashboard />
-            </Route>
-            <Route path="/pet-profile">
+            </PrivateRoute>
+            <PrivateRoute path="/pet-profile">
               <PetProfile />
-            </Route>
-            <Route path="/pet-register">
+            </PrivateRoute>
+            <PrivateRoute path="/pet-register">
               <RegisterPet />
-            </Route>
-            <Route path="/employee-dashboard">
+            </PrivateRoute>
+            <PrivateRoute path="/employee-dashboard">
               <EmployeeDashboard />
-            </Route>
+            </PrivateRoute>
             <Route path="/login">
-              <Login />
+              <Login handleAuth={setAuth} />
             </Route>
             <Route path="/register">
-              <Register />
+              <Register handleAuth={setAuth} />
             </Route>
             <Route path="/">
               <Home />
