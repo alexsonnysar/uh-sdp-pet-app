@@ -1,43 +1,78 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import RegisterPet from './pages/RegisterPet';
-import PetProfile from './pages/PetProfile';
-import EmployeeDashboard from './pages/EmployeeDashboard';
-import UserDashboard from './pages/UserDashboard';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Navigation from './components/Navigation';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import RegisterPet from "./pages/RegisterPet";
+import PetProfile from "./pages/PetProfile";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import UserDashboard from "./pages/UserDashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Navigation from "./components/Navigation";
 
 function App() {
+  const [auth, setAuth] = useState(false);
+
+  useEffect(
+    () => {
+      //check local storage
+      //setAuth if JWT in local
+      if (localStorage.getItem("jwt") !== null) {
+        setAuth(true);
+      }
+    },
+    [
+      //this empty array means it will only run once
+    ]
+  );
+
+  const PrivateRoute = ({ children, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) =>
+          auth ? (
+            children
+          ) : (
+            <Redirect to={{ pathname: "/login", state: { from: location } }} />
+          )
+        }
+      />
+    );
+  };
+
   return (
     <div>
       <Router>
-        <Navigation />
+        <Navigation handleAuth={setAuth} />
         <div className="App" data-testid="App">
           <Switch>
             <Route exact path="/">
               <Home />
             </Route>
             <Route exact path="/login">
-              <Login />
+              <Login handleAuth={setAuth} />
             </Route>
             <Route exact path="/register">
-              <Register />
+              <Register handleAuth={setAuth} />
             </Route>
-            <Route exact path="/user-dashboard">
+            <PrivateRoute exact path="/user-dashboard">
               <UserDashboard />
-            </Route>
-            <Route exact path="/employee-dashboard">
+            </PrivateRoute>
+            <PrivateRoute exact path="/employee-dashboard">
               <EmployeeDashboard />
-            </Route>
+            </PrivateRoute>
             <Route path="/pet-profile/:id">
               <PetProfile />
             </Route>
-            <Route exact path="/pet-register">
+            <PrivateRoute exact path="/pet-register">
               <RegisterPet />
-            </Route>
+            </PrivateRoute>
           </Switch>
         </div>
       </Router>

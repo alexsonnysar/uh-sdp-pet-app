@@ -1,12 +1,12 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import { Link, useHistory } from "react-router-dom";
 
-const Logout = () => {
-  localStorage.clear();
-  window.location.replace('http://localhost:3000/');
-};
+// const Logout = () => {
+//  localStorage.clear();
+//   history.replace("http://localhost:3000/");
+// };
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,27 +19,34 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   button: {
-    color: 'inherit',
-    textDecorationLine: 'none',
-    '&:hover': {
-      color: 'white',
+    color: "inherit",
+    textDecorationLine: "none",
+    "&:hover": {
+      color: "white",
     },
   },
 }));
 
-const Navigation = () => {
+const Navigation = (props) => {
+  const history = useHistory();
   const classes = useStyles();
+
+  const handleLogout = () => {
+    props.handleAuth(false);
+    localStorage.clear();
+    history.replace("/");
+  };
 
   return (
     <div data-testid="navbar">
       <AppBar position="sticky">
         <Toolbar>
-          {localStorage.getItem('jwt') !== null ? (
+          {localStorage.getItem("jwt") !== null ? (
             <Typography variant="h6" className={classes.title}>
               <Link to="/" className={classes.button}>
                 <Button className={classes.button}>Home</Button>
               </Link>
-              {localStorage.getItem('roles') === 'ROLE_User' ? (
+              {localStorage.getItem("roles") === "ROLE_User" ? (
                 <Link to="/user-dashboard" className={classes.button}>
                   <Button className={classes.button}>User Dashboard</Button>
                 </Link>
@@ -57,7 +64,7 @@ const Navigation = () => {
             </Typography>
           )}
 
-          {localStorage.getItem('jwt') === null ? (
+          {localStorage.getItem("jwt") === null ? (
             <>
               <Link to="/login" className={classes.button}>
                 <Button className={classes.button}>Login</Button>
@@ -67,7 +74,11 @@ const Navigation = () => {
               </Link>
             </>
           ) : (
-            <Button onClick={Logout} className={classes.button} data-testid="logout">
+            <Button
+              onClick={handleLogout}
+              className={classes.button}
+              data-testid="logout"
+            >
               Logout
             </Button>
           )}

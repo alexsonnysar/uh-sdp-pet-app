@@ -1,34 +1,35 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    '& > *': {
+    "& > *": {
       margin: theme.spacing(1),
     },
-    width: '20rem',
-    display: 'flex',
-    flexDirection: 'column',
+    width: "20rem",
+    display: "flex",
+    flexDirection: "column",
   },
   button: {
-    color: 'primary',
+    color: "primary",
   },
   text: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   link: {
-    textDecorationLine: 'none',
+    textDecorationLine: "none",
   },
 }));
 
-const LoginForm = () => {
+const LoginForm = (props) => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -37,19 +38,14 @@ const LoginForm = () => {
   const PostLoginUser = (userData) => {
     setLoading(true);
     axios({
-      method: 'post',
-      url: 'http://localhost:8080/signin',
+      method: "post",
+      url: "http://localhost:8080/signin",
       data: userData,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        window.localStorage.setItem('jwt', response.data.jwt);
-        window.localStorage.setItem('roles', response.data.roles);
-        if (localStorage.getItem('roles') === 'ROLE_User') {
-          window.location.replace('http://localhost:3000/user-dashboard');
-        } else {
-          window.location.replace('http://localhost:3000/employee-dashboard');
-        }
+        window.localStorage.setItem("jwt", response.data.jwt);
+        window.localStorage.setItem("roles", response.data.roles);
       })
       .catch(() => {
         setError(true);
@@ -75,8 +71,13 @@ const LoginForm = () => {
     } else {
       PostLoginUser(formData);
       setError(false);
+      if (localStorage.getItem("jwt") !== null) {
+        props.handleAuth(true);
+        history.replace("/");
+      }
     }
   };
+
   const classes = useStyles();
 
   return (
@@ -85,7 +86,7 @@ const LoginForm = () => {
         <h1 align="center">Log In</h1>
         <TextField
           error={isError}
-          helperText={isError ? 'Please Enter a Correct Email' : ''}
+          helperText={isError ? "Please Enter a Correct Email" : ""}
           data-testid="email"
           id="email"
           label="Email"
@@ -95,7 +96,7 @@ const LoginForm = () => {
         />
         <TextField
           error={isError}
-          helperText={isError ? 'Please Enter a Correct Password' : ''}
+          helperText={isError ? "Please Enter a Correct Password" : ""}
           id="password"
           label="Password"
           type="password"
@@ -106,7 +107,7 @@ const LoginForm = () => {
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
           disabled={loading}
         >
           Log In

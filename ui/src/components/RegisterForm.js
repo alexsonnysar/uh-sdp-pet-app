@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    '& > *': {
+    "& > *": {
       margin: theme.spacing(1),
     },
-    width: '20rem',
-    display: 'flex',
-    flexDirection: 'column',
+    width: "20rem",
+    display: "flex",
+    flexDirection: "column",
   },
   button: {
-    color: 'primary',
+    color: "primary",
   },
   text: {
-    textAlign: 'center',
+    textAlign: "center",
   },
 }));
 
 const RegisterForm = () => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    name: '',
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    name: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -36,18 +37,18 @@ const RegisterForm = () => {
   const PostLoginUser = (userData) => {
     setLoading(true);
     axios({
-      method: 'post',
-      url: 'http://localhost:8080/signin',
+      method: "post",
+      url: "http://localhost:8080/signin",
       data: userData,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        window.localStorage.setItem('jwt', response.data.jwt);
-        window.localStorage.setItem('roles', response.data.roles);
-        if (localStorage.getItem('roles') === 'ROLE_User') {
-          window.location.replace('http://localhost:3000/user-dashboard');
+        window.localStorage.setItem("jwt", response.data.jwt);
+        window.localStorage.setItem("roles", response.data.roles);
+        if (localStorage.getItem("roles") === "ROLE_User") {
+          history.replace("http://localhost:3000/user-dashboard");
         } else {
-          window.location.replace('http://localhost:3000/employee-dashboard');
+          history.replace("http://localhost:3000/employee-dashboard");
         }
       })
       .catch((error) => {
@@ -61,10 +62,10 @@ const RegisterForm = () => {
   const PostAddUser = (userData) => {
     setLoading(true);
     axios({
-      method: 'post',
-      url: 'http://localhost:8080/signup',
+      method: "post",
+      url: "http://localhost:8080/signup",
       data: userData,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     })
       .then(() => {
         PostLoginUser(formData);
@@ -92,10 +93,14 @@ const RegisterForm = () => {
       !formData.passwordConfirm
     ) {
       setError(true);
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)
+    ) {
       setError(true);
     } else if (
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(formData.password)
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(
+        formData.password
+      )
     ) {
       setError(true);
     } else if (formData.password !== formData.passwordConfirm) {
@@ -113,7 +118,7 @@ const RegisterForm = () => {
         <h1 align="center">Register</h1>
         <TextField
           error={isError}
-          helperText={isError ? 'Please Enter a Name' : ''}
+          helperText={isError ? "Please Enter a Name" : ""}
           id="name"
           label="Name"
           variant="outlined"
@@ -123,7 +128,7 @@ const RegisterForm = () => {
         />
         <TextField
           error={isError}
-          helperText={isError ? 'Please Enter a Correct Email' : ''}
+          helperText={isError ? "Please Enter a Correct Email" : ""}
           id="email"
           label="Email"
           variant="outlined"
@@ -133,7 +138,7 @@ const RegisterForm = () => {
         />
         <TextField
           error={isError}
-          helperText={isError ? 'Please Enter a Correct Password' : ''}
+          helperText={isError ? "Please Enter a Correct Password" : ""}
           id="password"
           label="Password"
           type="password"
@@ -144,7 +149,7 @@ const RegisterForm = () => {
         />
         <TextField
           error={isError}
-          helperText={isError ? 'Your Passwords Must Match' : ''}
+          helperText={isError ? "Your Passwords Must Match" : ""}
           id="passwordConfirm"
           label="Confirm Password"
           type="password"
