@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterForm = () => {
+const RegisterForm = props => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -43,11 +44,6 @@ const RegisterForm = () => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
-        if (localStorage.getItem('roles') === 'ROLE_User') {
-          window.location.replace('http://localhost:3000/user-dashboard');
-        } else {
-          window.location.replace('http://localhost:3000/employee-dashboard');
-        }
       })
       .catch((error) => {
         throw error;
@@ -86,6 +82,10 @@ const RegisterForm = () => {
   const handleSubmit = () => {
     if (formData.password === formData.passwordConfirm) {
       PostAddUser(formData);
+      if (localStorage.getItem('jwt') !== null) {
+        props.handleAuth(true);
+        history.replace('/');
+      }
     } else {
       const num = 'Passwords Dont Match!';
       throw num;
