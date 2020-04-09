@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterForm = props => {
+const RegisterForm = (props) => {
   const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
@@ -35,7 +35,6 @@ const RegisterForm = props => {
   const [isError, setError] = useState(false);
 
   const PostLoginUser = (userData) => {
-    console.log(userData + "Post Login user")
     setLoading(true);
     axios({
       method: 'post',
@@ -58,7 +57,6 @@ const RegisterForm = props => {
   };
 
   const PostAddUser = (userData) => {
-    console.log(userData + "Post add user")
     setLoading(true);
     axios({
       method: 'post',
@@ -90,23 +88,17 @@ const RegisterForm = props => {
       !formData.email ||
       !formData.password ||
       !formData.passwordConfirm
-    ) 
-    {
+    ) {
       setError(true);
-    } 
-    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
       setError(true);
-    } 
-    else if (
+    } else if (
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(formData.password)
-    ) 
-    {
+    ) {
       setError(true);
-    } 
-    else if (formData.password !== formData.passwordConfirm) {
+    } else if (formData.password !== formData.passwordConfirm) {
       setError(true);
-    }
-    else if (formData.password === formData.passwordConfirm) {
+    } else if (formData.password === formData.passwordConfirm) {
       PostAddUser(formData);
     }
   };

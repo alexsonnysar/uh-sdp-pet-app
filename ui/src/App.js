@@ -13,28 +13,20 @@ import Navigation from './components/Navigation';
 function App() {
   const [auth, setAuth] = useState(false);
 
-  useEffect(
-    () => {
-      //check local storage
-      //setAuth if JWT in local
-      if(localStorage.getItem('jwt') !== null) {
-        setAuth(true);
-      }
-    },
-    []
-  );
+  useEffect(() => {
+    // check local storage
+    // setAuth if JWT in local
+    if (localStorage.getItem('jwt') !== null) {
+      setAuth(true);
+    }
+  }, []);
 
   const PrivateRoute = ({ children, ...rest }) => {
     return (
       <Route
         {...rest}
         render={({ location }) =>
-          auth ? (
-            children
-          ) : (
-            <Redirect to={{ pathname: '/', state: { from: location } }} />
-          )
-        }
+          auth ? children : <Redirect to={{ pathname: '/', state: { from: location } }} />}
       />
     );
   };
