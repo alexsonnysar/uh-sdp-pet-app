@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import Home from "./pages/Home";
-import RegisterPet from "./pages/RegisterPet";
-import PetProfile from "./pages/PetProfile";
-import EmployeeDashboard from "./pages/EmployeeDashboard";
-import UserDashboard from "./pages/UserDashboard";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Navigation from "./components/Navigation";
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import Home from './pages/Home';
+import RegisterPet from './pages/RegisterPet';
+import PetProfile from './pages/PetProfile';
+import EmployeeDashboard from './pages/EmployeeDashboard';
+import UserDashboard from './pages/UserDashboard';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Navigation from './components/Navigation';
 
 function App() {
   const [auth, setAuth] = useState(false);
 
   useEffect(
     () => {
-      //check local storage
-      //setAuth if JWT in local
-      if (localStorage.getItem("jwt") !== null) {
+      // check local storage
+      // setAuth if JWT in local
+      if (localStorage.getItem('jwt') !== null) {
         setAuth(true);
       }
     },
     [
-      //this empty array means it will only run once
+      // this empty array means it will only run once
     ]
   );
 
@@ -39,7 +34,7 @@ function App() {
           auth ? (
             children
           ) : (
-            <Redirect to={{ pathname: "/login", state: { from: location } }} />
+            <Redirect to={{ pathname: '/login', state: { from: location } }} />
           )
         }
       />

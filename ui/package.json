@@ -35,7 +35,6 @@
     "server": "cd ../api && gradle bootRun",
     "dev": "concurrently \"yarn server\" \"yarn start\"",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:jenkins": "react-scripts test --coverage --watchAll=false",
@@ -48,18 +47,6 @@
     "tabWidth": 2,
     "singleQuote": true,
     "arrowParens": "always"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ]
   },
   "browserslist": {
     "production": [

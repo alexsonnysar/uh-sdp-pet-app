@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { TextField, Button, makeStyles, MenuItem } from "@material-ui/core";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    "& > *": {
+    '& > *': {
       margin: theme.spacing(1),
     },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column",
+    width: '20rem',
+    display: 'flex',
+    flexDirection: 'column',
   },
   button: {
-    color: "primary",
+    color: 'primary',
   },
   text: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 }));
 
@@ -24,15 +24,15 @@ const RegisterPetForm = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const initialState = {
-    name: "",
-    type: "",
-    sex: "",
-    age: "",
-    size: "",
-    weight: "",
-    dateAdded: "",
-    description: "",
-    imageNames: [""],
+    name: '',
+    type: '',
+    sex: '',
+    age: '',
+    size: '',
+    weight: '',
+    dateAdded: '',
+    description: '',
+    imageNames: [''],
     adopted: false,
     active: true,
   };
@@ -55,19 +55,19 @@ const RegisterPetForm = () => {
   };
 
   const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
   const PostAddPet = (petData) => {
     axios({
-      method: "post",
-      url: "http://localhost:8080/pet",
+      method: 'post',
+      url: 'http://localhost:8080/pet',
       headers,
       data: petData,
     })
       .then(() => {
-        history.replace("http://localhost:3000/pet-register");
+        history.replace('http://localhost:3000/pet-register');
       })
       .catch((error) => {
         throw error;
@@ -87,17 +87,12 @@ const RegisterPetForm = () => {
     <div data-testid="registerPetForm">
       <form className={classes.container}>
         <h1 align="center">Register Pet</h1>
-        <TextField
-          id="name"
-          label="Name"
-          variant="outlined"
-          onChange={handleChange}
-        />
+        <TextField id="name" label="Name" variant="outlined" onChange={handleChange} />
         <TextField
           id="type"
           label="type"
           variant="outlined"
-          onChange={handleSelect("type")}
+          onChange={handleSelect('type')}
           value={formData.type}
           select
         >
@@ -114,7 +109,7 @@ const RegisterPetForm = () => {
           id="sex"
           label="sex"
           variant="outlined"
-          onChange={handleSelect("sex")}
+          onChange={handleSelect('sex')}
           value={formData.sex}
           select
         >
@@ -125,7 +120,7 @@ const RegisterPetForm = () => {
           id="age"
           label="age"
           variant="outlined"
-          onChange={handleSelect("age")}
+          onChange={handleSelect('age')}
           value={formData.age}
           select
         >
@@ -139,7 +134,7 @@ const RegisterPetForm = () => {
           id="size"
           label="size"
           variant="outlined"
-          onChange={handleSelect("size")}
+          onChange={handleSelect('size')}
           value={formData.size}
           select
         >
@@ -175,7 +170,7 @@ const RegisterPetForm = () => {
           id="adopted"
           label="adopted"
           variant="outlined"
-          onChange={handleSelect("adopted")}
+          onChange={handleSelect('adopted')}
           value={formData.adopted}
           select
         >

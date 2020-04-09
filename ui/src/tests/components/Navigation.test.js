@@ -1,18 +1,18 @@
-import React from "react";
-import { Router } from "react-router-dom";
-import { createMemoryHistory } from "history";
-import { render, fireEvent } from "@testing-library/react";
-import Navigation from "../../components/Navigation";
+import React from 'react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { render, fireEvent } from '@testing-library/react';
+import Navigation from '../../components/Navigation';
 
-describe("<Navigation />", () => {
-  test("should render navigation", () => {
-  const history =createMemoryHistory();
+describe('<Navigation />', () => {
+  test('should render navigation', () => {
+    const history = createMemoryHistory();
     const { getByTestId } = render(
       <Router history={history}>
-        <Navigation handleAuth={true}/>
+        <Navigation handleAuth />
       </Router>
     );
-    const navigation = getByTestId("navbar");
+    const navigation = getByTestId('navbar');
     expect(navigation).toBeInTheDocument();
   });
 

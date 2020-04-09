@@ -17,11 +17,7 @@ const pets = [
     weight: 43.4,
     dateAdded: '2020-03-09T19:48:16.418+0000',
     description: 'She is full of energy.',
-    imageNames: [
-      'runningOnTheBeach',
-      'biting_the_neighbors_kid',
-      'SleepingOnTheCouch',
-    ],
+    imageNames: ['runningOnTheBeach', 'biting_the_neighbors_kid', 'SleepingOnTheCouch'],
     active: false,
     adopted: false,
   },
@@ -57,7 +53,7 @@ describe('<UserDashboard />', () => {
     const { getByTestId } = render(
       <Router>
         <UserDashboard />
-      </Router>,
+      </Router>
     );
 
     expect(getByTestId('loading')).toBeInTheDocument();
@@ -74,9 +70,8 @@ describe('<UserDashboard />', () => {
 
     getAllPets.mockImplementation(() => Promise.reject(NetworkError));
 
-    expect(() => {getAllPet}).toThrow()
-
-
-   
+    expect(() => {
+      getAllPet;
+    }).toThrow();
   });
 });

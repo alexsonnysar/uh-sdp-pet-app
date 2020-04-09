@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    "& > *": {
+    '& > *': {
       margin: theme.spacing(1),
     },
-    width: "20rem",
-    display: "flex",
-    flexDirection: "column",
+    width: '20rem',
+    display: 'flex',
+    flexDirection: 'column',
   },
   button: {
-    color: "primary",
+    color: 'primary',
   },
   text: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   link: {
-    textDecorationLine: "none",
+    textDecorationLine: 'none',
   },
 }));
 
 const LoginForm = (props) => {
   const history = useHistory();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -38,14 +38,14 @@ const LoginForm = (props) => {
   const PostLoginUser = (userData) => {
     setLoading(true);
     axios({
-      method: "post",
-      url: "http://localhost:8080/signin",
+      method: 'post',
+      url: 'http://localhost:8080/signin',
       data: userData,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => {
-        window.localStorage.setItem("jwt", response.data.jwt);
-        window.localStorage.setItem("roles", response.data.roles);
+        window.localStorage.setItem('jwt', response.data.jwt);
+        window.localStorage.setItem('roles', response.data.roles);
       })
       .catch(() => {
         setError(true);
@@ -71,9 +71,9 @@ const LoginForm = (props) => {
     } else {
       PostLoginUser(formData);
       setError(false);
-      if (localStorage.getItem("jwt") !== null) {
+      if (localStorage.getItem('jwt') !== null) {
         props.handleAuth(true);
-        history.replace("/");
+        history.replace('/');
       }
     }
   };
@@ -86,7 +86,7 @@ const LoginForm = (props) => {
         <h1 align="center">Log In</h1>
         <TextField
           error={isError}
-          helperText={isError ? "Please Enter a Correct Email" : ""}
+          helperText={isError ? 'Please Enter a Correct Email' : ''}
           data-testid="email"
           id="email"
           label="Email"
@@ -96,7 +96,7 @@ const LoginForm = (props) => {
         />
         <TextField
           error={isError}
-          helperText={isError ? "Please Enter a Correct Password" : ""}
+          helperText={isError ? 'Please Enter a Correct Password' : ''}
           id="password"
           label="Password"
           type="password"
