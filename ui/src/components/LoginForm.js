@@ -46,6 +46,11 @@ const LoginForm = (props) => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
+        if (localStorage.getItem('roles') === 'ROLE_User') {
+          window.location.replace('http://localhost:3000/user-dashboard');
+        } else {
+          window.location.replace('http://localhost:3000/employee-dashboard');
+        }
       })
       .catch(() => {
         setError(true);
@@ -79,7 +84,6 @@ const LoginForm = (props) => {
   };
 
   const classes = useStyles();
-
   return (
     <div data-testid="loginForm">
       <form className={classes.container} onSubmit={handleSubmit}>
@@ -107,7 +111,7 @@ const LoginForm = (props) => {
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={handleSubmit}
+          onClick={() => handleSubmit()}
           disabled={loading}
         >
           Log In

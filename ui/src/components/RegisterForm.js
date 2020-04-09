@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterForm = () => {
+const RegisterForm = props => {
   const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
@@ -35,6 +35,7 @@ const RegisterForm = () => {
   const [isError, setError] = useState(false);
 
   const PostLoginUser = (userData) => {
+    console.log(userData + "Post Login user")
     setLoading(true);
     axios({
       method: 'post',
@@ -45,11 +46,8 @@ const RegisterForm = () => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
-        if (localStorage.getItem('roles') === 'ROLE_User') {
-          history.replace('http://localhost:3000/user-dashboard');
-        } else {
-          history.replace('http://localhost:3000/employee-dashboard');
-        }
+        props.handleAuth(true);
+        history.replace('/');
       })
       .catch((error) => {
         throw error;
@@ -60,6 +58,7 @@ const RegisterForm = () => {
   };
 
   const PostAddUser = (userData) => {
+    console.log(userData + "Post add user")
     setLoading(true);
     axios({
       method: 'post',
@@ -91,19 +90,24 @@ const RegisterForm = () => {
       !formData.email ||
       !formData.password ||
       !formData.passwordConfirm
-    ) {
+    ) 
+    {
       setError(true);
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+    } 
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
       setError(true);
-    } else if (
+    } 
+    else if (
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(formData.password)
-    ) {
+    ) 
+    {
       setError(true);
-    } else if (formData.password !== formData.passwordConfirm) {
+    } 
+    else if (formData.password !== formData.passwordConfirm) {
       setError(true);
-    } else {
+    }
+    else if (formData.password === formData.passwordConfirm) {
       PostAddUser(formData);
-      setError(false);
     }
   };
 

@@ -15,15 +15,13 @@ function App() {
 
   useEffect(
     () => {
-      // check local storage
-      // setAuth if JWT in local
-      if (localStorage.getItem('jwt') !== null) {
+      //check local storage
+      //setAuth if JWT in local
+      if(localStorage.getItem('jwt') !== null) {
         setAuth(true);
       }
     },
-    [
-      // this empty array means it will only run once
-    ]
+    []
   );
 
   const PrivateRoute = ({ children, ...rest }) => {
@@ -34,7 +32,7 @@ function App() {
           auth ? (
             children
           ) : (
-            <Redirect to={{ pathname: '/login', state: { from: location } }} />
+            <Redirect to={{ pathname: '/', state: { from: location } }} />
           )
         }
       />
