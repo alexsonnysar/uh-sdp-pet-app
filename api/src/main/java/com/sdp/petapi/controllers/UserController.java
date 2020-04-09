@@ -49,6 +49,20 @@ public class UserController {
     }
   }
 
+  @GetMapping("/{email}")
+  @PreAuthorize("hasRole('Employee') or hasRole('User')")
+  public User getUserByEmail(@PathVariable String email) {
+    // Only Employees can access other users info
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return userService.getUserByEmail(email);
+    }
+    else {
+      // Users should not have access to other users info so always return the signed in users own info
+      UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return userService.getUserById(userDetails.getId());
+    }
+  }
+
   @GetMapping("/email/{email}")
   public Boolean existsByEmail(@PathVariable String email) {
     return userService.existsByEmail(email);

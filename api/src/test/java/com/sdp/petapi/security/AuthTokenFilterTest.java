@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +15,7 @@ import java.util.Collections;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.User;
@@ -119,7 +121,11 @@ public class AuthTokenFilterTest {
         
         when(jwtUtils.validateJwtToken(token)).thenReturn(true);
         when(jwtUtils.getUserNameFromJwtToken(token)).thenReturn(webUser.getEmail());
-        when(userDetailsService.loadUserByUsername(webUser.getEmail())).thenReturn(webUserDeets);
+        when(userDetailsService.loadUserByUsername(webUser.getEmail())).thenReturn(new UserDetailsImpl(
+            webUser.getId(), 
+            webUser.getEmail(), 
+            webUser.getPassHash(),
+            Collections.singletonList(new SimpleGrantedAuthority("ROLE_User"))));
 
 
 		authTokenFilter.doFilter(request, response, chain);

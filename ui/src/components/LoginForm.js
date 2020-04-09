@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginForm = props => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -44,6 +45,11 @@ const LoginForm = props => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
+        if (localStorage.getItem('roles') === 'ROLE_User') {
+          window.location.replace('http://localhost:3000/user-dashboard');
+        } else {
+          window.location.replace('http://localhost:3000/employee-dashboard');
+        }
       })
       .catch((error) => {
         throw error;
@@ -64,11 +70,11 @@ const LoginForm = props => {
     PostLoginUser(formData);
     if (localStorage.getItem('jwt') !== null) {
       props.handleAuth(true);
+      history.replace('/');
     }
   };
 
   const classes = useStyles();
-
   return (
     <div data-testid="loginForm">
       <form className={classes.container}>
@@ -92,7 +98,7 @@ const LoginForm = props => {
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={handleSubmit}
+          onClick={() => handleSubmit()}
           disabled={loading}
         >
           Log In
