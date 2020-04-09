@@ -9,7 +9,6 @@ test('should render register pet page', () => {
   const { getByTestId } = render(
     <Router history={history}>
       <RegisterPet />
-{' '}
     </Router>
   );
   const registerPet = getByTestId('registerPet');

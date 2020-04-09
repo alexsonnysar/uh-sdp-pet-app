@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Home from './pages/Home';
@@ -64,5 +65,9 @@ function App() {
     </div>
   );
 }
+
+App.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default App;

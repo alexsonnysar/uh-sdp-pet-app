@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
@@ -86,6 +87,10 @@ const Navigation = (props) => {
       </AppBar>
     </div>
   );
+};
+
+Navigation.propTypes = {
+  handleAuth: PropTypes.func.isRequired,
 };
 
 export default Navigation;
