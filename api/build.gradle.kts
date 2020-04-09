@@ -63,6 +63,8 @@ val test by tasks.getting(Test::class) {
 
 pmd {
   isIgnoreFailures = false
+  ruleSets = listOf()
+  ruleSetFiles = files("../pmd/ruleset.xml")
 }
 
 defaultTasks("clean", "test", "jacocoTestReport", "pmdMain", "pmdTest")
