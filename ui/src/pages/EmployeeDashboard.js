@@ -38,51 +38,45 @@ const EmployeeDashboard = () => {
     setPetList(petList.filter((el) => el.id !== id));
   };
 
-  if (localStorage.getItem('roles') === 'ROLE_Employee') {
-    return (
-      <div data-testid="empdash">
-        <h1 align="center">Employee Dashboard</h1>
-        {loading ? (
-          <div data-testid="loading" className={classes.progress}>
-            <CircularProgress color="secondary" />
-          </div>
-        ) : (
-          <div align="center" data-testid="loadedList">
-            <Grid container>
-              <Grid item xs={12} sm>
-                <Link to="/pet-register" className={classes.addButton}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddRoundedIcon />}
-                    className={classes.addButton}
-                  >
-                    Add Pet
-                  </Button>
-                </Link>
-              </Grid>
+  return (
+    <div data-testid="empdash">
+      <h1 align="center">Employee Dashboard</h1>
+      {loading ? (
+        <div data-testid="loading" className={classes.progress}>
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <div align="center" data-testid="loadedList">
+          <Grid container>
+            <Grid item xs={12} sm>
+              <Link to="/pet-register" className={classes.addButton}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddRoundedIcon />}
+                  className={classes.addButton}
+                >
+                  Add Pet
+                </Button>
+              </Link>
             </Grid>
-            <Grid container>
-              <Grid item xs={12} sm>
-                <PetList
-                  deletePet={removePetFromList}
-                  heading="Requested for Adoption"
-                  petList={petList}
-                />
-              </Grid>
-              <Grid item xs={12} sm>
-                <PetList heading="Adoptable Animals" petList={petList} />
-              </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item xs={12} sm>
+              <PetList
+                deletePet={removePetFromList}
+                heading="Requested for Adoption"
+                petList={petList}
+              />
             </Grid>
-          </div>
-        )}
-      </div>
-    );
-  } else if (localStorage.getItem('roles') === 'ROLE_User') {
-    window.location.replace('http://localhost:3000/user-dashboard');
-  } else {
-    window.location.replace('http://localhost:8080/login');
-  }
+            <Grid item xs={12} sm>
+              <PetList heading="Adoptable Animals" petList={petList} />
+            </Grid>
+          </Grid>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default EmployeeDashboard;

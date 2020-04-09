@@ -12,17 +12,11 @@ const useStyles = makeStyles({
 
 const Register = () => {
   const classes = useStyles();
-  if (localStorage.getItem('roles') === 'ROLE_Employee') {
-    return (
-      <div className={classes.root} data-testid="registerPet">
-        <RegisterPetForm />
-      </div>
-    );
-  } else if (localStorage.getItem('roles') === 'ROLE_User') {
-    window.location.replace('http://localhost:3000/user-dashboard');
-  } else {
-    window.location.replace('http://localhost:3000/login');
-  }
+  return (
+    <div className={classes.root} data-testid="registerPet">
+      <RegisterPetForm />
+    </div>
+  );
 };
 
 export default Register;

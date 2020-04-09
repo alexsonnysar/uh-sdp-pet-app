@@ -68,19 +68,13 @@ public @Data class User {
     
     if (recents == null) recents = new String[0];
     Queue<String> temp = new LinkedList<String>(Arrays.asList(recents));
-    if (!shouldPutPetInRecents(temp, petid)) return false;
-    
+    if (temp.contains(petid)) return false;
+
+    if (temp.size() == RECENT_SIZE) temp.remove();
     temp.add(petid);
     recents = new String[temp.size()];
     temp.toArray(recents);
     
-    return true;
-  }
-
-  private Boolean shouldPutPetInRecents(Queue<String> recentList, String petid) {
-    if (recentList.contains(petid)) return false;
-
-    if (recentList.size() == RECENT_SIZE) recentList.remove();
     return true;
   }
   

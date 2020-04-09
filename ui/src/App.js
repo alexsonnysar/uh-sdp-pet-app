@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Home from './pages/Home';
 import RegisterPet from './pages/RegisterPet';
 import PetProfile from './pages/PetProfile';
@@ -22,13 +17,11 @@ function App() {
     () => {
       //check local storage
       //setAuth if JWT in local
-      if (localStorage.getItem('jwt') !== null) {
+      if(localStorage.getItem('jwt') !== null) {
         setAuth(true);
       }
     },
-    [
-      //this empty array meands it will only run once
-    ]
+    []
   );
 
   const PrivateRoute = ({ children, ...rest }) => {
@@ -39,7 +32,7 @@ function App() {
           auth ? (
             children
           ) : (
-            <Redirect to={{ pathname: '/login', state: { from: location } }} />
+            <Redirect to={{ pathname: '/', state: { from: location } }} />
           )
         }
       />
@@ -55,9 +48,9 @@ function App() {
             <PrivateRoute path="/user-dashboard">
               <UserDashboard />
             </PrivateRoute>
-            <PrivateRoute path="/pet-profile">
+            <Route path="/pet-profile">
               <PetProfile />
-            </PrivateRoute>
+            </Route>
             <PrivateRoute path="/pet-register">
               <RegisterPet />
             </PrivateRoute>
