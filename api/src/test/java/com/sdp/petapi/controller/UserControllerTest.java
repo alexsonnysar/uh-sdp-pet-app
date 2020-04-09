@@ -15,12 +15,17 @@ import com.sdp.petapi.models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
 class UserControllerTest {
 
   private static final String EMPLOYEE_ID_STRING = "001";

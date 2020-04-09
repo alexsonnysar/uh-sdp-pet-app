@@ -40,16 +40,13 @@ public class UserDao {
     if (user == null) return null;
 
     User dbUser = getUserById(user.getId());
-    if (!canUpdateUser(user, dbUser)) return null;
+    if (!user.getEmail().equals(dbUser.getEmail())
+      || !Arrays.equals(user.getFavorites(),dbUser.getFavorites())
+      || !Arrays.equals(user.getRecents(), dbUser.getRecents())
+      || user.isEmployee() != dbUser.isEmployee()) return null;
     
     return repository.save(user);
-  }
 
-  private Boolean canUpdateUser(User user, User dbUser) {
-    return user.getEmail().equals(dbUser.getEmail())
-    && Arrays.equals(user.getFavorites(),dbUser.getFavorites())
-    && Arrays.equals(user.getRecents(), dbUser.getRecents())
-    && user.isEmployee() == dbUser.isEmployee();
   }
 
   public User deleteUser(String userid) {
@@ -62,31 +59,24 @@ public class UserDao {
   }
 
   public Boolean addPetToFavorites(User user, String petid) {
-    if(!isUserValid(user)) return false;
+    if (user == null || user.isEmployee()) return false;
 
-    if(!isPetValid(petid)) return false;
+    User userdb = getUserById(user.getId());
+    if (!user.equals(userdb)) return false;
+
+    Pet pet = petDao.getPetById(petid);
+    if (pet == null || !pet.isActive()) return false;
 
     Boolean result = user.addToFavorites(petid);
     if (result) repository.save(user);
     return result;
   }
 
-  private Boolean isUserValid(User user) {
+  public Boolean removePetFromFavorites(User user, String petid) {
     if (user == null || user.isEmployee()) return false;
-
+    
     User userdb = getUserById(user.getId());
     if (!user.equals(userdb)) return false;
-    return true;
-  }
-
-  private Boolean isPetValid(String petid) {
-    Pet pet = petDao.getPetById(petid);
-    if (pet == null || !pet.isActive()) return false;
-    return true;
-  }
-
-  public Boolean removePetFromFavorites(User user, String petid) {
-    if(!isUserValid(user)) return false;
 
     Boolean result = user.removeFromFavorites(petid);
     if (result) repository.save(user);
@@ -94,9 +84,13 @@ public class UserDao {
   }
 
   public Boolean addPetToRecents(User user, String petid) {
-    if (!isUserValid(user)) return false;
+    if (user == null || user.isEmployee()) return false;
+
+    User userdb = getUserById(user.getId());
+    if (!user.equals(userdb)) return false;
     
-    if (!isPetValid(petid)) return false;
+    Pet pet = petDao.getPetById(petid);
+    if (pet == null || !pet.isActive()) return false;
 
     Boolean result = user.addToRecents(petid);
     if (result) repository.save(user);
