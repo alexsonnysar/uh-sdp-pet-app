@@ -143,7 +143,6 @@ class PetTest {
     assertEquals(sample_pet.getWeight(), 123.4);
     assertNotNull(sample_pet.getDateAdded());
     assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current));
-    assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current));
     assertArrayEquals(sample_pet.getImageNames(), petPics);
     assertFalse(sample_pet.isAdopted());
     assertTrue(sample_pet.isActive());
@@ -169,7 +168,6 @@ class PetTest {
     assertEquals(sample_pet.getWeight(), 123.4);
     assertNotNull(sample_pet.getDateAdded());
     assertTrue(sample_pet.getDateAdded().after(current) || sample_pet.getDateAdded().equals(current));
-    assertTrue(sample_pet.getDateAdded().before(new Date()) || sample_pet.getDateAdded().equals(current));
     assertArrayEquals(sample_pet.getImageNames(), petPics);
     assertFalse(sample_pet.isAdopted());
     assertTrue(sample_pet.isActive());
