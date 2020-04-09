@@ -62,16 +62,4 @@ describe('<EmployeeDashboard />', () => {
     expect(loadedPetList).toBeInTheDocument();
     expect(getAllPets).toHaveBeenCalledTimes(1);
   });
-
-  // test('should render employee dashboard with mock rejected API', () => {
-  //   const NetworkError = {
-  //     Error: 'Network Error',
-  //   };
-
-  //   getAllPets.mockImplementationOnce(() => Promise.reject(NetworkError));
-
-  //   // eslint-disable-next-line prettier/prettier
-  //   expect(() => {getAllPets}).toThrow(NetworkError);
-
-  // });
 });

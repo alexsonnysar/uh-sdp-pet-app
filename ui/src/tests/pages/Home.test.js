@@ -62,16 +62,4 @@ describe('<Home />', () => {
     expect(loadedPetList).toBeInTheDocument();
     expect(getAllPets).toHaveBeenCalledTimes(1);
   });
-
-  test('should render home with mock rejected API', async () => {
-    const NetworkError = {
-      Error: 'Network Error',
-    };
-
-    getAllPets.mockImplementation(() => Promise.reject(NetworkError));
-
-    expect(() => {
-      getAllPet;
-    }).toThrow();
-  });
 });

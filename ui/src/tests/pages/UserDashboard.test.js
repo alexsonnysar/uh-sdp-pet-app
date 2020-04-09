@@ -62,16 +62,4 @@ describe('<UserDashboard />', () => {
     expect(loadedPetList).toBeInTheDocument();
     expect(getAllPets).toHaveBeenCalledTimes(1);
   });
-
-  test('should render user dashboard with mock rejected API', async () => {
-    const NetworkError = {
-      Error: 'Network Error',
-    };
-
-    getAllPets.mockImplementation(() => Promise.reject(NetworkError));
-
-    expect(() => {
-      getAllPet;
-    }).toThrow();
-  });
 });
