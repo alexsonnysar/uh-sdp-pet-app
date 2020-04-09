@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import RegisterPet from './pages/RegisterPet';
 import PetProfile from './pages/PetProfile';
@@ -10,8 +9,9 @@ import UserDashboard from './pages/UserDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Navigation from './components/Navigation';
+import PrivateRoute from './components/PrivateRoute';
 
-function App() {
+const App = () => {
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
@@ -21,16 +21,6 @@ function App() {
       setAuth(true);
     }
   }, []);
-
-  const PrivateRoute = ({ children, ...rest }) => {
-    return (
-      <Route
-        {...rest}
-        render={({ location }) =>
-          auth ? children : <Redirect to={{ pathname: '/', state: { from: location } }} />}
-      />
-    );
-  };
 
   return (
     <div>
@@ -47,16 +37,16 @@ function App() {
             <Route exact path="/register">
               <Register handleAuth={setAuth} />
             </Route>
-            <PrivateRoute exact path="/user-dashboard">
+            <PrivateRoute auth={auth} exact path="/user-dashboard">
               <UserDashboard />
             </PrivateRoute>
-            <PrivateRoute exact path="/employee-dashboard">
+            <PrivateRoute auth={auth} exact path="/employee-dashboard">
               <EmployeeDashboard />
             </PrivateRoute>
             <Route path="/pet-profile/:id">
               <PetProfile />
             </Route>
-            <PrivateRoute exact path="/pet-register">
+            <PrivateRoute auth={auth} exact path="/pet-register">
               <RegisterPet />
             </PrivateRoute>
           </Switch>
@@ -64,10 +54,6 @@ function App() {
       </Router>
     </div>
   );
-}
-
-App.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default App;
