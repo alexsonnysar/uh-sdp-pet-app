@@ -10,11 +10,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = () => {
+const Register = props => {
   const classes = useStyles();
   return (
     <div className={classes.root} data-testid="register">
-      <RegisterForm />
+      <RegisterForm handleAuth={props.handleAuth} />
     </div>
   );
 };
