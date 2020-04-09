@@ -36,6 +36,9 @@ const LoginForm = (props) => {
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
+  const handleError = () => {
+    setError(true);
+  };
   const PostLoginUser = (userData) => {
     setLoading(true);
     axios({
@@ -53,9 +56,7 @@ const LoginForm = (props) => {
           window.location.replace('http://localhost:3000/employee-dashboard');
         }
       })
-      .catch(() => {
-        setError(true);
-      })
+      .catch(handleError)
       .finally(() => {
         setLoading(false);
       });

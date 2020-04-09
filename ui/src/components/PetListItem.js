@@ -25,6 +25,7 @@ const PetListItem = ({ pet, removePet }) => {
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
+  const handleError = () => {};
   const CallDeletePet = (petData) => {
     axios({
       method: 'put',
@@ -33,9 +34,7 @@ const PetListItem = ({ pet, removePet }) => {
       data: petData,
     })
       .then((response) => response.data)
-      .catch((error) => {
-        throw error;
-      });
+      .catch(handleError);
   };
 
   const handleDelete = () => {

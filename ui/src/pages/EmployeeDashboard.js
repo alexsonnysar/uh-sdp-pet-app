@@ -25,13 +25,12 @@ const EmployeeDashboard = () => {
 
   const classes = useStyles();
 
+  const handleError = () => {};
   useEffect(() => {
     getAllPets(url)
       // eslint-disable-next-line no-shadow
       .then((petList) => setPetList(petList.filter((el) => el.active !== false)))
-      .catch((error) => {
-        throw error;
-      })
+      .catch(handleError)
       .finally(() => setLoading(false));
   }, []);
 
@@ -71,7 +70,11 @@ const EmployeeDashboard = () => {
               />
             </Grid>
             <Grid item xs={12} sm>
-              <PetList heading="Adoptable Animals" petList={petList} />
+              <PetList
+                deletePet={removePetFromList}
+                heading="Adoptable Animals"
+                petList={petList}
+              />
             </Grid>
           </Grid>
         </div>
