@@ -45,13 +45,8 @@ const LoginForm = props => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
       })
-<<<<<<< HEAD
-      .catch(() => {
-        alert('Incorrect Username or Password');
-=======
       .catch((error) => {
         throw error;
->>>>>>> 96abea273b19b644090c18c675a69fd806cddb9b
       })
       .finally(() => {
         setLoading(false);
