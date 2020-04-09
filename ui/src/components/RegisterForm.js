@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useHistory, Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterForm = props => {
+const RegisterForm = (props) => {
   const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
@@ -32,6 +32,7 @@ const RegisterForm = props => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
 
   const PostLoginUser = (userData) => {
     setLoading(true);
@@ -44,6 +45,8 @@ const RegisterForm = props => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
+        props.handleAuth(true);
+        history.replace('/');
       })
       .catch((error) => {
         throw error;
@@ -80,15 +83,23 @@ const RegisterForm = props => {
   };
 
   const handleSubmit = () => {
-    if (formData.password === formData.passwordConfirm) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.passwordConfirm
+    ) {
+      setError(true);
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+      setError(true);
+    } else if (
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(formData.password)
+    ) {
+      setError(true);
+    } else if (formData.password !== formData.passwordConfirm) {
+      setError(true);
+    } else if (formData.password === formData.passwordConfirm) {
       PostAddUser(formData);
-      if (localStorage.getItem('jwt') !== null) {
-        props.handleAuth(true);
-        history.replace('/');
-      }
-    } else {
-      const num = 'Passwords Dont Match!';
-      throw num;
     }
   };
 
@@ -98,34 +109,46 @@ const RegisterForm = props => {
       <form className={classes.container}>
         <h1 align="center">Register</h1>
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Name' : ''}
           id="name"
           label="Name"
           variant="outlined"
           m={20}
           onChange={handleChange}
+          required
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Email' : ''}
           id="email"
           label="Email"
           variant="outlined"
           m={20}
           onChange={handleChange}
+          required
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Please Enter a Correct Password' : ''}
           id="password"
           label="Password"
           type="password"
           autoComplete="current-password"
           variant="outlined"
           onChange={handleChange}
+          required
         />
         <TextField
+          error={isError}
+          helperText={isError ? 'Your Passwords Must Match' : ''}
           id="passwordConfirm"
           label="Confirm Password"
           type="password"
           autoComplete="current-password"
           variant="outlined"
           onChange={handleChange}
+          required
         />
         <Button
           variant="outlined"
@@ -137,9 +160,8 @@ const RegisterForm = props => {
           Complete Registration
         </Button>
         <small className={classes.text}>
-          Already have an account? Log in
-          {' '}
-          <Link to="/login">here</Link>
+          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+          Already have an account? Log in <Link to="/login">here</Link>
         </small>
       </form>
     </div>

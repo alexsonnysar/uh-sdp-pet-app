@@ -7,7 +7,7 @@ test('should render Login page', () => {
   const { getByTestId } = render(
     <Router>
       <Login />
-    </Router>,
+    </Router>
   );
   const petProfile = getByTestId('login');
   expect(petProfile).toBeInTheDocument();

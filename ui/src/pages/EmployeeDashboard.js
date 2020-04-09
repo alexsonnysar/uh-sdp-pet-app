@@ -27,7 +27,8 @@ const EmployeeDashboard = () => {
 
   useEffect(() => {
     getAllPets(url)
-      .then((petList) => setPetList(petList))
+      // eslint-disable-next-line no-shadow
+      .then((petList) => setPetList(petList.filter((el) => el.active !== false)))
       .catch((error) => {
         throw error;
       })

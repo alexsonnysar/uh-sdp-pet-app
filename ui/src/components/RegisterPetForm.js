@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPetForm = () => {
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const initialState = {
     name: '',
@@ -65,7 +67,7 @@ const RegisterPetForm = () => {
       data: petData,
     })
       .then(() => {
-        window.location.replace('http://localhost:3000/pet-register');
+        history.replace('http://localhost:3000/pet-register');
       })
       .catch((error) => {
         throw error;
@@ -85,12 +87,7 @@ const RegisterPetForm = () => {
     <div data-testid="registerPetForm">
       <form className={classes.container}>
         <h1 align="center">Register Pet</h1>
-        <TextField
-          id="name"
-          label="Name"
-          variant="outlined"
-          onChange={handleChange}
-        />
+        <TextField id="name" label="Name" variant="outlined" onChange={handleChange} />
         <TextField
           id="type"
           label="type"
@@ -157,7 +154,7 @@ const RegisterPetForm = () => {
           type="date"
           defaultValue={date.someDate}
           InputLabelProps={{
-            shrink: true
+            shrink: true,
           }}
           variant="outlined"
           onChange={handleChange}
@@ -165,7 +162,6 @@ const RegisterPetForm = () => {
         <TextField
           id="description"
           multiline
-          rowmax="4"
           label="Description"
           variant="outlined"
           onChange={handleChange}

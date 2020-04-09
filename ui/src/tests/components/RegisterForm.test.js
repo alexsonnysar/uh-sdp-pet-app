@@ -8,9 +8,9 @@ describe('<RegisterForm', () => {
     const utils = render(
       <Router>
         <RegisterForm />
-      </Router>,
+      </Router>
     );
-    const input = utils.getByLabelText('Name');
+    const input = utils.getByLabelText(/Name/i);
     return {
       input,
       ...utils,
@@ -28,7 +28,7 @@ describe('<RegisterForm', () => {
     const { getByTestId } = render(
       <Router>
         <RegisterForm />
-      </Router>,
+      </Router>
     );
     const registerForm = getByTestId('registerForm');
     expect(registerForm).toBeInTheDocument();
@@ -39,7 +39,7 @@ test('click on register button', () => {
   const { getByTestId } = render(
     <Router>
       <RegisterForm />
-    </Router>,
+    </Router>
   );
 
   const submit = getByTestId('submit');

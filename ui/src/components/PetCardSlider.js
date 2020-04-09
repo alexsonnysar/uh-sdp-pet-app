@@ -18,11 +18,8 @@ const PetCardSlider = ({ petList, heading }) => (
 );
 
 PetCardSlider.propTypes = {
-  petList: PropTypes.arrayOf(
-    PropTypes.object,
-  ).isRequired,
-  heading: PropTypes.string
-    .isRequired,
+  petList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  heading: PropTypes.string.isRequired,
 };
 
 export default PetCardSlider;

@@ -13,28 +13,20 @@ import Navigation from './components/Navigation';
 function App() {
   const [auth, setAuth] = useState(false);
 
-  useEffect(
-    () => {
-      //check local storage
-      //setAuth if JWT in local
-      if(localStorage.getItem('jwt') !== null) {
-        setAuth(true);
-      }
-    },
-    []
-  );
+  useEffect(() => {
+    // check local storage
+    // setAuth if JWT in local
+    if (localStorage.getItem('jwt') !== null) {
+      setAuth(true);
+    }
+  }, []);
 
   const PrivateRoute = ({ children, ...rest }) => {
     return (
       <Route
         {...rest}
         render={({ location }) =>
-          auth ? (
-            children
-          ) : (
-            <Redirect to={{ pathname: '/', state: { from: location } }} />
-          )
-        }
+          auth ? children : <Redirect to={{ pathname: '/', state: { from: location } }} />}
       />
     );
   };
@@ -42,30 +34,30 @@ function App() {
   return (
     <div>
       <Router>
-        <Navigation />
+        <Navigation handleAuth={setAuth} />
         <div className="App" data-testid="App">
           <Switch>
-            <PrivateRoute path="/user-dashboard">
-              <UserDashboard />
-            </PrivateRoute>
-            <Route path="/pet-profile">
-              <PetProfile />
-            </Route>
-            <PrivateRoute path="/pet-register">
-              <RegisterPet />
-            </PrivateRoute>
-            <PrivateRoute path="/employee-dashboard">
-              <EmployeeDashboard />
-            </PrivateRoute>
-            <Route path="/login">
-              <Login handleAuth={setAuth} />
-            </Route>
-            <Route path="/register">
-              <Register handleAuth={setAuth} />
-            </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Home />
             </Route>
+            <Route exact path="/login">
+              <Login handleAuth={setAuth} />
+            </Route>
+            <Route exact path="/register">
+              <Register handleAuth={setAuth} />
+            </Route>
+            <PrivateRoute exact path="/user-dashboard">
+              <UserDashboard />
+            </PrivateRoute>
+            <PrivateRoute exact path="/employee-dashboard">
+              <EmployeeDashboard />
+            </PrivateRoute>
+            <Route path="/pet-profile/:id">
+              <PetProfile />
+            </Route>
+            <PrivateRoute exact path="/pet-register">
+              <RegisterPet />
+            </PrivateRoute>
           </Switch>
         </div>
       </Router>

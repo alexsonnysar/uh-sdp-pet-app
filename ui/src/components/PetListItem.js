@@ -9,62 +9,39 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
-    margin: theme.spacing(1)
-  }
+    margin: theme.spacing(1),
+  },
 }));
 
 const PetListItem = ({ pet, removePet }) => {
-  pet.propTypes = {
-    name: PropTypes.string,
-    type: PropTypes.string,
-    sex: PropTypes.string,
-    age: PropTypes.string,
-    size: PropTypes.string,
-    weight: PropTypes.number,
-    dateAdded: PropTypes.date,
-    description: PropTypes.string,
-    imageNames: [PropTypes.string],
-    adopted: PropTypes.bool,
-    active: PropTypes.bool
-  };
-
   const { name, type, id } = pet;
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
-  const headers = {
+  const headersAxios = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
-  const CallDeletePet = petData => {
+  const CallDeletePet = (petData) => {
     axios({
       method: 'put',
       url: `http://localhost:8080/pet/${id}`,
-      headers,
-      data: petData
+      headers: headersAxios,
+      data: petData,
     })
-      .then(
-        () => {
-          alert(
-            `${petData.name} is gone now...\n Please tell johnny he went to live with uncle Ben on the farm.`
-          );
-        }
-        // (response) => console.log(response)
-      )
-      .catch(() => {
-        alert(
-          'Hey 🧐! Who let you in here? We are not deleting any pets till we get this sorted out.😤'
-        );
+      .then((response) => response.data)
+      .catch((error) => {
+        throw error;
       });
   };
 
   const handleDelete = () => {
     const petData = {
       ...pet,
-      isActive: false
+      active: false,
     };
     setLoading(true);
     removePet(id);
@@ -72,7 +49,7 @@ const PetListItem = ({ pet, removePet }) => {
   };
 
   return (
-    <ListItemLink href="pet-profile" data-testid="petlistitem">
+    <ListItemLink href={`pet-profile/${id}`} data-testid="petlistitem">
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
         <Button
@@ -101,6 +78,19 @@ const PetListItem = ({ pet, removePet }) => {
   );
 };
 
-const ListItemLink = props => <ListItem button component="a" {...props} />;
+const ListItemLink = (props) => <ListItem button component="a" {...props} />;
+
+PetListItem.propTypes = {
+  pet: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string,
+  }).isRequired,
+  removePet: PropTypes.func,
+};
+
+PetListItem.defaultProps = {
+  removePet: () => null,
+};
 
 export default PetListItem;

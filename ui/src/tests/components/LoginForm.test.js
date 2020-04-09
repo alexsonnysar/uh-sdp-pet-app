@@ -8,7 +8,7 @@ describe('<LoginForm />', () => {
     const { getByTestId } = render(
       <Router>
         <LoginForm />
-      </Router>,
+      </Router>
     );
     const loginForm = getByTestId('loginForm');
     expect(loginForm).toBeInTheDocument();
@@ -18,7 +18,7 @@ describe('<LoginForm />', () => {
     const utils = render(
       <Router>
         <LoginForm />
-      </Router>,
+      </Router>
     );
     const input = utils.getByLabelText('Email');
     return {
