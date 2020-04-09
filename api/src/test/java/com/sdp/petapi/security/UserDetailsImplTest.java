@@ -135,5 +135,9 @@ class UserDetailsImplTest {
     assertFalse(userDetailsImpl.equals(notCorrectObject));
   }
 
+  @Test
+  public void testHashCode() {
+    assertNotNull(userDetailsImpl.hashCode());
+  }
 
 }
