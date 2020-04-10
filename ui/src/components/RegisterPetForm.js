@@ -53,6 +53,7 @@ const RegisterPetForm = () => {
       [prop]: event.target.value,
     });
   };
+  const handleError = () => {};
 
   const headers = {
     'Content-Type': 'application/json',
@@ -69,9 +70,7 @@ const RegisterPetForm = () => {
       .then(() => {
         history.replace('http://localhost:3000/pet-register');
       })
-      .catch((error) => {
-        throw error;
-      });
+      .catch(handleError);
   };
 
   const handleSubmit = () => {

@@ -36,6 +36,7 @@ const RegisterForm = (props) => {
   const [isError, setError] = useState(false);
 
   const PostLoginUser = (userData) => {
+    const handleError = () => {};
     setLoading(true);
     axios({
       method: 'post',
@@ -49,15 +50,14 @@ const RegisterForm = (props) => {
         props.handleAuth(true);
         history.replace('/');
       })
-      .catch((error) => {
-        throw error;
-      })
+      .catch(handleError)
       .finally(() => {
         setLoading(false);
       });
   };
 
   const PostAddUser = (userData) => {
+    const handleError = () => {};
     setLoading(true);
     axios({
       method: 'post',
@@ -68,9 +68,7 @@ const RegisterForm = (props) => {
       .then(() => {
         PostLoginUser(formData);
       })
-      .catch((error) => {
-        throw error;
-      })
+      .catch(handleError)
       .finally(() => {
         setLoading(false);
       });
