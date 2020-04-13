@@ -27,11 +27,17 @@ public class PetDao {
   }
 
   public Pet createPet(Pet pet) {
-    return (pet == null || pet.getId() != null ) ? null : repository.insert(pet);
+    if (pet == null || pet.getId() != null ) return null;
+    
+    pet.capitalizeName();
+    return repository.insert(pet);
   }
 
   public Pet putPet(Pet pet) {
-    return (pet == null || getPetById(pet.getId()) == null) ? null : repository.save(pet);
+    if (pet == null || getPetById(pet.getId()) == null) return null;
+    
+    pet.capitalizeName();
+    return repository.save(pet);
   }
 
   public Pet deletePet(String petid) {
@@ -45,6 +51,7 @@ public class PetDao {
   }
 
   public Pet putPetByRequest(Pet pet) {
+    pet.capitalizeName();
     return repository.save(pet);
   }
   
