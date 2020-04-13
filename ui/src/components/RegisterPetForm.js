@@ -55,7 +55,7 @@ const RegisterPetForm = () => {
   };
   const handleError = () => {};
 
-  const headers = {
+  const reqHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
@@ -64,7 +64,7 @@ const RegisterPetForm = () => {
     axios({
       method: 'post',
       url: 'http://localhost:8080/pet',
-      headers,
+      headers: reqHeaders,
       data: petData,
     })
       .then(() => {

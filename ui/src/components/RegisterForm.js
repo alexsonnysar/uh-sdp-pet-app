@@ -47,6 +47,7 @@ const RegisterForm = (props) => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
+        window.localStorage.setItem('userId', response.data.id);
         props.handleAuth(true);
         history.replace('/');
       })

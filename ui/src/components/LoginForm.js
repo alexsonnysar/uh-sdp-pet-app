@@ -49,6 +49,7 @@ const LoginForm = (props) => {
     })
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
+        window.localStorage.setItem('userId', response.data.id);
         window.localStorage.setItem('roles', response.data.roles);
         if (localStorage.getItem('roles') === 'ROLE_User') {
           window.location.replace('http://localhost:3000/user-dashboard');

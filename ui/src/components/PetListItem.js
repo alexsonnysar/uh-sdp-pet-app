@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+import {
+  Button,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  ListItemSecondaryAction,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateRoundedIcon from '@material-ui/icons/UpdateRounded';
-import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
@@ -49,6 +53,9 @@ const PetListItem = ({ pet, removePet }) => {
 
   return (
     <ListItemLink href={`pet-profile/${id}`} data-testid="petlistitem">
+      <ListItemAvatar>
+        <Avatar alt="Pet" src="/images/garfield.jpg" />
+      </ListItemAvatar>
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
         <Button
