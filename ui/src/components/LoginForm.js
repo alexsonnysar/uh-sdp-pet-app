@@ -52,9 +52,9 @@ const LoginForm = (props) => {
         window.localStorage.setItem('userId', response.data.id);
         window.localStorage.setItem('roles', response.data.roles);
         if (localStorage.getItem('roles') === 'ROLE_User') {
-          window.location.replace('http://localhost:3000/user-dashboard');
-        } else {
-          window.location.replace('http://localhost:3000/employee-dashboard');
+          history.push('/user-dashboard');
+        } else if (localStorage.getItem('roles') === 'ROLE_Employee') {
+          history.push('/employee-dashboard');
         }
       })
       .catch(handleError)
@@ -81,7 +81,6 @@ const LoginForm = (props) => {
       setError(false);
       if (localStorage.getItem('jwt') !== null) {
         props.handleAuth(true);
-        history.replace('/');
       }
     }
   };
