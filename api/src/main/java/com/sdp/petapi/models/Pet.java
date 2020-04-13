@@ -24,10 +24,15 @@ public @Data class Pet {
   private String[] imageNames = {}; // link to photos
   private boolean isAdopted;
   private boolean isActive;
+
+  private String capitalizeName(String name) {
+    return Arrays.stream(name.split(" ")).map(n -> n.substring(0,1).toUpperCase() + n.substring(1).toLowerCase())
+        .collect(Collectors.joining(" "));
+  }
   
   public Pet(String name, String type, String sex, String age, String size, double weight, String description,
     List<String> images) {
-      this.name = name;
+      this.name = capitalizeName(name);
       this.type = type;
       this.sex = sex;
       this.age = age;
@@ -42,7 +47,7 @@ public @Data class Pet {
   
   public Pet(String name, String type, String sex, String age, String size, double weight, String description,
     String[] images) {
-      this.name = name;
+      this.name = capitalizeName(name);
       this.type = type;
       this.sex = sex;
       this.age = age;
@@ -58,7 +63,7 @@ public @Data class Pet {
   public Pet(String id, String name, String type, String sex, String age, String size, Double weight, Date date,
     String desc, List<String> images, boolean adopt, boolean status){
       this.id = id;
-      this.name = name;
+      this.name = capitalizeName(name);
       this.type = type;
       this.sex = sex;
       this.age = age;
@@ -75,7 +80,7 @@ public @Data class Pet {
   public Pet(String id, String name, String type, String sex, String age, String size, Double weight, Date date,
     String desc, String[] images, boolean adopt, boolean status){
       this.id = id;
-      this.name = name;
+      this.name = capitalizeName(name);
       this.type = type;
       this.sex = sex;
       this.age = age;
