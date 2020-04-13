@@ -98,7 +98,6 @@ class UserControllerTest {
     assertEquals(webUser, actual_user);
   }
 
-
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void put_user() {
@@ -173,6 +172,42 @@ class UserControllerTest {
     when(userService.existsByEmail("1234@mail.com")).thenReturn(true);
     Boolean resp = userController.existsByEmail("1234@mail.com");
     assertTrue(resp);
+  }
+
+  @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_employee_gets_himself() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("1234@mail.com");
+    assertEquals(employee, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_employee_gets_other() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("ironman@mail.com");
+    assertEquals(webUser, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_user_gets_himself() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("ironman@mail.com");
+    assertEquals(webUser, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_user_gets_other() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("1234@mail.com");
+    assertEquals(webUser, actual_user);
   }
 
 }

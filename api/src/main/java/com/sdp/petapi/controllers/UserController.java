@@ -49,7 +49,7 @@ public class UserController {
     }
   }
 
-  @GetMapping("/{email}")
+  @GetMapping("/info/{email}")
   @PreAuthorize("hasRole('Employee') or hasRole('User')")
   public User getUserByEmail(@PathVariable String email) {
     // Only Employees can access other users info
@@ -59,7 +59,7 @@ public class UserController {
     else {
       // Users should not have access to other users info so always return the signed in users own info
       UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      return userService.getUserById(userDetails.getId());
+      return userService.getUserByEmail(userDetails.getUsername());
     }
   }
 

@@ -119,4 +119,11 @@ class UserServiceTest {
     Boolean resp = userService.existsByEmail("1234@mail.com");
     assertTrue(resp);
   }
+
+  @Test
+  public void get_user_by_email() {
+    when(userDao.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User user = userService.getUserByEmail("ironman@mail.com");
+    assertEquals(user, webUser);
+  }
 }

@@ -24,10 +24,16 @@ public @Data class Pet {
   private String[] imageNames = {}; // link to photos
   private boolean isAdopted;
   private boolean isActive;
+
+  public void capitalizeName() {
+    this.name = Arrays.stream(this.name.split(" ")).map(n -> n.substring(0,1).toUpperCase() + n.substring(1).toLowerCase())
+        .collect(Collectors.joining(" "));
+  }
   
   public Pet(String name, String type, String sex, String age, String size, double weight, String description,
     List<String> images) {
       this.name = name;
+      capitalizeName();
       this.type = type;
       this.sex = sex;
       this.age = age;
@@ -43,6 +49,7 @@ public @Data class Pet {
   public Pet(String name, String type, String sex, String age, String size, double weight, String description,
     String[] images) {
       this.name = name;
+      capitalizeName();
       this.type = type;
       this.sex = sex;
       this.age = age;
@@ -59,6 +66,7 @@ public @Data class Pet {
     String desc, List<String> images, boolean adopt, boolean status){
       this.id = id;
       this.name = name;
+      capitalizeName();
       this.type = type;
       this.sex = sex;
       this.age = age;
@@ -76,6 +84,7 @@ public @Data class Pet {
     String desc, String[] images, boolean adopt, boolean status){
       this.id = id;
       this.name = name;
+      capitalizeName();
       this.type = type;
       this.sex = sex;
       this.age = age;

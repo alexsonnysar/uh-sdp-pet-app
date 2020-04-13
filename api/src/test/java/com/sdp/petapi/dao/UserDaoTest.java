@@ -513,4 +513,19 @@ public class UserDaoTest {
   public void user_exists_by_nonexistent_email_returns_false() {
     assertFalse(userDao.existsByEmail("4321@mail.com"));
   }
+
+  @Test
+  public void existing_mail_returns_user() {
+    assertEquals(webUser, userDao.getUserByEmail("ironman@mail.com"));
+  }
+
+  @Test
+  public void nonexistent_email_returns_null() {
+    assertNull(userDao.getUserByEmail("4321@mail.com"));
+  }
+
+  @Test
+  public void null_email_returns_null() {
+    assertNull(userDao.getUserByEmail(null));
+  }
 }
