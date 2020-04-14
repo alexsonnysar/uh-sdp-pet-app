@@ -39,16 +39,16 @@ public class UserService {
     return userDao.deleteUser(userid);
   }
 
-  public Boolean addPetToFavorites(User user, String petid) {
-    return userDao.addPetToFavorites(user, petid);
+  public Boolean addPetToFavorites(String userid, String petid) {
+    return userDao.addPetToFavorites(userid, petid);
   }
 
-  public Boolean removePetFromFavorites(User user, String petid) {
-    return userDao.removePetFromFavorites(user, petid);
+  public Boolean removePetFromFavorites(String userid, String petid) {
+    return userDao.removePetFromFavorites(userid, petid);
   }
 
-  public Boolean addPetToRecents(User user, String petid) {
-    return userDao.addPetToRecents(user, petid);
+  public Boolean addPetToRecents(String userid, String petid) {
+    return userDao.addPetToRecents(userid, petid);
   }
 
   public List<Pet> getFavoritePets(String userid) {
