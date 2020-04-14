@@ -73,17 +73,12 @@ public class UserDao {
   }
 
   private Boolean isUserValid(User user) {
-    if (user == null || user.isEmployee()) return false;
-
-    User userdb = getUserById(user.getId());
-    if (!user.equals(userdb)) return false;
-    return true;
+    return (user != null && !user.isEmployee());
   }
 
   private Boolean isPetValid(String petid) {
     Pet pet = petDao.getPetById(petid);
-    if (pet == null || !pet.isActive()) return false;
-    return true;
+    return (pet != null && pet.isActive());
   }
 
   public Boolean removePetFromFavorites(String userid, String petid) {

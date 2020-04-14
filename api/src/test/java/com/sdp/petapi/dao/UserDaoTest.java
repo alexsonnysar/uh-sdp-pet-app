@@ -36,7 +36,6 @@ public class UserDaoTest {
   private static final String ID002 = "002";
   private static final String AYMEN = "Aymen";
   private static final String PET1 = "pet1";
-  private static final String DOE = "Doe";
   private static final String TONY_STARK = "Tony Stark";
 
   @BeforeEach
@@ -251,12 +250,16 @@ public class UserDaoTest {
 
   @Test
   public void add_pet_to_webUser_favorite_list() {
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
+    User orig_user = userDao.getUserById(ID002);
+    assert(orig_user.getFavorites() == null || orig_user.getFavorites().length == 0);
     assertTrue(userDao.addPetToFavorites(ID002, ID001));
-    assertArrayEquals(webUser.getFavorites(), new String[] {ID001});
+    User updated_user = userDao.getUserById(ID002);
+    assertArrayEquals(updated_user.getFavorites(), new String[] {ID001});
+  }
 
-    User userdb = userDao.getUserById(ID002);
-    assertEquals(webUser, userdb);
+  @Test
+  public void add_pet_to_nonexistent_user_favorite_list_returns_false() {
+    assertFalse(userDao.addPetToFavorites("010", ID001));
   }
 
   @Test
@@ -271,20 +274,6 @@ public class UserDaoTest {
     assertArrayEquals(employee.getFavorites(), new String[0]);
     User userdb = userDao.getUserById(ID001);
     assertEquals(employee, userdb);
-  }
-
-  @Test
-  public void add_pet_to_bad_webUser_favorite_list_returns_false() {
-    webUser.setName(DOE);
-    assertEquals(webUser.getName(), DOE);
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    assertFalse(userDao.addPetToFavorites(ID002, ID001));
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    
-    User userdb = userDao.getUserById(ID002);
-    webUser.setName(TONY_STARK);
-    assertEquals(webUser.getName(), TONY_STARK);
-    assertEquals(webUser, userdb);
   }
 
   @Test
@@ -313,30 +302,31 @@ public class UserDaoTest {
 
   @Test
   public void add_duplicate_pet_to_webUser_favorite_list() {
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    userDao.addPetToFavorites(ID002, ID001);
-    assertArrayEquals(webUser.getFavorites(), new String[] {ID001});
+    User orig_user = userDao.getUserById(ID002);
+    assert(orig_user.getFavorites() == null || orig_user.getFavorites().length == 0);
+    
+    assertTrue(userDao.addPetToFavorites(ID002, ID001));
+    User updated_user = userDao.getUserById(ID002);
+    assertArrayEquals(updated_user.getFavorites(), new String[] {ID001});
 
     assertFalse(userDao.addPetToFavorites(ID002, ID001));
-    assertArrayEquals(webUser.getFavorites(), new String[] {ID001});
+    User same_user = userDao.getUserById(ID002);
+    assertArrayEquals(same_user.getFavorites(), new String[] {ID001});
 
-    User userdb = userDao.getUserById(ID002);
-    assertEquals(webUser, userdb);
+    assertEquals(updated_user, same_user);
   }
 
   @Test
   public void remove_pet_from_webUser_favorite_list() {
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    userDao.addPetToFavorites(ID002, ID001);
-    assertArrayEquals(webUser.getFavorites(), new String[] {ID001});
-    User userdb = userDao.getUserById(ID002);
-    assertEquals(webUser, userdb);
+    User orig_user = userDao.getUserById(ID002);
+    assert(orig_user.getFavorites() == null || orig_user.getFavorites().length == 0);
+    assertTrue(userDao.addPetToFavorites(ID002, ID001));
+    User user_addPet = userDao.getUserById(ID002);
+    assertArrayEquals(user_addPet.getFavorites(), new String[] {ID001});
 
     assertTrue(userDao.removePetFromFavorites(ID002, ID001));
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    
-    User updated_user = userDao.getUserById(ID002);
-    assertEquals(webUser, updated_user);
+    User user_dropPet = userDao.getUserById(ID002);
+    assert(user_dropPet.getFavorites() == null || user_dropPet.getFavorites().length == 0);
   }
 
   @Test
@@ -380,12 +370,16 @@ public class UserDaoTest {
 
   @Test
   public void add_pet_to_webUser_recent_list() {
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
+    User orig_user = userDao.getUserById(ID002);
+    assert(orig_user.getFavorites() == null || orig_user.getFavorites().length == 0);
     assertTrue(userDao.addPetToRecents(ID002, ID001));
-    assertArrayEquals(webUser.getRecents(), new String[] {ID001});
+    User updated_user = userDao.getUserById(ID002);
+    assertArrayEquals(updated_user.getRecents(), new String[] {ID001});
+  }
 
-    User userdb = userDao.getUserById(ID002);
-    assertEquals(webUser, userdb);
+  @Test
+  public void add_pet_to_nonexistent_user_recent_list_returns_false() {
+    assertFalse(userDao.addPetToRecents("010", ID001));
   }
 
   @Test
@@ -400,20 +394,6 @@ public class UserDaoTest {
     assertArrayEquals(employee.getRecents(), new String[0]);
     User userdb = userDao.getUserById(ID001);
     assertEquals(employee, userdb);
-  }
-
-  @Test
-  public void add_pet_to_bad_webUser_recent_list_returns_false() {
-    webUser.setName(DOE);
-    assertEquals(webUser.getName(), DOE);
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    assertFalse(userDao.addPetToRecents(ID002, ID001));
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    
-    User userdb = userDao.getUserById(ID002);
-    webUser.setName(TONY_STARK);
-    assertEquals(webUser.getName(), TONY_STARK);
-    assertEquals(webUser, userdb);
   }
 
   @Test
@@ -442,15 +422,18 @@ public class UserDaoTest {
 
   @Test
   public void add_duplicate_pet_to_webUser_recent_list() {
-    assert(webUser.getFavorites() == null || webUser.getFavorites().length == 0);
-    userDao.addPetToRecents(ID002, ID001);
-    assertArrayEquals(webUser.getRecents(), new String[] {ID001});
+    User orig_user = userDao.getUserById(ID002);
+    assert(orig_user.getFavorites() == null || orig_user.getFavorites().length == 0);
+
+    assertTrue(userDao.addPetToRecents(ID002, ID001));
+    User updated_user = userDao.getUserById(ID002);
+    assertArrayEquals(updated_user.getRecents(), new String[] {ID001});
 
     assertFalse(userDao.addPetToRecents(ID002, ID001));
-    assertArrayEquals(webUser.getRecents(), new String[] {ID001});
-
-    User userdb = userDao.getUserById(ID002);
-    assertEquals(webUser, userdb);
+    User same_user = userDao.getUserById(ID002);
+    assertArrayEquals(same_user.getRecents(), new String[] {ID001});
+    
+    assertEquals(updated_user, same_user);
   }
 
   @Test
