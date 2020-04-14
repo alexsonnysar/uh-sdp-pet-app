@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPetForm = () => {
-  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const initialState = {
     name: '',
@@ -60,7 +58,7 @@ const RegisterPetForm = () => {
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
-  const PostAddPet = (petData) => {
+  const CreatePet = (petData) => {
     axios({
       method: 'post',
       url: 'http://localhost:8080/pet',
@@ -68,16 +66,18 @@ const RegisterPetForm = () => {
       data: petData,
     })
       .then(() => {
-        history.replace('http://localhost:3000/pet-register');
+        setLoading(false);
+        // notification for user
       })
-      .catch(handleError);
+      .catch(handleError)
+      .finally();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     // if(state is valid){
     //   make api call
     setLoading(true);
-    PostAddPet(formData);
+    CreatePet(formData);
   };
 
   const classes = useStyles();
@@ -180,7 +180,7 @@ const RegisterPetForm = () => {
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={() => handleSubmit()}
+          onSubmit={(e) => handleSubmit(e)}
           disabled={loading}
         >
           Create
