@@ -53,23 +53,23 @@ public class PetController {
   @PostMapping
   @PreAuthorize("hasRole('Employee')")
   public Pet createPet(@RequestBody Pet pet) {
-    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+    // if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
       return petService.createPet(pet);
-    }
-    else {
-      return null;
-    }
+    // }
+    // else {
+    //   return null;
+    // }
   }
 
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('Employee')")
   public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
-    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+    // if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
       return isValidUpdate(id, pet) ? petService.putPet(pet) : null;
-    }
-    else {
-      return null;
-    }
+    // }
+    // else {
+    //   return null;
+    // }
   }
 
   private Boolean isValidUpdate(String id, Pet pet) {
