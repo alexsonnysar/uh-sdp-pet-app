@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import PetListItem from '../../components/PetListItem';
-import ListButton from '../../components/ListButton';
 
 const pet = {
   Name: 'Garfield',
