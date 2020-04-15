@@ -108,39 +108,20 @@ public class PetControllerTest {
   }
 
   @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void employee_creates_real_pet_makes_pet() {
+  public void create_real_pet_makes_pet() {
     when(petService.createPet(pet)).thenReturn(pet);
     Pet returnPet = petController.createPet(pet);
     assertEquals(pet, returnPet);
   }
 
   @Test
-  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void other_creates_real_pet_returns_null() {
-    when(petService.createPet(pet)).thenReturn(pet);
-    Pet returnPet = petController.createPet(pet);
-    assertNull(returnPet);
-  }
-
-  @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void put_pet_by_employee_updates_pet() {
+  public void put_pet_updates_pet() {
     when(petService.putPet(pet)).thenReturn(pet);
     Pet returnedPet = petController.putPet(ID001, pet);
     assertEquals(pet, returnedPet);
   }
 
   @Test
-  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void put_pet_by_others_returns_null() {
-    when(petService.putPet(pet)).thenReturn(pet);
-    Pet returnedPet = petController.putPet(ID001, pet);
-    assertNull(returnedPet);
-  }
-
-  @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
   public void put_pet_null_id_by_employee_returns_null() {
     when(petService.putPet(pet)).thenReturn(pet);
     Pet returnedPet = petController.putPet(null, pet);
@@ -148,7 +129,6 @@ public class PetControllerTest {
   }
 
   @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
   public void put_pet_null_pet_by_employee_retuns_null() {
     when(petService.putPet(pet)).thenReturn(pet);
     Pet returnedPet = petController.putPet(ID001, null);
@@ -156,7 +136,6 @@ public class PetControllerTest {
   }
 
   @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
   public void put_pet_wrong_id_by_employee_returns_null() {
     when(petService.putPet(pet)).thenReturn(pet);
     Pet returnedPet = petController.putPet("010", pet);
