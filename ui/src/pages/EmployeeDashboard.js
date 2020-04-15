@@ -38,6 +38,10 @@ const EmployeeDashboard = () => {
     setPetList(petList.filter((el) => el.id !== id));
   };
 
+  const approvePetFromList = (id) => {
+    setPetList(petList.filter((el) => el.id !== id));
+  };
+
   return (
     <div data-testid="empdash">
       <h1 align="center">Employee Dashboard</h1>
@@ -64,16 +68,20 @@ const EmployeeDashboard = () => {
           <Grid container>
             <Grid item xs={12} sm>
               <PetList
-                deletePet={removePetFromList}
+                action={approvePetFromList}
                 heading="Requested for Adoption"
                 petList={petList}
+                approveButton
+                rejectButton
               />
             </Grid>
             <Grid item xs={12} sm>
               <PetList
-                deletePet={removePetFromList}
+                action={removePetFromList}
                 heading="Adoptable Animals"
                 petList={petList}
+                deleteButton
+                updateButton
               />
             </Grid>
           </Grid>

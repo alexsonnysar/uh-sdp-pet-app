@@ -22,7 +22,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PetList = ({ heading, petList, deletePet }) => {
+const PetList = ({
+  heading,
+  petList,
+  action,
+  deleteButton,
+  updateButton,
+  approveButton,
+  rejectButton,
+}) => {
   const classes = useStyles();
   return (
     <div className={classes.root} data-testid="petlist">
@@ -32,7 +40,15 @@ const PetList = ({ heading, petList, deletePet }) => {
       <Paper className={classes.paper}>
         <List>
           {petList.map((pet) => (
-            <PetListItem removePet={deletePet} pet={pet} key={pet.id} />
+            <PetListItem
+              actionButton={action}
+              pet={pet}
+              key={pet.id}
+              deleteButton={deleteButton}
+              updateButton={updateButton}
+              approveButton={approveButton}
+              rejectButton={rejectButton}
+            />
           ))}
         </List>
       </Paper>
@@ -43,7 +59,18 @@ const PetList = ({ heading, petList, deletePet }) => {
 PetList.propTypes = {
   heading: PropTypes.string.isRequired,
   petList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deletePet: PropTypes.func.isRequired,
+  action: PropTypes.func.isRequired,
+  deleteButton: PropTypes.bool,
+  updateButton: PropTypes.bool,
+  approveButton: PropTypes.bool,
+  rejectButton: PropTypes.bool,
+};
+
+PetList.defaultProps = {
+  deleteButton: false,
+  updateButton: false,
+  approveButton: false,
+  rejectButton: false,
 };
 
 export default PetList;

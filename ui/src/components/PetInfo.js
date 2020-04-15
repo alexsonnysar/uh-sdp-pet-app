@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Grid, Box, Divider, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import SuccessRequestMsg from './SuccessRequestMsg';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
 import axios from 'axios';
+import SuccessRequestMsg from './SuccessRequestMsg';
 
 const useStyles = makeStyles((theme) => ({
   image: {

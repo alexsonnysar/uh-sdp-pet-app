@@ -8,7 +8,9 @@ const pet = {
 };
 
 test('should render pet list item', () => {
-  const { getByTestId } = render(<PetListItem pet={pet} removePet={() => {}} />);
+  const { getByTestId } = render(
+    <PetListItem pet={pet} action={() => {}} deleteButton />
+  );
   const petListItem = getByTestId('petlistitem');
   expect(petListItem).toBeInTheDocument();
 });

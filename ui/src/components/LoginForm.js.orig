@@ -21,22 +21,25 @@ const useStyles = makeStyles((theme) => ({
   text: {
     textAlign: 'center',
   },
+  link: {
+    textDecorationLine: 'none',
+  },
 }));
 
-const RegisterForm = (props) => {
+const LoginForm = (props) => {
   const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    passwordConfirm: '',
-    name: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
+  const handleError = () => {
+    setError(true);
+  };
   const PostLoginUser = (userData) => {
-    const handleError = () => {};
     setLoading(true);
     axios({
       method: 'post',
@@ -46,32 +49,14 @@ const RegisterForm = (props) => {
     })
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
-        window.localStorage.setItem('roles', response.data.roles);
         window.localStorage.setItem('userId', response.data.id);
+        window.localStorage.setItem('roles', response.data.roles);
         props.handleAuth(true);
         if (localStorage.getItem('roles') === 'ROLE_User') {
           history.replace('/user-dashboard');
-        } else {
+        } else if (localStorage.getItem('roles') === 'ROLE_Employee') {
           history.replace('/employee-dashboard');
         }
-      })
-      .catch(handleError)
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const PostAddUser = (userData) => {
-    const handleError = () => {};
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/signup',
-      data: userData,
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(() => {
-        PostLoginUser(formData);
       })
       .catch(handleError)
       .finally(() => {
@@ -87,50 +72,30 @@ const RegisterForm = (props) => {
   };
 
   const handleSubmit = () => {
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.password ||
-      !formData.passwordConfirm
-    ) {
+    if (formData.email.length === 0 || formData.password.length === 0) {
       setError(true);
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
+    }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
       setError(true);
-    } else if (
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(formData.password)
-    ) {
-      setError(true);
-    } else if (formData.password !== formData.passwordConfirm) {
-      setError(true);
-    } else if (formData.password === formData.passwordConfirm) {
-      PostAddUser(formData);
+    } else {
+      PostLoginUser(formData);
     }
   };
 
   const classes = useStyles();
   return (
-    <div data-testid="registerForm">
-      <form className={classes.container}>
-        <h1 align="center">Register</h1>
-        <TextField
-          error={isError}
-          helperText={isError ? 'Please Enter a Name' : ''}
-          id="name"
-          label="Name"
-          variant="outlined"
-          m={20}
-          onChange={handleChange}
-          required
-        />
+    <div data-testid="loginForm">
+      <form className={classes.container} onSubmit={handleSubmit}>
+        <h1 align="center">Log In</h1>
         <TextField
           error={isError}
           helperText={isError ? 'Please Enter a Correct Email' : ''}
+          data-testid="email"
           id="email"
           label="Email"
           variant="outlined"
           m={20}
           onChange={handleChange}
-          required
         />
         <TextField
           error={isError}
@@ -141,39 +106,26 @@ const RegisterForm = (props) => {
           autoComplete="current-password"
           variant="outlined"
           onChange={handleChange}
-          required
-        />
-        <TextField
-          error={isError}
-          helperText={isError ? 'Your Passwords Must Match' : ''}
-          id="passwordConfirm"
-          label="Confirm Password"
-          type="password"
-          autoComplete="current-password"
-          variant="outlined"
-          onChange={handleChange}
-          required
         />
         <Button
           variant="outlined"
           className={classes.button}
           onClick={() => handleSubmit()}
           disabled={loading}
-          data-testid="submit"
         >
-          Complete Registration
+          Log In
         </Button>
         <small className={classes.text}>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-          Already have an account? Log in <Link to="/login">here</Link>
+          Dont have an account? Register <Link to="/register">here</Link>
         </small>
       </form>
     </div>
   );
 };
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   handleAuth: PropTypes.func.isRequired,
 };
 
-export default RegisterForm;
+export default LoginForm;
