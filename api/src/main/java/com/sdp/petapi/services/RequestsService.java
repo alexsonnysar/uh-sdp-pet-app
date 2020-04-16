@@ -23,12 +23,12 @@ public class RequestsService {
     return reqDao.getRequestById(reqid);
   }
 
-  public Requests createRequest(Requests req) {
-    return reqDao.createRequest(req);
+  public Requests createRequest(String userid, String petid) {
+    return reqDao.createRequest(userid, petid);
   }
 
-  public Requests putRequest(Requests req) {
-    return reqDao.putRequests(req);
+  public Requests putRequest(String reqid, String status) {
+    return reqDao.putRequests(reqid, status);
   }
 
   public Requests deleteRequest(String reqid) {
