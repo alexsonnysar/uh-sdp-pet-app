@@ -22,6 +22,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
 
 @SpringBootTest
@@ -40,6 +44,12 @@ public class RequestsControllerTest {
 
   @Mock
   transient UserDetailsImpl userDeets;
+  
+  @Mock
+  transient Authentication authentication;
+  
+  @Mock
+  transient SecurityContext securityContext;
 
   // makes a reqController whose reqService is the mock above
   @InjectMocks
@@ -81,8 +91,12 @@ public class RequestsControllerTest {
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_user_by_id_returns_request() {
+    // userDeets = new UserDetailsImpl(ID002, "1234@mail.com", "pass", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
+    // when(securityContext.getAuthentication()).thenReturn(authentication);
+    // SecurityContextHolder.setContext(securityContext);
+    // when(authentication.getPrincipal()).thenReturn(userDeets);
+    
     when(reqService.getRequestById(ID001)).thenReturn(req);
-    when(userDeets.getId()).thenReturn(ID002);
     Requests actual_request = reqController.getRequestById(ID001);
     assertEquals(req, actual_request);
   }
@@ -90,17 +104,25 @@ public class RequestsControllerTest {
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_invalid_request_by_id_returns_null() {
+    // userDeets = new UserDetailsImpl(ID002, "1234@mail.com", "pass", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
+    // when(securityContext.getAuthentication()).thenReturn(authentication);
+    // SecurityContextHolder.setContext(securityContext);
+    // when(authentication.getPrincipal()).thenReturn(userDeets);
+    
     when(reqService.getRequestById(ID001)).thenReturn(null);
-    when(userDeets.getId()).thenReturn(ID002);
     Requests actual_request = reqController.getRequestById(ID001);
     assertNull(actual_request);
   }
   
   @Test
-  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  // @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_different_user_by_id_returns_null() {
+    userDeets = new UserDetailsImpl(ID003, "1234@mail.com", "pass", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
+    when(authentication.getPrincipal()).thenReturn(userDeets);
+    
     when(reqService.getRequestById(ID001)).thenReturn(req);
-    when(userDeets.getId()).thenReturn(ID003);
     Requests actual_request = reqController.getRequestById(ID001);
     assertNull(actual_request);
   }
