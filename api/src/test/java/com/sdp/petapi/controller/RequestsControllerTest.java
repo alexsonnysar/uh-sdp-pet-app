@@ -115,13 +115,10 @@ public class RequestsControllerTest {
   }
   
   @Test
-  // @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_different_user_by_id_returns_null() {
-    userDeets = new UserDetailsImpl(ID003, "1234@mail.com", "pass", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
-    when(securityContext.getAuthentication()).thenReturn(authentication);
-    SecurityContextHolder.setContext(securityContext);
-    when(authentication.getPrincipal()).thenReturn(userDeets);
-    
+
+    req.setUserid("BAD_ID");
     when(reqService.getRequestById(ID001)).thenReturn(req);
     Requests actual_request = reqController.getRequestById(ID001);
     assertNull(actual_request);
