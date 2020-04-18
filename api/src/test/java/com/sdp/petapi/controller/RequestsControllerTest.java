@@ -187,41 +187,74 @@ public class RequestsControllerTest {
     assertEquals(req, returnRequest);
   }
 
-
   @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
-  public void employee_put_request_approved_good() {
+  public void employee_put_request_valid_employee_status_canceled() {
     dbReq.setStatus("PENDING");
-    req.setStatus("APPROVED");
     when(reqService.getRequestById(ID001)).thenReturn(dbReq);
-    when(reqService.putRequest(ID001, "APPROVED")).thenReturn(req);
 
-    Requests returnRequest = reqController.putRequest(ID001, "APPROVED");
-    assertEquals(req, returnRequest);
-  }
-
-  @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
-  public void employee_put_request_cancelled_good() {
-    dbReq.setStatus("PENDING");
     req.setStatus("CANCELED");
-    when(reqService.getRequestById(ID001)).thenReturn(dbReq);
     when(reqService.putRequest(ID001, "CANCELED")).thenReturn(req);
 
     Requests returnRequest = reqController.putRequest(ID001, "CANCELED");
     assertEquals(req, returnRequest);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
-  public void user_put_request_request_doesnt_exist() {
-    req.setStatus("CANCELED");
-    when(reqService.getRequestById(ID002)).thenReturn(null);
-    when(reqService.putRequest(ID002, "CANCELED")).thenReturn(req);
+  public void user_put_request_request_null() {
+    when(reqService.getRequestById(ID001)).thenReturn(null);
 
-    Requests returnRequest = reqController.putRequest(ID002, "CANCELED");
+    Requests returnRequest = reqController.putRequest(ID001, "APPROVED");
     assertEquals(null, returnRequest);
   }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_put_request_request_bad_status() {
+    dbReq.setStatus("BAD STATUS");
+    when(reqService.getRequestById(ID001)).thenReturn(dbReq);
+
+    Requests returnRequest = reqController.putRequest(ID001, "APPROVED");
+    assertEquals(null, returnRequest);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_put_request_invalid_user_made_request() {
+    dbReq.setStatus("PENDING");
+    dbReq.setUserid("BAD ID");
+    when(reqService.getRequestById(ID001)).thenReturn(dbReq);
+
+    Requests returnRequest = reqController.putRequest(ID001, "CANCELED");
+    assertEquals(null, returnRequest);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_put_request_invalid_user_status() {
+    dbReq.setStatus("PENDING");
+    dbReq.setUserid("002");
+    when(reqService.getRequestById(ID001)).thenReturn(dbReq);
+
+    Requests returnRequest = reqController.putRequest(ID001, "BAD STATUS");
+    assertEquals(null, returnRequest);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_put_request_all_good() {
+    dbReq.setStatus("PENDING");
+    dbReq.setUserid("002");
+    when(reqService.getRequestById(ID001)).thenReturn(dbReq);
+
+    req.setStatus("CANCELED");
+    when(reqService.putRequest(ID001, "CANCELED")).thenReturn(req);
+    Requests returnRequest = reqController.putRequest(ID001, "CANCELED");
+    assertEquals(req, returnRequest);
+  }
+
+
 
   // @Test
   // @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD

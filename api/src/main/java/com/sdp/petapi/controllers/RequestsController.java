@@ -87,7 +87,7 @@ public class RequestsController {
 
   private Boolean userMadeRequest(Requests dbReq) {
     UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    return (dbReq != null && dbReq.getUserid().equals(userDetails.getId()));
+    return (dbReq.getUserid().equals(userDetails.getId()));
   }
 
   private Boolean validUserStatus(String status) {
