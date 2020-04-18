@@ -47,30 +47,32 @@ public class RequestsDao {
     pet.setActive(false);
     pet.setAdopted(true);
     petDao.putPetByRequest(pet);
-    return repository.insert(new Requests(userid, petid));
+
+    
+    // return repository.insert(new Requests(userid, petid));
+    Requests tempRequest = new Requests(userid, petid);
+    System.out.println("tempRequest" + tempRequest);
+
+    Requests temp = repository.insert(tempRequest);
+    System.out.println("temp" + temp);
+    return temp;
   }
 
   private Boolean isRequestValid(String userid, String petid) {
-    if(!areComponentsValid(userid, petid)) return false;
-
-    if (isRequestDuplicate(userid, petid)) return false;
-    return true;
+    return (areComponentsValid(userid, petid) && !isRequestDuplicate(userid, petid)) ? true : false;
   }
 
   private Boolean areComponentsValid(String userid, String petid) {
-    User user = userDao.getUserById(userid);
-    if (!isUserValid(user)) return false;
-
-    Pet pet = petDao.getPetById(petid);
-    if (!isPetValid(pet)) return false;
-    return true;
+    return (isUserValid(userid) && isPetValid(petid)) ? true : false;
   }
 
-  private Boolean isUserValid(User user) {
+  private Boolean isUserValid(String userid) {
+    User user = userDao.getUserById(userid);
     return user != null && !user.isEmployee();
   }
 
-  private Boolean isPetValid(Pet pet) {
+  private Boolean isPetValid(String petid) {
+    Pet pet = petDao.getPetById(petid);
     return pet != null && pet.isActive();
   }
 

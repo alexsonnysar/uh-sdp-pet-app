@@ -1,109 +1,201 @@
-// package com.sdp.petapi.dao;
+package com.sdp.petapi.dao;
 
-// import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNotNull;
+import static org.mockito.Mockito.when;
 
-// import java.io.File;
-// import java.util.*;
-// import java.text.SimpleDateFormat;
+import java.io.File;
+import java.util.*;
+import java.text.SimpleDateFormat;
 
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import com.sdp.petapi.models.Pet;
-// import com.sdp.petapi.models.Requests;
-// import com.sdp.petapi.models.User;
-// import com.sdp.petapi.repositories.PetRepository;
-// import com.sdp.petapi.repositories.UserRepository;
-// import com.sdp.petapi.repositories.RequestsRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sdp.petapi.models.Pet;
+import com.sdp.petapi.models.Requests;
+import com.sdp.petapi.models.User;
+import com.sdp.petapi.repositories.PetRepository;
+import com.sdp.petapi.repositories.UserRepository;
+import com.sdp.petapi.repositories.RequestsRepository;
 
-// import org.junit.jupiter.api.AfterEach;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-// @SpringBootTest
-// public class RequestsDaoTest {
+@SpringBootTest
+public class RequestsDaoTest {
 
-//   @Autowired
-//   transient RequestsDao reqDao;
+  @Mock
+  transient UserDao mockUserDao;
 
-//   @Autowired
-//   transient PetDao petDao;
+  @Mock
+  transient PetDao mockPetDao;
 
-//   @Autowired
-//   transient PetRepository petRepository;
+  @Mock
+  transient RequestsRepository mockRequestsRepository;
 
-//   @Autowired
-//   transient UserRepository userRepository;
+  @InjectMocks
+  transient RequestsDao reqDao;
 
-//   @Autowired
-//   transient RequestsRepository reqRepository;
+  @Autowired
+  transient PetDao petDao;
 
-//   transient Pet pet, pet2;
-//   transient User employee, webUser, webUser2;
-//   transient Requests req, req2;
+ 
+  @Autowired
+  transient PetRepository petRepository;
 
-//   private static final String BADID = "010";
-//   private static final String ID001 = "001";
-//   private static final String ID002 = "002";
-//   private static final String ID003 = "003";
-//   private static final String STRING_CANCELED = "CANCELED";
-//   private static final String STRING_APPROVED = "APPROVED";
-//   private static final String STRING_PENDING = "PENDING";
-//   // transient Date new_req_date;
+  @Autowired
+  transient UserRepository userRepository;
 
-//   @BeforeEach
-//   public void init() throws Exception {
-//     ObjectMapper om = new ObjectMapper();
-//     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-//     pet.setActive(false);
-//     pet.setAdopted(true);
-//     petRepository.insert(pet);
-//     pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
-//     petRepository.insert(pet2);
+  @Autowired
+  transient RequestsRepository reqRepository;
 
-//     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
-//     userRepository.insert(employee);
-//     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
-//     userRepository.insert(webUser);
-//     webUser2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject2.json"), User.class);
-//     userRepository.insert(webUser2);
+  transient Pet AdoptedPet, pet2;
+  transient User employee, webUser, webUser2;
+  transient Requests req, req2;
 
-//     req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
-//     reqRepository.insert(req);
-//     req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
-//     reqRepository.insert(req2);
-//   }
+  private static final String BADID = "010";
+  private static final String ID001 = "001";
+  private static final String ID002 = "002";
+  private static final String ID003 = "003";
+  private static final String STRING_CANCELED = "CANCELED";
+  private static final String STRING_APPROVED = "APPROVED";
+  private static final String STRING_PENDING = "PENDING";
+  // transient Date new_req_date;
 
-//   @AfterEach
-//   public void cleanup() {
-//     petRepository.deleteAll();
-//     userRepository.deleteAll();
-//     reqRepository.deleteAll();
-//   }
+  @BeforeEach
+  public void init() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    AdoptedPet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
+    AdoptedPet.setActive(false);
+    AdoptedPet.setAdopted(true);
+    petRepository.insert(AdoptedPet);
+    pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
+    petRepository.insert(pet2);
 
-//   @Test
-//   public void get_all_requests() {
-//     List<Requests> actual_reqs = reqDao.getAllRequests();
-//     assertEquals(Arrays.asList(new Requests[] { req, req2 }), actual_reqs);
-//   }
+    employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
+    userRepository.insert(employee);
+    webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
+    userRepository.insert(webUser);
+    webUser2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject2.json"), User.class);
+    userRepository.insert(webUser2);
 
-//   @Test
-//   public void get_good_request_by_id_returns_request() {
-//     Requests actual_req = reqDao.getRequestById(pet.getId());
-//     assertEquals(req, actual_req);
-//   }
+    req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
+    reqRepository.insert(req);
+    req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
+    reqRepository.insert(req2);
+  }
 
-//   @Test
-//   public void get_request_by_bad_id_returns_null() {
-//     Requests actual_req = reqDao.getRequestById( BADID);
-//     assertNull(actual_req);
-//   }
+  @AfterEach
+  public void cleanup() {
+    petRepository.deleteAll();
+    userRepository.deleteAll();
+    reqRepository.deleteAll();
+  }
 
-//   @Test
-//   public void get_request_by_null_id_returns_null() {
-//     Requests actual_req = reqDao.getRequestById(null);
-//     assertNull(actual_req);
-//   }
+  @Test
+  public void get_all_requests() {
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req, req2 }));
+    List<Requests> actual_reqs = reqDao.getAllRequests();
+    assertEquals(Arrays.asList(new Requests[] { req, req2 }), actual_reqs);
+  }
+
+    @Test
+  public void get_request_by_bad_id_returns_null() {
+    Requests actual_req = reqDao.getRequestById(BADID);
+    assertNull(actual_req);
+  }
+
+  @Test
+  public void get_request_by_null_id_returns_null() {
+    Requests actual_req = reqDao.getRequestById(null);
+    assertNull(actual_req);
+  }
+  
+  @Test
+  public void get_good_request_by_id_returns_request() {
+    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
+    Requests actual_req = reqDao.getRequestById(ID001);
+    assertEquals(req, actual_req);
+  }
+
+  @Test
+  public void create_request_user_invalid() {
+    when(mockUserDao.getUserById(ID001)).thenReturn(null);
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+    assertEquals(null, actual_req);
+  }
+
+  @Test
+  public void create_request_user_is_employee() {
+    employee.setEmployee(true);
+    when(mockUserDao.getUserById(ID001)).thenReturn(employee);
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+    assertEquals(null, actual_req);
+  }
+
+  @Test
+  public void create_request_pet_is_null() {
+    webUser.setEmployee(false);
+    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+
+    when(mockPetDao.getPetById(ID002)).thenReturn(null);
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+    assertEquals(null, actual_req);
+  }
+
+  @Test
+  public void create_request_pet_is_not_active() {
+    webUser.setEmployee(false);
+    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+
+    when(mockPetDao.getPetById(ID002)).thenReturn(AdoptedPet);
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+    assertEquals(null, actual_req);
+  }
+  
+  @Test
+  public void create_request_is_duplicate() {
+    webUser.setEmployee(false);
+    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+
+    when(mockPetDao.getPetById(ID002)).thenReturn(pet2);
+
+    req.setPetid("002");
+    req.setUserid("001");
+    req.setStatus("PENDING");
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req }));
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+    assertEquals(null, actual_req);
+  }
+
+  @Test
+  public void create_request_is_good() {
+    webUser.setEmployee(false);
+
+    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+
+    pet2.setActive(true);
+    when(mockPetDao.getPetById(ID002)).thenReturn(pet2);
+
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
+    when(mockPetDao.putPetByRequest(pet2)).thenReturn(pet2);
+
+
+    when(mockRequestsRepository.insert(any(Requests.class))).thenReturn(req);
+
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+
+    System.out.println("actual_req" + actual_req);
+    System.out.println("req" + req);
+    
+    assertEquals(req, actual_req);
+  }
+  
 
 //   @Test
 //   public void create_request() {
@@ -512,4 +604,4 @@
 //     List<Requests> updated_req_list_round2 = reqDao.getAllRequests();
 //     assertTrue(updated_req_list_round2.contains(req2));
 //   }
-// }
+}
