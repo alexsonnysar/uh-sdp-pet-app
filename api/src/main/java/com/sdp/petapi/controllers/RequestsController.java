@@ -58,35 +58,36 @@ public class RequestsController {
   @PutMapping("/{reqid}")
   @PreAuthorize("hasRole('Employee') or hasRole('User')")
   public Requests putRequest(@PathVariable String reqid, @RequestBody String status) {
-    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
-      return employeeCanUpdateRequest(reqid, status) ? reqService.putRequest(reqid, status) : null;
-    }
-    else {
-      return (userCanUpdateRequest(reqid, status)) ? reqService.putRequest(reqid, status) : null;
+
+    Requests dbReq = reqService.getRequestById(reqid);
+
+    if (!reqIdIsValid(dbReq)) {
+      return null;
+    } else {
+      if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+        return (validEmployeeStatus(status)) ? reqService.putRequest(reqid, status) : null;
+      }
+      else {
+        return (userCanUpdateRequest(dbReq, status)) ? reqService.putRequest(reqid, status) : null;
+      }
     }
   }
 
-  private Boolean employeeCanUpdateRequest(String reqid, String status) {
-    return activeRequest(reqid) && validEmployeeStatus(status);
-  }
-
-  private Boolean activeRequest(String reqid) {
-    Requests req = getRequestById(reqid);
-    return (req != null && req.getStatus().equals("PENDING"));
+  private Boolean reqIdIsValid(Requests dbReq) {
+    return (dbReq != null && dbReq.getStatus().equals("PENDING"));
   }
 
   private Boolean validEmployeeStatus(String status) {
     return status != null && (status.equals("APPROVED") || status.equals("CANCELED"));
   }
 
-  private Boolean userCanUpdateRequest(String reqid, String status) {
-    return userMadeRequest(reqid) && validUserStatus(status);
+  private Boolean userCanUpdateRequest(Requests dbReq, String status) {
+    return userMadeRequest(dbReq) && validUserStatus(status);
   }
 
-  private Boolean userMadeRequest(String reqid) {
-    Requests req = getRequestById(reqid);
+  private Boolean userMadeRequest(Requests dbReq) {
     UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    return (req != null && req.getUserid().equals(userDetails.getId()));
+    return (dbReq != null && dbReq.getUserid().equals(userDetails.getId()));
   }
 
   private Boolean validUserStatus(String status) {
