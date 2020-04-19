@@ -48,6 +48,10 @@ const PetInfo = ({ pet }) => {
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
+  const userData = {
+    id: window.localStorage.getItem('userId')
+  };
+
   const [loading, setLoading] = useState(false);
   const [requested, setRequest] = useState(false);
   const [open, setOpen] = useState(false);
@@ -79,6 +83,29 @@ const PetInfo = ({ pet }) => {
     }
     setOpen(false);
   };
+
+  //FAVORITING
+  const[favorited, setFavorited] = useState(false);
+  const PostFavoritePet = (favData) => {
+    const postUrl = `http://localhost:8080/user/fav/${id}`;
+    setLoading(true);
+    axios({
+      method: 'post',
+      url: postUrl,
+      headers: reqHeaders,
+      data: favData,
+    })
+      .then(() => {
+        setFavorited(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }
+
+  const handleFavorite = () => {
+    PostFavoritePet(userData);
+  }
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
 
@@ -129,6 +156,8 @@ const PetInfo = ({ pet }) => {
                   color="secondary"
                   variant="contained"
                   startIcon={<FavoriteRoundedIcon />}
+                  onClick={() => handleFavorite()}
+                  disabled={loading}
                 >
                   Favorite
                 </Button>
