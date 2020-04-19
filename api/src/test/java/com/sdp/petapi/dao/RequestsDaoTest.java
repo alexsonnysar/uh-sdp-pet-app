@@ -185,18 +185,89 @@ public class RequestsDaoTest {
     when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
     when(mockPetDao.putPetByRequest(pet2)).thenReturn(pet2);
 
-
     when(mockRequestsRepository.insert(any(Requests.class))).thenReturn(req);
 
     Requests actual_req = reqDao.createRequest(ID001, ID002);
 
-    System.out.println("actual_req" + actual_req);
-    System.out.println("req" + req);
-    
     assertEquals(req, actual_req);
   }
   
+  @Test
+  public void put_request_approve() {
 
+    req.setStatus("APPROVED");
+    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
+    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+
+    Requests actualRequest = reqDao.putRequests(req.getId(), req.getStatus());
+    assertEquals(req, actualRequest);
+
+  }
+
+  // @Test
+  // public void put_request_canceled() {
+
+  //   req.setStatus("CANCELED");
+
+  //   when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
+  //   when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
+  //   when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+
+
+  //   Requests actualRequest = reqDao.putRequests(req.getId(), req.getStatus());
+  //   assertEquals(req, actualRequest);
+
+  // }
+
+  @Test
+  public void put_request_returns_null() {
+    req.setStatus("BAD STATUS");
+    Requests actualRequest = reqDao.putRequests(req.getId(), req.getStatus());
+    assertEquals(null, actualRequest);
+  }
+
+  @Test
+  public void approve_request_other_requests_are_empty() {
+
+    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
+    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+
+    Requests actualRequest = reqDao.approveRequest(ID001);
+    assertEquals(req, actualRequest);
+  }
+
+  @Test
+  public void approve_request_other_requests_not_empty() {
+
+    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req2 }));
+    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+
+    Requests actualRequest = reqDao.approveRequest(ID001);
+    assertEquals(req, actualRequest);
+  }
+
+  @Test
+  public void cancel_request_match_returns_true() {
+
+    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
+
+    req2.setPetid(req.getPetid());
+    req2.setUserid("BADUSERID");
+    req2.setStatus("APPROVED");
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req2 }));
+
+    when(mockPetDao.getPetById(anyString())).thenReturn(pet2);
+    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+
+    Requests actualRequest = reqDao.cancelRequest(ID001);
+
+    assertEquals(true, pet2.isActive());
+    assertEquals(false, pet2.isAdopted());
+    assertEquals(req, actualRequest);
+  }
 //   @Test
 //   public void create_request() {
 //     List<Requests> orig_req_list = reqDao.getAllRequests();

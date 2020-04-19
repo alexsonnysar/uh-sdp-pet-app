@@ -42,19 +42,12 @@ public class RequestsDao {
 
     Pet pet = petDao.getPetById(petid);
 
-    /* Conrad: right now make it so request makes status "PENDING" (happens in constructor) 
-       and pet.isAdopted = T and pet.isActive = F */
     pet.setActive(false);
     pet.setAdopted(true);
     petDao.putPetByRequest(pet);
 
-    
-    // return repository.insert(new Requests(userid, petid));
     Requests tempRequest = new Requests(userid, petid);
-    System.out.println("tempRequest" + tempRequest);
-
     Requests temp = repository.insert(tempRequest);
-    System.out.println("temp" + temp);
     return temp;
   }
 
@@ -109,20 +102,17 @@ public class RequestsDao {
   public Requests cancelRequest(String reqid) {
     Requests req = getRequestById(reqid);
 
-    if (!repository.findAll()
-      .stream()
-      .anyMatch(
-        r -> r.getPetid().equals(req.getPetid())
-        && !r.getUserid().equals(req.getUserid())
-        && !r.getStatus().equals(CANCELED_STRING)
-      )
-    ) {
-      /* To undo Conrad's earlier comment */
+    if (!repository.findAll().stream().anyMatch
+    (r -> r.getPetid().equals(req.getPetid())
+    && !r.getUserid().equals(req.getUserid()) 
+    && !r.getStatus().equals(CANCELED_STRING))) 
+    {
       Pet pet = petDao.getPetById(req.getPetid());
       pet.setActive(true);
       pet.setAdopted(false);
       petDao.putPetByRequest(pet);
     }
+
     req.setStatus(APPROVED_STRING);
     return repository.save(req);
   }
