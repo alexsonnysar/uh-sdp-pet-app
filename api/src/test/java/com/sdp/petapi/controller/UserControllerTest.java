@@ -98,7 +98,6 @@ class UserControllerTest {
     assertEquals(webUser, actual_user);
   }
 
-
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void put_user() {
@@ -126,44 +125,95 @@ class UserControllerTest {
   }
 
   @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void add_pet_by_id_to_user_favorites_list() {
-    when(userService.addPetToFavorites(webUser, PET_ID_STRING)).thenReturn(true);
-    Boolean result = userController.addPetToFavorites(PET_ID_STRING, webUser);
+    when(userService.addPetToFavorites(USER_ID_STRING, PET_ID_STRING)).thenReturn(true);
+    Boolean result = userController.addPetToFavorites(PET_ID_STRING);
     assertTrue(result);
   }
 
   @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void add_pet_by_id_to_employee_favorites_list() {
+    when(userService.addPetToFavorites(USER_ID_STRING, PET_ID_STRING)).thenReturn(true);
+    Boolean result = userController.addPetToFavorites(PET_ID_STRING);
+    assertFalse(result);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void remove_pet_by_id_from_user_favorites_list() {
-    when(userService.removePetFromFavorites(webUser, PET_ID_STRING)).thenReturn(true);
-    Boolean result = userController.removePetFromFavorites(PET_ID_STRING, webUser);
+    when(userService.removePetFromFavorites(USER_ID_STRING, PET_ID_STRING)).thenReturn(true);
+    Boolean result = userController.removePetFromFavorites(PET_ID_STRING);
     assertTrue(result);
   }
 
   @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void remove_pet_by_id_from_employee_favorites_list() {
+    when(userService.removePetFromFavorites(USER_ID_STRING, PET_ID_STRING)).thenReturn(true);
+    Boolean result = userController.removePetFromFavorites(PET_ID_STRING);
+    assertFalse(result);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void add_pet_by_id_to_user_recently_visited_list() {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
-    when(userService.addPetToRecents(webUser, PET_ID_STRING)).thenReturn(true);
-    Boolean result = userController.addPetToRecents(PET_ID_STRING, webUser);
+    when(userService.addPetToRecents(USER_ID_STRING, PET_ID_STRING)).thenReturn(true);
+    Boolean result = userController.addPetToRecents(PET_ID_STRING);
     assertTrue(result);
   }
 
   @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void add_pet_by_id_to_employee_recently_visited_list() {
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.addPetToRecents(USER_ID_STRING, PET_ID_STRING)).thenReturn(true);
+    Boolean result = userController.addPetToRecents(PET_ID_STRING);
+    assertFalse(result);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void get_user_favorites_list() {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getFavoritePets(USER_ID_STRING)).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userController.getFavoritePets(USER_ID_STRING);
+    List<Pet> list = userController.getFavoritePets();
     assertEquals(list, Collections.singletonList(pet));
   }
 
   @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_employee_favorites_list() {
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.getFavoritePets(USER_ID_STRING)).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userController.getFavoritePets();
+    assertEquals(list, Collections.emptyList());
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void get_user_recently_visited_list() {
     // Since the userService is a mock it will return null on method calls, so
     // we must specify what it will return given a specific method call
     when(userService.getRecentPets(USER_ID_STRING)).thenReturn(Collections.singletonList(pet));
-    List<Pet> list = userController.getRecentPets(USER_ID_STRING);
+    List<Pet> list = userController.getRecentPets();
     assertEquals(list, Collections.singletonList(pet));
+  }
+
+  @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_employee_recently_visited_list() {
+    // Since the userService is a mock it will return null on method calls, so
+    // we must specify what it will return given a specific method call
+    when(userService.getRecentPets(USER_ID_STRING)).thenReturn(Collections.singletonList(pet));
+    List<Pet> list = userController.getRecentPets();
+    assertEquals(list, Collections.emptyList());
   }
 
   @Test
@@ -173,6 +223,42 @@ class UserControllerTest {
     when(userService.existsByEmail("1234@mail.com")).thenReturn(true);
     Boolean resp = userController.existsByEmail("1234@mail.com");
     assertTrue(resp);
+  }
+
+  @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_employee_gets_himself() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("1234@mail.com");
+    assertEquals(employee, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_employee_gets_other() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("ironman@mail.com");
+    assertEquals(webUser, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_user_gets_himself() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("ironman@mail.com");
+    assertEquals(webUser, actual_user);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void get_user_by_email_user_gets_other() {
+    when(userService.getUserByEmail("1234@mail.com")).thenReturn(employee);
+    when(userService.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User actual_user = userController.getUserByEmail("1234@mail.com");
+    assertEquals(webUser, actual_user);
   }
 
 }

@@ -1,9 +1,12 @@
 package com.sdp.petapi.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +31,25 @@ public class PetController {
 
   @GetMapping
   public List<Pet> getAllPets() {
-    return petService.getAllPets();
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return petService.getAllPets();
+    }
+    else {
+      return petService.getAllPets().stream().filter(p -> p.isActive()).collect(Collectors.toList());
+    }
   }
 
   @GetMapping("/{id}")
   public Pet getPetById(@PathVariable String id) {
-    return petService.getPetById(id);
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return petService.getPetById(id);
+    }
+    else {
+      Pet pet = petService.getPetById(id);
+      return (pet != null && pet.isActive()) ? pet : null;
+    }
   }
 
-  // only employees
   @PostMapping
   @PreAuthorize("hasRole('Employee')")
   public Pet createPet(@RequestBody Pet pet) {
@@ -46,7 +59,7 @@ public class PetController {
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('Employee')")
   public Pet putPet(@PathVariable String id, @RequestBody Pet pet) {
-    return (id == null || pet == null || !id.equals(pet.getId())) ? null : petService.putPet(pet);
+    return (id != null && pet != null && id.equals(pet.getId())) ? petService.putPet(pet) : null;
   }
 
   @DeleteMapping("/{id}")

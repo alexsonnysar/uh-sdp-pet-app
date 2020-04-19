@@ -80,22 +80,22 @@ class UserServiceTest {
 
   @Test
   public void add_pet_by_id_to_user_favorites_list() {
-    when(userDao.addPetToFavorites(webUser, ID001)).thenReturn(true);
-    Boolean result = userService.addPetToFavorites(webUser, ID001);
+    when(userDao.addPetToFavorites(ID002, ID001)).thenReturn(true);
+    Boolean result = userService.addPetToFavorites(ID002, ID001);
     assertTrue(result);
   }
 
   @Test
   public void remove_pet_by_id_from_user_favorites_list() {
-    when(userDao.removePetFromFavorites(webUser, ID001)).thenReturn(true);
-    Boolean result = userService.removePetFromFavorites(webUser, ID001);
+    when(userDao.removePetFromFavorites(ID002, ID001)).thenReturn(true);
+    Boolean result = userService.removePetFromFavorites(ID002, ID001);
     assertTrue(result);
   }
 
   @Test
   public void add_pet_by_id_to_user_recently_visited_list() {
-    when(userDao.addPetToRecents(webUser, ID001)).thenReturn(true);
-    Boolean result = userService.addPetToRecents(webUser, ID001);
+    when(userDao.addPetToRecents(ID002, ID001)).thenReturn(true);
+    Boolean result = userService.addPetToRecents(ID002, ID001);
     assertTrue(result);
   }
 
@@ -118,5 +118,12 @@ class UserServiceTest {
     when(userDao.existsByEmail("1234@mail.com")).thenReturn(true);
     Boolean resp = userService.existsByEmail("1234@mail.com");
     assertTrue(resp);
+  }
+
+  @Test
+  public void get_user_by_email() {
+    when(userDao.getUserByEmail("ironman@mail.com")).thenReturn(webUser);
+    User user = userService.getUserByEmail("ironman@mail.com");
+    assertEquals(user, webUser);
   }
 }

@@ -17,7 +17,8 @@ class PetTest {
   private static final String DATEFORMAT = "dd-MMM-yyyy HH:mm:ss";
   private static final String FEBDATE = "26-FEB-2020 18:16:17";
   private static final String ID009 = "009";
-  private static final String BUDDY = "Buddy";
+  private static final String BUDDYBADCASE = "bUddy holLaNd";
+  private static final String BUDDYGOODCASE = "Buddy Holland";
   private static final String DOG = "dog";
   private static final String MEDIUM = "medium";
   private static final String OLD = "old_af";
@@ -31,11 +32,11 @@ class PetTest {
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, images, false, true);
+    Pet sample_pet = new Pet(ID009, BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, images, false, true);
 
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -56,11 +57,11 @@ class PetTest {
 
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, images, false, true);
+    Pet sample_pet = new Pet(ID009, BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, images, false, true);
 
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -81,11 +82,11 @@ class PetTest {
     insImages.stream().collect(Collectors.toSet()).toArray(petPics);
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, insImages, false, true);
+    Pet sample_pet = new Pet(ID009, BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, insImages, false, true);
 
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -107,11 +108,11 @@ class PetTest {
 
     Date sample_date = new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE);
 
-    Pet sample_pet = new Pet(ID009, BUDDY, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, insImages, false, true);
+    Pet sample_pet = new Pet(ID009, BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4, sample_date, WET, insImages, false, true);
 
     assertNotNull(sample_pet);
     assertEquals(sample_pet.getId(), ID009);
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -131,14 +132,14 @@ class PetTest {
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
     Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+    Pet sample_pet = new Pet( BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4,
         WET, images );
     
     Date latestDate = new Date();
     
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -160,14 +161,14 @@ class PetTest {
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
     Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+    Pet sample_pet = new Pet( BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4,
         WET, images );
     
     Date latestDate = new Date();
     
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -190,14 +191,14 @@ class PetTest {
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
     Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+    Pet sample_pet = new Pet( BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4,
         WET, insImages );
     
     Date latestDate = new Date();
     
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);
@@ -220,14 +221,14 @@ class PetTest {
     Arrays.asList(images).stream().collect(Collectors.toSet()).toArray(petPics);
     Date earliestDate = new Date();
 
-    Pet sample_pet = new Pet( BUDDY, DOG, "M", OLD, MEDIUM, 123.4,
+    Pet sample_pet = new Pet( BUDDYBADCASE, DOG, "M", OLD, MEDIUM, 123.4,
         WET, insImages );
     
     Date latestDate = new Date();
     
     assertNotNull(sample_pet);
     assertNull(sample_pet.getId());
-    assertEquals(sample_pet.getName(), BUDDY);
+    assertEquals(sample_pet.getName(), BUDDYGOODCASE);
     assertEquals(sample_pet.getType(), DOG);
     assertEquals(sample_pet.getSex(), "M");
     assertEquals(sample_pet.getAge(), OLD);

@@ -49,7 +49,7 @@ public class UserController {
     }
   }
 
-  @GetMapping("/{email}")
+  @GetMapping("/info/{email}")
   @PreAuthorize("hasRole('Employee') or hasRole('User')")
   public User getUserByEmail(@PathVariable String email) {
     // Only Employees can access other users info
@@ -59,7 +59,7 @@ public class UserController {
     else {
       // Users should not have access to other users info so always return the signed in users own info
       UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      return userService.getUserById(userDetails.getId());
+      return userService.getUserByEmail(userDetails.getUsername());
     }
   }
 
@@ -82,29 +82,39 @@ public class UserController {
    return userService.deleteUser(id);
   }
 
-  @PostMapping("/fav/{id}")
-  public Boolean addPetToFavorites(@PathVariable String id, @RequestBody User user) {
-    return userService.addPetToFavorites(user, id);
+  @PostMapping("/fav/{petid}")
+  @PreAuthorize("hasRole('User')")
+  public Boolean addPetToFavorites(@PathVariable String petid) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return userService.addPetToFavorites(userDetails.getId(), petid);
   }
 
-  @PutMapping("/fav/{id}")
-  public Boolean removePetFromFavorites(@PathVariable String id, @RequestBody User user) {
-    return userService.removePetFromFavorites(user, id);
+  @PutMapping("/fav/{petid}")
+  @PreAuthorize("hasRole('User')")
+  public Boolean removePetFromFavorites(@PathVariable String petid) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return userService.removePetFromFavorites(userDetails.getId(), petid);
   }
 
-  @PostMapping("/recent/{id}")
-  public Boolean addPetToRecents(@PathVariable String id, @RequestBody User user) {
-    return userService.addPetToRecents(user, id);
+  @PostMapping("/recent/{petid}")
+  @PreAuthorize("hasRole('User')")
+  public Boolean addPetToRecents(@PathVariable String petid) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return userService.addPetToRecents(userDetails.getId(), petid);
   }
 
-  @GetMapping("/fav/{id}")
-  public List<Pet> getFavoritePets(@PathVariable String id) {
-    return userService.getFavoritePets(id);
+  @GetMapping("/fav")
+  @PreAuthorize("hasRole('User')")
+  public List<Pet> getFavoritePets() {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return userService.getFavoritePets(userDetails.getId());
   }
 
-  @PutMapping("/recents/{id}")
-  public List<Pet> getRecentPets(@PathVariable String id) {
-    return userService.getRecentPets(id);
+  @PutMapping("/recent")
+  @PreAuthorize("hasRole('User')")
+  public List<Pet> getRecentPets() {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return userService.getRecentPets(userDetails.getId());
   }
   
 }

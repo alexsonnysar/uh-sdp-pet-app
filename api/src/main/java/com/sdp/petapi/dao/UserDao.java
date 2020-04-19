@@ -61,7 +61,8 @@ public class UserDao {
     return user;
   }
 
-  public Boolean addPetToFavorites(User user, String petid) {
+  public Boolean addPetToFavorites(String userid, String petid) {
+    User user = getUserById(userid);
     if(!isUserValid(user)) return false;
 
     if(!isPetValid(petid)) return false;
@@ -72,20 +73,16 @@ public class UserDao {
   }
 
   private Boolean isUserValid(User user) {
-    if (user == null || user.isEmployee()) return false;
-
-    User userdb = getUserById(user.getId());
-    if (!user.equals(userdb)) return false;
-    return true;
+    return (user != null && !user.isEmployee());
   }
 
   private Boolean isPetValid(String petid) {
     Pet pet = petDao.getPetById(petid);
-    if (pet == null || !pet.isActive()) return false;
-    return true;
+    return (pet != null && pet.isActive());
   }
 
-  public Boolean removePetFromFavorites(User user, String petid) {
+  public Boolean removePetFromFavorites(String userid, String petid) {
+    User user = getUserById(userid);
     if(!isUserValid(user)) return false;
 
     Boolean result = user.removeFromFavorites(petid);
@@ -93,7 +90,8 @@ public class UserDao {
     return result;
   }
 
-  public Boolean addPetToRecents(User user, String petid) {
+  public Boolean addPetToRecents(String userid, String petid) {
+    User user = getUserById(userid);
     if (!isUserValid(user)) return false;
     
     if (!isPetValid(petid)) return false;
