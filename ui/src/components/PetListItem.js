@@ -1,30 +1,35 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+import React from 'react';
+import {
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  ListItemSecondaryAction,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateRoundedIcon from '@material-ui/icons/UpdateRounded';
-import Button from '@material-ui/core/Button';
+import BlockIcon from '@material-ui/icons/Block';
+import CheckIcon from '@material-ui/icons/Check';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import ListButton from './ListButton';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-}));
-
-const PetListItem = ({ pet, removePet }) => {
+const PetListItem = ({
+  pet,
+  actionButton,
+  approveButton,
+  rejectButton,
+  deleteButton,
+  updateButton,
+}) => {
   const { name, type, id } = pet;
-  const [loading, setLoading] = useState(false);
-  const classes = useStyles();
 
   const headersAxios = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
+  const handleError = () => {};
   const CallDeletePet = (petData) => {
     axios({
       method: 'put',
@@ -33,46 +38,60 @@ const PetListItem = ({ pet, removePet }) => {
       data: petData,
     })
       .then((response) => response.data)
-      .catch((error) => {
-        throw error;
-      });
+      .catch(handleError);
   };
-
+  const handleUpdate = () => {
+    axios.get('http://localhost:3000/pet');
+    // open register pet and fill the form with current pet data
+  };
   const handleDelete = () => {
     const petData = {
       ...pet,
       active: false,
     };
-    setLoading(true);
-    removePet(id);
+    actionButton(id);
     CallDeletePet(petData);
   };
-
+  // const handleAction = () => {};
   return (
     <ListItemLink href={`pet-profile/${id}`} data-testid="petlistitem">
+      <ListItemAvatar>
+        <Avatar alt="Pet" src="/images/garfield.jpg" />
+      </ListItemAvatar>
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
-        <Button
-          onClick={() => handleDelete()}
-          disabled={loading}
-          variant="contained"
-          className={classes.button}
-          color="secondary"
-          size="small"
-          startIcon={<DeleteIcon />}
-        >
-          Delete
-        </Button>
-        <Button
-          href="pet-profile"
-          variant="contained"
-          className={classes.button}
-          color="primary"
-          size="small"
-          startIcon={<UpdateRoundedIcon />}
-        >
-          Update
-        </Button>
+        {deleteButton && (
+          <ListButton
+            handleClick={() => handleDelete()}
+            label="Delete"
+            color="secondary"
+            icon={<DeleteIcon />}
+          />
+        )}
+        {updateButton && (
+          <ListButton
+            handleClick={() => handleUpdate()}
+            label="Update"
+            color="primary"
+            icon={<UpdateRoundedIcon />}
+          />
+        )}
+        {approveButton && (
+          <ListButton
+            handleClick={() => handleDelete()}
+            label="Approve"
+            color="secondary"
+            icon={<CheckIcon />}
+          />
+        )}
+        {rejectButton && (
+          <ListButton
+            handleClick={() => handleUpdate()}
+            label="Reject"
+            color="primary"
+            icon={<BlockIcon />}
+          />
+        )}
       </ListItemSecondaryAction>
     </ListItemLink>
   );
@@ -86,11 +105,18 @@ PetListItem.propTypes = {
     name: PropTypes.string,
     type: PropTypes.string,
   }).isRequired,
-  removePet: PropTypes.func,
+  actionButton: PropTypes.func,
+  deleteButton: PropTypes.bool,
+  updateButton: PropTypes.bool,
+  approveButton: PropTypes.bool,
+  rejectButton: PropTypes.bool,
 };
 
 PetListItem.defaultProps = {
-  removePet: () => null,
+  actionButton: () => null,
+  deleteButton: false,
+  updateButton: false,
+  approveButton: false,
+  rejectButton: false,
 };
-
 export default PetListItem;

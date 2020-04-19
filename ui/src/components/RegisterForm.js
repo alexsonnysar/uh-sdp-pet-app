@@ -36,6 +36,7 @@ const RegisterForm = (props) => {
   const [isError, setError] = useState(false);
 
   const PostLoginUser = (userData) => {
+    const handleError = () => {};
     setLoading(true);
     axios({
       method: 'post',
@@ -46,18 +47,22 @@ const RegisterForm = (props) => {
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
+        window.localStorage.setItem('userId', response.data.id);
         props.handleAuth(true);
-        history.replace('/');
+        if (localStorage.getItem('roles') === 'ROLE_User') {
+          history.replace('/user-dashboard');
+        } else {
+          history.replace('/employee-dashboard');
+        }
       })
-      .catch((error) => {
-        throw error;
-      })
+      .catch(handleError)
       .finally(() => {
         setLoading(false);
       });
   };
 
   const PostAddUser = (userData) => {
+    const handleError = () => {};
     setLoading(true);
     axios({
       method: 'post',
@@ -68,9 +73,7 @@ const RegisterForm = (props) => {
       .then(() => {
         PostLoginUser(formData);
       })
-      .catch((error) => {
-        throw error;
-      })
+      .catch(handleError)
       .finally(() => {
         setLoading(false);
       });

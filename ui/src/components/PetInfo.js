@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Grid, Box, Divider, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
+import axios from 'axios';
+import SuccessRequestMsg from './SuccessRequestMsg';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -35,7 +37,48 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PetInfo = ({ pet }) => {
-  const { name, age, size, type, sex, description } = pet;
+  const { id, name, age, size, type, sex, description } = pet;
+  const reqData = {
+    userid: window.localStorage.getItem('userId'),
+    petid: id,
+  };
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  };
+
+  const [loading, setLoading] = useState(false);
+  const [requested, setRequest] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const PostCreateRequest = (requestData) => {
+    setLoading(true);
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/request',
+      headers: reqHeaders,
+      data: requestData,
+    })
+      .then(() => {
+        setRequest(true);
+        setOpen(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleSubmit = () => {
+    PostCreateRequest(reqData);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
 
@@ -76,8 +119,10 @@ const PetInfo = ({ pet }) => {
                   color="primary"
                   variant="contained"
                   startIcon={<PetsRoundedIcon />}
+                  onClick={() => handleSubmit()}
+                  disabled={loading}
                 >
-                  Adopt Me
+                  {requested ? 'Requested' : 'Adopt Me'}
                 </Button>
                 <Button
                   size="large"
@@ -87,6 +132,11 @@ const PetInfo = ({ pet }) => {
                 >
                   Favorite
                 </Button>
+                <SuccessRequestMsg
+                  handleClose={() => handleClose()}
+                  open={open}
+                  successMsg={`Successfully Requested ${name}!`}
+                />
               </div>
             </div>
           </Grid>
@@ -98,6 +148,7 @@ const PetInfo = ({ pet }) => {
 
 PetInfo.propTypes = {
   pet: PropTypes.shape({
+    id: PropTypes.string,
     name: PropTypes.string,
     age: PropTypes.string,
     size: PropTypes.string,

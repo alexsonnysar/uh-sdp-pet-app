@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPetForm = () => {
-  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const initialState = {
     name: '',
@@ -30,16 +28,12 @@ const RegisterPetForm = () => {
     age: '',
     size: '',
     weight: '',
-    dateAdded: '',
     description: '',
     imageNames: [''],
     adopted: false,
     active: true,
   };
   const [formData, setFormData] = useState(initialState);
-  const date = {
-    someDate: new Date().toISOString().substring(0, 10),
-  };
 
   const handleChange = (e) => {
     setFormData({
@@ -53,32 +47,34 @@ const RegisterPetForm = () => {
       [prop]: event.target.value,
     });
   };
+  const handleError = () => {};
 
-  const headers = {
+  const reqHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
-  const PostAddPet = (petData) => {
+  const CreatePet = (petData) => {
     axios({
       method: 'post',
       url: 'http://localhost:8080/pet',
-      headers,
+      headers: reqHeaders,
       data: petData,
     })
       .then(() => {
-        history.replace('http://localhost:3000/pet-register');
+        setFormData(initialState);
+        // notification for user
       })
-      .catch((error) => {
-        throw error;
-      });
+      .catch(handleError)
+      .finally(setLoading(false));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     // if(state is valid){
     //   make api call
+    e.preventDefault();
     setLoading(true);
-    PostAddPet(formData);
+    CreatePet(formData);
   };
 
   const classes = useStyles();
@@ -87,7 +83,13 @@ const RegisterPetForm = () => {
     <div data-testid="registerPetForm">
       <form className={classes.container}>
         <h1 align="center">Register Pet</h1>
-        <TextField id="name" label="Name" variant="outlined" onChange={handleChange} />
+        <TextField
+          id="name"
+          label="Name"
+          variant="outlined"
+          value={formData.name}
+          onChange={(e) => handleChange(e)}
+        />
         <TextField
           id="type"
           label="type"
@@ -146,25 +148,16 @@ const RegisterPetForm = () => {
           id="weight"
           label="Weight"
           variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          id="dateAdded"
-          label="Arrival Date"
-          type="date"
-          defaultValue={date.someDate}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
-          onChange={handleChange}
+          value={formData.weight}
+          onChange={(e) => handleChange(e)}
         />
         <TextField
           id="description"
           multiline
           label="Description"
           variant="outlined"
-          onChange={handleChange}
+          value={formData.description}
+          onChange={(e) => handleChange(e)}
         />
         <TextField
           id="adopted"
@@ -181,7 +174,8 @@ const RegisterPetForm = () => {
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={() => handleSubmit()}
+          onClick={(e) => handleSubmit(e)}
+          type="submit"
           disabled={loading}
         >
           Create

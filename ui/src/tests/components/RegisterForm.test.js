@@ -7,7 +7,7 @@ describe('<RegisterForm', () => {
   const setup = () => {
     const utils = render(
       <Router>
-        <RegisterForm />
+        <RegisterForm handleAuth={() => {}} />
       </Router>
     );
     const input = utils.getByLabelText(/Name/i);
@@ -27,7 +27,7 @@ describe('<RegisterForm', () => {
   test('should render register page', () => {
     const { getByTestId } = render(
       <Router>
-        <RegisterForm />
+        <RegisterForm handleAuth={() => {}} />
       </Router>
     );
     const registerForm = getByTestId('registerForm');
@@ -38,7 +38,7 @@ describe('<RegisterForm', () => {
 test('click on register button', () => {
   const { getByTestId } = render(
     <Router>
-      <RegisterForm />
+      <RegisterForm handleAuth={() => {}} />
     </Router>
   );
 

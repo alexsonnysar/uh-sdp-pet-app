@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { shallow } from 'enzyme';
 import PetList from '../../components/PetList';
 
 const petList = [
@@ -19,11 +19,22 @@ const petList = [
     type: 'Dog',
   },
 ];
+describe('<PetList /> Tests', () => {
+  let shallowWrapper;
 
-test('should render a list of pets', () => {
-  const { getByTestId } = render(
-    <PetList heading="Pet List" petList={petList} deletePet={() => {}} />
-  );
-  const petLists = getByTestId('petlist');
-  expect(petLists).toBeInTheDocument();
+  beforeEach(() => {
+    shallowWrapper = shallow(
+      <PetList
+        heading="Pet List"
+        petList={petList}
+        action={() => {}}
+        deleteButton
+        updateButton
+      />
+    );
+  });
+
+  test('should render 3 PetListItem Components', () => {
+    expect(shallowWrapper.find('PetListItem').length).toBe(3);
+  });
 });

@@ -6,7 +6,7 @@ import Register from '../../pages/Register';
 test('should render register pet page', () => {
   const { getByTestId } = render(
     <Router>
-      <Register />
+      <Register handleAuth={() => {}} />
     </Router>
   );
   const register = getByTestId('register');

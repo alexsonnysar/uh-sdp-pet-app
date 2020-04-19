@@ -21,15 +21,14 @@ const PetProfile = () => {
 
   const url = `http://localhost:8080/pet/${id}`;
 
+  const handleError = () => {};
   useEffect(() => {
     getSinglePet(url)
       // eslint-disable-next-line no-shadow
       .then((pet) => {
         setPet(pet);
       })
-      .catch((error) => {
-        throw error;
-      })
+      .catch(handleError)
       .finally(() => setLoading(false));
   }, [url]);
 

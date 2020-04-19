@@ -7,7 +7,7 @@ describe('<LoginForm />', () => {
   test('should render login page', () => {
     const { getByTestId } = render(
       <Router>
-        <LoginForm />
+        <LoginForm handleAuth={() => {}} />
       </Router>
     );
     const loginForm = getByTestId('loginForm');
@@ -17,7 +17,7 @@ describe('<LoginForm />', () => {
   const setup = () => {
     const utils = render(
       <Router>
-        <LoginForm />
+        <LoginForm handleAuth={() => {}} />
       </Router>
     );
     const input = utils.getByLabelText('Email');

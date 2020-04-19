@@ -6,7 +6,7 @@ import Login from '../../pages/Login';
 test('should render Login page', () => {
   const { getByTestId } = render(
     <Router>
-      <Login />
+      <Login handleAuth={() => {}} />
     </Router>
   );
   const petProfile = getByTestId('login');
