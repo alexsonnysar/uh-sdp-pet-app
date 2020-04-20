@@ -257,8 +257,9 @@ public class RequestsDaoTest {
     req2.setPetid(req.getPetid());
     req2.setUserid("BADUSERID");
     req2.setStatus("APPROVED");
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req2 }));
-
+    // when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req2 }));
+    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {  }));
+    
     when(mockPetDao.getPetById(anyString())).thenReturn(pet2);
     when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
 
