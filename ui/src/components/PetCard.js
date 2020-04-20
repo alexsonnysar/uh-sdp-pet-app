@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { favoritePet } from '../api/petRequests';
 
 const useStyles = makeStyles({
   root: {
@@ -39,44 +40,31 @@ const PetCard = ({ pet }) => {
   const petLink = `pet-profile/${id}`;
 
   const [loading, setLoading] = useState(false);
-  const [isError, setError] = useState(false);
-  const[favorited, setFavorited] = useState(false);
-
-  const reqHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  };
+  const [favorited, setFavorited] = useState(false);
 
   const userData = {
-    id: window.localStorage.getItem('userId')
+    id: window.localStorage.getItem('userId'),
   };
 
   const handleClick = () => {
     history.push(petLink);
   };
 
-
-
   const PostFavoritePet = (favData) => {
     const postUrl = `http://localhost:8080/user/fav/${id}`;
     setLoading(true);
-    axios({
-      method: 'post',
-      url: postUrl,
-      headers: reqHeaders,
-      data: favData,
-    })
+    favoritePet(postUrl, favData)
       .then(() => {
         setFavorited(true);
       })
       .finally(() => {
         setLoading(false);
-      })
-  }
+      });
+  };
 
   const handleFavorite = () => {
     PostFavoritePet(userData);
-  }
+  };
 
   const classes = useStyles();
 
@@ -101,12 +89,13 @@ const PetCard = ({ pet }) => {
       </CardActionArea>
       <CardActions>
         {localStorage.getItem('jwt') !== null ? (
-          <Button 
-            size="small" 
-            color="secondary" 
+          <Button
+            size="small"
+            color="secondary"
+            variant="contained"
             startIcon={<FavoriteRoundedIcon />}
             onClick={() => handleFavorite()}
-            disabled={loading}  
+            disabled={loading}
           >
             {favorited ? 'Favorited' : 'Favorite'}
           </Button>

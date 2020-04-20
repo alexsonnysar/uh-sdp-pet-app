@@ -6,7 +6,12 @@ import MuiAlert from '@material-ui/lab/Alert';
 const SuccessRequestMsg = ({ handleClose, open, successMsg }) => {
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => handleClose()}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => handleClose()}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
         <MuiAlert
           elevation={6}
           variant="filled"

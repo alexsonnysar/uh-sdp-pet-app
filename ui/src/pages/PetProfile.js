@@ -24,13 +24,12 @@ const PetProfile = () => {
   const handleError = () => {};
   useEffect(() => {
     getSinglePet(url)
-      // eslint-disable-next-line no-shadow
-      .then((pet) => {
-        setPet(pet);
+      .then((res) => {
+        setPet(res.data);
       })
       .catch(handleError)
       .finally(() => setLoading(false));
-  }, [url]);
+  }, []);
 
   const classes = useStyles();
 

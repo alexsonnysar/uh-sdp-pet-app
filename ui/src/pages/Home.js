@@ -22,7 +22,7 @@ const Home = () => {
   useEffect(() => {
     getAllPets(url)
       // eslint-disable-next-line no-shadow
-      .then((petList) => setPetList(petList.filter((el) => el.active !== false)))
+      .then((res) => setPetList(res.data))
       .catch(handleError)
       .finally(() => setLoading(false));
   }, []);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
 import axios from 'axios';
+import SuccessRequestMsg from './SuccessRequestMsg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPetForm = () => {
-  const [loading, setLoading] = useState(false);
   const initialState = {
     name: '',
     type: '',
@@ -34,6 +34,8 @@ const RegisterPetForm = () => {
     active: true,
   };
   const [formData, setFormData] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -54,6 +56,13 @@ const RegisterPetForm = () => {
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   const CreatePet = (petData) => {
     axios({
       method: 'post',
@@ -63,7 +72,7 @@ const RegisterPetForm = () => {
     })
       .then(() => {
         setFormData(initialState);
-        // notification for user
+        setOpen(true);
       })
       .catch(handleError)
       .finally(setLoading(false));
@@ -180,6 +189,11 @@ const RegisterPetForm = () => {
         >
           Create
         </Button>
+        <SuccessRequestMsg
+          handleClose={() => handleClose()}
+          open={open}
+          successMsg="Successfully Registered Pet!"
+        />
       </form>
     </div>
   );

@@ -2,9 +2,12 @@ import React from 'react';
 import { render, cleanup, waitForElement } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import EmployeeDashboard from '../../pages/EmployeeDashboard';
-import { getAllPets } from '../../api/petRequests';
+import { getAllPets, getAllRequestedPets } from '../../api/petRequests';
 
-jest.mock('../../api/petRequests', () => ({ getAllPets: jest.fn() }));
+jest.mock('../../api/petRequests', () => ({
+  getAllPets: jest.fn(),
+  getAllRequestedPets: jest.fn(),
+}));
 
 const pets = [
   {
@@ -48,7 +51,8 @@ describe('<EmployeeDashboard />', () => {
   });
 
   test('should render employee dashboard with mock resolved API', async () => {
-    getAllPets.mockImplementation(() => Promise.resolve(pets));
+    getAllPets.mockImplementation(() => Promise.resolve({ data: pets }));
+    getAllRequestedPets.mockImplementation(() => Promise.resolve({ data: pets }));
 
     const { getByTestId } = render(
       <Router>

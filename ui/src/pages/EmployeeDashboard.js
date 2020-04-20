@@ -3,7 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import { Button, CircularProgress, makeStyles } from '@material-ui/core';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import { Link } from 'react-router-dom';
-import { getAllPets } from '../api/petRequests';
+import axios from 'axios';
+import { getAllPets, getAllRequestedPets } from '../api/petRequests';
 import PetList from '../components/PetList';
 
 const useStyles = makeStyles({
@@ -18,18 +19,26 @@ const useStyles = makeStyles({
 });
 
 const EmployeeDashboard = () => {
-  const url = 'http://localhost:8080/pet';
+  const petsUrl = 'http://localhost:8080/pet';
+  const requestedPetsUrl = 'http://localhost:8080/request/';
 
   const [petList, setPetList] = useState([]);
+  const [requestList, setRequestList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
 
   const handleError = () => {};
+
   useEffect(() => {
-    getAllPets(url)
-      // eslint-disable-next-line no-shadow
-      .then((petList) => setPetList(petList.filter((el) => el.active !== false)))
+    axios
+      .all([getAllRequestedPets(requestedPetsUrl), getAllPets(petsUrl)])
+      .then(
+        axios.spread((allRequestedRes, allPetsRes) => {
+          setRequestList(allRequestedRes.data);
+          setPetList(allPetsRes.data);
+        })
+      )
       .catch(handleError)
       .finally(() => setLoading(false));
   }, []);
@@ -70,7 +79,7 @@ const EmployeeDashboard = () => {
               <PetList
                 action={approvePetFromList}
                 heading="Requested for Adoption"
-                petList={petList}
+                petList={requestList}
                 approveButton
                 rejectButton
               />

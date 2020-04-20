@@ -48,7 +48,7 @@ describe('<Home />', () => {
   });
 
   test('should render home with mock resolved API', async () => {
-    getAllPets.mockImplementation(() => Promise.resolve(pets));
+    getAllPets.mockImplementation(() => Promise.resolve({ data: pets }));
 
     const { getByTestId } = render(
       <Router>
