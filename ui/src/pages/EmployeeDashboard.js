@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { getAllPets, getAllRequestedPets } from '../api/petRequests';
 import PetList from '../components/PetList';
+import RequestList from '../components/RequestList';
 
 const useStyles = makeStyles({
   addButton: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
 
 const EmployeeDashboard = () => {
   const petsUrl = 'http://localhost:8080/pet';
-  const requestedPetsUrl = 'http://localhost:8080/request/';
+  const requestedPetsUrl = 'http://localhost:8080/request/request-info';
 
   const [petList, setPetList] = useState([]);
   const [requestList, setRequestList] = useState([]);
@@ -47,8 +48,12 @@ const EmployeeDashboard = () => {
     setPetList(petList.filter((el) => el.id !== id));
   };
 
+  const rejectPetFromList = (id) => {
+    setRequestList(requestList.filter((el) => el.id !== id));
+  };
+
   const approvePetFromList = (id) => {
-    setPetList(petList.filter((el) => el.id !== id));
+    setRequestList(requestList.filter((el) => el.id === id));
   };
 
   return (
@@ -76,12 +81,11 @@ const EmployeeDashboard = () => {
           </Grid>
           <Grid container>
             <Grid item xs={12} sm>
-              <PetList
-                action={approvePetFromList}
+              <RequestList
+                deleteRequest={() => rejectPetFromList()}
+                putRequest={() => approvePetFromList()}
                 heading="Requested for Adoption"
-                petList={requestList}
-                approveButton
-                rejectButton
+                requestList={requestList}
               />
             </Grid>
             <Grid item xs={12} sm>

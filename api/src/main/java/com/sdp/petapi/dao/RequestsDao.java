@@ -37,97 +37,53 @@ public class RequestsDao {
     return req.isPresent() ? req.get() : null;
   }
 
-  public Requests createRequest(Requests req) {
-    if(!isRequestValid(req)) return null;
+  public Requests createRequest(String userid, String petid) {
+    if(!isRequestValid(userid, petid)) return null;
 
-    Pet pet = petDao.getPetById(req.getPetid());
+    Pet pet = petDao.getPetById(petid);
 
-    /* Conrad: right now make it so request makes status "PENDING" (happens in constructor) 
-       and pet.isAdopted = T and pet.isActive = F */
     pet.setActive(false);
     pet.setAdopted(true);
     petDao.putPetByRequest(pet);
-    return repository.insert(new Requests(req.getUserid(), req.getPetid()));
+
+    Requests tempRequest = new Requests(userid, petid);
+    Requests temp = repository.insert(tempRequest);
+    return temp;
   }
 
-  private Boolean isRequestValid(Requests req) {
-    if(!isRequestGood(req)) return false;
-
-    if(!areComponentsValid(req)) return false;
-
-    if (isRequestDuplicate(req)) return false;
-    return true;
+  private Boolean isRequestValid(String userid, String petid) {
+    return (areComponentsValid(userid, petid) && !isRequestDuplicate(userid, petid)) ? true : false;
   }
 
-  private Boolean areComponentsValid(Requests req) {
-    User user = userDao.getUserById(req.getUserid());
-    if (!isUserValid(user)) return false;
-
-    Pet pet = petDao.getPetById(req.getPetid());
-    if (!isPetValid(pet)) return false;
-    return true;
+  private Boolean areComponentsValid(String userid, String petid) {
+    return (isUserValid(userid) && isPetValid(petid)) ? true : false;
   }
 
-  private Boolean isRequestGood(Requests req) {
-    return req != null && req.getId() == null;
-  }
-
-  private Boolean isPetValid(Pet pet) {
-    return pet != null && pet.isActive();
-  }
-
-  private Boolean isUserValid(User user) {
+  private Boolean isUserValid(String userid) {
+    User user = userDao.getUserById(userid);
     return user != null && !user.isEmployee();
   }
 
-  private Boolean isRequestDuplicate(Requests req) {
+  private Boolean isPetValid(String petid) {
+    Pet pet = petDao.getPetById(petid);
+    return pet != null && pet.isActive();
+  }
+
+  private Boolean isRequestDuplicate(String userid, String petid) {
     return getAllRequests()
       .stream()
-      .anyMatch(r -> r.getPetid().equals(req.getPetid()) && r.getUserid().equals(req.getUserid())
+      .anyMatch(r -> r.getPetid().equals(petid) && r.getUserid().equals(userid)
         && !r.getStatus().equals(CANCELED_STRING));
   }
 
-  public Requests putRequests(Requests req) {
-    if(!canAddRequest(req)) return null;
-
-    return (req.getStatus().equals(CANCELED_STRING)) ? cancelRequest(req) : 
-      (req.getStatus().equals(APPROVED_STRING)) ? approveRequest(req) : null;
+  public Requests putRequests(String reqid, String status) {
+    return (status.equals(APPROVED_STRING)) ? approveRequest(reqid) : 
+      (status.equals(CANCELED_STRING)) ? cancelRequest(reqid) : null;
   }
 
-  private Boolean canAddRequest(Requests req) {
-    if(!isValidPutRequest(req)) return false;
-
-    Requests reqdb = getRequestById(req.getId());
-    if (isRequestInDB(req, reqdb)) return false;
-    return true;
-  }
-
-  private Boolean isValidPutRequest(Requests req) {
-    if(req == null) return false;
-
-    User user = userDao.getUserById(req.getUserid());
-    if (user == null) return false;
-
-    Pet pet = petDao.getPetById(req.getPetid());
-    if (pet == null) return false;
-    return true;
-  }
-
-  private Boolean isRequestInDB(Requests req, Requests reqdb) {
-    return reqdb == null || !req.getUserid().equals(reqdb.getUserid())
-      || !req.getPetid().equals(reqdb.getPetid())
-      || !req.getRequestDate().equals(reqdb.getRequestDate());
-  }
-
-  public Requests deleteRequest(String reqid) {
+  public Requests approveRequest(String reqid) {
     Requests req = getRequestById(reqid);
-    if (req == null) return null;
 
-    repository.delete(req);
-    return req;
-  }
-
-  public Requests approveRequest(Requests req) {
     List<Requests> cancelReqs = repository.findAll().stream()
       .filter(r -> !r.getUserid().equals(req.getUserid())
         && r.getPetid().equals(req.getPetid())
@@ -140,28 +96,63 @@ public class RequestsDao {
     }
     
     req.setStatus(APPROVED_STRING);
-    repository.save(req);
-
-    return req;
+    return repository.save(req);
   }
 
-  public Requests cancelRequest(Requests req) {
+  public Requests cancelRequest(String reqid) {
+    Requests req = getRequestById(reqid);
 
-    if (!repository.findAll()
-      .stream()
-      .anyMatch(
-        r -> r.getPetid().equals(req.getPetid())
-        && !r.getUserid().equals(req.getUserid())
-        && !r.getStatus().equals(CANCELED_STRING)
-      )
-    ) {
-      /* To undo Conrad's earlier comment */
+    if (!repository.findAll().stream().anyMatch
+    (r -> r.getPetid().equals(req.getPetid())
+    && !r.getUserid().equals(req.getUserid()) 
+    && !r.getStatus().equals(CANCELED_STRING))) 
+    {
       Pet pet = petDao.getPetById(req.getPetid());
       pet.setActive(true);
       pet.setAdopted(false);
       petDao.putPetByRequest(pet);
     }
+
+    req.setStatus(APPROVED_STRING);
     return repository.save(req);
+  }
+
+  public Requests deleteRequest(String reqid) {
+    Requests req = getRequestById(reqid);
+    if (req == null) return null;
+
+    repository.delete(req);
+    return req;
+  }
+
+  public List<RequestInformation> getAllRequestInfo() {
+    List<Requests> reqList = getAllRequests();
+    List<User> userInfo = userDao.getAllUsers();
+    List<Pet> petInfo = petDao.getAllPets();
+    
+    List<RequestInformation> reqInfoList = reqList.stream().map(r -> new RequestInformation(r.getId(), 
+        r.getUserid(), 
+        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(), 
+        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getEmail(), 
+        r.getPetid(), 
+        petInfo.stream().filter(p -> p.getId().equals(r.getPetid())).findAny().get().getName(), 
+        "N/A", //change after images start getting stored
+        r.getRequestDate(), 
+        r.getStatus())
+      ).collect(Collectors.toList());
+    return reqInfoList;
+  }
+  
+  public RequestInformation getRequestInfoById(String reqid) {
+    Requests req = getRequestById(reqid);
+    if (req == null) return null;
+    User user = userDao.getUserById(req.getUserid());
+    Pet pet = petDao.getPetById(req.getUserid());
+
+    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(), pet.getName(), 
+      (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
+      req.getRequestDate(), req.getStatus()
+    );
   }
 
 }

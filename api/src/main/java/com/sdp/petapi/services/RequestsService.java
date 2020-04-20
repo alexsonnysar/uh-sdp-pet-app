@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.RequestsDao;
-
+import com.sdp.petapi.models.RequestInformation;
 import com.sdp.petapi.models.Requests;
 
 @Service
@@ -23,15 +23,23 @@ public class RequestsService {
     return reqDao.getRequestById(reqid);
   }
 
-  public Requests createRequest(Requests req) {
-    return reqDao.createRequest(req);
+  public Requests createRequest(String userid, String petid) {
+    return reqDao.createRequest(userid, petid);
   }
 
-  public Requests putRequest(Requests req) {
-    return reqDao.putRequests(req);
+  public Requests putRequest(String reqid, String status) {
+    return reqDao.putRequests(reqid, status);
   }
 
   public Requests deleteRequest(String reqid) {
     return reqDao.deleteRequest(reqid);
+  }
+
+  public List<RequestInformation> getAllRequestInfo() {
+    return reqDao.getAllRequestInfo();
+  }
+
+  public RequestInformation getRequestInfoById(String reqid) {
+    return reqDao.getRequestInfoById(reqid);
   }
 }

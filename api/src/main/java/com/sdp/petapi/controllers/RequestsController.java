@@ -3,6 +3,9 @@ package com.sdp.petapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.petapi.models.RequestInformation;
 import com.sdp.petapi.models.Requests;
-
+import com.sdp.petapi.security.UserDetailsImpl;
 import com.sdp.petapi.services.RequestsService;
 
 @RestController
@@ -26,27 +30,92 @@ public class RequestsController {
   transient RequestsService reqService;
 
   @GetMapping
+  @PreAuthorize("hasRole('Employee')")
   public List<Requests> getAllRequests() {
     return reqService.getAllRequests();
   }
 
-  @GetMapping("/{id}")
-  public Requests getRequestById(@PathVariable String id) {
-    return reqService.getRequestById(id);
+  @GetMapping("/{reqid}")
+  @PreAuthorize("hasRole('Employee') or hasRole('User')")
+  public Requests getRequestById(@PathVariable String reqid) {
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return reqService.getRequestById(reqid);
+    }
+    else {
+      Requests req = reqService.getRequestById(reqid);
+      UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return (req != null && req.getUserid().equals(userDetails.getId())) ? req : null;
+    }
   }
 
-  @PostMapping
-  public Requests createRequest(@RequestBody Requests req) {
-    return reqService.createRequest(req);
+  @GetMapping("/request-info")
+  @PreAuthorize("hasRole('Employee')")
+  public List<RequestInformation> getAllRequestInfo() {
+    return reqService.getAllRequestInfo();
   }
 
-  @PutMapping("/{id}")
-  public Requests putRequest(@PathVariable String id, @RequestBody Requests req) {
-    return (id == null || !id.equals(req.getId())) ? null : reqService.putRequest(req);
+  @GetMapping("/request-info/{reqid}")
+  @PreAuthorize("hasRole('Employee') or hasRole('User')")
+  public RequestInformation getRequestInfoById(@PathVariable String reqid) {
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return reqService.getRequestInfoById(reqid);
+    }
+    else {
+      RequestInformation reqInfo = reqService.getRequestInfoById(reqid);
+      UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return (reqInfo != null && reqInfo.getUserId().equals(userDetails.getId())) ? reqInfo : null;
+    }
   }
 
-  @DeleteMapping("/{id}")
-  public Requests deleteRequest(@PathVariable String id) {
-    return reqService.deleteRequest(id);
+  @PostMapping("/adopt/{petid}")
+  @PreAuthorize("hasRole('User')")
+  public Requests createRequest(@PathVariable String petid) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String userid = userDetails.getId();
+    return reqService.createRequest(userid, petid);
+  }
+
+  @PutMapping("/{reqid}")
+  @PreAuthorize("hasRole('Employee') or hasRole('User')")
+  public Requests putRequest(@PathVariable String reqid, @RequestBody String status) {
+
+    Requests dbReq = reqService.getRequestById(reqid);
+
+    if (!reqIdIsValid(dbReq)) {
+      return null;
+    } else {
+      if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+        return (validEmployeeStatus(status)) ? reqService.putRequest(reqid, status) : null;
+      }
+      else {
+        return (userCanUpdateRequest(dbReq, status)) ? reqService.putRequest(reqid, status) : null;
+      }
+    }
+  }
+
+  private Boolean reqIdIsValid(Requests dbReq) {
+    return (dbReq != null && dbReq.getStatus().equals("PENDING"));
+  }
+
+  private Boolean validEmployeeStatus(String status) {
+    return status != null && (status.equals("APPROVED") || status.equals("CANCELED"));
+  }
+
+  private Boolean userCanUpdateRequest(Requests dbReq, String status) {
+    return userMadeRequest(dbReq) && validUserStatus(status);
+  }
+
+  private Boolean userMadeRequest(Requests dbReq) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return (dbReq.getUserid().equals(userDetails.getId()));
+  }
+
+  private Boolean validUserStatus(String status) {
+    return (status.equals("CANCELED"));
+  } 
+
+@DeleteMapping("/{reqid}")
+  public Requests deleteRequest(@PathVariable String reqid) {
+    return reqService.deleteRequest(reqid);
   }
 }
