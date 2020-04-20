@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.petapi.models.RequestInformation;
 import com.sdp.petapi.models.Requests;
 import com.sdp.petapi.security.UserDetailsImpl;
 import com.sdp.petapi.services.RequestsService;
@@ -27,6 +28,8 @@ public class RequestsController {
 
   @Autowired
   transient RequestsService reqService;
+
+  transient RequestInformation reqInfo;
 
   @GetMapping
   @PreAuthorize("hasRole('Employee')")
@@ -44,6 +47,25 @@ public class RequestsController {
       Requests req = reqService.getRequestById(reqid);
       UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return (req != null && req.getUserid().equals(userDetails.getId())) ? req : null;
+    }
+  }
+
+  @GetMapping("/request-info")
+  @PreAuthorize("hasRole('Employee')")
+  public List<RequestInformation> getAllRequestInfo() {
+    return reqInfo.createPacket(reqService.getAllRequests());
+  }
+
+  @GetMapping("/request-info/{reqid}")
+  @PreAuthorize("hasRole('Employee') or hasRole('User')")
+  public RequestInformation getRequestInfoById(@PathVariable String reqid) {
+    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
+      return reqInfo.createPacket(reqService.getRequestById(reqid));
+    }
+    else {
+      Requests req = reqService.getRequestById(reqid);
+      UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return (req != null && req.getUserid().equals(userDetails.getId())) ? reqInfo.createPacket(req) : null;
     }
   }
 

@@ -21,6 +21,7 @@ public @Data class RequestInformation {
 
   private String userId;
   private String userName;
+  private String userEmail;
   private String petId;
   private String petName;
   private String petImages;
@@ -28,16 +29,13 @@ public @Data class RequestInformation {
   private String status;
   
   public RequestInformation createPacket(Requests req) {
-    this.id = req.getId();
-    this.userId = req.getUserid();
-    this.petId = req.getPetid();
-    this.requestDate = req.getRequestDate();
-    this.status = req.getStatus();
-    this.userName = new UserDao().getUserById(req.getUserid()).getName();
+    User user = new UserDao().getUserById(req.getUserid());
     Pet pet = new PetDao().getPetById(req.getUserid());
-    this.petName = pet.getName();
-    if (pet.getImageNames() != null && pet.getImageNames().length > 0) this.petImages = pet.getImageNames()[0];
-    return this;
+
+    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(), pet.getName(), 
+      (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
+      req.getRequestDate(), req.getStatus()
+    );
   }
 
   public List<RequestInformation> createPacket(List<Requests> reqList) {
@@ -46,7 +44,8 @@ public @Data class RequestInformation {
     
     return reqList.stream().map(r -> new RequestInformation(r.getId(), 
         r.getUserid(), 
-        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(),
+        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(), 
+        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getEmail(), 
         r.getPetid(), 
         petInfo.stream().filter(p -> p.getId().equals(r.getPetid())).findAny().get().getName(), 
         "N/A", //change after images start getting stored
