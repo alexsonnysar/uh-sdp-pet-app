@@ -61,9 +61,9 @@ public class RequestsController {
       return reqService.getRequestInfoById(reqid);
     }
     else {
-      Requests req = reqService.getRequestById(reqid);
+      RequestInformation reqInfo = reqService.getRequestInfoById(reqid);
       UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      return (req != null && req.getUserid().equals(userDetails.getId())) ? reqService.getRequestInfoById(reqid) : null;
+      return (reqInfo != null && reqInfo.getUserId().equals(userDetails.getId())) ? reqInfo : null;
     }
   }
 

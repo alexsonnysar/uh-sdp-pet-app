@@ -124,28 +124,13 @@ public class RequestsDao {
     repository.delete(req);
     return req;
   }
-  
-  public RequestInformation getRequestInfoById(String reqid) {
-    Requests req = getRequestById(reqid);
-    System.out.println("before User Dao");
-    User user = userDao.getUserById(req.getUserid());
-    System.out.println("after User Dao");
-    Pet pet = petDao.getPetById(req.getUserid());
-
-    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(), pet.getName(), 
-      (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
-      req.getRequestDate(), req.getStatus()
-    );
-  }
 
   public List<RequestInformation> getAllRequestInfo() {
     List<Requests> reqList = getAllRequests();
-    System.out.println("before User Dao");
     List<User> userInfo = userDao.getAllUsers();
-    System.out.println("after User Dao");
-    List<Pet> petInfo = new PetDao().getAllPets();
+    List<Pet> petInfo = petDao.getAllPets();
     
-    return reqList.stream().map(r -> new RequestInformation(r.getId(), 
+    List<RequestInformation> reqInfoList = reqList.stream().map(r -> new RequestInformation(r.getId(), 
         r.getUserid(), 
         userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(), 
         userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getEmail(), 
@@ -155,6 +140,19 @@ public class RequestsDao {
         r.getRequestDate(), 
         r.getStatus())
       ).collect(Collectors.toList());
+    return reqInfoList;
+  }
+  
+  public RequestInformation getRequestInfoById(String reqid) {
+    Requests req = getRequestById(reqid);
+    if (req == null) return null;
+    User user = userDao.getUserById(req.getUserid());
+    Pet pet = petDao.getPetById(req.getUserid());
+
+    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(), pet.getName(), 
+      (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
+      req.getRequestDate(), req.getStatus()
+    );
   }
 
 }

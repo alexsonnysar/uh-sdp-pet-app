@@ -5,11 +5,13 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.services.RequestsService;
 import com.sdp.petapi.controllers.RequestsController;
 import com.sdp.petapi.models.Pet;
+import com.sdp.petapi.models.RequestInformation;
 import com.sdp.petapi.models.Requests;
 import com.sdp.petapi.models.User;
 import com.sdp.petapi.repositories.PetRepository;
@@ -22,10 +24,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
 
 @SpringBootTest
@@ -33,11 +33,14 @@ public class RequestsControllerTest {
 
   private static final String ID001 = "001";
   private static final String ID002 = "002";
-  private static final String ID003 = "003";
+  private static final String DATEFORMAT = "dd-MMM-yyyy HH:mm:ss";
+  private static final String FEBDATE = "26-FEB-2020 18:16:17";
 
   transient Requests req, dbReq;
   transient User employee, webUser, webUser2;
   transient Pet pet, pet2;
+  transient RequestInformation reqInfo;
+  transient List<RequestInformation> reqInfoList;
 
   @Mock
   transient RequestsService reqService;
@@ -51,7 +54,6 @@ public class RequestsControllerTest {
   @Mock
   transient SecurityContext securityContext;
 
-  // makes a reqController whose reqService is the mock above
   @InjectMocks
   transient RequestsController reqController;
 
@@ -92,11 +94,6 @@ public class RequestsControllerTest {
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_user_by_id_returns_request() {
-    // userDeets = new UserDetailsImpl(ID002, "1234@mail.com", "pass", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
-    // when(securityContext.getAuthentication()).thenReturn(authentication);
-    // SecurityContextHolder.setContext(securityContext);
-    // when(authentication.getPrincipal()).thenReturn(userDeets);
-    
     when(reqService.getRequestById(ID001)).thenReturn(req);
     Requests actual_request = reqController.getRequestById(ID001);
     assertEquals(req, actual_request);
@@ -105,11 +102,6 @@ public class RequestsControllerTest {
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_invalid_request_by_id_returns_null() {
-    // userDeets = new UserDetailsImpl(ID002, "1234@mail.com", "pass", Collections.singletonList(new SimpleGrantedAuthority("ROLE_User")));
-    // when(securityContext.getAuthentication()).thenReturn(authentication);
-    // SecurityContextHolder.setContext(securityContext);
-    // when(authentication.getPrincipal()).thenReturn(userDeets);
-    
     when(reqService.getRequestById(ID001)).thenReturn(null);
     Requests actual_request = reqController.getRequestById(ID001);
     assertNull(actual_request);
@@ -118,11 +110,54 @@ public class RequestsControllerTest {
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_different_user_by_id_returns_null() {
-
     req.setUserid("BAD_ID");
     when(reqService.getRequestById(ID001)).thenReturn(req);
     Requests actual_request = reqController.getRequestById(ID001);
     assertNull(actual_request);
+  }
+
+  @Test
+  public void get_all_request_info() throws Exception {
+    reqInfoList = Collections.singletonList(new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"));
+    when(reqService.getAllRequestInfo()).thenReturn(reqInfoList);
+    List<RequestInformation> list = reqController.getAllRequestInfo();
+    assertEquals(reqInfoList, list);
+  }
+  
+  @Test
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void employee_get_request_info_by_id() throws Exception {
+    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
+    when(reqService.getRequestInfoById(ID001)).thenReturn(reqInfo);
+    RequestInformation actual_info = reqController.getRequestInfoById(ID001);
+    assertEquals(reqInfo, actual_info);
+  }
+  
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_get_request_info_with_user_by_id_returns_request() throws Exception {
+    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
+    when(reqService.getRequestInfoById(ID001)).thenReturn(reqInfo);
+    RequestInformation actual_info = reqController.getRequestInfoById(ID001);
+    assertEquals(reqInfo, actual_info);
+  }
+  
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_get_invalid_request_info_by_id_returns_null() throws Exception {
+    when(reqService.getRequestInfoById(ID001)).thenReturn(null);
+    RequestInformation actual_info = reqController.getRequestInfoById(ID001);
+    assertEquals(reqInfo, actual_info);
+  }
+  
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_get_request_info_with_different_user_by_id_returns_null() throws Exception {
+    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
+    req.setUserid("BAD_ID");
+    when(reqService.getRequestInfoById(ID001)).thenReturn(reqInfo);
+    RequestInformation actual_info = reqController.getRequestInfoById(ID001);
+    assertEquals(reqInfo, actual_info);
   }
 
   @Test
@@ -132,8 +167,6 @@ public class RequestsControllerTest {
     Requests returnRequest = reqController.createRequest(ID001);
     assertEquals(req, returnRequest);
   }
-
-
 
   @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
@@ -253,29 +286,7 @@ public class RequestsControllerTest {
     Requests returnRequest = reqController.putRequest(ID001, "CANCELED");
     assertEquals(req, returnRequest);
   }
-
-
-
-  // @Test
-  // @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
-  // public void user_put_request_request_doesnt_belong() {
-  //   dbReq.setStatus("PENDING");
-  //   dbReq.setUserid(ID002);
-  //   req.setStatus("CANCELED");
-  //   Req
-  //   when(reqService.getRequestById(ID001)).thenReturn(null);
-  //   when(reqService.putRequest(ID001, "CANCELED")).thenReturn(req);
-
-  //   Requests returnRequest = reqController.putRequest(ID001, "CANCELED");
-  //   assertEquals(null, returnRequest);
-  // }
-
-
-
-
-
-
-
+  
   @Test
   public void delete_request() {
     when(reqService.deleteRequest(ID001)).thenReturn(req);
