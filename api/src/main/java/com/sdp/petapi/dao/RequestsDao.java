@@ -124,5 +124,37 @@ public class RequestsDao {
     repository.delete(req);
     return req;
   }
+  
+  public RequestInformation getRequestInfoById(String reqid) {
+    Requests req = getRequestById(reqid);
+    System.out.println("before User Dao");
+    User user = userDao.getUserById(req.getUserid());
+    System.out.println("after User Dao");
+    Pet pet = petDao.getPetById(req.getUserid());
+
+    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(), pet.getName(), 
+      (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
+      req.getRequestDate(), req.getStatus()
+    );
+  }
+
+  public List<RequestInformation> getAllRequestInfo() {
+    List<Requests> reqList = getAllRequests();
+    System.out.println("before User Dao");
+    List<User> userInfo = userDao.getAllUsers();
+    System.out.println("after User Dao");
+    List<Pet> petInfo = new PetDao().getAllPets();
+    
+    return reqList.stream().map(r -> new RequestInformation(r.getId(), 
+        r.getUserid(), 
+        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(), 
+        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getEmail(), 
+        r.getPetid(), 
+        petInfo.stream().filter(p -> p.getId().equals(r.getPetid())).findAny().get().getName(), 
+        "N/A", //change after images start getting stored
+        r.getRequestDate(), 
+        r.getStatus())
+      ).collect(Collectors.toList());
+  }
 
 }

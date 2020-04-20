@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdp.petapi.dao.RequestsDao;
-
+import com.sdp.petapi.models.RequestInformation;
 import com.sdp.petapi.models.Requests;
 
 @Service
@@ -33,5 +33,13 @@ public class RequestsService {
 
   public Requests deleteRequest(String reqid) {
     return reqDao.deleteRequest(reqid);
+  }
+
+  public List<RequestInformation> getAllRequestInfo() {
+    return reqDao.getAllRequestInfo();
+  }
+
+  public RequestInformation getRequestInfoById(String reqid) {
+    return reqDao.getRequestInfoById(reqid);
   }
 }

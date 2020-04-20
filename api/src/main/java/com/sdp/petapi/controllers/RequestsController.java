@@ -29,8 +29,6 @@ public class RequestsController {
   @Autowired
   transient RequestsService reqService;
 
-  transient RequestInformation reqInfo;
-
   @GetMapping
   @PreAuthorize("hasRole('Employee')")
   public List<Requests> getAllRequests() {
@@ -53,19 +51,19 @@ public class RequestsController {
   @GetMapping("/request-info")
   @PreAuthorize("hasRole('Employee')")
   public List<RequestInformation> getAllRequestInfo() {
-    return reqInfo.createPacket(reqService.getAllRequests());
+    return reqService.getAllRequestInfo();
   }
 
   @GetMapping("/request-info/{reqid}")
   @PreAuthorize("hasRole('Employee') or hasRole('User')")
   public RequestInformation getRequestInfoById(@PathVariable String reqid) {
     if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
-      return reqInfo.createPacket(reqService.getRequestById(reqid));
+      return reqService.getRequestInfoById(reqid);
     }
     else {
       Requests req = reqService.getRequestById(reqid);
       UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      return (req != null && req.getUserid().equals(userDetails.getId())) ? reqInfo.createPacket(req) : null;
+      return (req != null && req.getUserid().equals(userDetails.getId())) ? reqService.getRequestInfoById(reqid) : null;
     }
   }
 
