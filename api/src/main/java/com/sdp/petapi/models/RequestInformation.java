@@ -20,7 +20,7 @@ public @Data class RequestInformation {
   private String userEmail;
   private String petId;
   private String petName;
-  private String petImages;
+  private String petImage;
   private Date requestDate;
   private String status;
 }

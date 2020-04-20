@@ -158,7 +158,7 @@ public class RequestsDaoTest {
     Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
     assertEquals(null, actual_req);
   }
-
+  
   @Test
   public void create_request_pet_is_not_active() {
     webUser.setEmployee(false);
@@ -173,7 +173,6 @@ public class RequestsDaoTest {
   public void create_request_is_duplicate() {
     webUser.setEmployee(false);
     when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
-
     when(mockPetDao.getPetById(ID002)).thenReturn(pet2);
 
     req.setPetid("002");
@@ -307,18 +306,18 @@ public class RequestsDaoTest {
     assertEquals(orig_req_list, updated_req_list);
   }
 
-  // @Test
-  // public void get_all_request_info() throws Exception {
-  //   List<RequestInformation> list_info = Arrays.asList(new RequestInformation[] {
-  //     new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"),
-  //     new RequestInformation(ID002, ID003, "Anthony Stark", "stark@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING")
-  //   }).stream().collect(Collectors.toList());
+  @Test
+  public void get_all_request_info() throws Exception {
+    List<RequestInformation> list_info = Arrays.asList(new RequestInformation[] {
+      new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"),
+      new RequestInformation(ID002, ID003, "Anthony Stark", "stark@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING")
+    }).stream().collect(Collectors.toList());
     
-  //   List<RequestInformation> actual_info = reqDao.getAllRequestInfo();
-  //   System.out.println(list_info.getClass());
-  //   System.out.println(actual_info.getClass());
-  //   assertEquals(list_info, actual_info);
-  // }
+    List<RequestInformation> actual_info = reqDao.getAllRequestInfo();
+    System.out.println(list_info.getClass());
+    System.out.println(actual_info.getClass());
+    assertEquals(list_info.toString(), actual_info.toString());
+  }
 
   @Test
   public void get_request_info_by_bad_id_returns_null() throws Exception {
