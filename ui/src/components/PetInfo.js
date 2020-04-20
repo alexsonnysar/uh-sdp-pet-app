@@ -6,6 +6,7 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
 import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
+import { favoritePet } from '../api/petRequests';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -48,9 +49,13 @@ const PetInfo = ({ pet }) => {
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
+  const userData = {
+    id: window.localStorage.getItem('userId')
+  };
+
   const [loading, setLoading] = useState(false);
   const [requested, setRequest] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [successMsgOpen, setSuccessMsgOpen] = useState(false);
 
   const PostCreateRequest = (requestData) => {
     setLoading(true);
@@ -62,7 +67,7 @@ const PetInfo = ({ pet }) => {
     })
       .then(() => {
         setRequest(true);
-        setOpen(true);
+        setSuccessMsgOpen(true);
       })
       .finally(() => {
         setLoading(false);
@@ -77,7 +82,26 @@ const PetInfo = ({ pet }) => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    setSuccessMsgOpen(false);
+  };
+
+  // FAVORITING
+  const[favorited, setFavorited] = useState(false);
+
+  const PostFavoritePet = (favData) => {
+    const postUrl = `http://localhost:8080/user/fav/${id}`;
+    setLoading(true);
+    favoritePet(postUrl, favData)
+      .then(() => {
+        setFavorited(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleFavorite = () => {
+    PostFavoritePet(userData);
   };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
@@ -129,12 +153,14 @@ const PetInfo = ({ pet }) => {
                   color="secondary"
                   variant="contained"
                   startIcon={<FavoriteRoundedIcon />}
+                  onClick={() => handleFavorite()}
+                  disabled={loading}
                 >
                   Favorite
                 </Button>
                 <SuccessRequestMsg
                   handleClose={() => handleClose()}
-                  open={open}
+                  open={successMsgOpen}
                   successMsg={`Successfully Requested ${name}!`}
                 />
               </div>

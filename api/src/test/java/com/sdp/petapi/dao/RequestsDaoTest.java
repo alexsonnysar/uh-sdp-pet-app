@@ -158,7 +158,7 @@ public class RequestsDaoTest {
     Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
     assertEquals(null, actual_req);
   }
-
+  
   @Test
   public void create_request_pet_is_not_active() {
     webUser.setEmployee(false);
@@ -173,7 +173,6 @@ public class RequestsDaoTest {
   public void create_request_is_duplicate() {
     webUser.setEmployee(false);
     when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
-
     when(mockPetDao.getPetById(ID002)).thenReturn(pet2);
 
     req.setPetid("002");

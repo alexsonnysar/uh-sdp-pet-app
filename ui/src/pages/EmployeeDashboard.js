@@ -3,8 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import { Button, CircularProgress, makeStyles } from '@material-ui/core';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import { Link } from 'react-router-dom';
-import { getAllPets } from '../api/petRequests';
+import axios from 'axios';
+import { getAllPets, getAllRequestedPets } from '../api/petRequests';
 import PetList from '../components/PetList';
+import RequestList from '../components/RequestList';
 
 const useStyles = makeStyles({
   addButton: {
@@ -18,18 +20,26 @@ const useStyles = makeStyles({
 });
 
 const EmployeeDashboard = () => {
-  const url = 'http://localhost:8080/pet';
+  const petsUrl = 'http://localhost:8080/pet';
+  const requestedPetsUrl = 'http://localhost:8080/request/request-info';
 
   const [petList, setPetList] = useState([]);
+  const [requestList, setRequestList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
 
   const handleError = () => {};
+
   useEffect(() => {
-    getAllPets(url)
-      // eslint-disable-next-line no-shadow
-      .then((petList) => setPetList(petList.filter((el) => el.active !== false)))
+    axios
+      .all([getAllRequestedPets(requestedPetsUrl), getAllPets(petsUrl)])
+      .then(
+        axios.spread((allRequestedRes, allPetsRes) => {
+          setRequestList(allRequestedRes.data);
+          setPetList(allPetsRes.data);
+        })
+      )
       .catch(handleError)
       .finally(() => setLoading(false));
   }, []);
@@ -38,8 +48,12 @@ const EmployeeDashboard = () => {
     setPetList(petList.filter((el) => el.id !== id));
   };
 
+  const rejectPetFromList = (id) => {
+    setRequestList(requestList.filter((el) => el.id !== id));
+  };
+
   const approvePetFromList = (id) => {
-    setPetList(petList.filter((el) => el.id !== id));
+    setRequestList(requestList.filter((el) => el.id === id));
   };
 
   return (
@@ -67,12 +81,11 @@ const EmployeeDashboard = () => {
           </Grid>
           <Grid container>
             <Grid item xs={12} sm>
-              <PetList
-                action={approvePetFromList}
+              <RequestList
+                deleteRequest={() => rejectPetFromList()}
+                putRequest={() => approvePetFromList()}
                 heading="Requested for Adoption"
-                petList={petList}
-                approveButton
-                rejectButton
+                requestList={requestList}
               />
             </Grid>
             <Grid item xs={12} sm>
