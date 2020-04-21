@@ -13,14 +13,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
 }));
 
-const RequestListItem = ({ requests, requestDenied, requestApproved }) => {
+const RequestListItem = ({ requests, requestUpdated }) => {
   const { id, petId, userEmail, petName, status } = requests;
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
@@ -32,72 +31,27 @@ const RequestListItem = ({ requests, requestDenied, requestApproved }) => {
 
   const handleError = () => {};
 
-  const CallCancelRequest = (requestData, petData) => {
+  const CallPutRequest = (requestData) => {
     axios({
       method: 'put',
       url: `http://localhost:8080/request/${id}`,
       headers: headersAxios,
       data: requestData,
-    })
-      .then((response) => response.data)
-      .catch(handleError);
-
-    axios({
-      method: 'put',
-      url: `http://localhost:8080/pet/${petId}`,
-      headers: headersAxios,
-      data: petData,
-    })
-      .then((response) => response.data)
-      .catch(handleError);
-  };
-
-  const CallApproveRequest = (requestData, petData) => {
-    axios({
-      method: 'put',
-      url: `http://localhost:8080/request/${id}`,
-      headers: headersAxios,
-      data: requestData,
-    })
-      .then((response) => response.data)
-      .catch(handleError);
-
-    axios({
-      method: 'put',
-      url: `http://localhost:8080/pet/${petId}`,
-      headers: headersAxios,
-      data: petData,
     })
       .then((response) => response.data)
       .catch(handleError);
   };
 
   const handleDenied = () => {
-    const petData = {
-      // ...pet,
-      active: true,
-    };
-    const requestData = {
-      ...requests,
-      status: 'CANCELLED',
-    };
     setLoading(true);
-    requestDenied(id);
-    CallCancelRequest(requestData, petData);
+    requestUpdated(id);
+    CallPutRequest('CANCELED');
   };
 
   const handleApproved = () => {
-    const petData = {
-      // ...pet,
-      adopted: true,
-    };
-    const requestData = {
-      ...requests,
-      status: 'APPROVED',
-    };
     setLoading(true);
-    requestApproved(id);
-    CallApproveRequest(requestData, petData);
+    requestUpdated(id);
+    CallPutRequest('APPROVED');
   };
 
   return (
@@ -105,10 +59,7 @@ const RequestListItem = ({ requests, requestDenied, requestApproved }) => {
       <ListItemAvatar>
         <Avatar alt="Pet" src="/images/garfield.jpg" />
       </ListItemAvatar>
-      <ListItemText
-        primary={petName}
-        secondary={`Requested By: ${userEmail} | Status: ${status}`}
-      />
+      <ListItemText primary={petName} secondary={`Requested By: ${userEmail}`} />
       <ListItemSecondaryAction>
         <Button
           onClick={() => handleDenied()}
@@ -119,7 +70,7 @@ const RequestListItem = ({ requests, requestDenied, requestApproved }) => {
           size="small"
           startIcon={<CloseIcon />}
         >
-          Denied
+          Deny
         </Button>
         <Button
           onClick={() => handleApproved()}
@@ -130,7 +81,7 @@ const RequestListItem = ({ requests, requestDenied, requestApproved }) => {
           size="small"
           startIcon={<CheckIcon />}
         >
-          Approved
+          Approve
         </Button>
       </ListItemSecondaryAction>
     </ListItemLink>
@@ -147,13 +98,11 @@ RequestListItem.propTypes = {
     petName: PropTypes.string,
     status: PropTypes.string,
   }).isRequired,
-  requestDenied: PropTypes.func,
-  requestApproved: PropTypes.func,
+  requestUpdated: PropTypes.func,
 };
 
 RequestListItem.defaultProps = {
-  requestDenied: () => null,
-  requestApproved: () => null,
+  requestUpdated: () => null,
 };
 
 export default RequestListItem;

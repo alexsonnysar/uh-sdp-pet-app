@@ -48,12 +48,8 @@ const EmployeeDashboard = () => {
     setPetList(petList.filter((el) => el.id !== id));
   };
 
-  const rejectPetFromList = (id) => {
+  const updateRequestFromList = (id) => {
     setRequestList(requestList.filter((el) => el.id !== id));
-  };
-
-  const approvePetFromList = (id) => {
-    setRequestList(requestList.filter((el) => el.id === id));
   };
 
   return (
@@ -82,8 +78,7 @@ const EmployeeDashboard = () => {
           <Grid container>
             <Grid item xs={12} sm>
               <RequestList
-                deleteRequest={() => rejectPetFromList()}
-                putRequest={() => approvePetFromList()}
+                putRequest={updateRequestFromList}
                 heading="Requested for Adoption"
                 requestList={requestList}
               />

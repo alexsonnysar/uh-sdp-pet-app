@@ -117,11 +117,38 @@ public class RequestsControllerTest {
   }
 
   @Test
-  public void get_all_request_info() throws Exception {
+  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void employee_get_all_request_info() throws Exception {
     reqInfoList = Collections.singletonList(new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"));
     when(reqService.getAllRequestInfo()).thenReturn(reqInfoList);
     List<RequestInformation> list = reqController.getAllRequestInfo();
     assertEquals(reqInfoList, list);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_get_all_request_info_on_null_list_returns_null() throws Exception {
+    when(reqService.getAllRequestInfo()).thenReturn(null);
+    List<RequestInformation> list = reqController.getAllRequestInfo();
+    assertNull(list);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_with_requests_get_all_request_info_returns_list_with_user_requests() throws Exception {
+    reqInfoList = Collections.singletonList(new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"));
+    when(reqService.getAllRequestInfo()).thenReturn(reqInfoList);
+    List<RequestInformation> list = reqController.getAllRequestInfo();
+    assertEquals(reqInfoList, list);
+  }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_with_no_requests_get_all_request_info_returns_empty_list() throws Exception {
+    reqInfoList = Collections.singletonList(new RequestInformation(ID001, ID001, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"));
+    when(reqService.getAllRequestInfo()).thenReturn(reqInfoList);
+    List<RequestInformation> list = reqController.getAllRequestInfo();
+    assertTrue(list.isEmpty());
   }
   
   @Test

@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 const PetInfo = ({ pet }) => {
   const { id, name, age, size, type, sex, description } = pet;
+
   const reqData = {
-    userid: window.localStorage.getItem('userId'),
     petid: id,
   };
 
@@ -61,7 +61,7 @@ const PetInfo = ({ pet }) => {
     setLoading(true);
     axios({
       method: 'post',
-      url: 'http://localhost:8080/request',
+      url: `http://localhost:8080/request/adopt/${id}`,
       headers: reqHeaders,
       data: requestData,
     })

@@ -21,24 +21,25 @@ public class RequestsDao {
   @Autowired
   transient PetDao petDao;
 
-  
   private static final String CANCELED_STRING = "CANCELED";
   private static final String APPROVED_STRING = "APPROVED";
-  private static final String PENDING_STRING  = "PENDING";
+  private static final String PENDING_STRING = "PENDING";
 
   public List<Requests> getAllRequests() {
     return repository.findAll();
   }
 
-  public Requests getRequestById(String reqid){
-    if (reqid == null) return null;
+  public Requests getRequestById(String reqid) {
+    if (reqid == null)
+      return null;
     Optional<Requests> req = repository.findById(reqid);
-    
+
     return req.isPresent() ? req.get() : null;
   }
 
   public Requests createRequest(String userid, String petid) {
-    if(!isRequestValid(userid, petid)) return null;
+    if (!isRequestValid(userid, petid))
+      return null;
 
     Pet pet = petDao.getPetById(petid);
 
@@ -70,31 +71,26 @@ public class RequestsDao {
   }
 
   private Boolean isRequestDuplicate(String userid, String petid) {
-    return getAllRequests()
-      .stream()
-      .anyMatch(r -> r.getPetid().equals(petid) && r.getUserid().equals(userid)
-        && !r.getStatus().equals(CANCELED_STRING));
+    return getAllRequests().stream().anyMatch(
+        r -> r.getPetid().equals(petid) && r.getUserid().equals(userid) && !r.getStatus().equals(CANCELED_STRING));
   }
 
   public Requests putRequests(String reqid, String status) {
-    return (status.equals(APPROVED_STRING)) ? approveRequest(reqid) : 
-      (status.equals(CANCELED_STRING)) ? cancelRequest(reqid) : null;
+    return (status.equals(APPROVED_STRING)) ? approveRequest(reqid)
+        : (status.equals(CANCELED_STRING)) ? cancelRequest(reqid) : null;
   }
 
   public Requests approveRequest(String reqid) {
     Requests req = getRequestById(reqid);
 
-    List<Requests> cancelReqs = repository.findAll().stream()
-      .filter(r -> !r.getUserid().equals(req.getUserid())
-        && r.getPetid().equals(req.getPetid())
-        && r.getStatus().equals(PENDING_STRING))
-      .collect(Collectors.toList());
-    
+    List<Requests> cancelReqs = repository.findAll().stream().filter(r -> !r.getUserid().equals(req.getUserid())
+        && r.getPetid().equals(req.getPetid()) && r.getStatus().equals(PENDING_STRING)).collect(Collectors.toList());
+
     if (!cancelReqs.isEmpty()) {
       cancelReqs.forEach(r -> r.setStatus(CANCELED_STRING));
       repository.saveAll(cancelReqs);
     }
-    
+
     req.setStatus(APPROVED_STRING);
     return repository.save(req);
   }
@@ -102,24 +98,22 @@ public class RequestsDao {
   public Requests cancelRequest(String reqid) {
     Requests req = getRequestById(reqid);
 
-    if (!repository.findAll().stream().anyMatch
-    (r -> r.getPetid().equals(req.getPetid())
-    && !r.getUserid().equals(req.getUserid()) 
-    && !r.getStatus().equals(CANCELED_STRING))) 
-    {
+    if (!repository.findAll().stream().anyMatch(r -> r.getPetid().equals(req.getPetid())
+        && !r.getUserid().equals(req.getUserid()) && !r.getStatus().equals(CANCELED_STRING))) {
       Pet pet = petDao.getPetById(req.getPetid());
       pet.setActive(true);
       pet.setAdopted(false);
       petDao.putPetByRequest(pet);
     }
 
-    req.setStatus(APPROVED_STRING);
+    req.setStatus(CANCELED_STRING);
     return repository.save(req);
   }
 
   public Requests deleteRequest(String reqid) {
     Requests req = getRequestById(reqid);
-    if (req == null) return null;
+    if (req == null)
+      return null;
 
     repository.delete(req);
     return req;
@@ -129,30 +123,32 @@ public class RequestsDao {
     List<Requests> reqList = getAllRequests();
     List<User> userInfo = userDao.getAllUsers();
     List<Pet> petInfo = petDao.getAllPets();
-    
-    List<RequestInformation> reqInfoList = reqList.stream().map(r -> new RequestInformation(r.getId(), 
-        r.getUserid(), 
-        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(), 
-        userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getEmail(), 
-        r.getPetid(), 
-        petInfo.stream().filter(p -> p.getId().equals(r.getPetid())).findAny().get().getName(), 
-        "N/A", //change after images start getting stored
-        r.getRequestDate(), 
-        r.getStatus())
-      ).collect(Collectors.toList());
+
+    List<RequestInformation> reqInfoList = reqList.stream()
+        .map(r -> new RequestInformation(r.getId(), r.getUserid(),
+            userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getName(),
+            userInfo.stream().filter(u -> u.getId().equals(r.getUserid())).findAny().get().getEmail(), r.getPetid(),
+            petInfo.stream().filter(p -> p.getId().equals(r.getPetid())).findAny().get().getName(), "N/A", // change
+                                                                                                           // after
+                                                                                                           // images
+                                                                                                           // start
+                                                                                                           // getting
+                                                                                                           // stored
+            r.getRequestDate(), r.getStatus()))
+        .collect(Collectors.toList());
     return reqInfoList;
   }
-  
+
   public RequestInformation getRequestInfoById(String reqid) {
     Requests req = getRequestById(reqid);
-    if (req == null) return null;
+    if (req == null)
+      return null;
     User user = userDao.getUserById(req.getUserid());
     Pet pet = petDao.getPetById(req.getUserid());
 
-    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(), pet.getName(), 
-      (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
-      req.getRequestDate(), req.getStatus()
-    );
+    return new RequestInformation(req.getId(), req.getUserid(), user.getName(), user.getEmail(), req.getPetid(),
+        pet.getName(), (pet.getImageNames() != null && pet.getImageNames().length > 0) ? pet.getImageNames()[0] : "N/A",
+        req.getRequestDate(), req.getStatus());
   }
 
 }

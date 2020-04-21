@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RequestList = ({ heading, requestList, deleteRequest, putRequest }) => {
+const RequestList = ({ heading, requestList, putRequest }) => {
   const classes = useStyles();
   return (
     <div className={classes.root} data-testid="requestlist">
@@ -31,14 +31,15 @@ const RequestList = ({ heading, requestList, deleteRequest, putRequest }) => {
       </Typography>
       <Paper className={classes.paper}>
         <List>
-          {requestList.map((requests) => (
-            <RequestListItem
-              requestDenied={() => deleteRequest()}
-              requestApproved={() => putRequest()}
-              requests={requests}
-              key={requests.id}
-            />
-          ))}
+          {requestList
+            .filter((r) => r.status === 'PENDING')
+            .map((requests) => (
+              <RequestListItem
+                requestUpdated={putRequest}
+                requests={requests}
+                key={requests.id}
+              />
+            ))}
         </List>
       </Paper>
     </div>
@@ -48,8 +49,11 @@ const RequestList = ({ heading, requestList, deleteRequest, putRequest }) => {
 RequestList.propTypes = {
   heading: PropTypes.string.isRequired,
   requestList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteRequest: PropTypes.func.isRequired,
-  putRequest: PropTypes.func.isRequired,
+  putRequest: PropTypes.func,
+};
+
+RequestList.defaultProps = {
+  putRequest: () => null,
 };
 
 export default RequestList;
