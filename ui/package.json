@@ -29,7 +29,8 @@
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
       "!**/serviceWorker.js",
-      "!**/index.js"
+      "!**/index.js",
+      "!**/mocks/**"
     ]
   },
   "scripts": {
@@ -37,7 +38,7 @@
     "server": "cd ../api && gradle bootRun",
     "dev": "concurrently \"yarn server\" \"yarn start\"",
     "lint": "eslint .",
-    "plato": "plato -r -d report src",
+    "plato": "plato -x 'serviceWorker.js|setupTests.js' -r -d report src",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:jenkins": "react-scripts test --coverage --watchAll=false",

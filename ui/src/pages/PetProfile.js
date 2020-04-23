@@ -29,7 +29,7 @@ const PetProfile = () => {
       })
       .catch(handleError)
       .finally(() => setLoading(false));
-  }, []);
+  }, [url]);
 
   const classes = useStyles();
 

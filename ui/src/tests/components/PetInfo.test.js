@@ -3,15 +3,7 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import PetInfo from '../../components/PetInfo';
-
-const pet = {
-  name: 'Roger',
-  type: 'Dog',
-  age: 'Young',
-  sex: 'M',
-  description: 'Test description',
-  size: 'Small',
-};
+import { pet } from '../mocks/pets';
 
 describe('<PetInfo />', () => {
   test('should render PetInfo Component', () => {

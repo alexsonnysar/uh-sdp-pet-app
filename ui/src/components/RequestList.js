@@ -49,11 +49,7 @@ const RequestList = ({ heading, requestList, putRequest }) => {
 RequestList.propTypes = {
   heading: PropTypes.string.isRequired,
   requestList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  putRequest: PropTypes.func,
-};
-
-RequestList.defaultProps = {
-  putRequest: () => null,
+  putRequest: PropTypes.func.isRequired,
 };
 
 export default RequestList;

@@ -1,36 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import PetList from '../../components/PetList';
+import { petList } from '../mocks/pets';
 
-const petList = [
-  {
-    id: '1',
-    name: 'Garfield',
-    type: 'Cat',
-  },
-  {
-    id: '2',
-    name: 'Shawn',
-    type: 'Bird',
-  },
-  {
-    id: '3',
-    name: 'Alex',
-    type: 'Dog',
-  },
-];
 describe('<PetList /> Tests', () => {
   let shallowWrapper;
 
   beforeEach(() => {
     shallowWrapper = shallow(
-      <PetList
-        heading="Pet List"
-        petList={petList}
-        action={() => {}}
-        deleteButton
-        updateButton
-      />
+      <PetList heading="Pet List" petList={petList} deletePet={() => {}} />
     );
   });
 

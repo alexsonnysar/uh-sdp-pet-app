@@ -14,18 +14,9 @@ export const getSinglePet = (url) => {
 };
 
 export const favoritePet = (favUrl, favData) => {
-  return axios({
-    method: 'POST',
-    url: favUrl,
-    headers: reqHeaders,
-    data: favData,
-  });
+  return axios.post(favUrl, favData, { headers: reqHeaders });
 };
 
 export const getAllRequestedPets = (requestedPetsUrl) => {
-  return axios({
-    method: 'GET',
-    url: requestedPetsUrl,
-    headers: reqHeaders,
-  });
+  return axios.get(requestedPetsUrl, { headers: reqHeaders });
 };

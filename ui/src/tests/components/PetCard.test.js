@@ -3,12 +3,8 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import PetCard from '../../components/PetCard';
+import { pet } from '../mocks/pets';
 
-const pet = {
-  id: '1',
-  name: 'Garfield',
-  type: 'Cat',
-};
 test('should render pet card', () => {
   const history = createMemoryHistory();
 

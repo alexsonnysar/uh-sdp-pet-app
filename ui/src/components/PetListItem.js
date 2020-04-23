@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
+  Button,
   ListItem,
   ListItemText,
   ListItemAvatar,
@@ -8,29 +10,27 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateRoundedIcon from '@material-ui/icons/UpdateRounded';
-import BlockIcon from '@material-ui/icons/Block';
-import CheckIcon from '@material-ui/icons/Check';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import ListButton from './ListButton';
 
-const PetListItem = ({
-  pet,
-  actionButton,
-  approveButton,
-  rejectButton,
-  deleteButton,
-  updateButton,
-}) => {
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+const PetListItem = ({ pet, removePet }) => {
   const { name, type, id } = pet;
+  const [loading, setLoading] = useState(false);
+  const classes = useStyles();
 
   const headersAxios = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
 
-  const handleError = () => {};
   const CallDeletePet = (petData) => {
+    const handleError = () => {};
     axios({
       method: 'put',
       url: `http://localhost:8080/pet/${id}`,
@@ -40,19 +40,17 @@ const PetListItem = ({
       .then((response) => response.data)
       .catch(handleError);
   };
-  const handleUpdate = () => {
-    axios.get('http://localhost:3000/pet');
-    // open register pet and fill the form with current pet data
-  };
+
   const handleDelete = () => {
     const petData = {
       ...pet,
       active: false,
     };
-    actionButton(id);
+    setLoading(true);
+    removePet(id);
     CallDeletePet(petData);
   };
-  // const handleAction = () => {};
+
   return (
     <ListItemLink href={`pet-profile/${id}`} data-testid="petlistitem">
       <ListItemAvatar>
@@ -60,38 +58,27 @@ const PetListItem = ({
       </ListItemAvatar>
       <ListItemText primary={name} secondary={type} />
       <ListItemSecondaryAction>
-        {deleteButton && (
-          <ListButton
-            handleClick={() => handleDelete()}
-            label="Delete"
-            color="secondary"
-            icon={<DeleteIcon />}
-          />
-        )}
-        {updateButton && (
-          <ListButton
-            handleClick={() => handleUpdate()}
-            label="Update"
-            color="primary"
-            icon={<UpdateRoundedIcon />}
-          />
-        )}
-        {approveButton && (
-          <ListButton
-            handleClick={() => handleDelete()}
-            label="Approve"
-            color="secondary"
-            icon={<CheckIcon />}
-          />
-        )}
-        {rejectButton && (
-          <ListButton
-            handleClick={() => handleUpdate()}
-            label="Reject"
-            color="primary"
-            icon={<BlockIcon />}
-          />
-        )}
+        <Button
+          onClick={() => handleDelete()}
+          disabled={loading}
+          variant="contained"
+          className={classes.button}
+          color="secondary"
+          size="small"
+          startIcon={<DeleteIcon />}
+        >
+          Delete
+        </Button>
+        <Button
+          href={`pet-profile/${id}`}
+          variant="contained"
+          className={classes.button}
+          color="primary"
+          size="small"
+          startIcon={<UpdateRoundedIcon />}
+        >
+          Update
+        </Button>
       </ListItemSecondaryAction>
     </ListItemLink>
   );
@@ -105,18 +92,11 @@ PetListItem.propTypes = {
     name: PropTypes.string,
     type: PropTypes.string,
   }).isRequired,
-  actionButton: PropTypes.func,
-  deleteButton: PropTypes.bool,
-  updateButton: PropTypes.bool,
-  approveButton: PropTypes.bool,
-  rejectButton: PropTypes.bool,
+  removePet: PropTypes.func,
 };
 
 PetListItem.defaultProps = {
-  actionButton: () => null,
-  deleteButton: false,
-  updateButton: false,
-  approveButton: false,
-  rejectButton: false,
+  removePet: () => null,
 };
+
 export default PetListItem;

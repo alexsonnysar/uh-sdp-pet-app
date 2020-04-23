@@ -85,11 +85,9 @@ const EmployeeDashboard = () => {
             </Grid>
             <Grid item xs={12} sm>
               <PetList
-                action={removePetFromList}
+                deletePet={removePetFromList}
                 heading="Adoptable Animals"
                 petList={petList}
-                deleteButton
-                updateButton
               />
             </Grid>
           </Grid>

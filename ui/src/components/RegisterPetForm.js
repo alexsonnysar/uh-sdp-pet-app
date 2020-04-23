@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { TextField, Button, makeStyles, MenuItem } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  makeStyles,
+  MenuItem,
+  InputAdornment,
+} from '@material-ui/core';
 import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
 
@@ -101,7 +107,7 @@ const RegisterPetForm = () => {
         />
         <TextField
           id="type"
-          label="type"
+          label="Type"
           variant="outlined"
           onChange={handleSelect('type')}
           value={formData.type}
@@ -118,7 +124,7 @@ const RegisterPetForm = () => {
         </TextField>
         <TextField
           id="sex"
-          label="sex"
+          label="Sex"
           variant="outlined"
           onChange={handleSelect('sex')}
           value={formData.sex}
@@ -129,7 +135,7 @@ const RegisterPetForm = () => {
         </TextField>
         <TextField
           id="age"
-          label="age"
+          label="Age"
           variant="outlined"
           onChange={handleSelect('age')}
           value={formData.age}
@@ -143,7 +149,7 @@ const RegisterPetForm = () => {
 
         <TextField
           id="size"
-          label="size"
+          label="Size"
           variant="outlined"
           onChange={handleSelect('size')}
           value={formData.size}
@@ -159,6 +165,9 @@ const RegisterPetForm = () => {
           variant="outlined"
           value={formData.weight}
           onChange={(e) => handleChange(e)}
+          InputProps={{
+            endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+          }}
         />
         <TextField
           id="description"
@@ -170,7 +179,7 @@ const RegisterPetForm = () => {
         />
         <TextField
           id="adopted"
-          label="adopted"
+          label="Adopted"
           variant="outlined"
           onChange={handleSelect('adopted')}
           value={formData.adopted}

@@ -61,14 +61,14 @@ const Navigation = (props) => {
           )}
 
           {localStorage.getItem('jwt') === null ? (
-            <>
+            <React.Fragment key="key">
               <Link to="/login" className={classes.button}>
                 <Button className={classes.button}>Login</Button>
               </Link>
               <Link to="/register" className={classes.button}>
                 <Button className={classes.button}>Register</Button>
               </Link>
-            </>
+            </React.Fragment>
           ) : (
             <Button
               onClick={handleLogout}

@@ -49,6 +49,8 @@ uh-sdp-pet/.gradle
 
 # testing
 /ui/coverage
+/ui/plato
+/ui/report
 
 # production
 /ui/build

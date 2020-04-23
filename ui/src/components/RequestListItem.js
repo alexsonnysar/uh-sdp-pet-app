@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RequestListItem = ({ requests, requestUpdated }) => {
-  const { id, petId, userEmail, petName, status } = requests;
+  const { id, userEmail, petName } = requests;
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
@@ -31,27 +31,13 @@ const RequestListItem = ({ requests, requestUpdated }) => {
 
   const handleError = () => {};
 
-  const CallPutRequest = (requestData) => {
-    axios({
-      method: 'put',
-      url: `http://localhost:8080/request/${id}`,
-      headers: headersAxios,
-      data: requestData,
-    })
+  const handleRequest = (requestData) => {
+    setLoading(true);
+    requestUpdated(id);
+    axios
+      .put(`http://localhost:8080/request/${id}`, requestData, { headers: headersAxios })
       .then((response) => response.data)
       .catch(handleError);
-  };
-
-  const handleDenied = () => {
-    setLoading(true);
-    requestUpdated(id);
-    CallPutRequest('CANCELED');
-  };
-
-  const handleApproved = () => {
-    setLoading(true);
-    requestUpdated(id);
-    CallPutRequest('APPROVED');
   };
 
   return (
@@ -62,7 +48,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
       <ListItemText primary={petName} secondary={`Requested By: ${userEmail}`} />
       <ListItemSecondaryAction>
         <Button
-          onClick={() => handleDenied()}
+          onClick={() => handleRequest('CANCELED')}
           disabled={loading}
           variant="contained"
           className={classes.button}
@@ -70,10 +56,10 @@ const RequestListItem = ({ requests, requestUpdated }) => {
           size="small"
           startIcon={<CloseIcon />}
         >
-          Denied
+          Deny
         </Button>
         <Button
-          onClick={() => handleApproved()}
+          onClick={() => handleRequest('APPROVED')}
           disabled={loading}
           variant="contained"
           className={classes.button}
@@ -81,7 +67,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
           size="small"
           startIcon={<CheckIcon />}
         >
-          Approved
+          Approve
         </Button>
       </ListItemSecondaryAction>
     </ListItemLink>
@@ -93,10 +79,8 @@ const ListItemLink = (props) => <ListItem button component="a" {...props} />;
 RequestListItem.propTypes = {
   requests: PropTypes.shape({
     id: PropTypes.string,
-    petId: PropTypes.string,
     userEmail: PropTypes.string,
     petName: PropTypes.string,
-    status: PropTypes.string,
   }).isRequired,
   requestUpdated: PropTypes.func,
 };
