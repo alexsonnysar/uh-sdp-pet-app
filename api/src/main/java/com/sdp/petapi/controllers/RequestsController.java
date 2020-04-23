@@ -92,8 +92,6 @@ public class RequestsController {
   @PutMapping("/{reqid}")
   @PreAuthorize("hasRole('Employee') or hasRole('User')")
   public Requests putRequest(@PathVariable String reqid, @RequestBody String status) {
-    System.out.println(reqid);
-    System.out.println(status);
     Requests dbReq = reqService.getRequestById(reqid);
 
     if (!reqIdIsValid(dbReq)) {

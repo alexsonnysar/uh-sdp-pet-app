@@ -1,15 +1,9 @@
 package com.sdp.petapi.dao;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNotNull;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.Pet;
@@ -23,25 +17,11 @@ import com.sdp.petapi.repositories.RequestsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class RequestsDaoTest {
-
-  @Mock
-  transient UserDao mockUserDao;
-
-  @Mock
-  transient PetDao mockPetDao;
-
-  @Mock
-  transient RequestsRepository mockRequestsRepository;
-
-  @InjectMocks
-  transient RequestsDao injectRequestsDao;
 
   @Autowired
   transient RequestsDao reqDao;
@@ -61,11 +41,10 @@ public class RequestsDaoTest {
   @Autowired
   transient RequestsRepository reqRepository;
 
-  transient Pet AdoptedPet, pet2;
+  transient Pet adoptedPet, pet2;
   transient User employee, webUser, webUser2;
   transient Requests req, req2;
   transient RequestInformation reqInfo;
-  transient List<RequestInformation> reqInfoList;
 
   private static final String BADID = "010";
   private static final String ID001 = "001";
@@ -74,17 +53,14 @@ public class RequestsDaoTest {
   private static final String STRING_CANCELED = "CANCELED";
   private static final String STRING_APPROVED = "APPROVED";
   private static final String STRING_PENDING = "PENDING";
-  private static final String DATEFORMAT = "dd-MMM-yyyy HH:mm:ss";
-  private static final String FEBDATE = "26-FEB-2020 00:16:17";
-  // transient Date new_req_date;
 
   @BeforeEach
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
-    AdoptedPet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    AdoptedPet.setActive(false);
-    AdoptedPet.setAdopted(true);
-    petRepository.insert(AdoptedPet);
+    adoptedPet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
+    adoptedPet.setActive(false);
+    adoptedPet.setAdopted(true);
+    petRepository.insert(adoptedPet);
     pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
     petRepository.insert(pet2);
 
@@ -99,6 +75,8 @@ public class RequestsDaoTest {
     reqRepository.insert(req);
     req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
     reqRepository.insert(req2);
+
+    reqInfo = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestInfoObject.json"), RequestInformation.class);
   }
 
   @AfterEach
@@ -110,7 +88,6 @@ public class RequestsDaoTest {
 
   @Test
   public void get_all_requests() {
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req, req2 }));
     List<Requests> actual_reqs = reqDao.getAllRequests();
     assertEquals(Arrays.asList(new Requests[] { req, req2 }), actual_reqs);
   }
@@ -129,157 +106,249 @@ public class RequestsDaoTest {
   
   @Test
   public void get_good_request_by_id_returns_request() {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    Requests actual_req = injectRequestsDao.getRequestById(ID001);
+    Requests actual_req = reqDao.getRequestById(ID001);
     assertEquals(req, actual_req);
+  }
+
+  @Test
+  public void create_request_is_good() {
+    Pet orig_pet = petDao.getPetById(ID002);
+    assertTrue(orig_pet.isActive());
+    assertFalse(orig_pet.isAdopted());
+
+    User real_user = userDao.getUserById(ID002);
+    assertFalse(real_user.isEmployee());
+
+    Date before_date = new Date();
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests actual_req = reqDao.createRequest(ID002, ID002);
+    List<Requests> updated_list = reqDao.getAllRequests();
+    Date after_date = new Date();
+
+    Pet updated_pet = petDao.getPetById(ID002);
+    assertFalse(updated_pet.isActive());
+    assertTrue(updated_pet.isAdopted());
+    
+    assertNotNull(actual_req);
+    assertEquals(actual_req.getUserid(), ID002);
+    assertEquals(actual_req.getPetid(), ID002);
+    assertTrue(before_date.compareTo(actual_req.getRequestDate()) <= 0);
+    assertTrue(after_date.compareTo(actual_req.getRequestDate()) >= 0);
+    assertEquals(actual_req.getStatus(), STRING_PENDING);
+    assertFalse(orig_list.contains(actual_req));
+    assertTrue(updated_list.contains(actual_req));
+    assertEquals(orig_list.size() + 1, updated_list.size());
   }
 
   @Test
   public void create_request_user_invalid() {
-    when(mockUserDao.getUserById(ID001)).thenReturn(null);
-    Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
-    assertEquals(null, actual_req);
+    Pet orig_pet = petDao.getPetById(ID002);
+    assertTrue(orig_pet.isActive());
+    assertFalse(orig_pet.isAdopted());
+
+    User invalid_user = userDao.getUserById(BADID);
+    assertNull(invalid_user);
+
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests actual_req = reqDao.createRequest(BADID, ID002);
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    Pet updated_pet = petDao.getPetById(ID002);
+    assertEquals(orig_pet, updated_pet);
+
+    assertNull(actual_req);
+    assertEquals(orig_list, updated_list);
   }
 
   @Test
   public void create_request_user_is_employee() {
-    employee.setEmployee(true);
-    when(mockUserDao.getUserById(ID001)).thenReturn(employee);
-    Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
-    assertEquals(null, actual_req);
+    Pet orig_pet = petDao.getPetById(ID002);
+    assertTrue(orig_pet.isActive());
+    assertFalse(orig_pet.isAdopted());
+
+    User real_user = userDao.getUserById(ID001);
+    assertTrue(real_user.isEmployee());
+
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests actual_req = reqDao.createRequest(ID001, ID002);
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    Pet updated_pet = petDao.getPetById(ID002);
+    assertEquals(orig_pet, updated_pet);
+
+    assertNull(actual_req);
+    assertEquals(orig_list, updated_list);
   }
 
   @Test
-  public void create_request_pet_is_null() {
-    webUser.setEmployee(false);
-    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+  public void create_request_pet_invalid() {
+    Pet orig_pet = petDao.getPetById(BADID);
+    assertNull(orig_pet);
 
-    when(mockPetDao.getPetById(ID002)).thenReturn(null);
-    Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
-    assertEquals(null, actual_req);
+    User real_user = userDao.getUserById(ID002);
+    assertFalse(real_user.isEmployee());
+
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests actual_req = reqDao.createRequest(ID002, BADID);
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    assertNull(actual_req);
+    assertEquals(orig_list, updated_list);
   }
   
   @Test
   public void create_request_pet_is_not_active() {
-    webUser.setEmployee(false);
-    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+    assertEquals(pet2.getId(), ID002);
+    pet2.setActive(false);
+    petRepository.save(pet2);
+    
+    Pet orig_pet = petDao.getPetById(ID002);
+    assertFalse(orig_pet.isActive());
 
-    when(mockPetDao.getPetById(ID002)).thenReturn(AdoptedPet);
-    Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
-    assertEquals(null, actual_req);
+    User real_user = userDao.getUserById(ID002);
+    assertFalse(real_user.isEmployee());
+
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests actual_req = reqDao.createRequest(ID002, ID002);
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    assertNull(actual_req);
+    assertEquals(orig_list, updated_list);
   }
   
   @Test
   public void create_request_is_duplicate() {
-    webUser.setEmployee(false);
-    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
-    when(mockPetDao.getPetById(ID002)).thenReturn(pet2);
+    User real_user = userDao.getUserById(ID002);
+    assertFalse(real_user.isEmployee());
 
-    req.setPetid("002");
-    req.setUserid("001");
-    req.setStatus("PENDING");
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req }));
-    Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
-    assertEquals(null, actual_req);
-  }
+    reqDao.cancelRequest(reqDao.createRequest(ID003, ID002).getId());
+    reqDao.cancelRequest(reqDao.createRequest(ID002, ID002).getId());
+    reqDao.createRequest(ID002, ID002);
 
-  @Test
-  public void create_request_is_good() throws Exception {
-    webUser.setEmployee(false);
+    Pet change_pet = petDao.getPetById(ID002);
+    change_pet.setActive(true);
+    petDao.putPet(change_pet);
 
-    when(mockUserDao.getUserById(ID001)).thenReturn(webUser);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests actual_req = reqDao.createRequest(ID002, ID002);
+    List<Requests> updated_list = reqDao.getAllRequests();
 
-    pet2.setActive(true);
-    when(mockPetDao.getPetById(ID002)).thenReturn(pet2);
-
-    Requests reqPetDup = new Requests("010", "010", "002", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING");
-    Requests reqUserDup = new Requests("010", "001", "002", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "CANCELED");
-    Requests reqDiffPet = new Requests("010", "010", "010", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING");
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {reqPetDup, reqUserDup, reqDiffPet}));
-    when(mockPetDao.putPetByRequest(pet2)).thenReturn(pet2);
-
-    when(mockRequestsRepository.insert(any(Requests.class))).thenReturn(req);
-
-    Requests actual_req = injectRequestsDao.createRequest(ID001, ID002);
-
-    assertEquals(req, actual_req);
+    assertNull(actual_req);
+    assertEquals(orig_list, updated_list);
   }
   
   @Test
   public void put_request_approve() {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
-    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests updated_req = reqDao.putRequests(ID001, STRING_APPROVED);
+    List<Requests> updated_list = reqDao.getAllRequests();
 
-    Requests actualRequest = injectRequestsDao.putRequests(ID001, STRING_APPROVED);
-    assertEquals(req, actualRequest);
+    assertEquals(updated_req.getStatus(), STRING_APPROVED);
+    assertNotEquals(req, updated_req);
+    assertNotEquals(orig_list, updated_list);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertTrue(orig_list.contains(req));
+    assertFalse(updated_list.contains(req));
+    assertFalse(orig_list.contains(updated_req));
+    assertTrue(updated_list.contains(updated_req));
   }
 
   @Test
   public void put_request_canceled() {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
-    when(mockPetDao.getPetById(anyString())).thenReturn(AdoptedPet);
-    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests updated_req = reqDao.putRequests(ID001, STRING_CANCELED);
+    List<Requests> updated_list = reqDao.getAllRequests();
 
-    Requests actualRequest = injectRequestsDao.putRequests(ID001, STRING_CANCELED);
-    assertEquals(req, actualRequest);
+    assertEquals(updated_req.getStatus(), STRING_CANCELED);
+    assertNotEquals(req, updated_req);
+    assertNotEquals(orig_list, updated_list);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertTrue(orig_list.contains(req));
+    assertFalse(updated_list.contains(req));
+    assertFalse(orig_list.contains(updated_req));
+    assertTrue(updated_list.contains(updated_req));
   }
 
   @Test
   public void put_request_returns_null() {
-    Requests actualRequest = injectRequestsDao.putRequests(ID001, "BAD_STATUS");
-    assertNull(actualRequest);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests updated_req = reqDao.putRequests(ID001, "BAD_STATUS");
+    List<Requests> updated_list = reqDao.getAllRequests();
+    
+    assertNull(updated_req);
+    assertEquals(orig_list, updated_list);
   }
 
   @Test
   public void approve_request_other_requests_are_empty() {
+    reqDao.deleteRequest(ID002);
 
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {}));
-    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests approved_req = reqDao.approveRequest(ID001);
+    List<Requests> updated_list = reqDao.getAllRequests();
 
-    Requests actualRequest = injectRequestsDao.approveRequest(ID001);
-    assertEquals(req, actualRequest);
+    assertEquals(approved_req.getStatus(), STRING_APPROVED);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertEquals(orig_list.size(), 1);
   }
 
   @Test
-  public void approve_request_other_requests_not_empty() throws Exception {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    Requests reqSameUser = new Requests("010", "002", "002", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "CANCELED");
-    Requests reqDiffUserSamePet = new Requests("011", "001", "001", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "CANCELED");
-    Requests reqDiffUserDiffPet = new Requests("012", "001", "010", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING");
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] { req2, reqSameUser, reqDiffUserSamePet, reqDiffUserDiffPet }));
-    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+  public void approve_request_explore_all_paths_cancelReqs() {
+    Requests reqDiffUserDiffPet = reqDao.createRequest(ID003, ID002);
+    Requests reqDiffUserSamePetCancel = reqDao.cancelRequest(ID002);
+    adoptedPet.setActive(true);
+    petDao.putPet(adoptedPet);
+    Requests reqDiffUserSamePetPending = reqDao.createRequest(ID003, ID001);
+    
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests approved_req = reqDao.approveRequest(ID001);
+    List<Requests> updated_list = reqDao.getAllRequests();
 
-    Requests actualRequest = injectRequestsDao.approveRequest(ID001);
-    assertEquals(req, actualRequest);
+    assertEquals(approved_req.getStatus(), STRING_APPROVED);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertFalse(orig_list.contains(approved_req));
+    assertTrue(updated_list.contains(approved_req));
+    assertEquals(reqDao.getRequestById(reqDiffUserDiffPet.getId()).getStatus(), STRING_PENDING);
+    assertEquals(reqDao.getRequestById(reqDiffUserSamePetCancel.getId()).getStatus(), STRING_CANCELED);
+    assertEquals(reqDao.getRequestById(reqDiffUserSamePetPending.getId()).getStatus(), STRING_CANCELED);
   }
 
   @Test
   public void cancel_request_other_requests_are_empty() {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {  }));    
-    when(mockPetDao.getPetById(anyString())).thenReturn(AdoptedPet);
-    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+    reqDao.deleteRequest(ID002);
 
-    Requests actualRequest = injectRequestsDao.cancelRequest(ID001);
-    assertEquals(req, actualRequest);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests approved_req = reqDao.cancelRequest(ID001);
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    Pet updated_pet = petDao.getPetById(ID001);
+    assertTrue(updated_pet.isActive());
+    assertFalse(updated_pet.isAdopted());
+
+    assertEquals(approved_req.getStatus(), STRING_CANCELED);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertEquals(orig_list.size(), 1);
   }
 
   @Test
-  public void cancel_request_other_requests_not_empty() throws Exception {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    Requests reqSamePetSameUser = new Requests("010", "002", "001", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "CANCELED");
-    Requests reqSamePetDiffUser = new Requests("011", "010", "001", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "CANCELED");
-    Requests reqSamePetDiffUserPending = new Requests("012", "010", "001", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING");
-    Requests reqDiffPet = new Requests("013", "010", "010", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING");
-    when(mockRequestsRepository.findAll()).thenReturn(Arrays.asList(new Requests[] {reqDiffPet, reqSamePetSameUser, reqSamePetDiffUser, reqSamePetDiffUserPending}));
-    when(mockPetDao.getPetById(anyString())).thenReturn(AdoptedPet);
-    when(mockRequestsRepository.save(any(Requests.class))).thenReturn(req);
+  public void cancel_request_explore_all_paths_reactivate_pet() {
+    Requests reqDiffPet = reqDao.createRequest(ID002, ID002);
+    Requests reqSamePetDiffUserCancel = reqDao.cancelRequest(ID002);
+    adoptedPet.setActive(true);
+    petDao.putPet(adoptedPet);
+    Requests reqSamePetDiffUserPending = reqDao.createRequest(ID003, ID001);
 
-    Requests actualRequest = injectRequestsDao.cancelRequest(ID001);
-    assertEquals(req, actualRequest);
+    List<Requests> orig_list = reqDao.getAllRequests();
+    Requests canceled_req = reqDao.cancelRequest(ID001);
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    assertEquals(canceled_req.getStatus(), STRING_CANCELED);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertFalse(orig_list.contains(canceled_req));
+    assertTrue(updated_list.contains(canceled_req));
+    assertEquals(reqDao.getRequestById(reqDiffPet.getId()).getStatus(), STRING_PENDING);
+    assertEquals(reqDao.getRequestById(reqSamePetDiffUserCancel.getId()).getStatus(), STRING_CANCELED);
+    assertEquals(reqDao.getRequestById(reqSamePetDiffUserPending.getId()).getStatus(), STRING_PENDING);
   }
 
   @Test
@@ -307,63 +376,45 @@ public class RequestsDaoTest {
   }
 
   @Test
-  public void get_all_request_info() throws Exception {
-    List<RequestInformation> list_info = Arrays.asList(new RequestInformation[] {
-      new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING"),
-      new RequestInformation(ID002, ID003, "Anthony Stark", "stark@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse("26-FEB-2020 01:16:17"), "PENDING")
-    }).stream().collect(Collectors.toList());
+  public void get_all_request_info() {
+    reqDao.deleteRequest(ID002);
+    List<RequestInformation> list_info = Collections.singletonList(reqInfo);
     
     List<RequestInformation> actual_info = reqDao.getAllRequestInfo();
-    System.out.println(list_info.getClass());
-    System.out.println(actual_info.getClass());
-    assertEquals(list_info.toString(), actual_info.toString());
+    assertEquals(list_info, actual_info);
   }
 
   @Test
-  public void get_request_info_by_bad_id_returns_null() throws Exception {
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.empty());
-    RequestInformation actual_info = injectRequestsDao.getRequestInfoById(BADID);
-    assertNull(actual_info);
+  public void get_all_request_info_no_pet_images() {
+    reqDao.deleteRequest(ID002);
+    adoptedPet.setImageNames(new String[0]);
+    petDao.putPet(adoptedPet);
+    reqInfo.setPetImage("N/A");
+    List<RequestInformation> list_info = Collections.singletonList(reqInfo);
+    
+    List<RequestInformation> actual_info = reqDao.getAllRequestInfo();
+    assertEquals(list_info, actual_info);
   }
 
   @Test
-  public void get_request_info_by_null_id_returns_null() throws Exception {
-    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    RequestInformation actual_info = injectRequestsDao.getRequestInfoById(null);
+  public void get_request_info_by_invalid_id_returns_null() {
+    RequestInformation actual_info = reqDao.getRequestInfoById(BADID);
     assertNull(actual_info);
   }
   
   @Test
-  public void get_good_request_info_by_id_returns_request_info() throws Exception {
-    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "walking in the park", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockUserDao.getUserById(anyString())).thenReturn(webUser);
-    when(mockPetDao.getPetById(anyString())).thenReturn(AdoptedPet);
-    RequestInformation actual_info = injectRequestsDao.getRequestInfoById(ID001);
-    assertEquals(reqInfo.toString(), actual_info.toString());
+  public void get_good_request_info_by_id_returns_request_info() {
+    RequestInformation actual_info = reqDao.getRequestInfoById(ID001);
+    assertEquals(reqInfo, actual_info);
   }
   
   @Test
-  public void get_good_request_info_by_id_returns_request_info_pet_images_null() throws Exception {
-    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
-    AdoptedPet.setImageNames(null);
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockUserDao.getUserById(anyString())).thenReturn(webUser);
-    when(mockPetDao.getPetById(anyString())).thenReturn(AdoptedPet);
-    RequestInformation actual_info = injectRequestsDao.getRequestInfoById(ID001);
-    assertEquals(reqInfo.toString(), actual_info.toString());
-  }
-  
-  @Test
-  public void get_good_request_info_by_id_returns_request_info_no_pet_images() throws Exception {
-    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
-    AdoptedPet.setImageNames(new String[0]);
-    when(mockRequestsRepository.findById(anyString())).thenReturn(Optional.of(req));
-    when(mockUserDao.getUserById(anyString())).thenReturn(webUser);
-    when(mockPetDao.getPetById(anyString())).thenReturn(AdoptedPet);
-    RequestInformation actual_info = injectRequestsDao.getRequestInfoById(ID001);
-    assertEquals(reqInfo.toString(), actual_info.toString());
+  public void get_good_request_info_by_id_returns_request_info_no_pet_images() {
+    reqInfo.setPetImage("N/A");
+    adoptedPet.setImageNames(new String[0]);
+    petDao.putPet(adoptedPet);
+    RequestInformation actual_info = reqDao.getRequestInfoById(ID001);
+    assertEquals(reqInfo, actual_info);
   }
 
 }

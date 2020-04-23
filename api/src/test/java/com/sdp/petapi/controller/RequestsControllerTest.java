@@ -174,17 +174,16 @@ public class RequestsControllerTest {
   public void user_get_invalid_request_info_by_id_returns_null() throws Exception {
     when(reqService.getRequestInfoById(ID001)).thenReturn(null);
     RequestInformation actual_info = reqController.getRequestInfoById(ID001);
-    assertEquals(reqInfo, actual_info);
+    assertNull(actual_info);
   }
   
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_info_with_different_user_by_id_returns_null() throws Exception {
-    reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
-    req.setUserid("BAD_ID");
+    reqInfo = new RequestInformation(ID001, ID001, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
     when(reqService.getRequestInfoById(ID001)).thenReturn(reqInfo);
     RequestInformation actual_info = reqController.getRequestInfoById(ID001);
-    assertEquals(reqInfo, actual_info);
+    assertNull(actual_info);
   }
 
   @Test

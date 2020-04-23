@@ -70,7 +70,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
           size="small"
           startIcon={<CloseIcon />}
         >
-          Deny
+          Denied
         </Button>
         <Button
           onClick={() => handleApproved()}
@@ -81,7 +81,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
           size="small"
           startIcon={<CheckIcon />}
         >
-          Approve
+          Approved
         </Button>
       </ListItemSecondaryAction>
     </ListItemLink>
