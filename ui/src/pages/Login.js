@@ -11,8 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Login = (props) => {
-  const { handleAuth } = props;
+const Login = ({ handleAuth }) => {
   const classes = useStyles();
   return (
     <div data-testid="login" className={classes.root}>

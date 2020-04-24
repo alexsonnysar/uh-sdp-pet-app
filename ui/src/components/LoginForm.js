@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginForm = (props) => {
+const LoginForm = ({ handleAuth }) => {
   const history = useHistory();
   const [formData, setFormData] = useState({
     email: '',
@@ -51,7 +51,7 @@ const LoginForm = (props) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('userId', response.data.id);
         window.localStorage.setItem('roles', response.data.roles);
-        props.handleAuth(true);
+        handleAuth(true);
         if (localStorage.getItem('roles') === 'ROLE_User') {
           history.replace('/user-dashboard');
         } else if (localStorage.getItem('roles') === 'ROLE_Employee') {
@@ -71,7 +71,8 @@ const LoginForm = (props) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (formData.email.length === 0 || formData.password.length === 0) {
       setError(true);
     }
@@ -95,7 +96,8 @@ const LoginForm = (props) => {
           label="Email"
           variant="outlined"
           m={20}
-          onChange={handleChange}
+          value={formData.email}
+          onChange={(e) => handleChange(e)}
         />
         <TextField
           error={isError}
@@ -105,15 +107,18 @@ const LoginForm = (props) => {
           type="password"
           autoComplete="current-password"
           variant="outlined"
-          onChange={handleChange}
+          value={formData.password}
+          onChange={(e) => handleChange(e)}
         />
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={() => handleSubmit()}
+          onClick={(e) => handleSubmit(e)}
           disabled={loading}
+          id="login"
+          type="submit"
         >
-          Log In
+          Login
         </Button>
         <small className={classes.text}>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
