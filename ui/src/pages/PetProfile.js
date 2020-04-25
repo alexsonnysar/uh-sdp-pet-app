@@ -19,11 +19,9 @@ const PetProfile = () => {
   const [pet, setPet] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
-
   const url = `http://localhost:8080/pet/${id}`;
   const recUrl = `http://localhost:8080/user/recent/${id}`;
-  addRecent(recUrl)
+  addRecent(recUrl);
 
   const handleError = () => {};
   useEffect(() => {

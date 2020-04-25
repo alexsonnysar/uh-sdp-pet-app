@@ -15,7 +15,7 @@ export const getAllFavs = (favUrl) => {
 
 export const getAllRecents = (recUrl) => {
   return axios.get(recUrl, { headers: reqHeaders });
-}
+};
 
 export const getSinglePet = (url) => {
   return axios.get(url);
@@ -32,4 +32,3 @@ export const getAllRequestedPets = (requestedPetsUrl) => {
 export const addRecent = (recUrl) => {
   return axios.post(recUrl, {}, { headers: reqHeaders });
 };
-

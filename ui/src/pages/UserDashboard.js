@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 import PetCardSlider from '../components/PetCardSlider';
 import { getAllPets, getAllFavs, getAllRecents } from '../api/petRequests';
-import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -29,10 +29,6 @@ const UserDashboard = () => {
 
   const handleError = () => {};
   useEffect(() => {
-  //   getAllPets(url)
-  //     .then((res) => setPetList(res.data))
-  //     .catch(handleError)
-  //     .finally(() => setLoading(false));
     axios
       .all([getAllPets(url), getAllFavs(favUrl), getAllRecents(recUrl)])
       .then(
@@ -40,14 +36,11 @@ const UserDashboard = () => {
           setPetList(allPetRes.data);
           setFavList(allFavRes.data);
           setRecList(allRecRes.data);
-          console.log(allRecRes.data);
         })
       )
       .catch(handleError)
       .finally(() => setLoading(false));
-
   }, []);
-
 
   return (
     <div>

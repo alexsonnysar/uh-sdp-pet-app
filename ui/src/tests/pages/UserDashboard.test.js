@@ -2,10 +2,14 @@ import React from 'react';
 import { render, cleanup, waitForElement } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import UserDashboard from '../../pages/UserDashboard';
-import { getAllPets } from '../../api/petRequests';
+import { getAllPets, getAllFavs, getAllRecents } from '../../api/petRequests';
 import { petList } from '../mocks/pets';
 
-jest.mock('../../api/petRequests', () => ({ getAllPets: jest.fn() }));
+jest.mock('../../api/petRequests', () => ({
+  getAllPets: jest.fn(),
+  getAllFavs: jest.fn(),
+  getAllRecents: jest.fn(),
+}));
 
 describe('<UserDashboard />', () => {
   afterEach(() => {
@@ -15,6 +19,8 @@ describe('<UserDashboard />', () => {
 
   test('should render user dashboard with mock resolved API', async () => {
     getAllPets.mockImplementation(() => Promise.resolve({ data: petList }));
+    getAllFavs.mockImplementation(() => Promise.resolve({ data: petList }));
+    getAllRecents.mockImplementation(() => Promise.resolve({ data: petList }));
 
     const { getByTestId } = render(
       <Router>

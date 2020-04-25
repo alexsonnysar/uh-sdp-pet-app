@@ -3,10 +3,11 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { render, cleanup, waitForElement } from '@testing-library/react';
 import PetProfile from '../../pages/PetProfile';
-import { getSinglePet } from '../../api/petRequests';
+import { getSinglePet, addRecent } from '../../api/petRequests';
 import { pet } from '../mocks/pets';
 
 jest.mock('../../api/petRequests', () => ({
+  addRecent: jest.fn(),
   getSinglePet: jest.fn(),
 }));
 
@@ -20,6 +21,7 @@ describe('<PetProfile /> Tests', () => {
     const history = createMemoryHistory();
 
     getSinglePet.mockImplementation(() => Promise.resolve({ data: pet }));
+    addRecent.mockImplementation(() => Promise.resolve({ data: pet }));
 
     const { getByTestId } = render(
       <Router history={history}>

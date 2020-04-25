@@ -50,7 +50,7 @@ const PetInfo = ({ pet }) => {
   };
 
   const userData = {
-    id: window.localStorage.getItem('userId')
+    id: window.localStorage.getItem('userId'),
   };
 
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,7 @@ const PetInfo = ({ pet }) => {
   };
 
   // FAVORITING
-  const[favorited, setFavorited] = useState(false);
+  const [favorited, setFavorited] = useState(false);
 
   const PostFavoritePet = (favData) => {
     const postUrl = `http://localhost:8080/user/fav/${id}`;

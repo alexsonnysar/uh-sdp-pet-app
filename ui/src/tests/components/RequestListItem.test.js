@@ -46,22 +46,4 @@ describe('All <RequestListItem /> Tests', () => {
       expect(mockCallBack.mock.calls.length).toEqual(1);
     });
   });
-
-  // describe('<RequestListItem /> render Tests', () => {
-  //   jest.mock('axios');
-  //   const url = 'http://localhost:8080/pet/5e66c0c332f0dc7bedaf501a';
-
-  //   test('Should make sure our handleRequest returns or handleError', async () => {
-  //     axios.put.mockImplementation(() => Promise.resolve({ data: request }));
-
-  //     const { getByTestId } = render(
-  //       <Router>
-  //         <RequestListItem requests={request} />
-  //       </Router>
-  //     );
-
-  //     expect(getByTestId('requestlistitem')).toBeInTheDocument();
-  //     expect(axios.put).toHaveBeenCalledWith(url);
-  //   });
-  // });
 });
