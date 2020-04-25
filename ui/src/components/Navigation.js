@@ -23,12 +23,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navigation = (props) => {
+const Navigation = ({ auth, handleAuth, roles, handleRoles }) => {
   const history = useHistory();
   const classes = useStyles();
 
   const handleLogout = () => {
-    props.handleAuth(false);
+    handleAuth(false);
+    handleRoles(null);
     localStorage.clear();
     history.replace('/');
   };
@@ -37,39 +38,40 @@ const Navigation = (props) => {
     <div data-testid="navbar">
       <AppBar position="sticky">
         <Toolbar>
-          {localStorage.getItem('jwt') !== null ? (
+          {auth ? (
             <Typography variant="h6" className={classes.title}>
               <Link to="/" className={classes.button}>
-                <Button className={classes.button}>Home</Button>
+                <Button className={classes.button} data-testid="loggedInHome">
+                  Home
+                </Button>
               </Link>
-              {localStorage.getItem('roles') === 'ROLE_User' ? (
-                <Link to="/user-dashboard" className={classes.button}>
+              {roles === 'ROLE_User' ? (
+                <Link
+                  to="/user-dashboard"
+                  className={classes.button}
+                  data-testid="userDashButton"
+                >
                   <Button className={classes.button}>User Dashboard</Button>
                 </Link>
               ) : (
-                <Link to="/employee-dashboard" className={classes.button}>
+                <Link
+                  to="/employee-dashboard"
+                  className={classes.button}
+                  data-testid="empDashButton"
+                >
                   <Button className={classes.button}>Employee Dashboard</Button>
                 </Link>
               )}
             </Typography>
           ) : (
             <Typography variant="h6" className={classes.title}>
-              <Link to="/" className={classes.button}>
+              <Link to="/" className={classes.button} data-testid="notLoggedInHome">
                 <Button className={classes.button}>Home</Button>
               </Link>
             </Typography>
           )}
 
-          {localStorage.getItem('jwt') === null ? (
-            <React.Fragment key="key">
-              <Link to="/login" className={classes.button}>
-                <Button className={classes.button}>Login</Button>
-              </Link>
-              <Link to="/register" className={classes.button}>
-                <Button className={classes.button}>Register</Button>
-              </Link>
-            </React.Fragment>
-          ) : (
+          {auth ? (
             <Button
               onClick={handleLogout}
               className={classes.button}
@@ -77,6 +79,15 @@ const Navigation = (props) => {
             >
               Logout
             </Button>
+          ) : (
+            <React.Fragment key="key">
+              <Link to="/login" className={classes.button} data-testid="login">
+                <Button className={classes.button}>Login</Button>
+              </Link>
+              <Link to="/register" className={classes.button} data-testid="register">
+                <Button className={classes.button}>Register</Button>
+              </Link>
+            </React.Fragment>
           )}
         </Toolbar>
       </AppBar>
@@ -85,7 +96,14 @@ const Navigation = (props) => {
 };
 
 Navigation.propTypes = {
+  auth: PropTypes.bool.isRequired,
   handleAuth: PropTypes.func.isRequired,
+  roles: PropTypes.string,
+  handleRoles: PropTypes.func.isRequired,
+};
+
+Navigation.defaultProps = {
+  roles: null,
 };
 
 export default Navigation;

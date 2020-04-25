@@ -13,19 +13,26 @@ import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const [auth, setAuth] = useState(false);
+  const [roles, setRoles] = useState(null);
 
   useEffect(() => {
     // check local storage
     // setAuth if JWT in local
     if (localStorage.getItem('jwt') !== null) {
       setAuth(true);
+      setRoles(localStorage.getItem('roles'));
     }
-  }, []);
+  }, [auth, roles]);
 
   return (
     <div>
       <Router>
-        <Navigation handleAuth={setAuth} />
+        <Navigation
+          auth={auth}
+          handleAuth={setAuth}
+          roles={roles}
+          handleRoles={setRoles}
+        />
         <div className="App" data-testid="App">
           <Switch>
             <Route exact path="/">

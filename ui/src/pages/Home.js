@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 import PetCardList from '../components/PetCardList';
 import { getAllPets } from '../api/petRequests';
+import PetFilters from '../components/PetFilters';
 
 const useStyles = makeStyles({
   progress: {
@@ -15,14 +16,18 @@ const useStyles = makeStyles({
 const Home = () => {
   const url = 'http://localhost:8080/pet';
 
-  const [petList, setPetList] = useState([]);
+  const [originalPetList, setOriginalPetList] = useState([]);
+  const [filteredPetList, setFilteredPetList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleError = () => {};
   useEffect(() => {
     getAllPets(url)
       // eslint-disable-next-line no-shadow
-      .then((res) => setPetList(res.data))
+      .then((res) => {
+        setOriginalPetList(res.data);
+        setFilteredPetList(res.data);
+      })
       .catch(handleError)
       .finally(() => setLoading(false));
   }, []);
@@ -36,7 +41,11 @@ const Home = () => {
         </div>
       ) : (
         <div data-testid="loaded">
-          <PetCardList petList={petList} />
+          <PetFilters
+            setFilteredPetList={setFilteredPetList}
+            originalPetList={originalPetList}
+          />
+          <PetCardList petList={filteredPetList} />
         </div>
       )}
     </div>

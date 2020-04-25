@@ -38,15 +38,18 @@ const LoginForm = ({ handleAuth }) => {
 
   const handleError = () => {
     setError(true);
+    return 'Network Error';
   };
+
   const PostLoginUser = (userData) => {
+    const signInUrl = 'http://localhost:8080/signin';
+    const axiosHeaders = {
+      'Content-Type': 'application/json',
+    };
+
     setLoading(true);
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/signin',
-      data: userData,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    axios
+      .post(signInUrl, userData, { headers: axiosHeaders })
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('userId', response.data.id);
@@ -58,7 +61,7 @@ const LoginForm = ({ handleAuth }) => {
           history.replace('/employee-dashboard');
         }
       })
-      .catch(handleError)
+      .catch(() => handleError())
       .finally(() => {
         setLoading(false);
       });
@@ -87,7 +90,7 @@ const LoginForm = ({ handleAuth }) => {
   return (
     <div data-testid="loginForm">
       <form className={classes.container} onSubmit={handleSubmit}>
-        <h1 align="center">Log In</h1>
+        <h1 align="center">Login</h1>
         <TextField
           error={isError}
           helperText={isError ? 'Please Enter a Correct Email' : ''}
@@ -115,6 +118,7 @@ const LoginForm = ({ handleAuth }) => {
           className={classes.button}
           onClick={(e) => handleSubmit(e)}
           disabled={loading}
+          data-testid="loginButtonForm"
           id="login"
           type="submit"
         >

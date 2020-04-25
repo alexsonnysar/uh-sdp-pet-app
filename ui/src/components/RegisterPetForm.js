@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
+import { animalType, sexType, ageType, sizeType } from '../utils/MenuItems';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -113,14 +114,11 @@ const RegisterPetForm = () => {
           value={formData.type}
           select
         >
-          <MenuItem value="Dog"> Dog </MenuItem>
-          <MenuItem value="Cat">Cat</MenuItem>
-          <MenuItem value="Bird">Bird</MenuItem>
-          <MenuItem value="Fish">Fish</MenuItem>
-          <MenuItem value="Lizard">Lizard</MenuItem>
-          <MenuItem value="Furry">Furry</MenuItem>
-          <MenuItem value="Farm Animal">Farm Animal</MenuItem>
-          <MenuItem value="Bat">Bat</MenuItem>
+          {animalType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.value}
+            </MenuItem>
+          ))}
         </TextField>
         <TextField
           id="sex"
@@ -130,8 +128,12 @@ const RegisterPetForm = () => {
           value={formData.sex}
           select
         >
-          <MenuItem value="M">Male</MenuItem>
-          <MenuItem value="F">Female</MenuItem>
+          {sexType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {' '}
+              {option.value}
+            </MenuItem>
+          ))}
         </TextField>
         <TextField
           id="age"
@@ -141,10 +143,12 @@ const RegisterPetForm = () => {
           value={formData.age}
           select
         >
-          <MenuItem value="Baby">Baby</MenuItem>
-          <MenuItem value="Young">Young</MenuItem>
-          <MenuItem value="Adult">Adult</MenuItem>
-          <MenuItem value="Jurassic">Jurassic</MenuItem>
+          {ageType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {' '}
+              {option.value}
+            </MenuItem>
+          ))}
         </TextField>
 
         <TextField
@@ -155,13 +159,15 @@ const RegisterPetForm = () => {
           value={formData.size}
           select
         >
-          <MenuItem value="Small">Small</MenuItem>
-          <MenuItem value="Medium">Medium</MenuItem>
-          <MenuItem value="Large">Large</MenuItem>
+          {sizeType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.value}
+            </MenuItem>
+          ))}
         </TextField>
         <TextField
           id="weight"
-          label="Weight"
+          label="Weight in lbs."
           variant="outlined"
           value={formData.weight}
           onChange={(e) => handleChange(e)}

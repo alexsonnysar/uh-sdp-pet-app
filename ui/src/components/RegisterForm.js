@@ -37,13 +37,13 @@ const RegisterForm = (props) => {
 
   const PostLoginUser = (userData) => {
     const handleError = () => {};
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/signin',
-      data: userData,
+    const signInUrl = 'http://localhost:8080/signin';
+    const axiosHeaders = {
       headers: { 'Content-Type': 'application/json' },
-    })
+    };
+    setLoading(true);
+    axios
+      .post(signInUrl, userData, { headers: axiosHeaders })
       .then((response) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
@@ -62,14 +62,14 @@ const RegisterForm = (props) => {
   };
 
   const PostAddUser = (userData) => {
+    const signupUrl = 'http://localhost:8080/signup';
+    const axiosHeaders = {
+      headers: { 'Content-Type': 'application/json' },
+    };
     const handleError = () => {};
     setLoading(true);
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/signup',
-      data: userData,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    axios
+      .post(signupUrl, userData, { headers: axiosHeaders })
       .then(() => {
         PostLoginUser(formData);
       })
@@ -86,7 +86,8 @@ const RegisterForm = (props) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (
       !formData.name ||
       !formData.email ||
@@ -95,10 +96,6 @@ const RegisterForm = (props) => {
     ) {
       setError(true);
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
-      setError(true);
-    } else if (
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&])$/i.test(formData.password)
-    ) {
       setError(true);
     } else if (formData.password !== formData.passwordConfirm) {
       setError(true);
@@ -110,16 +107,18 @@ const RegisterForm = (props) => {
   const classes = useStyles();
   return (
     <div data-testid="registerForm">
-      <form className={classes.container}>
+      <form className={classes.container} onSubmit={handleSubmit}>
         <h1 align="center">Register</h1>
         <TextField
           error={isError}
           helperText={isError ? 'Please Enter a Name' : ''}
           id="name"
+          data-testid="name"
           label="Name"
           variant="outlined"
           m={20}
-          onChange={handleChange}
+          value={formData.name}
+          onChange={(e) => handleChange(e)}
           required
         />
         <TextField
@@ -129,18 +128,20 @@ const RegisterForm = (props) => {
           label="Email"
           variant="outlined"
           m={20}
-          onChange={handleChange}
+          value={formData.email}
+          onChange={(e) => handleChange(e)}
           required
         />
         <TextField
           error={isError}
           helperText={isError ? 'Please Enter a Correct Password' : ''}
           id="password"
-          label="Password"
+          label="Password-Field"
           type="password"
           autoComplete="current-password"
           variant="outlined"
-          onChange={handleChange}
+          value={formData.password}
+          onChange={(e) => handleChange(e)}
           required
         />
         <TextField
@@ -149,15 +150,16 @@ const RegisterForm = (props) => {
           id="passwordConfirm"
           label="Confirm Password"
           type="password"
-          autoComplete="current-password"
+          autoComplete="confirm-password"
           variant="outlined"
-          onChange={handleChange}
+          value={formData.passwordConfirm}
+          onChange={(e) => handleChange(e)}
           required
         />
         <Button
           variant="outlined"
           className={classes.button}
-          onClick={() => handleSubmit()}
+          onClick={(e) => handleSubmit(e)}
           disabled={loading}
           data-testid="submit"
         >
