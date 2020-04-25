@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PetCardSlider from '../components/PetCardSlider';
-import { getAllPets } from '../api/petRequests';
+import { getAllPets, getAllFavs, getAllRecents } from '../api/petRequests';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -18,17 +19,35 @@ const useStyles = makeStyles({
 const UserDashboard = () => {
   const classes = useStyles();
   const url = 'http://localhost:8080/pet';
+  const favUrl = 'http://localhost:8080/user/fav';
+  const recUrl = 'http://localhost:8080/user/recent';
 
   const [petList, setPetList] = useState([]);
+  const [favList, setFavList] = useState([]);
+  const [recList, setRecList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleError = () => {};
   useEffect(() => {
-    getAllPets(url)
-      .then((res) => setPetList(res.data))
+  //   getAllPets(url)
+  //     .then((res) => setPetList(res.data))
+  //     .catch(handleError)
+  //     .finally(() => setLoading(false));
+    axios
+      .all([getAllPets(url), getAllFavs(favUrl), getAllRecents(recUrl)])
+      .then(
+        axios.spread((allPetRes, allFavRes, allRecRes) => {
+          setPetList(allPetRes.data);
+          setFavList(allFavRes.data);
+          setRecList(allRecRes.data);
+          console.log(allRecRes.data);
+        })
+      )
       .catch(handleError)
       .finally(() => setLoading(false));
+
   }, []);
+
 
   return (
     <div>
@@ -38,8 +57,8 @@ const UserDashboard = () => {
         </div>
       ) : (
         <div data-testid="loaded" className={classes.root}>
-          <PetCardSlider petList={petList} heading="Favorites" />
-          <PetCardSlider petList={petList} heading="Recently Viewed" />
+          <PetCardSlider petList={favList} heading="Favorites" />
+          <PetCardSlider petList={recList} heading="Recently Viewed" />
           <PetCardSlider petList={petList} heading="Adopted" />
         </div>
       )}

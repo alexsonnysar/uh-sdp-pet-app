@@ -110,7 +110,7 @@ public class UserController {
     return userService.getFavoritePets(userDetails.getId());
   }
 
-  @PutMapping("/recent")
+  @GetMapping("/recent")
   @PreAuthorize("hasRole('User')")
   public List<Pet> getRecentPets() {
     UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

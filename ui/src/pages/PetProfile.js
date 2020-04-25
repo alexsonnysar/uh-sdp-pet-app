@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 import PetInfo from '../components/PetInfo';
-import { getSinglePet } from '../api/petRequests';
+import { getSinglePet, addRecent } from '../api/petRequests';
 
 const useStyles = makeStyles({
   progress: {
@@ -19,7 +19,11 @@ const PetProfile = () => {
   const [pet, setPet] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
   const url = `http://localhost:8080/pet/${id}`;
+  const recUrl = `http://localhost:8080/user/recent/${id}`;
+  addRecent(recUrl)
 
   const handleError = () => {};
   useEffect(() => {
