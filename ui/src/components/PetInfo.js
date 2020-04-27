@@ -85,16 +85,11 @@ const PetInfo = ({ pet }) => {
     setSuccessMsgOpen(false);
   };
 
-  // FAVORITING
-  const [favorited, setFavorited] = useState(false);
-
   const PostFavoritePet = (favData) => {
     const postUrl = `http://localhost:8080/user/fav/${id}`;
     setLoading(true);
     favoritePet(postUrl, favData)
-      .then(() => {
-        setFavorited(true);
-      })
+      .then(() => {})
       .finally(() => {
         setLoading(false);
       });

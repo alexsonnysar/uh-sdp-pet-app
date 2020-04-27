@@ -7,7 +7,8 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 import axios from 'axios';
-import SuccessRequestMsg from './SuccessRequestMsg';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { animalType, sexType, ageType, sizeType } from '../utils/MenuItems';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,22 +28,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterPetForm = () => {
-  const initialState = {
-    name: '',
-    type: '',
-    sex: '',
-    age: '',
-    size: '',
-    weight: '',
-    description: '',
-    imageNames: [''],
-    adopted: false,
-    active: true,
-  };
-  const [formData, setFormData] = useState(initialState);
+const EditPetForm = ({ pet }) => {
+  const { id, name } = pet;
+  const [formData, setFormData] = useState(pet);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+
+  const history = useHistory();
 
   const handleChange = (e) => {
     setFormData({
@@ -62,25 +53,14 @@ const RegisterPetForm = () => {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const CreatePet = (petData) => {
+  const UpdatePet = (petData) => {
     axios({
-      method: 'post',
-      url: 'http://localhost:8080/pet',
+      method: 'put',
+      url: `http://localhost:8080/pet/${id}`,
       headers: reqHeaders,
       data: petData,
     })
-      .then(() => {
-        setFormData(initialState);
-        setOpen(true);
-      })
+      .then(() => {})
       .catch(handleError)
       .finally(setLoading(false));
   };
@@ -88,15 +68,16 @@ const RegisterPetForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    CreatePet(formData);
+    UpdatePet(formData);
+    history.replace('/employee-dashboard');
   };
 
   const classes = useStyles();
 
   return (
-    <div data-testid="registerPetForm">
+    <div data-testid="editPetForm">
       <form className={classes.container}>
-        <h1 align="center">Register Pet</h1>
+        <h1 align="center">Update {name}</h1>
         <TextField
           id="name"
           label="Name"
@@ -192,7 +173,17 @@ const RegisterPetForm = () => {
           <MenuItem value="true">True</MenuItem>
           <MenuItem value="false">False</MenuItem>
         </TextField>
-
+        <TextField
+          id="active"
+          label="Active"
+          variant="outlined"
+          onChange={handleSelect('active')}
+          value={formData.active}
+          select
+        >
+          <MenuItem value="true">True</MenuItem>
+          <MenuItem value="false">False</MenuItem>
+        </TextField>
         <Button
           variant="outlined"
           className={classes.button}
@@ -200,16 +191,18 @@ const RegisterPetForm = () => {
           type="submit"
           disabled={loading}
         >
-          Create
+          Update Pet
         </Button>
-        <SuccessRequestMsg
-          handleClose={() => handleClose()}
-          open={open}
-          successMsg="Successfully Registered Pet!"
-        />
       </form>
     </div>
   );
 };
 
-export default RegisterPetForm;
+EditPetForm.propTypes = {
+  pet: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+  }).isRequired,
+};
+
+export default EditPetForm;

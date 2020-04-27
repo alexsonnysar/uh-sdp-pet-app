@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import RegisterPet from './pages/RegisterPet';
+import EditPet from './pages/EditPet';
 import PetProfile from './pages/PetProfile';
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import UserDashboard from './pages/UserDashboard';
@@ -55,6 +56,9 @@ const App = () => {
             </Route>
             <PrivateRoute auth={auth} exact path="/pet-register">
               <RegisterPet />
+            </PrivateRoute>
+            <PrivateRoute auth exact path="/edit-pet/:id">
+              <EditPet />
             </PrivateRoute>
           </Switch>
         </div>

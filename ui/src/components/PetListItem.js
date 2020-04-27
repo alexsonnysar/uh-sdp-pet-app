@@ -70,7 +70,7 @@ const PetListItem = ({ pet, removePet }) => {
           Delete
         </Button>
         <Button
-          href={`pet-profile/${id}`}
+          href={`edit-pet/${id}`}
           variant="contained"
           className={classes.button}
           color="primary"
