@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 
 const PrivateRoute = ({ auth, children, ...rest }) => {
-  console.log(auth);
   return (
     <Route
       {...rest}
