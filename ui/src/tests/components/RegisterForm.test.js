@@ -154,7 +154,6 @@ describe('<RegisterForm /> Tests', () => {
         target: { id: 'passwordConfirm', value: '$SDP0project1' },
       });
     });
-
     expect(passwordConfirmInput.value).toBe('$SDP0project1');
 
     await act(async () => {

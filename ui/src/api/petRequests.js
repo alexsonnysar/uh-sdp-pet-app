@@ -17,6 +17,10 @@ export const getAllRecents = (recUrl) => {
   return axios.get(recUrl, { headers: reqHeaders });
 };
 
+export const getAllRequestedPets = (requestedPetsUrl) => {
+  return axios.get(requestedPetsUrl, { headers: reqHeaders });
+};
+
 export const getSinglePet = (url) => {
   return axios.get(url);
 };
@@ -25,8 +29,8 @@ export const favoritePet = (favUrl, favData) => {
   return axios.post(favUrl, favData, { headers: reqHeaders });
 };
 
-export const getAllRequestedPets = (requestedPetsUrl) => {
-  return axios.get(requestedPetsUrl, { headers: reqHeaders });
+export const unfavoritePet = (favUrl, favData) => {
+  return axios.put(favUrl, favData, { headers: reqHeaders });
 };
 
 export const addRecent = (recUrl) => {

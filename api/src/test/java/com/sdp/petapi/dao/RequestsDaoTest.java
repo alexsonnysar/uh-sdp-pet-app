@@ -58,8 +58,6 @@ public class RequestsDaoTest {
   public void init() throws Exception {
     ObjectMapper om = new ObjectMapper();
     adoptedPet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
-    adoptedPet.setActive(false);
-    adoptedPet.setAdopted(true);
     petRepository.insert(adoptedPet);
     pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
     petRepository.insert(pet2);
@@ -126,8 +124,8 @@ public class RequestsDaoTest {
     Date after_date = new Date();
 
     Pet updated_pet = petDao.getPetById(ID002);
-    assertFalse(updated_pet.isActive());
-    assertTrue(updated_pet.isAdopted());
+    assertTrue(updated_pet.isActive());
+    assertFalse(updated_pet.isAdopted());
     
     assertNotNull(actual_req);
     assertEquals(actual_req.getUserid(), ID002);
@@ -243,6 +241,10 @@ public class RequestsDaoTest {
     Requests updated_req = reqDao.putRequests(ID001, STRING_APPROVED);
     List<Requests> updated_list = reqDao.getAllRequests();
 
+    Pet pet = petDao.getPetById(updated_req.getPetid());
+    assertTrue(pet.isAdopted());
+    assertFalse(pet.isActive());
+
     assertEquals(updated_req.getStatus(), STRING_APPROVED);
     assertNotEquals(req, updated_req);
     assertNotEquals(orig_list, updated_list);
@@ -258,6 +260,10 @@ public class RequestsDaoTest {
     List<Requests> orig_list = reqDao.getAllRequests();
     Requests updated_req = reqDao.putRequests(ID001, STRING_CANCELED);
     List<Requests> updated_list = reqDao.getAllRequests();
+
+    Pet pet = petDao.getPetById(updated_req.getPetid());
+    assertFalse(pet.isAdopted());
+    assertTrue(pet.isActive());
 
     assertEquals(updated_req.getStatus(), STRING_CANCELED);
     assertNotEquals(req, updated_req);

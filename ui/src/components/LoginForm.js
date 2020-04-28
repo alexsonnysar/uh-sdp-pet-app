@@ -56,9 +56,9 @@ const LoginForm = ({ handleAuth }) => {
         window.localStorage.setItem('roles', response.data.roles);
         handleAuth(true);
         if (localStorage.getItem('roles') === 'ROLE_User') {
-          history.replace('/user-dashboard');
+          history.replace('/user/dashboard');
         } else if (localStorage.getItem('roles') === 'ROLE_Employee') {
-          history.replace('/employee-dashboard');
+          history.replace('/employee/dashboard');
         }
       })
       .catch(() => handleError())

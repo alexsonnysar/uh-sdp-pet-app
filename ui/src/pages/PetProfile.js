@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
@@ -13,9 +14,8 @@ const useStyles = makeStyles({
   },
 });
 
-const PetProfile = () => {
+const PetProfile = ({ roles }) => {
   const { id } = useParams();
-
   const [pet, setPet] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,11 +43,15 @@ const PetProfile = () => {
         </div>
       ) : (
         <div data-testid="loaded">
-          <PetInfo pet={pet} />
+          <PetInfo pet={pet} roles={roles} />
         </div>
       )}
     </div>
   );
+};
+
+PetProfile.propTypes = {
+  roles: PropTypes.string.isRequired,
 };
 
 export default PetProfile;

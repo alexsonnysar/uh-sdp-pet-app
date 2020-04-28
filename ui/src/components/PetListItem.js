@@ -52,7 +52,7 @@ const PetListItem = ({ pet, removePet }) => {
   };
 
   return (
-    <ListItemLink href={`pet-profile/${id}`} data-testid="petlistitem">
+    <ListItemLink href={`/pet-profile/${id}`} data-testid="petlistitem">
       <ListItemAvatar>
         <Avatar alt="Pet" src="/images/garfield.jpg" />
       </ListItemAvatar>

@@ -7,3 +7,9 @@
 .root::-webkit-scrollbar {
   display: none;
 }
+
+.media {
+  display: flex;
+  height: 15rem;
+  align-items: center;
+}

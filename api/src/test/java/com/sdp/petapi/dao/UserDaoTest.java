@@ -444,6 +444,13 @@ public class UserDaoTest {
   }
 
   @Test
+  public void get_webUser_null_favorites_list_returns_empty_list() {
+    webUser.setFavorites(null);
+    userRepository.save(webUser);
+    assertEquals(userDao.getFavoritePets(ID002), Collections.emptyList());
+  }
+
+  @Test
   public void get_nonexistent_webUser_favorites_list_returns_null() {
     assertNull(userDao.getFavoritePets(null));
   }
@@ -466,6 +473,13 @@ public class UserDaoTest {
   public void get_webUser_recent_list() {
     userDao.addPetToRecents(ID002, ID001);
     assertEquals(userDao.getRecentPets(ID002), Collections.singletonList(pet));
+  }
+
+  @Test
+  public void get_webUser_null_recent_list_returns_empty_list() {
+    webUser.setRecents(null);
+    userRepository.save(webUser);
+    assertEquals(userDao.getRecentPets(ID002), Collections.emptyList());
   }
 
   @Test

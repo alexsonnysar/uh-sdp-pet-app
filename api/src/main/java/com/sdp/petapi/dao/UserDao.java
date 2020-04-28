@@ -103,7 +103,8 @@ public class UserDao {
 
   public List<Pet> getFavoritePets(String userid) {
     User user = getUserById(userid);
-    return (user == null || user.isEmployee()) ? null : Arrays.asList(user.getFavorites())
+    return (user == null || user.isEmployee()) ? null : 
+    (user.getFavorites() == null) ? Collections.emptyList() : Arrays.asList(user.getFavorites())
       .stream()
       .map(pid -> petDao.getPetById(pid))
       .filter(p -> p != null)
@@ -112,11 +113,12 @@ public class UserDao {
 
   public List<Pet> getRecentPets(String userid) {
     User user = getUserById(userid);
-    return (user == null || user.isEmployee()) ? null : Arrays.asList(user.getRecents())
-      .stream()
-      .map(pid -> petDao.getPetById(pid))
-      .filter(p -> p != null)
-      .collect(Collectors.toList());
+    return (user == null || user.isEmployee()) ? null : 
+      (user.getRecents() == null) ? Collections.emptyList() : Arrays.asList(user.getRecents())
+        .stream()
+        .map(pid -> petDao.getPetById(pid))
+        .filter(p -> p != null)
+        .collect(Collectors.toList());
   }
 
 public Boolean existsByEmail(String email) {

@@ -41,7 +41,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
   };
 
   return (
-    <ListItemLink href={`pet-profile/${id}`} data-testid="requestlistitem">
+    <ListItemLink href={`/pet-profile/${id}`} data-testid="requestlistitem">
       <ListItemAvatar>
         <Avatar alt="Pet" src="/images/garfield.jpg" />
       </ListItemAvatar>

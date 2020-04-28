@@ -39,7 +39,6 @@ const PetFilters = ({ setFilteredPetList, originalPetList }) => {
     setFormData(initialState);
     setFilteredPetList(originalPetList);
   };
-
   return (
     // - weight range maybe???
     <div data-testid="testingFilter">

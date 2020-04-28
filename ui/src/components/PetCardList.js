@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import PetCard from './PetCard';
 
-const PetCardList = ({ petList }) => (
+const PetCardList = ({ petList, userFavorite, roles }) => (
   <Grid container justify="flex-start" data-testid="manypetcards">
     {petList.map((pet) => (
       <Grid key={pet.id} item>
-        <PetCard key={pet.id} pet={pet} />
+        <PetCard
+          roles={roles}
+          key={pet.id}
+          pet={pet}
+          userFavorite={userFavorite.includes(pet.id)}
+        />
       </Grid>
     ))}
   </Grid>
@@ -15,6 +20,8 @@ const PetCardList = ({ petList }) => (
 
 PetCardList.propTypes = {
   petList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userFavorite: PropTypes.string.isRequired,
+  roles: PropTypes.string.isRequired,
 };
 
 export default PetCardList;

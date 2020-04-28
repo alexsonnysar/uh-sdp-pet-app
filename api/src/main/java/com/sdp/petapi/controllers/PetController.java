@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.petapi.models.Pet;
-
+import com.sdp.petapi.models.RequestInformation;
 import com.sdp.petapi.services.PetService;
 
 @RestController
@@ -28,6 +28,12 @@ public class PetController {
 
   @Autowired
   transient PetService petService;
+
+  @Autowired
+  transient RequestsController reqController;
+
+  @Autowired
+  transient UserController userController;
 
   @GetMapping
   public List<Pet> getAllPets() {
@@ -46,7 +52,8 @@ public class PetController {
     }
     else {
       Pet pet = petService.getPetById(id);
-      return (pet != null && pet.isActive()) ? pet : null;
+
+      return (pet != null && pet.isActive()) ? pet : null;      
     }
   }
 

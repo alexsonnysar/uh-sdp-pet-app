@@ -18,5 +18,6 @@ describe('Test for PetFilters', () => {
       <PetFilters setFilteredPetList={mockCallBack} originalPetList={petList} />
     );
     expect(getByTestId('testingFilter')).toBeInTheDocument();
+    // expect(getByLabelText('Type')).toBeInTheDocument();
   });
 });

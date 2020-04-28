@@ -6,7 +6,7 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
 import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
-import { favoritePet } from '../api/petRequests';
+import { favoritePet, unfavoritePet } from '../api/petRequests';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -37,8 +37,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PetInfo = ({ pet }) => {
-  const { id, name, age, size, type, sex, description } = pet;
+const favIDsCheck = (favList, petId) => {
+  if (favList === null) {
+    return false;
+  }
+  return favList.includes(petId);
+};
+
+const PetInfo = ({ pet, roles }) => {
+  const { id, name, age, size, type, weight, sex, description } = pet;
+  const numWeight = Number(weight).toFixed(2);
+
+  const favIDs = JSON.parse(localStorage.getItem('favIDs'));
+  const [favorited, setFavorited] = useState(favIDsCheck(favIDs, id));
+
+  const [loading, setLoading] = useState(false);
+  const [requested, setRequest] = useState(false);
+  const [successMsgOpen, setSuccessMsgOpen] = useState(false);
 
   const reqData = {
     petid: id,
@@ -52,10 +67,6 @@ const PetInfo = ({ pet }) => {
   const userData = {
     id: window.localStorage.getItem('userId'),
   };
-
-  const [loading, setLoading] = useState(false);
-  const [requested, setRequest] = useState(false);
-  const [successMsgOpen, setSuccessMsgOpen] = useState(false);
 
   const PostCreateRequest = (requestData) => {
     setLoading(true);
@@ -85,18 +96,37 @@ const PetInfo = ({ pet }) => {
     setSuccessMsgOpen(false);
   };
 
-  const PostFavoritePet = (favData) => {
-    const postUrl = `http://localhost:8080/user/fav/${id}`;
+  const FavoritingPet = (favData) => {
+    const url = `http://localhost:8080/user/fav/${id}`;
     setLoading(true);
-    favoritePet(postUrl, favData)
-      .then(() => {})
-      .finally(() => {
-        setLoading(false);
-      });
+
+    if (favorited) {
+      unfavoritePet(url, favData)
+        .then(() => {
+          setFavorited(false);
+          const oldFavs = JSON.parse(localStorage.getItem('favIDs'));
+          const newFavs = oldFavs.filter((o) => o !== id);
+          localStorage.setItem('favIDs', JSON.stringify(newFavs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      favoritePet(url, favData)
+        .then(() => {
+          setFavorited(true);
+          const favs = JSON.parse(localStorage.getItem('favIDs'));
+          favs.push(id);
+          localStorage.setItem('favIDs', JSON.stringify(favs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const handleFavorite = () => {
-    PostFavoritePet(userData);
+    FavoritingPet(userData);
   };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
@@ -127,38 +157,45 @@ const PetInfo = ({ pet }) => {
                 <Divider orientation="vertical" flexItem />
                 <Typography variant="subtitle1">{size}</Typography>
                 <Divider orientation="vertical" flexItem />
+                <Typography variant="subtitle1">{`${numWeight} lbs`}</Typography>
+                <Divider orientation="vertical" flexItem />
                 <Typography variant="subtitle1">{fullSexName}</Typography>
               </Grid>
               <Divider variant="middle" className={classes.divider} />
               <Typography variant="body1">{description}</Typography>
               <Divider variant="middle" className={classes.divider} />
-              <div className={classes.button}>
-                <Button
-                  size="large"
-                  color="primary"
-                  variant="contained"
-                  startIcon={<PetsRoundedIcon />}
-                  onClick={() => handleSubmit()}
-                  disabled={loading}
-                >
-                  {requested ? 'Requested' : 'Adopt Me'}
-                </Button>
-                <Button
-                  size="large"
-                  color="secondary"
-                  variant="contained"
-                  startIcon={<FavoriteRoundedIcon />}
-                  onClick={() => handleFavorite()}
-                  disabled={loading}
-                >
-                  Favorite
-                </Button>
-                <SuccessRequestMsg
-                  handleClose={() => handleClose()}
-                  open={successMsgOpen}
-                  successMsg={`Successfully Requested ${name}!`}
-                />
-              </div>
+
+              {roles !== 'ROLE_Employee' ? (
+                <div className={classes.button}>
+                  <Button
+                    size="large"
+                    color="primary"
+                    variant="contained"
+                    startIcon={<PetsRoundedIcon />}
+                    onClick={() => handleSubmit()}
+                    disabled={loading}
+                  >
+                    {requested ? 'Requested' : 'Adopt Me'}
+                  </Button>
+                  <Button
+                    size="large"
+                    color="secondary"
+                    variant={favorited ? 'contained' : 'outlined'}
+                    startIcon={<FavoriteRoundedIcon />}
+                    onClick={() => handleFavorite()}
+                    disabled={loading}
+                  >
+                    {favorited ? 'Unfavorite' : 'Favorite'}
+                  </Button>
+                  <SuccessRequestMsg
+                    handleClose={() => handleClose()}
+                    open={successMsgOpen}
+                    successMsg={`Successfully Requested ${name}!`}
+                  />
+                </div>
+              ) : (
+                <div data-testid="EmployeeOnly" />
+              )}
             </div>
           </Grid>
         </Grid>
@@ -175,8 +212,10 @@ PetInfo.propTypes = {
     size: PropTypes.string,
     type: PropTypes.string,
     sex: PropTypes.string,
+    weight: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
+  roles: PropTypes.string.isRequired,
 };
 
 export default PetInfo;

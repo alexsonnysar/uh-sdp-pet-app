@@ -12,7 +12,7 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import { favoritePet } from '../api/petRequests';
+import { favoritePet, unfavoritePet } from '../api/petRequests';
 
 const useStyles = makeStyles({
   root: {
@@ -27,19 +27,19 @@ const useStyles = makeStyles({
     height: 120,
   },
   text: {
-    alignItems: 'ceneter',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 });
 
-const PetCard = ({ pet }) => {
-  const { name, type, id } = pet;
+const PetCard = ({ pet, userFavorite, roles }) => {
+  const { name, type, sex, age, size, id } = pet;
 
   const history = useHistory();
-  const petLink = `pet-profile/${id}`;
+  const petLink = `/pet-profile/${id}`;
 
   const [loading, setLoading] = useState(false);
-  const [favorited, setFavorited] = useState(false);
+  const [favorited, setFavorited] = useState(userFavorite);
 
   const userData = {
     id: window.localStorage.getItem('userId'),
@@ -49,23 +49,41 @@ const PetCard = ({ pet }) => {
     history.push(petLink);
   };
 
-  const PostFavoritePet = (favData) => {
-    const postUrl = `http://localhost:8080/user/fav/${id}`;
+  const FavoritingPet = (favData) => {
+    const url = `http://localhost:8080/user/fav/${id}`;
     setLoading(true);
-    favoritePet(postUrl, favData)
-      .then(() => {
-        setFavorited(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+    if (favorited) {
+      unfavoritePet(url, favData)
+        .then(() => {
+          setFavorited(false);
+          const oldFavs = JSON.parse(localStorage.getItem('favIDs'));
+          const newFavs = oldFavs.filter((o) => o !== id);
+          localStorage.setItem('favIDs', JSON.stringify(newFavs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      favoritePet(url, favData)
+        .then(() => {
+          setFavorited(true);
+          const favs = JSON.parse(localStorage.getItem('favIDs'));
+          favs.push(id);
+          localStorage.setItem('favIDs', JSON.stringify(favs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const handleFavorite = () => {
-    PostFavoritePet(userData);
+    FavoritingPet(userData);
   };
 
   const classes = useStyles();
+  const fullSexName = sex === 'M' ? 'Male' : 'Female';
 
   return (
     <Card className={classes.root} data-testid="petcard">
@@ -78,28 +96,33 @@ const PetCard = ({ pet }) => {
           title="Pet Image"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h6" component="h2">
             {name}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary" component="p">
-            {type}
+          <Typography variant="subtitle2" color="textSecondary" component="p">
+            {fullSexName} | {age}
+          </Typography>
+          <Typography variant="subtitle2" color="textSecondary" component="p">
+            {type} | {size}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        {localStorage.getItem('jwt') !== null ? (
+        {roles === 'ROLE_User' ? (
           <Button
+            fullWidth
+            className={classes.actions}
             size="small"
             color="secondary"
-            variant="contained"
+            variant={favorited ? 'contained' : 'outlined'}
             startIcon={<FavoriteRoundedIcon />}
             onClick={() => handleFavorite()}
             disabled={loading}
           >
-            {favorited ? 'Favorited' : 'Favorite'}
+            {favorited ? 'Unfavorite' : 'Favorite'}
           </Button>
         ) : (
-          []
+          <div data-testid="Not_User" />
         )}
       </CardActions>
     </Card>
@@ -110,8 +133,13 @@ PetCard.propTypes = {
   pet: PropTypes.shape({
     name: PropTypes.string,
     type: PropTypes.string,
+    sex: PropTypes.string,
+    age: PropTypes.string,
+    size: PropTypes.string,
     id: PropTypes.string,
   }).isRequired,
+  userFavorite: PropTypes.bool.isRequired,
+  roles: PropTypes.string.isRequired,
 };
 
 export default PetCard;

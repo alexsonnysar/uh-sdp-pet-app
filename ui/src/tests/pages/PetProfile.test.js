@@ -25,7 +25,7 @@ describe('<PetProfile /> Tests', () => {
 
     const { getByTestId } = render(
       <Router history={history}>
-        <PetProfile />
+        <PetProfile roles="ROLE_User" />
       </Router>
     );
 

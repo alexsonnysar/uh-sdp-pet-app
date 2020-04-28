@@ -39,11 +39,6 @@ public class RequestsDao {
   public Requests createRequest(String userid, String petid) {
     if (!isRequestValid(userid, petid)) return null;
 
-    Pet pet = petDao.getPetById(petid);
-    pet.setActive(false);
-    pet.setAdopted(true);
-    petDao.putPetByRequest(pet);
-
     Requests tempRequest = new Requests(userid, petid);
     Requests temp = repository.insert(tempRequest);
     return temp;
@@ -96,25 +91,17 @@ public class RequestsDao {
       repository.saveAll(cancelReqs);
     }
 
+    Pet pet = petDao.getPetById(req.getPetid());
+    pet.setActive(false);
+    pet.setAdopted(true);
+    petDao.putPetByRequest(pet);
+
     req.setStatus(APPROVED_STRING);
     return repository.save(req);
   }
 
   public Requests cancelRequest(String reqid) {
     Requests req = getRequestById(reqid);
-
-    Boolean petInReqs = repository.findAll()
-      .stream()
-      .anyMatch(r -> r.getPetid().equals(req.getPetid())
-        && !r.getUserid().equals(req.getUserid())
-        && !r.getStatus().equals(CANCELED_STRING));
-    
-    if (!petInReqs) {
-      Pet pet = petDao.getPetById(req.getPetid());
-      pet.setActive(true);
-      pet.setAdopted(false);
-      petDao.putPetByRequest(pet);
-    }
 
     req.setStatus(CANCELED_STRING);
     return repository.save(req);

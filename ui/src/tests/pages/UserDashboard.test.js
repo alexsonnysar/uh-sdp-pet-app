@@ -2,11 +2,12 @@ import React from 'react';
 import { render, cleanup, waitForElement } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import UserDashboard from '../../pages/UserDashboard';
-import { getAllPets, getAllFavs, getAllRecents } from '../../api/petRequests';
+import { getAllRequestedPets, getAllFavs, getAllRecents } from '../../api/petRequests';
 import { petList } from '../mocks/pets';
+import { requestList } from '../mocks/requests';
 
 jest.mock('../../api/petRequests', () => ({
-  getAllPets: jest.fn(),
+  getAllRequestedPets: jest.fn(),
   getAllFavs: jest.fn(),
   getAllRecents: jest.fn(),
 }));
@@ -18,7 +19,7 @@ describe('<UserDashboard />', () => {
   });
 
   test('should render user dashboard with mock resolved API', async () => {
-    getAllPets.mockImplementation(() => Promise.resolve({ data: petList }));
+    getAllRequestedPets.mockImplementation(() => Promise.resolve({ data: requestList }));
     getAllFavs.mockImplementation(() => Promise.resolve({ data: petList }));
     getAllRecents.mockImplementation(() => Promise.resolve({ data: petList }));
 
@@ -32,6 +33,8 @@ describe('<UserDashboard />', () => {
 
     const loadedPetList = await waitForElement(() => getByTestId('loaded'));
     expect(loadedPetList).toBeInTheDocument();
-    expect(getAllPets).toHaveBeenCalledTimes(1);
+    expect(getAllRequestedPets).toHaveBeenCalledTimes(1);
+    expect(getAllFavs).toHaveBeenCalledTimes(1);
+    expect(getAllRecents).toHaveBeenCalledTimes(1);
   });
 });

@@ -69,7 +69,7 @@ const EditPetForm = ({ pet }) => {
     e.preventDefault();
     setLoading(true);
     UpdatePet(formData);
-    history.replace('/employee-dashboard');
+    history.replace('/employee/dashboard');
   };
 
   const classes = useStyles();

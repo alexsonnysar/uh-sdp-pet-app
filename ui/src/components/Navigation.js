@@ -47,7 +47,7 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles }) => {
               </Link>
               {roles === 'ROLE_User' ? (
                 <Link
-                  to="/user-dashboard"
+                  to="/user/dashboard"
                   className={classes.button}
                   data-testid="userDashButton"
                 >
@@ -55,7 +55,7 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles }) => {
                 </Link>
               ) : (
                 <Link
-                  to="/employee-dashboard"
+                  to="/employee/dashboard"
                   className={classes.button}
                   data-testid="empDashButton"
                 >

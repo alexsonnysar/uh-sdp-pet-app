@@ -63,7 +63,7 @@ const EmployeeDashboard = () => {
         <div align="center" data-testid="loadedList">
           <Grid container>
             <Grid item xs={12} sm>
-              <Link to="/pet-register" className={classes.addButton}>
+              <Link to="/employee/pet-register" className={classes.addButton}>
                 <Button
                   variant="contained"
                   color="primary"

@@ -50,10 +50,10 @@ const RegisterPetForm = () => {
       [e.target.id]: e.target.value,
     });
   };
-  const handleSelect = (prop) => (event) => {
+  const handleSelect = (peram, event) => {
     setFormData({
       ...formData,
-      [prop]: event.target.value,
+      [peram]: event.target.value,
     });
   };
   const handleError = () => {};
@@ -71,12 +71,8 @@ const RegisterPetForm = () => {
   };
 
   const CreatePet = (petData) => {
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/pet',
-      headers: reqHeaders,
-      data: petData,
-    })
+    axios
+      .post('http://localhost:8080/pet', petData, { headers: reqHeaders })
       .then(() => {
         setFormData(initialState);
         setOpen(true);
@@ -108,9 +104,14 @@ const RegisterPetForm = () => {
           id="type"
           label="Type"
           variant="outlined"
-          onChange={handleSelect('type')}
+          onChange={(e) => handleSelect('type', e)}
           value={formData.type}
           select
+          SelectProps={{
+            SelectDisplayProps: {
+              'data-testid': 'type-select',
+            },
+          }}
         >
           {animalType.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -122,7 +123,7 @@ const RegisterPetForm = () => {
           id="sex"
           label="Sex"
           variant="outlined"
-          onChange={handleSelect('sex')}
+          onChange={(e) => handleSelect('sex', e)}
           value={formData.sex}
           select
         >
@@ -137,7 +138,7 @@ const RegisterPetForm = () => {
           id="age"
           label="Age"
           variant="outlined"
-          onChange={handleSelect('age')}
+          onChange={(e) => handleSelect('age', e)}
           value={formData.age}
           select
         >
@@ -153,7 +154,7 @@ const RegisterPetForm = () => {
           id="size"
           label="Size"
           variant="outlined"
-          onChange={handleSelect('size')}
+          onChange={(e) => handleSelect('size', e)}
           value={formData.size}
           select
         >
@@ -165,7 +166,7 @@ const RegisterPetForm = () => {
         </TextField>
         <TextField
           id="weight"
-          label="Weight in lbs."
+          label="Weight"
           variant="outlined"
           value={formData.weight}
           onChange={(e) => handleChange(e)}
@@ -185,7 +186,7 @@ const RegisterPetForm = () => {
           id="adopted"
           label="Adopted"
           variant="outlined"
-          onChange={handleSelect('adopted')}
+          onChange={(e) => handleSelect('adopted', e)}
           value={formData.adopted}
           select
         >

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 import PetCardList from '../components/PetCardList';
@@ -13,7 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Home = () => {
+const Home = ({ roles }) => {
   const url = 'http://localhost:8080/pet';
 
   const [originalPetList, setOriginalPetList] = useState([]);
@@ -45,11 +46,23 @@ const Home = () => {
             setFilteredPetList={setFilteredPetList}
             originalPetList={originalPetList}
           />
-          <PetCardList petList={filteredPetList} />
+          <PetCardList
+            roles={roles}
+            petList={filteredPetList}
+            userFavorite={
+              localStorage.getItem('favIDs') !== null
+                ? localStorage.getItem('favIDs')
+                : []
+            }
+          />
         </div>
       )}
     </div>
   );
+};
+
+Home.propTypes = {
+  roles: PropTypes.string.isRequired,
 };
 
 export default Home;

@@ -29,13 +29,19 @@ const PetList = ({ heading, petList, deletePet }) => {
       <Typography variant="h6" className={classes.title}>
         {heading}
       </Typography>
-      <Paper className={classes.paper}>
-        <List>
-          {petList.map((pet) => (
-            <PetListItem removePet={deletePet} pet={pet} key={pet.id} />
-          ))}
-        </List>
-      </Paper>
+      {petList.length !== 0 ? (
+        <Paper className={classes.paper}>
+          <List>
+            {petList.map((pet) => (
+              <PetListItem removePet={deletePet} pet={pet} key={pet.id} />
+            ))}
+          </List>
+        </Paper>
+      ) : (
+        <div data-testid="emptyList">
+          <Typography variant="subtitle1">No more pets available</Typography>
+        </div>
+      )}
     </div>
   );
 };

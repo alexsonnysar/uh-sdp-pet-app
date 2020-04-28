@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import RequestCardSlider from '../components/RequestCardSlider';
 import PetCardSlider from '../components/PetCardSlider';
-import { getAllPets, getAllFavs, getAllRecents } from '../api/petRequests';
+import { getAllRequestedPets, getAllFavs, getAllRecents } from '../api/petRequests';
 
 const useStyles = makeStyles({
   root: {
@@ -18,29 +19,33 @@ const useStyles = makeStyles({
 
 const UserDashboard = () => {
   const classes = useStyles();
-  const url = 'http://localhost:8080/pet';
   const favUrl = 'http://localhost:8080/user/fav';
   const recUrl = 'http://localhost:8080/user/recent';
+  const requestUrl = 'http://localhost:8080/request/request-info';
 
-  const [petList, setPetList] = useState([]);
   const [favList, setFavList] = useState([]);
   const [recList, setRecList] = useState([]);
+  const [reqList, setReqList] = useState([]);
   const [loading, setLoading] = useState(true);
+  let favID = [];
 
   const handleError = () => {};
   useEffect(() => {
     axios
-      .all([getAllPets(url), getAllFavs(favUrl), getAllRecents(recUrl)])
+      .all([getAllFavs(favUrl), getAllRecents(recUrl), getAllRequestedPets(requestUrl)])
       .then(
-        axios.spread((allPetRes, allFavRes, allRecRes) => {
-          setPetList(allPetRes.data);
-          setFavList(allFavRes.data);
+        axios.spread((allFavRes, allRecRes, allReqRes) => {
+          setFavList(allFavRes.data.filter((fav) => fav.active === true));
           setRecList(allRecRes.data);
+          setReqList(allReqRes.data);
         })
       )
       .catch(handleError)
       .finally(() => setLoading(false));
   }, []);
+
+  favID = favList.map((o) => o.id);
+  localStorage.setItem('favIDs', JSON.stringify(favID));
 
   return (
     <div>
@@ -50,9 +55,16 @@ const UserDashboard = () => {
         </div>
       ) : (
         <div data-testid="loaded" className={classes.root}>
-          <PetCardSlider petList={favList} heading="Favorites" />
-          <PetCardSlider petList={recList} heading="Recently Viewed" />
-          <PetCardSlider petList={petList} heading="Adopted" />
+          <PetCardSlider petList={favList} userFav={favID} heading="Favorites" />
+          <PetCardSlider
+            petList={recList.filter((o) => o.active !== false)}
+            userFav={favID}
+            heading="Recently Viewed"
+          />
+          <RequestCardSlider
+            requestList={reqList.filter((o) => o.status !== 'CANCELED')}
+            heading="Requested & Adopted"
+          />
         </div>
       )}
     </div>

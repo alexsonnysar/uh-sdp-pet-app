@@ -50,9 +50,9 @@ const RegisterForm = (props) => {
         window.localStorage.setItem('userId', response.data.id);
         props.handleAuth(true);
         if (localStorage.getItem('roles') === 'ROLE_User') {
-          history.replace('/user-dashboard');
+          history.replace('/user/dashboard');
         } else {
-          history.replace('/employee-dashboard');
+          history.replace('/employee/dashboard');
         }
       })
       .catch(handleError)

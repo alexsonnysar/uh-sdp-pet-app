@@ -18,7 +18,7 @@ describe('<Home />', () => {
 
     const { getByTestId } = render(
       <Router>
-        <Home />
+        <Home roles="ROLE_User" />
       </Router>
     );
 
