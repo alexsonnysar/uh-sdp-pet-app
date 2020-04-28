@@ -61,45 +61,14 @@ public class PetControllerTest {
   }
   
   @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void get_active_pet_by_id_for_employee_returns_pet() {
+  public void get_actual_pet_by_id_returns_pet() {
     String id = ID001;
     when(petService.getPetById(id)).thenReturn(pet);
     Pet actual_pet = petController.getPetById(id);
     assertEquals(pet, actual_pet);
-  }
-  
-  @Test
-  @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void get_inactive_pet_by_id_for_employee_returns_pet() {
-    String id = ID002;
-    pet2.setActive(false);
-    when(petService.getPetById(id)).thenReturn(pet2);
-    Pet actual_pet = petController.getPetById(id);
-    assertEquals(pet2, actual_pet);
-  }
-  
-  @Test
-  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void get_active_pet_by_id_for_user_returns_pet() {
-    String id = ID001;
-    when(petService.getPetById(id)).thenReturn(pet);
-    Pet actual_pet = petController.getPetById(id);
-    assertEquals(pet, actual_pet);
-  }
-  
-  @Test
-  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
-  public void get_inactive_pet_by_id_for_others_returns_null() {
-    String id = ID002;
-    pet2.setActive(false);
-    when(petService.getPetById(id)).thenReturn(pet2);
-    Pet actual_pet = petController.getPetById(id);
-    assertNull(actual_pet);
   }
 
   @Test
-  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService")
   public void get_null_pet_by_user_returns_null() {
     String id = ID002;
     when(petService.getPetById(id)).thenReturn(null);

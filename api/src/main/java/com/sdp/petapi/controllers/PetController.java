@@ -47,14 +47,7 @@ public class PetController {
 
   @GetMapping("/{id}")
   public Pet getPetById(@PathVariable String id) {
-    if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Employee"))) {
-      return petService.getPetById(id);
-    }
-    else {
-      Pet pet = petService.getPetById(id);
-
-      return (pet != null && pet.isActive()) ? pet : null;      
-    }
+    return petService.getPetById(id);
   }
 
   @PostMapping
