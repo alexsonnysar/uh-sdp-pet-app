@@ -1,13 +1,10 @@
 import axios from 'axios';
 
- const auth = `Bearer ${localStorage.getItem('jwt')}`
-
 export const getAllPets = (url) => {
   return axios.get(url);
 };
 
 export const getAllFavs = (favUrl, reqHeaders) => {
-  console.log(auth);
   return axios.get(favUrl, { headers: reqHeaders });
 };
 
@@ -29,6 +26,14 @@ export const favoritePet = (favUrl, favData, reqHeaders) => {
 
 export const unfavoritePet = (favUrl, favData, reqHeaders) => {
   return axios.put(favUrl, favData, { headers: reqHeaders });
+};
+
+export const requestAdoptPet = (reqUrl, reqData, reqHeaders) => {
+  return axios.post(reqUrl, reqData, { headers: reqHeaders });
+};
+
+export const cancelAdoptRequest = (reqUrl, reqData, reqHeaders) => {
+  return axios.post(reqUrl, reqData, { headers: reqHeaders });
 };
 
 export const addRecent = (recUrl, reqHeaders) => {

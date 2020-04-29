@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 const PetProfile = ({ roles }) => {
-  const auth = `Bearer ${localStorage.getItem('jwt')}`
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
 
   const reqHeaders = {
     'Content-Type': 'application/json',

@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navigation = ({ auth, handleAuth, roles, handleRoles, username}) => {
+const Navigation = ({ auth, handleAuth, roles, handleRoles, username, setUsername }) => {
   const history = useHistory();
   const classes = useStyles();
 
   const handleLogout = () => {
-    localStorage.removeItem('username');
+    setUsername('');
     localStorage.clear();
     handleAuth(false);
     handleRoles(null);
@@ -74,15 +74,15 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles, username}) => {
 
           {auth ? (
             <div>
-            <Button className={classes.button}>Hello, {username}</Button>
-            <Button
-              onClick={handleLogout}
-              className={classes.button}
-              data-testid="logout"
-            >
-              Logout
-            </Button>
-            </div>     
+              <Button className={classes.button}>Hello, {username}</Button>
+              <Button
+                onClick={handleLogout}
+                className={classes.button}
+                data-testid="logout"
+              >
+                Logout
+              </Button>
+            </div>
           ) : (
             <React.Fragment key="key">
               <Link to="/login" className={classes.button} data-testid="login">
@@ -104,11 +104,13 @@ Navigation.propTypes = {
   handleAuth: PropTypes.func.isRequired,
   roles: PropTypes.string,
   handleRoles: PropTypes.func.isRequired,
-  user: PropTypes.func.isRequired,
+  username: PropTypes.string,
+  setUsername: PropTypes.func.isRequired,
 };
 
 Navigation.defaultProps = {
   roles: null,
+  username: '',
 };
 
 export default Navigation;

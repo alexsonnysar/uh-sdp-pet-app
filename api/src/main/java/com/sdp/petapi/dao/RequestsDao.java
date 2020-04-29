@@ -160,4 +160,17 @@ public class RequestsDao {
       );
   }
 
+  public Requests userCancelsRequest(String userid, String petid) {
+    if (!areComponentsValid(userid, petid)) return null;
+
+    List<Requests> reqList = getAllRequests();
+    Optional<Requests> reqMatch = reqList.stream()
+      .filter(r -> r.getUserid().equals(userid) &&
+        r.getPetid().equals(petid) &&
+        r.getStatus().equals("PENDING"))
+      .findAny();
+
+    return (reqMatch.isPresent()) ? cancelRequest(reqMatch.get().getId()) : null;
+  }
+
 }

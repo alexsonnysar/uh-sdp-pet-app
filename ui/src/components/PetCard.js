@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 });
 
 const PetCard = ({ pet, userFavorite, roles }) => {
-  const auth = `Bearer ${localStorage.getItem('jwt')}`
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
 
   const reqHeaders = {
     'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 const EmployeeDashboard = () => {
-  const auth = `Bearer ${localStorage.getItem('jwt')}`
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
 
   const reqHeaders = {
     'Content-Type': 'application/json',
@@ -39,7 +39,10 @@ const EmployeeDashboard = () => {
 
   const axiosRequest = () => {
     axios
-      .all([getAllRequestedPets(requestedPetsUrl, reqHeaders), getAllPets(petsUrl, reqHeaders)])
+      .all([
+        getAllRequestedPets(requestedPetsUrl, reqHeaders),
+        getAllPets(petsUrl, reqHeaders),
+      ])
       .then(
         axios.spread((allRequestedRes, allPetsRes) => {
           setRequestList(allRequestedRes.data.filter((r) => r.status === 'PENDING'));

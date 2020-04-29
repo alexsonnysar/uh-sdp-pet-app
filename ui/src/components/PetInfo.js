@@ -12,10 +12,14 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
-import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
 import RegisterMsg from './RegisterMsg';
-import { favoritePet, unfavoritePet } from '../api/petRequests';
+import {
+  favoritePet,
+  unfavoritePet,
+  cancelAdoptRequest,
+  requestAdoptPet,
+} from '../api/petRequests';
 
 const useStyles = makeStyles((theme) => ({
   imageSmall: {
@@ -50,15 +54,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const favIDsCheck = (favList, petId) => {
-  if (favList === null) {
+const idCheck = (list, id) => {
+  if (list === null) {
     return false;
   }
-  return favList.includes(petId);
+  return list.includes(id);
 };
 
 const PetInfo = ({ pet, roles }) => {
-  const auth = `Bearer ${localStorage.getItem('jwt')}`
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
 
   const reqHeaders = {
     'Content-Type': 'application/json',
@@ -70,17 +74,14 @@ const PetInfo = ({ pet, roles }) => {
   const numWeight = Number(weight).toFixed(2);
 
   const favIDs = JSON.parse(localStorage.getItem('favIDs'));
-  const [favorited, setFavorited] = useState(favIDsCheck(favIDs, id));
+  const reqIDs = JSON.parse(localStorage.getItem('reqIDs'));
+  const [favorited, setFavorited] = useState(idCheck(favIDs, id));
+  const [requested, setRequested] = useState(idCheck(reqIDs, id));
 
   const [loading, setLoading] = useState(false);
-  const [requested, setRequest] = useState(false);
   const [successMsgOpen, setSuccessMsgOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [registerOnFav, setRegisterOnFav] = useState(false);
-
-  const reqData = {
-    petid: id,
-  };
 
   const userData = {
     id: window.localStorage.getItem('userId'),
@@ -93,36 +94,42 @@ const PetInfo = ({ pet, roles }) => {
     return false;
   };
 
-  const PostCreateRequest = (requestData) => {
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: `http://localhost:8080/request/adopt/${id}`,
-      headers: reqHeaders,
-      data: requestData,
-    })
-      .then(() => {
-        setRequest(true);
-        setSuccessMsgOpen(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const handleSubmit = () => {
-    if (userRoleConfirm(roles)) {
-      setOpen(true);
-    } else {
-      PostCreateRequest(reqData);
-    }
-  };
-
   const successHandleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     setSuccessMsgOpen(false);
+  };
+  const RequestingPet = (requestData) => {
+    const url = `http://localhost:8080/request/adopt/${id}`;
+    const cancelUrl = `http://localhost:8080/request/cancel/${id}`;
+    setLoading(true);
+
+    if (requested) {
+      cancelAdoptRequest(cancelUrl, requestData, reqHeaders)
+        .then(() => {
+          setRequested(false);
+          setSuccessMsgOpen(true);
+          const oldReqs = JSON.parse(localStorage.getItem('reqIDs'));
+          const newReqs = oldReqs.filter((pr) => pr !== id);
+          localStorage.setItem('reqIDs', JSON.stringify(newReqs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      requestAdoptPet(url, requestData, reqHeaders)
+        .then(() => {
+          setRequested(true);
+          setSuccessMsgOpen(true);
+          const reqs = JSON.parse(localStorage.getItem('reqIDs'));
+          reqs.push(id);
+          localStorage.setItem('reqIDs', JSON.stringify(reqs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const registerHandleClose = (event, reason) => {
@@ -176,6 +183,14 @@ const PetInfo = ({ pet, roles }) => {
     }
   };
 
+  const handleAdopt = () => {
+    if (userRoleConfirm(roles)) {
+      setOpen(true);
+    } else {
+      RequestingPet(userData);
+    }
+  };
+
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
 
   const classes = useStyles();
@@ -221,12 +236,12 @@ const PetInfo = ({ pet, roles }) => {
                   <Button
                     size="large"
                     color="primary"
-                    variant="contained"
+                    variant={requested ? 'contained' : 'outlined'}
                     startIcon={<PetsRoundedIcon />}
-                    onClick={() => handleSubmit()}
+                    onClick={() => handleAdopt()}
                     disabled={loading}
                   >
-                    {requested ? 'Requested' : 'Adopt Me'}
+                    {requested ? 'Cancel Adoption' : 'Adopt Me'}
                   </Button>
                   <Button
                     size="large"
@@ -241,7 +256,11 @@ const PetInfo = ({ pet, roles }) => {
                   <SuccessRequestMsg
                     handleClose={() => successHandleClose()}
                     open={successMsgOpen}
-                    successMsg={`Successfully Requested ${name}!`}
+                    successMsg={
+                      requested
+                        ? `Successfully requested ${name}`
+                        : `Successfully canceled request for ${name}`
+                    }
                   />
                   <RegisterMsg
                     open={open}
@@ -273,7 +292,7 @@ PetInfo.propTypes = {
     size: PropTypes.string,
     type: PropTypes.string,
     sex: PropTypes.string,
-    weight: PropTypes.string,
+    weight: PropTypes.number,
     description: PropTypes.string,
   }).isRequired,
   roles: PropTypes.string.isRequired,

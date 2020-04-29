@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 });
 
 const UserDashboard = () => {
-  const auth = `Bearer ${localStorage.getItem('jwt')}`
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
 
   const reqHeaders = {
     'Content-Type': 'application/json',
@@ -35,24 +35,31 @@ const UserDashboard = () => {
   const [reqList, setReqList] = useState([]);
   const [loading, setLoading] = useState(true);
   let favID = [];
+  let reqID = [];
 
   const handleError = () => {};
   useEffect(() => {
     axios
-      .all([getAllFavs(favUrl, reqHeaders), getAllRecents(recUrl, reqHeaders), getAllRequestedPets(requestUrl, reqHeaders)])
+      .all([
+        getAllFavs(favUrl, reqHeaders),
+        getAllRecents(recUrl, reqHeaders),
+        getAllRequestedPets(requestUrl, reqHeaders),
+      ])
       .then(
         axios.spread((allFavRes, allRecRes, allReqRes) => {
           setFavList(allFavRes.data.filter((fav) => fav.active === true));
           setRecList(allRecRes.data);
-          setReqList(allReqRes.data);
+          setReqList(allReqRes.data.filter((req) => req.status === 'PENDING'));
         })
       )
       .catch(handleError)
       .finally(() => setLoading(false));
   }, []);
 
-  favID = favList.map((o) => o.id);
+  favID = favList.map((pr) => pr.id);
+  reqID = reqList.map((pr) => pr.petId);
   localStorage.setItem('favIDs', JSON.stringify(favID));
+  localStorage.setItem('reqIDs', JSON.stringify(reqID));
 
   return (
     <div>

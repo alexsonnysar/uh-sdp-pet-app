@@ -9,7 +9,13 @@ describe('<Navigation />', () => {
     const history = createMemoryHistory();
     const { getByTestId } = render(
       <Router history={history}>
-        <Navigation auth={false} handleAuth={() => {}} handleRoles={() => {}} />
+        <Navigation
+          auth={false}
+          handleAuth={() => {}}
+          handleRoles={() => {}}
+          username="Alex"
+          setUsername={() => {}}
+        />
       </Router>
     );
     const navigation = getByTestId('navbar');
@@ -29,7 +35,13 @@ describe('<Navigation />', () => {
     const history = createMemoryHistory();
     const { getByTestId } = render(
       <Router history={history}>
-        <Navigation auth handleAuth={() => {}} roles="ROLE_User" handleRoles={() => {}} />
+        <Navigation
+          auth
+          handleAuth={() => {}}
+          roles="ROLE_User"
+          handleRoles={() => {}}
+          setUsername={() => {}}
+        />
       </Router>
     );
     const navigation = getByTestId('navbar');
@@ -54,6 +66,7 @@ describe('<Navigation />', () => {
           handleAuth={() => {}}
           roles="ROLE_Employee"
           handleRoles={() => {}}
+          setUsername={() => {}}
         />
       </Router>
     );
