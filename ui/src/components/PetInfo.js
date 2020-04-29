@@ -12,7 +12,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
-import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
 import RegisterMsg from './RegisterMsg';
 import {
@@ -77,14 +76,6 @@ const PetInfo = ({ pet, roles }) => {
   const [open, setOpen] = useState(false);
   const [registerOnFav, setRegisterOnFav] = useState(false);
 
-  const reqData = {
-    petid: id,
-  };
-
-  const reqHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  };
   const userData = {
     id: window.localStorage.getItem('userId'),
   };
@@ -94,31 +85,6 @@ const PetInfo = ({ pet, roles }) => {
       return true;
     }
     return false;
-  };
-
-  const PostCreateRequest = (requestData) => {
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: `http://localhost:8080/request/adopt/${id}`,
-      headers: reqHeaders,
-      data: requestData,
-    })
-      .then(() => {
-        setRequested(true);
-        setSuccessMsgOpen(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const handleSubmit = () => {
-    if (userRoleConfirm(roles)) {
-      setOpen(true);
-    } else {
-      PostCreateRequest(reqData);
-    }
   };
 
   const successHandleClose = (event, reason) => {
@@ -209,7 +175,11 @@ const PetInfo = ({ pet, roles }) => {
   };
 
   const handleAdopt = () => {
-    RequestingPet(id);
+    if (userRoleConfirm(roles)) {
+      setOpen(true);
+    } else {
+      RequestingPet(userData);
+    }
   };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';

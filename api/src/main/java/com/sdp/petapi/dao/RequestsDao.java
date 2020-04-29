@@ -169,7 +169,7 @@ public class RequestsDao {
         r.getPetid().equals(petid) &&
         r.getStatus().equals("PENDING"))
       .findAny();
-    
+
     return (reqMatch.isPresent()) ? cancelRequest(reqMatch.get().getId()) : null;
   }
 
