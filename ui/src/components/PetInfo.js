@@ -6,7 +6,12 @@ import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
 import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
-import { favoritePet, unfavoritePet } from '../api/petRequests';
+import {
+  favoritePet,
+  unfavoritePet,
+  requestAdoptPet,
+  cancelAdoptRequest,
+} from '../api/petRequests';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -37,11 +42,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const favIDsCheck = (favList, petId) => {
-  if (favList === null) {
+const idCheck = (list, id) => {
+  if (list === null) {
     return false;
   }
-  return favList.includes(petId);
+  return list.includes(id);
 };
 
 const PetInfo = ({ pet, roles }) => {
@@ -49,51 +54,71 @@ const PetInfo = ({ pet, roles }) => {
   const numWeight = Number(weight).toFixed(2);
 
   const favIDs = JSON.parse(localStorage.getItem('favIDs'));
-  const [favorited, setFavorited] = useState(favIDsCheck(favIDs, id));
+  const reqIDs = JSON.parse(localStorage.getItem('reqIDs'));
+  const [favorited, setFavorited] = useState(idCheck(favIDs, id));
+  const [requested, setRequested] = useState(idCheck(reqIDs, id));
 
   const [loading, setLoading] = useState(false);
-  const [requested, setRequest] = useState(false);
   const [successMsgOpen, setSuccessMsgOpen] = useState(false);
 
-  const reqData = {
-    petid: id,
-  };
-
-  const reqHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  };
+  //   const reqData = {
+  //     petid: id,
+  //   };
 
   const userData = {
     id: window.localStorage.getItem('userId'),
   };
 
-  const PostCreateRequest = (requestData) => {
-    setLoading(true);
-    axios({
-      method: 'post',
-      url: `http://localhost:8080/request/adopt/${id}`,
-      headers: reqHeaders,
-      data: requestData,
-    })
-      .then(() => {
-        setRequest(true);
-        setSuccessMsgOpen(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const handleSubmit = () => {
-    PostCreateRequest(reqData);
-  };
-
+  // const PostCreateRequest = (requestData) => {
+  //   setLoading(true);
+  //   axios({
+  //     method: 'post',
+  //     url: `http://localhost:8080/request/adopt/${id}`,
+  //     headers: reqHeaders,
+  //     data: requestData,
+  //   })
+  //     .then(() => {
+  //       setRequest(true);
+  //       setSuccessMsgOpen(true);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     setSuccessMsgOpen(false);
+  };
+  const RequestingPet = (requestData) => {
+    const url = `http://localhost:8080/request/adopt/${id}`;
+    const cancelUrl = `http://localhost:8080/request/cancel/${id}`;
+    setLoading(true);
+
+    if (requested) {
+      cancelAdoptRequest(cancelUrl, requestData)
+        .then(() => {
+          setRequested(false);
+          const oldReqs = JSON.parse(localStorage.getItem('reqIDs'));
+          const newReqs = oldReqs.filter((pr) => pr !== id);
+          localStorage.setItem('reqIDs', JSON.stringify(newReqs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      requestAdoptPet(url, requestData)
+        .then(() => {
+          setRequested(true);
+          const reqs = JSON.parse(localStorage.getItem('reqIDs'));
+          reqs.push(id);
+          localStorage.setItem('reqIDs', JSON.stringify(reqs));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const FavoritingPet = (favData) => {
@@ -127,6 +152,10 @@ const PetInfo = ({ pet, roles }) => {
 
   const handleFavorite = () => {
     FavoritingPet(userData);
+  };
+
+  const handleAdopt = () => {
+    RequestingPet(id);
   };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
@@ -170,12 +199,12 @@ const PetInfo = ({ pet, roles }) => {
                   <Button
                     size="large"
                     color="primary"
-                    variant="contained"
+                    variant={requested ? 'contained' : 'outlined'}
                     startIcon={<PetsRoundedIcon />}
-                    onClick={() => handleSubmit()}
+                    onClick={() => handleAdopt()}
                     disabled={loading}
                   >
-                    {requested ? 'Requested' : 'Adopt Me'}
+                    {requested ? 'Cancel Adoption' : 'Adopt Me'}
                   </Button>
                   <Button
                     size="large"

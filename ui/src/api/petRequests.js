@@ -33,6 +33,14 @@ export const unfavoritePet = (favUrl, favData) => {
   return axios.put(favUrl, favData, { headers: reqHeaders });
 };
 
+export const requestAdoptPet = (reqUrl, reqData) => {
+  return axios.post(reqUrl, reqData, { headers: reqHeaders });
+};
+
+export const cancelAdoptRequest = (reqUrl, reqData) => {
+  return axios.put(reqUrl, reqData, { headers: reqHeaders });
+};
+
 export const addRecent = (recUrl) => {
   return axios.post(recUrl, {}, { headers: reqHeaders });
 };
