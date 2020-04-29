@@ -1,9 +1,0 @@
-.root {
-  display: flex;
-  overflow-x: auto;
-  margin-bottom: 10px;
-}
-
-.root::-webkit-scrollbar {
-  display: none;
-}
