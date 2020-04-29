@@ -38,7 +38,7 @@ const UserDashboard = () => {
         axios.spread((allFavRes, allRecRes, allReqRes) => {
           setFavList(allFavRes.data.filter((fav) => fav.active === true));
           setRecList(allRecRes.data);
-          setReqList(allReqRes.data.filter((req) => req.status === 'PENDING'));
+          setReqList(allReqRes.data);
         })
       )
       .catch(handleError)

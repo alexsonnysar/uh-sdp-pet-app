@@ -38,7 +38,7 @@ export const requestAdoptPet = (reqUrl, reqData) => {
 };
 
 export const cancelAdoptRequest = (reqUrl, reqData) => {
-  return axios.post(reqUrl, reqData, { headers: reqHeaders });
+  return axios.put(reqUrl, reqData, { headers: reqHeaders });
 };
 
 export const addRecent = (recUrl) => {

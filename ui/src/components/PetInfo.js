@@ -12,9 +12,15 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
+import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
 import RegisterMsg from './RegisterMsg';
-import { favoritePet, unfavoritePet } from '../api/petRequests';
+import {
+  favoritePet,
+  unfavoritePet,
+  cancelAdoptRequest,
+  requestAdoptPet,
+} from '../api/petRequests';
 
 const useStyles = makeStyles((theme) => ({
   imageSmall: {
@@ -79,7 +85,6 @@ const PetInfo = ({ pet, roles }) => {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
   };
-
   const userData = {
     id: window.localStorage.getItem('userId'),
   };
@@ -100,7 +105,7 @@ const PetInfo = ({ pet, roles }) => {
       data: requestData,
     })
       .then(() => {
-        setRequest(true);
+        setRequested(true);
         setSuccessMsgOpen(true);
       })
       .finally(() => {
@@ -131,10 +136,8 @@ const PetInfo = ({ pet, roles }) => {
       cancelAdoptRequest(cancelUrl, requestData)
         .then(() => {
           setRequested(false);
-          setSuccessMsgOpen(true);
           const oldReqs = JSON.parse(localStorage.getItem('reqIDs'));
           const newReqs = oldReqs.filter((pr) => pr !== id);
-
           localStorage.setItem('reqIDs', JSON.stringify(newReqs));
         })
         .finally(() => {
@@ -144,7 +147,6 @@ const PetInfo = ({ pet, roles }) => {
       requestAdoptPet(url, requestData)
         .then(() => {
           setRequested(true);
-          setSuccessMsgOpen(true);
           const reqs = JSON.parse(localStorage.getItem('reqIDs'));
           reqs.push(id);
           localStorage.setItem('reqIDs', JSON.stringify(reqs));
@@ -207,7 +209,7 @@ const PetInfo = ({ pet, roles }) => {
   };
 
   const handleAdopt = () => {
-    RequestingPet(userData);
+    RequestingPet(id);
   };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
@@ -275,11 +277,7 @@ const PetInfo = ({ pet, roles }) => {
                   <SuccessRequestMsg
                     handleClose={() => successHandleClose()}
                     open={successMsgOpen}
-                    successMsg={
-                      requested
-                        ? `Successfully requested ${name}`
-                        : `Successfully canceled request for ${name}`
-                    }
+                    successMsg={`Successfully Requested ${name}!`}
                   />
                   <RegisterMsg
                     open={open}
@@ -311,7 +309,7 @@ PetInfo.propTypes = {
     size: PropTypes.string,
     type: PropTypes.string,
     sex: PropTypes.string,
-    weight: PropTypes.number,
+    weight: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
   roles: PropTypes.string.isRequired,
