@@ -10,7 +10,7 @@ const SuccessRequestMsg = ({ handleClose, open, successMsg }) => {
         open={open}
         autoHideDuration={6000}
         onClose={() => handleClose()}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <MuiAlert
           elevation={6}
