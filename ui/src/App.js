@@ -49,7 +49,7 @@ const App = () => {
               <PetProfile roles={roles} />
             </Route>
             <PrivateRoute auth={auth} roles={roles} exact path="/user/dashboard">
-              <UserDashboard />
+              <UserDashboard username={username}/>
             </PrivateRoute>
             <PrivateRoute auth={auth} roles={roles} exact path="/employee/dashboard">
               <EmployeeDashboard />

@@ -20,6 +20,12 @@ const useStyles = makeStyles({
 });
 
 const EmployeeDashboard = () => {
+  const auth = `Bearer ${localStorage.getItem('jwt')}`
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
   const petsUrl = 'http://localhost:8080/pet';
   const requestedPetsUrl = 'http://localhost:8080/request/request-info';
 
@@ -33,7 +39,7 @@ const EmployeeDashboard = () => {
 
   const axiosRequest = () => {
     axios
-      .all([getAllRequestedPets(requestedPetsUrl), getAllPets(petsUrl)])
+      .all([getAllRequestedPets(requestedPetsUrl, reqHeaders), getAllPets(petsUrl, reqHeaders)])
       .then(
         axios.spread((allRequestedRes, allPetsRes) => {
           setRequestList(allRequestedRes.data.filter((r) => r.status === 'PENDING'));

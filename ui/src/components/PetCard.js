@@ -33,6 +33,13 @@ const useStyles = makeStyles({
 });
 
 const PetCard = ({ pet, userFavorite, roles }) => {
+  const auth = `Bearer ${localStorage.getItem('jwt')}`
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
   const { name, type, sex, age, size, id } = pet;
 
   const history = useHistory();
@@ -54,7 +61,7 @@ const PetCard = ({ pet, userFavorite, roles }) => {
     setLoading(true);
 
     if (favorited) {
-      unfavoritePet(url, favData)
+      unfavoritePet(url, favData, reqHeaders)
         .then(() => {
           setFavorited(false);
           const oldFavs = JSON.parse(localStorage.getItem('favIDs'));
@@ -65,7 +72,7 @@ const PetCard = ({ pet, userFavorite, roles }) => {
           setLoading(false);
         });
     } else {
-      favoritePet(url, favData)
+      favoritePet(url, favData, reqHeaders)
         .then(() => {
           setFavorited(true);
           const favs = JSON.parse(localStorage.getItem('favIDs'));

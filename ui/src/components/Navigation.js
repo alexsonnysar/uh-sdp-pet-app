@@ -28,9 +28,10 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles, username}) => {
   const classes = useStyles();
 
   const handleLogout = () => {
+    localStorage.removeItem('username');
+    localStorage.clear();
     handleAuth(false);
     handleRoles(null);
-    localStorage.clear();
     history.replace('/');
   };
 

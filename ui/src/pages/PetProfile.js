@@ -15,6 +15,13 @@ const useStyles = makeStyles({
 });
 
 const PetProfile = ({ roles }) => {
+  const auth = `Bearer ${localStorage.getItem('jwt')}`
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
   const { id } = useParams();
   const [pet, setPet] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +30,7 @@ const PetProfile = ({ roles }) => {
   const recUrl = `http://localhost:8080/user/recent/${id}`;
 
   if (roles === 'ROLE_User') {
-    addRecent(recUrl);
+    addRecent(recUrl, reqHeaders);
   }
 
   const handleError = () => {};
