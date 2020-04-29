@@ -22,7 +22,7 @@ const App = () => {
       setAuth(true);
       setRoles(localStorage.getItem('roles'));
     }
-  }, [auth, roles,]);
+  }, [auth, roles, username]);
 
   return (
     <div>
