@@ -7,8 +7,8 @@ import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdp.petapi.models.Pet;
-import com.sdp.petapi.repositories.PetRepository;
-import com.sdp.petapi.repositories.UserRepository;
+import com.sdp.petapi.models.Requests;
+import com.sdp.petapi.repositories.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,26 +28,42 @@ public class PetDaoTest {
   @Autowired
   transient UserRepository userRepository;
 
-  transient Pet pet;
+  @Autowired
+  transient RequestsRepository requestsRepository;
+
+  transient Pet pet, pet2;
+
+  transient Requests req0, req1, req2;
 
   @BeforeEach
   public void init() throws Exception {
-    petRepository.deleteAll();
     ObjectMapper om = new ObjectMapper();
     pet = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject.json"), Pet.class);
     petRepository.insert(pet);
+    pet2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/petObject2.json"), Pet.class);
+    petRepository.insert(pet2);
+
+    req0 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
+    req0.setId("000"); req0.setPetid("003");
+    requestsRepository.insert(req0);
+    req1 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
+    req1.setStatus("CANCELED");
+    requestsRepository.insert(req1);
+    req2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject2.json"), Requests.class);
+    requestsRepository.insert(req2);
   }
 
   @AfterEach
   public void cleanup() {
     petRepository.deleteAll();
     userRepository.deleteAll();
+    requestsRepository.deleteAll();
   }
 
   @Test
   public void get_all_pets() {
     List<Pet> actual_pets = petDao.getAllPets();
-    assertEquals(Collections.singletonList(pet), actual_pets);
+    assertEquals(Arrays.asList(new Pet[] {pet, pet2}), actual_pets);
   }
 
   @Test
@@ -152,6 +168,36 @@ public class PetDaoTest {
     assertNull(updated_pet);
     assertEquals(updated_pet_list, orig_pet_list);
     assertFalse(updated_pet_list.contains(pet));
+  }
+
+  @Test
+  public void put_pet_deactivating_pet_auto_denies_pending_pet_requests() {
+    Requests req0_db = requestsRepository.findById("000").get();
+    Requests req1_db = requestsRepository.findById("001").get();
+    Requests req2_db = requestsRepository.findById("002").get();
+    assertEquals(req0.getStatus(), req0_db.getStatus());
+    assertEquals(req1.getStatus(), req1_db.getStatus());
+    assertEquals(req2.getStatus(), req2_db.getStatus());
+
+    pet.setActive(false);
+
+    List<Pet> orig_pet_list = petDao.getAllPets();
+
+    Pet updated_pet = petDao.putPet(pet);
+    List<Pet> updated_pet_list = petDao.getAllPets();
+
+    Requests updated_req0_db = requestsRepository.findById("000").get();
+    Requests updated_req1_db = requestsRepository.findById("001").get();
+    Requests updated_req2_db = requestsRepository.findById("002").get();
+
+    assertEquals(pet, updated_pet);
+    assertEquals(updated_pet_list.size(), orig_pet_list.size());
+    assertFalse(orig_pet_list.contains(pet));
+    assertTrue(updated_pet_list.contains(pet));
+    assertEquals(req0.getStatus(), updated_req0_db.getStatus());
+    assertEquals(req1.getStatus(), updated_req1_db.getStatus());
+    assertNotEquals(req2.getStatus(), updated_req2_db.getStatus());
+    assertEquals("CANCELED", updated_req2_db.getStatus());
   }
 
   @Test
