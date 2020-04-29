@@ -4,7 +4,6 @@ import { Typography, Grid, Box, Divider, Paper, Button } from '@material-ui/core
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
-import axios from 'axios';
 import SuccessRequestMsg from './SuccessRequestMsg';
 import {
   favoritePet,
@@ -60,31 +59,10 @@ const PetInfo = ({ pet, roles }) => {
 
   const [loading, setLoading] = useState(false);
   const [successMsgOpen, setSuccessMsgOpen] = useState(false);
-
-  //   const reqData = {
-  //     petid: id,
-  //   };
-
   const userData = {
     id: window.localStorage.getItem('userId'),
   };
 
-  // const PostCreateRequest = (requestData) => {
-  //   setLoading(true);
-  //   axios({
-  //     method: 'post',
-  //     url: `http://localhost:8080/request/adopt/${id}`,
-  //     headers: reqHeaders,
-  //     data: requestData,
-  //   })
-  //     .then(() => {
-  //       setRequest(true);
-  //       setSuccessMsgOpen(true);
-  //     })
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // };
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -100,8 +78,10 @@ const PetInfo = ({ pet, roles }) => {
       cancelAdoptRequest(cancelUrl, requestData)
         .then(() => {
           setRequested(false);
+          setSuccessMsgOpen(true);
           const oldReqs = JSON.parse(localStorage.getItem('reqIDs'));
           const newReqs = oldReqs.filter((pr) => pr !== id);
+
           localStorage.setItem('reqIDs', JSON.stringify(newReqs));
         })
         .finally(() => {
@@ -111,6 +91,7 @@ const PetInfo = ({ pet, roles }) => {
       requestAdoptPet(url, requestData)
         .then(() => {
           setRequested(true);
+          setSuccessMsgOpen(true);
           const reqs = JSON.parse(localStorage.getItem('reqIDs'));
           reqs.push(id);
           localStorage.setItem('reqIDs', JSON.stringify(reqs));
@@ -155,7 +136,7 @@ const PetInfo = ({ pet, roles }) => {
   };
 
   const handleAdopt = () => {
-    RequestingPet(id);
+    RequestingPet(userData);
   };
 
   const fullSexName = sex === 'M' ? 'Male' : 'Female';
@@ -219,7 +200,11 @@ const PetInfo = ({ pet, roles }) => {
                   <SuccessRequestMsg
                     handleClose={() => handleClose()}
                     open={successMsgOpen}
-                    successMsg={`Successfully Requested ${name}!`}
+                    successMsg={
+                      requested
+                        ? `Successfully requested ${name}`
+                        : `Successfully canceled request for ${name}`
+                    }
                   />
                 </div>
               ) : (
@@ -241,7 +226,7 @@ PetInfo.propTypes = {
     size: PropTypes.string,
     type: PropTypes.string,
     sex: PropTypes.string,
-    weight: PropTypes.string,
+    weight: PropTypes.number,
     description: PropTypes.string,
   }).isRequired,
   roles: PropTypes.string.isRequired,
