@@ -1,18 +1,24 @@
 package com.sdp.petapi.dao;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sdp.petapi.models.Pet;
+import com.sdp.petapi.models.Requests;
 import com.sdp.petapi.repositories.PetRepository;
+import com.sdp.petapi.repositories.RequestsRepository;
 
 @Component
 public class PetDao {
 
   @Autowired
   transient PetRepository repository;
+
+  @Autowired
+  transient RequestsRepository reqRepo;
 
   public List<Pet> getAllPets() {
     return repository.findAll();
@@ -37,6 +43,17 @@ public class PetDao {
     if (pet == null || getPetById(pet.getId()) == null) return null;
     
     pet.capitalizeName();
+    
+    if (!pet.isActive()) {
+      List<Requests> cancelReqs = reqRepo.findAll()
+        .stream()
+        .filter(r -> r.getPetid().equals(pet.getId()) && r.getStatus().equals("PENDING"))
+        .collect(Collectors.toList());
+      
+      cancelReqs.forEach(r -> r.setStatus("CANCELED"));
+      reqRepo.saveAll(cancelReqs);
+    }
+    
     return repository.save(pet);
   }
 
