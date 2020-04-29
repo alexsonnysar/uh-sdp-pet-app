@@ -15,7 +15,7 @@ import PrivateRoute from './components/PrivateRoute';
 const App = () => {
   const [auth, setAuth] = useState(localStorage.getItem('jwt') !== null);
   const [roles, setRoles] = useState(localStorage.getItem('roles'));
-  const [user] = useState(localStorage.getItem('userId'))
+  const [username] = useState(localStorage.getItem('username'))
 
   useEffect(() => {
     if (localStorage.getItem('jwt') !== null) {
@@ -32,7 +32,7 @@ const App = () => {
           handleAuth={setAuth}
           roles={roles}
           handleRoles={setRoles}
-          user={user}
+          username={username}
         />
         <div className="App" data-testid="App">
           <Switch>

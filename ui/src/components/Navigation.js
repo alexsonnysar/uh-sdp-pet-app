@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navigation = ({ auth, handleAuth, roles, handleRoles, user}) => {
+const Navigation = ({ auth, handleAuth, roles, handleRoles, username}) => {
   const history = useHistory();
   const classes = useStyles();
 
@@ -73,7 +73,7 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles, user}) => {
 
           {auth ? (
             <div>
-            <Button className={classes.button}>Hello, {user}</Button>
+            <Button className={classes.button}>Hello, {username}</Button>
             <Button
               onClick={handleLogout}
               className={classes.button}
