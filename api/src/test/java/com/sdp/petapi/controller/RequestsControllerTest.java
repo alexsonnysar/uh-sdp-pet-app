@@ -47,10 +47,10 @@ public class RequestsControllerTest {
 
   @Mock
   transient UserDetailsImpl userDeets;
-  
+
   @Mock
   transient Authentication authentication;
-  
+
   @Mock
   transient SecurityContext securityContext;
 
@@ -65,7 +65,7 @@ public class RequestsControllerTest {
     ObjectMapper om = new ObjectMapper();
     req = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
     dbReq = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/requestObject.json"), Requests.class);
-    
+
     employee = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/employeeObject.json"), User.class);
     webUser = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject.json"), User.class);
     webUser2 = om.readValue(new File("src/test/java/com/sdp/petapi/resources/mocks/webUserObject2.json"), User.class);
@@ -81,7 +81,7 @@ public class RequestsControllerTest {
     List<Requests> list = reqController.getAllRequests();
     assertEquals(Collections.singletonList(req), list);
   }
-  
+
   @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void employee_get_request_by_id() {
@@ -90,7 +90,7 @@ public class RequestsControllerTest {
     Requests actual_request = reqController.getRequestById(ID001);
     assertEquals(req, actual_request);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_user_by_id_returns_request() {
@@ -98,7 +98,7 @@ public class RequestsControllerTest {
     Requests actual_request = reqController.getRequestById(ID001);
     assertEquals(req, actual_request);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_invalid_request_by_id_returns_null() {
@@ -106,7 +106,7 @@ public class RequestsControllerTest {
     Requests actual_request = reqController.getRequestById(ID001);
     assertNull(actual_request);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_with_different_user_by_id_returns_null() {
@@ -150,7 +150,7 @@ public class RequestsControllerTest {
     List<RequestInformation> list = reqController.getAllRequestInfo();
     assertTrue(list.isEmpty());
   }
-  
+
   @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void employee_get_request_info_by_id() throws Exception {
@@ -159,7 +159,7 @@ public class RequestsControllerTest {
     RequestInformation actual_info = reqController.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_info_with_user_by_id_returns_request() throws Exception {
@@ -168,7 +168,7 @@ public class RequestsControllerTest {
     RequestInformation actual_info = reqController.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_invalid_request_info_by_id_returns_null() throws Exception {
@@ -176,7 +176,7 @@ public class RequestsControllerTest {
     RequestInformation actual_info = reqController.getRequestInfoById(ID001);
     assertNull(actual_info);
   }
-  
+
   @Test
   @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void user_get_request_info_with_different_user_by_id_returns_null() throws Exception {
@@ -212,7 +212,7 @@ public class RequestsControllerTest {
     Requests returnRequest = reqController.putRequest(ID001, "APPROVED");
     assertEquals(null, returnRequest);
   }
-  
+
   @Test
   @WithUserDetails(value = "Employee", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
   public void employee_put_request_null_status() {
@@ -312,12 +312,18 @@ public class RequestsControllerTest {
     Requests returnRequest = reqController.putRequest(ID001, "CANCELED");
     assertEquals(req, returnRequest);
   }
-  
+
   @Test
   public void delete_request() {
     when(reqService.deleteRequest(ID001)).thenReturn(req);
     Requests returnedRequest = reqController.deleteRequest(ID001);
     assertEquals(req, returnedRequest);
   }
-  
+ @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_cancels_request() {
+    when(reqService.userCancelsRequest(ID002, ID001)).thenReturn(req);
+    Requests returnRequest = reqController.userCancelsRequest(ID001);
+    assertEquals(req, returnRequest);
+  }
 }
