@@ -422,5 +422,47 @@ public class RequestsDaoTest {
     RequestInformation actual_info = reqDao.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
   }
+  
+  @Test
+  public void user_cancels_request_without_request_returns_null() {
+    reqRepository.deleteAll();
+    Requests actual_req = reqDao.userCancelsRequest(ID003, ID001);
+    assertNull(actual_req);
+  }
+  
+  @Test
+  public void user_cancels_request_with_invalid_component_returns_null() {
+    reqRepository.deleteAll();
+    Requests actual_req = reqDao.userCancelsRequest(null, ID001);
+    assertNull(actual_req);
+  }
+  
+  @Test
+  public void user_cancels_request_returns_canceled_pet() {
+    reqRepository.delete(req2);
+    Requests req3 = new Requests(ID003, ID002);
+    reqRepository.insert(req3);
+    Requests req4 = new Requests(ID003, ID001);
+    req4.setStatus("CANCELED");
+    reqRepository.insert(req4);
+    reqRepository.insert(req2);
+
+    List<Requests> orig_list = reqDao.getAllRequests();
+
+    Requests actual_req = reqDao.userCancelsRequest(ID003, ID001);
+    
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    assertNotNull(actual_req);
+    assertNotEquals(req2, actual_req);
+    assertEquals(req2.getId(), actual_req.getId());
+    assertEquals("CANCELED", actual_req.getStatus());
+    assertNotEquals(orig_list, updated_list);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertTrue(orig_list.contains(req2));
+    assertFalse(updated_list.contains(req2));
+    assertFalse(orig_list.contains(actual_req));
+    assertTrue(updated_list.contains(actual_req));
+  }
 
 }

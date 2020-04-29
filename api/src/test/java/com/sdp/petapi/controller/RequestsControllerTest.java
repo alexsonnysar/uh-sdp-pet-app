@@ -319,5 +319,13 @@ public class RequestsControllerTest {
     Requests returnedRequest = reqController.deleteRequest(ID001);
     assertEquals(req, returnedRequest);
   }
+
+  @Test
+  @WithUserDetails(value = "User", userDetailsServiceBeanName = "TestingUserDetailsService") //NOPMD
+  public void user_cancels_request() {
+    when(reqService.userCancelsRequest(ID002, ID001)).thenReturn(req);
+    Requests returnRequest = reqController.userCancelsRequest(ID001);
+    assertEquals(req, returnRequest);
+  }
   
 }
