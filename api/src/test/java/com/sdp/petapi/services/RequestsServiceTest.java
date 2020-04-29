@@ -96,19 +96,11 @@ public class RequestsServiceTest {
     List<RequestInformation> list = reqService.getAllRequestInfo();
     assertEquals(reqInfoList, list);
   }
-  
   @Test
   public void get_request_info_by_id() throws Exception {
     reqInfo = new RequestInformation(ID001, ID002, "Tony Stark", "ironman@mail.com", ID001, "Buddy", "N/A", new SimpleDateFormat(DATEFORMAT, new Locale("en")).parse(FEBDATE), "PENDING");
     when(reqDao.getRequestInfoById(ID001)).thenReturn(reqInfo);
     RequestInformation actual_info = reqService.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
-  }
-
-  @Test
-  public void user_cancels_request() {
-    when(reqDao.userCancelsRequest(ID002, ID001)).thenReturn(req);
-    Requests returnedRequest = reqService.userCancelsRequest(ID002, ID001);
-    assertEquals(req, returnedRequest);
   }
 }
