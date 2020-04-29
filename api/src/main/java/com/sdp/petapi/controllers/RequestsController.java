@@ -132,4 +132,13 @@ public class RequestsController {
   public Requests deleteRequest(@PathVariable String reqid) {
     return reqService.deleteRequest(reqid);
   }
+
+  @PostMapping("/cancel/{petid}")
+  @PreAuthorize("hasRole('User')")
+  public Requests userCancelsRequest(@PathVariable String petid) {
+    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+        .getPrincipal();
+    String userid = userDetails.getId();
+    return reqService.userCancelsRequest(userid, petid);
+  }
 }
