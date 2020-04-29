@@ -298,6 +298,7 @@ PetInfo.propTypes = {
     sex: PropTypes.string,
     weight: PropTypes.number,
     description: PropTypes.string,
+    adopted: PropTypes.bool,
   }).isRequired,
   roles: PropTypes.string.isRequired,
 };
