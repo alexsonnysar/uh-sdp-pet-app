@@ -31,7 +31,7 @@ public class RequestsDaoTest {
 
   @Autowired
   transient UserDao userDao;
- 
+
   @Autowired
   transient PetRepository petRepository;
 
@@ -101,7 +101,7 @@ public class RequestsDaoTest {
     Requests actual_req = reqDao.getRequestById(null);
     assertNull(actual_req);
   }
-  
+
   @Test
   public void get_good_request_by_id_returns_request() {
     Requests actual_req = reqDao.getRequestById(ID001);
@@ -126,7 +126,7 @@ public class RequestsDaoTest {
     Pet updated_pet = petDao.getPetById(ID002);
     assertTrue(updated_pet.isActive());
     assertFalse(updated_pet.isAdopted());
-    
+
     assertNotNull(actual_req);
     assertEquals(actual_req.getUserid(), ID002);
     assertEquals(actual_req.getPetid(), ID002);
@@ -193,13 +193,13 @@ public class RequestsDaoTest {
     assertNull(actual_req);
     assertEquals(orig_list, updated_list);
   }
-  
+
   @Test
   public void create_request_pet_is_not_active() {
     assertEquals(pet2.getId(), ID002);
     pet2.setActive(false);
     petRepository.save(pet2);
-    
+
     Pet orig_pet = petDao.getPetById(ID002);
     assertFalse(orig_pet.isActive());
 
@@ -213,7 +213,7 @@ public class RequestsDaoTest {
     assertNull(actual_req);
     assertEquals(orig_list, updated_list);
   }
-  
+
   @Test
   public void create_request_is_duplicate() {
     User real_user = userDao.getUserById(ID002);
@@ -234,7 +234,7 @@ public class RequestsDaoTest {
     assertNull(actual_req);
     assertEquals(orig_list, updated_list);
   }
-  
+
   @Test
   public void put_request_approve() {
     List<Requests> orig_list = reqDao.getAllRequests();
@@ -280,7 +280,7 @@ public class RequestsDaoTest {
     List<Requests> orig_list = reqDao.getAllRequests();
     Requests updated_req = reqDao.putRequests(ID001, "BAD_STATUS");
     List<Requests> updated_list = reqDao.getAllRequests();
-    
+
     assertNull(updated_req);
     assertEquals(orig_list, updated_list);
   }
@@ -305,7 +305,7 @@ public class RequestsDaoTest {
     adoptedPet.setActive(true);
     petDao.putPet(adoptedPet);
     Requests reqDiffUserSamePetPending = reqDao.createRequest(ID003, ID001);
-    
+
     List<Requests> orig_list = reqDao.getAllRequests();
     Requests approved_req = reqDao.approveRequest(ID001);
     List<Requests> updated_list = reqDao.getAllRequests();
@@ -385,7 +385,7 @@ public class RequestsDaoTest {
   public void get_all_request_info() {
     reqDao.deleteRequest(ID002);
     List<RequestInformation> list_info = Collections.singletonList(reqInfo);
-    
+
     List<RequestInformation> actual_info = reqDao.getAllRequestInfo();
     assertEquals(list_info, actual_info);
   }
@@ -397,7 +397,7 @@ public class RequestsDaoTest {
     petDao.putPet(adoptedPet);
     reqInfo.setPetImage("N/A");
     List<RequestInformation> list_info = Collections.singletonList(reqInfo);
-    
+
     List<RequestInformation> actual_info = reqDao.getAllRequestInfo();
     assertEquals(list_info, actual_info);
   }
@@ -407,13 +407,13 @@ public class RequestsDaoTest {
     RequestInformation actual_info = reqDao.getRequestInfoById(BADID);
     assertNull(actual_info);
   }
-  
+
   @Test
   public void get_good_request_info_by_id_returns_request_info() {
     RequestInformation actual_info = reqDao.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
   }
-  
+
   @Test
   public void get_good_request_info_by_id_returns_request_info_no_pet_images() {
     reqInfo.setPetImage("N/A");
@@ -422,5 +422,50 @@ public class RequestsDaoTest {
     RequestInformation actual_info = reqDao.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
   }
+
+  @Test
+  public void user_cancels_request_without_request_returns_null() {
+    reqRepository.deleteAll();
+    Requests actual_req = reqDao.userCancelsRequest(ID003, ID001);
+    assertNull(actual_req);
+  }
+
+  @Test
+  public void user_cancels_request_with_invalid_component_returns_null() {
+    reqRepository.deleteAll();
+    Requests actual_req = reqDao.userCancelsRequest(null, ID001);
+    assertNull(actual_req);
+  }
+
+  @Test
+  public void user_cancels_request_returns_canceled_pet() {
+    reqRepository.delete(req2);
+    Requests req3 = new Requests(ID003, ID002);
+    reqRepository.insert(req3);
+    Requests req4 = new Requests(ID003, ID001);
+    req4.setStatus("CANCELED");
+    reqRepository.insert(req4);
+    reqRepository.insert(req2);
+
+    List<Requests> orig_list = reqDao.getAllRequests();
+
+    Requests actual_req = reqDao.userCancelsRequest(ID003, ID001);
+
+    List<Requests> updated_list = reqDao.getAllRequests();
+
+    assertNotNull(actual_req);
+    assertNotEquals(req2, actual_req);
+    assertEquals(req2.getId(), actual_req.getId());
+    assertEquals("CANCELED", actual_req.getStatus());
+    assertNotEquals(orig_list, updated_list);
+    assertEquals(orig_list.size(), updated_list.size());
+    assertTrue(orig_list.contains(req2));
+    assertFalse(updated_list.contains(req2));
+    assertFalse(orig_list.contains(actual_req));
+    assertTrue(updated_list.contains(actual_req));
+  }
+
+
+
 
 }

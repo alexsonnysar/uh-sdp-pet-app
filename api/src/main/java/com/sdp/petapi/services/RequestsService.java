@@ -42,4 +42,8 @@ public class RequestsService {
   public RequestInformation getRequestInfoById(String reqid) {
     return reqDao.getRequestInfoById(reqid);
   }
+
+  public Requests userCancelsRequest(String userid, String petid) {
+    return reqDao.userCancelsRequest(userid, petid);
+  }
 }

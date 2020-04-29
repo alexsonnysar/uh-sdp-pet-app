@@ -103,4 +103,11 @@ public class RequestsServiceTest {
     RequestInformation actual_info = reqService.getRequestInfoById(ID001);
     assertEquals(reqInfo, actual_info);
   }
+ @Test
+  public void user_cancels_request() {
+    when(reqDao.userCancelsRequest(ID002, ID001)).thenReturn(req);
+    Requests returnedRequest = reqService.userCancelsRequest(ID002, ID001);
+    assertEquals(req, returnedRequest);
+  }
+
 }
