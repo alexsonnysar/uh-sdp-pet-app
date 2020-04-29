@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navigation = ({ auth, handleAuth, roles, handleRoles }) => {
+const Navigation = ({ auth, handleAuth, roles, handleRoles, user}) => {
   const history = useHistory();
   const classes = useStyles();
 
@@ -72,6 +72,8 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles }) => {
           )}
 
           {auth ? (
+            <div>
+            <Button className={classes.button}>Hello, {user}</Button>
             <Button
               onClick={handleLogout}
               className={classes.button}
@@ -79,6 +81,7 @@ const Navigation = ({ auth, handleAuth, roles, handleRoles }) => {
             >
               Logout
             </Button>
+            </div>     
           ) : (
             <React.Fragment key="key">
               <Link to="/login" className={classes.button} data-testid="login">
@@ -100,6 +103,7 @@ Navigation.propTypes = {
   handleAuth: PropTypes.func.isRequired,
   roles: PropTypes.string,
   handleRoles: PropTypes.func.isRequired,
+  user: PropTypes.func.isRequired,
 };
 
 Navigation.defaultProps = {
