@@ -102,6 +102,7 @@ const PetInfo = ({ pet, roles }) => {
       cancelAdoptRequest(cancelUrl, requestData)
         .then(() => {
           setRequested(false);
+          setSuccessMsgOpen(true);
           const oldReqs = JSON.parse(localStorage.getItem('reqIDs'));
           const newReqs = oldReqs.filter((pr) => pr !== id);
           localStorage.setItem('reqIDs', JSON.stringify(newReqs));
@@ -113,6 +114,7 @@ const PetInfo = ({ pet, roles }) => {
       requestAdoptPet(url, requestData)
         .then(() => {
           setRequested(true);
+          setSuccessMsgOpen(true);
           const reqs = JSON.parse(localStorage.getItem('reqIDs'));
           reqs.push(id);
           localStorage.setItem('reqIDs', JSON.stringify(reqs));
@@ -247,7 +249,11 @@ const PetInfo = ({ pet, roles }) => {
                   <SuccessRequestMsg
                     handleClose={() => successHandleClose()}
                     open={successMsgOpen}
-                    successMsg={`Successfully Requested ${name}!`}
+                    successMsg={
+                      requested
+                        ? `Successfully requested ${name}`
+                        : `Successfully canceled request for ${name}`
+                    }
                   />
                   <RegisterMsg
                     open={open}
@@ -279,7 +285,7 @@ PetInfo.propTypes = {
     size: PropTypes.string,
     type: PropTypes.string,
     sex: PropTypes.string,
-    weight: PropTypes.string,
+    weight: PropTypes.number,
     description: PropTypes.string,
   }).isRequired,
   roles: PropTypes.string.isRequired,
