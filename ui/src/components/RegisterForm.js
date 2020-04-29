@@ -48,6 +48,7 @@ const RegisterForm = (props) => {
         window.localStorage.setItem('jwt', response.data.jwt);
         window.localStorage.setItem('roles', response.data.roles);
         window.localStorage.setItem('userId', response.data.id);
+        window.localStorage.setItem('username', response.data.email);
         props.handleAuth(true);
         if (localStorage.getItem('roles') === 'ROLE_User') {
           history.replace('/user/dashboard');

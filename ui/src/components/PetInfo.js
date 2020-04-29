@@ -70,7 +70,7 @@ const PetInfo = ({ pet, roles }) => {
   };
 
   const matches = useMediaQuery('(min-width:450px)');
-  const { id, name, age, size, type, weight, sex, description } = pet;
+  const { id, name, age, size, type, weight, sex, description, adopted } = pet;
   const numWeight = Number(weight).toFixed(2);
 
   const favIDs = JSON.parse(localStorage.getItem('favIDs'));
@@ -233,16 +233,20 @@ const PetInfo = ({ pet, roles }) => {
 
               {roles !== 'ROLE_Employee' ? (
                 <div className={classes.button}>
-                  <Button
-                    size="large"
-                    color="primary"
-                    variant={requested ? 'contained' : 'outlined'}
-                    startIcon={<PetsRoundedIcon />}
-                    onClick={() => handleAdopt()}
-                    disabled={loading}
-                  >
-                    {requested ? 'Cancel Adoption' : 'Adopt Me'}
-                  </Button>
+                  {adopted === false ? (
+                    <Button
+                      size="large"
+                      color="primary"
+                      variant={requested ? 'contained' : 'outlined'}
+                      startIcon={<PetsRoundedIcon />}
+                      onClick={() => handleAdopt()}
+                      disabled={loading}
+                    >
+                      {requested ? 'Cancel Adoption' : 'Adopt Me'}
+                    </Button>
+                  ) : (
+                    []
+                  )}
                   <Button
                     size="large"
                     color="secondary"
