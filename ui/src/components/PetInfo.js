@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Grid, Box, Divider, Paper, Button } from '@material-ui/core';
+import {
+  Typography,
+  Grid,
+  Box,
+  Divider,
+  Paper,
+  Button,
+  useMediaQuery,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 import PetsRoundedIcon from '@material-ui/icons/PetsRounded';
 import SuccessRequestMsg from './SuccessRequestMsg';
-import {
-  favoritePet,
-  unfavoritePet,
-  requestAdoptPet,
-  cancelAdoptRequest,
-} from '../api/petRequests';
+import RegisterMsg from './RegisterMsg';
+import { favoritePet, unfavoritePet } from '../api/petRequests';
 
 const useStyles = makeStyles((theme) => ({
-  image: {
+  imageSmall: {
+    height: '14.5rem',
+    margin: 10,
+  },
+  imageLarge: {
     height: '30rem',
     margin: 10,
   },
@@ -49,6 +57,7 @@ const idCheck = (list, id) => {
 };
 
 const PetInfo = ({ pet, roles }) => {
+  const matches = useMediaQuery('(min-width:450px)');
   const { id, name, age, size, type, weight, sex, description } = pet;
   const numWeight = Number(weight).toFixed(2);
 
@@ -59,11 +68,55 @@ const PetInfo = ({ pet, roles }) => {
 
   const [loading, setLoading] = useState(false);
   const [successMsgOpen, setSuccessMsgOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [registerOnFav, setRegisterOnFav] = useState(false);
+
+  const reqData = {
+    petid: id,
+  };
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  };
+
   const userData = {
     id: window.localStorage.getItem('userId'),
   };
 
-  const handleClose = (event, reason) => {
+  const userRoleConfirm = (userRole) => {
+    if (userRole !== 'ROLE_User') {
+      return true;
+    }
+    return false;
+  };
+
+  const PostCreateRequest = (requestData) => {
+    setLoading(true);
+    axios({
+      method: 'post',
+      url: `http://localhost:8080/request/adopt/${id}`,
+      headers: reqHeaders,
+      data: requestData,
+    })
+      .then(() => {
+        setRequest(true);
+        setSuccessMsgOpen(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleSubmit = () => {
+    if (userRoleConfirm(roles)) {
+      setOpen(true);
+    } else {
+      PostCreateRequest(reqData);
+    }
+  };
+
+  const successHandleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -102,6 +155,20 @@ const PetInfo = ({ pet, roles }) => {
     }
   };
 
+  const registerHandleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const registerFavHandleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setRegisterOnFav(false);
+  };
+
   const FavoritingPet = (favData) => {
     const url = `http://localhost:8080/user/fav/${id}`;
     setLoading(true);
@@ -132,7 +199,11 @@ const PetInfo = ({ pet, roles }) => {
   };
 
   const handleFavorite = () => {
-    FavoritingPet(userData);
+    if (userRoleConfirm(roles)) {
+      setRegisterOnFav(true);
+    } else {
+      FavoritingPet(userData);
+    }
   };
 
   const handleAdopt = () => {
@@ -149,7 +220,11 @@ const PetInfo = ({ pet, roles }) => {
         <Grid container>
           <Grid item sm={12} md={6} lg={6}>
             <div className={classes.imageCenter}>
-              <img className={classes.image} src="/images/garfield.jpg" alt="pet" />
+              <img
+                className={matches ? classes.imageLarge : classes.imageSmall}
+                src="/images/garfield.jpg"
+                alt="pet"
+              />
             </div>
           </Grid>
           <Grid item sm={12} md={6} lg={6}>
@@ -198,13 +273,23 @@ const PetInfo = ({ pet, roles }) => {
                     {favorited ? 'Unfavorite' : 'Favorite'}
                   </Button>
                   <SuccessRequestMsg
-                    handleClose={() => handleClose()}
+                    handleClose={() => successHandleClose()}
                     open={successMsgOpen}
                     successMsg={
                       requested
                         ? `Successfully requested ${name}`
                         : `Successfully canceled request for ${name}`
                     }
+                  />
+                  <RegisterMsg
+                    open={open}
+                    handleClose={() => registerHandleClose()}
+                    msg={`Please register an account to request adoption for ${name}`}
+                  />
+                  <RegisterMsg
+                    open={registerOnFav}
+                    handleClose={() => registerFavHandleClose()}
+                    msg={`Please register an account to favorite ${name}`}
                   />
                 </div>
               ) : (
