@@ -14,11 +14,9 @@ import {
 jest.mock('axios');
 const url = 'http://localhost:8080/pet/5e66c0c332f0dc7bedaf501a';
 
-const mockheaders = {
-  headers: {
-    Authorization: 'Bearer null',
-    'Content-Type': 'application/json',
-  },
+const mockHeaders = {
+  'Content-Type': 'application/json',
+  Authorization: 'Bearer null',
 };
 
 describe('Testing our request return promises for petRequest.js', () => {
@@ -41,9 +39,9 @@ describe('Testing our request return promises for petRequest.js', () => {
 
     axios.get.mockImplementationOnce(() => Promise.resolve(data));
 
-    await expect(getAllFavs(url)).resolves.toEqual(data);
+    await expect(getAllFavs(url, mockHeaders)).resolves.toEqual(data);
 
-    expect(axios.get).toHaveBeenCalledWith(url, mockheaders);
+    expect(axios.get).toHaveBeenCalledWith(url, { headers: mockHeaders });
   });
 
   test('Should return a promise when calling getAllRecents', async () => {
@@ -51,9 +49,9 @@ describe('Testing our request return promises for petRequest.js', () => {
 
     axios.get.mockImplementationOnce(() => Promise.resolve(data));
 
-    await expect(getAllRecents(url)).resolves.toEqual(data);
+    await expect(getAllRecents(url, mockHeaders)).resolves.toEqual(data);
 
-    expect(axios.get).toHaveBeenCalledWith(url, mockheaders);
+    expect(axios.get).toHaveBeenCalledWith(url, { headers: mockHeaders });
   });
 
   test('Should return a promise for getAllRequestedPets', async () => {
@@ -61,9 +59,9 @@ describe('Testing our request return promises for petRequest.js', () => {
 
     axios.get.mockImplementationOnce(() => Promise.resolve(data));
 
-    await expect(getAllRequestedPets(url)).resolves.toEqual(data);
+    await expect(getAllRequestedPets(url, mockHeaders)).resolves.toEqual(data);
 
-    expect(axios.get).toHaveBeenCalledWith(url, mockheaders);
+    expect(axios.get).toHaveBeenCalledWith(url, { headers: mockHeaders });
   });
 
   test('Should return a promise for getSinglePet', async () => {
@@ -81,9 +79,9 @@ describe('Testing our request return promises for petRequest.js', () => {
 
     axios.post.mockImplementationOnce(() => Promise.resolve(data));
 
-    await expect(favoritePet(url)).resolves.toEqual(data);
+    await expect(favoritePet(url, [1], mockHeaders)).resolves.toEqual(data);
 
-    expect(axios.post).toHaveBeenCalledWith(url, undefined, mockheaders);
+    expect(axios.post).toHaveBeenCalledWith(url, [1], { headers: mockHeaders });
   });
 
   test('Should return a promise for unfovoritePet', async () => {
@@ -91,9 +89,9 @@ describe('Testing our request return promises for petRequest.js', () => {
 
     axios.put.mockImplementationOnce(() => Promise.resolve(data));
 
-    await expect(unfavoritePet(url)).resolves.toEqual(data);
+    await expect(unfavoritePet(url, [1], mockHeaders)).resolves.toEqual(data);
 
-    expect(axios.put).toHaveBeenCalledWith(url, undefined, mockheaders);
+    expect(axios.put).toHaveBeenCalledWith(url, [1], { headers: mockHeaders });
   });
 
   test('Should return a promise for addRecent', async () => {
@@ -101,8 +99,8 @@ describe('Testing our request return promises for petRequest.js', () => {
 
     axios.post.mockImplementationOnce(() => Promise.resolve(data));
 
-    await expect(addRecent(url)).resolves.toEqual(data);
+    await expect(addRecent(url, mockHeaders)).resolves.toEqual(data);
 
-    expect(axios.post).toHaveBeenCalledWith(url, {}, mockheaders);
+    expect(axios.post).toHaveBeenCalledWith(url, {}, { headers: mockHeaders });
   });
 });

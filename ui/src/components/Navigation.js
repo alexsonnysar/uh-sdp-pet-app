@@ -23,14 +23,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navigation = ({ auth, handleAuth, roles, handleRoles, username }) => {
+const Navigation = ({ auth, handleAuth, roles, handleRoles, username, setUsername }) => {
   const history = useHistory();
   const classes = useStyles();
 
   const handleLogout = () => {
+    setUsername('');
+    localStorage.clear();
     handleAuth(false);
     handleRoles(null);
-    localStorage.clear();
     history.replace('/');
   };
 
@@ -104,6 +105,7 @@ Navigation.propTypes = {
   roles: PropTypes.string,
   handleRoles: PropTypes.func.isRequired,
   username: PropTypes.string,
+  setUsername: PropTypes.func.isRequired,
 };
 
 Navigation.defaultProps = {

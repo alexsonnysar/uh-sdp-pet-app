@@ -18,6 +18,13 @@ const useStyles = makeStyles({
 });
 
 const UserDashboard = () => {
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
   const classes = useStyles();
   const favUrl = 'http://localhost:8080/user/fav';
   const recUrl = 'http://localhost:8080/user/recent';
@@ -33,7 +40,11 @@ const UserDashboard = () => {
   const handleError = () => {};
   useEffect(() => {
     axios
-      .all([getAllFavs(favUrl), getAllRecents(recUrl), getAllRequestedPets(requestUrl)])
+      .all([
+        getAllFavs(favUrl, reqHeaders),
+        getAllRecents(recUrl, reqHeaders),
+        getAllRequestedPets(requestUrl, reqHeaders),
+      ])
       .then(
         axios.spread((allFavRes, allRecRes, allReqRes) => {
           setFavList(allFavRes.data.filter((fav) => fav.active === true));

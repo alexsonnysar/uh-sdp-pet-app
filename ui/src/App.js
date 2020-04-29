@@ -15,12 +15,13 @@ import PrivateRoute from './components/PrivateRoute';
 const App = () => {
   const [auth, setAuth] = useState(localStorage.getItem('jwt') !== null);
   const [roles, setRoles] = useState(localStorage.getItem('roles'));
-  const [username] = useState(localStorage.getItem('username'));
+  const [username, setUsername] = useState(localStorage.getItem('username'));
 
   useEffect(() => {
     if (localStorage.getItem('jwt') !== null) {
       setAuth(true);
       setRoles(localStorage.getItem('roles'));
+      setUsername(localStorage.getItem('username'));
     }
   }, [auth, roles, username]);
 
@@ -33,6 +34,7 @@ const App = () => {
           roles={roles}
           handleRoles={setRoles}
           username={username}
+          setUsername={setUsername}
         />
         <div className="App" data-testid="App">
           <Switch>
@@ -49,7 +51,7 @@ const App = () => {
               <PetProfile roles={roles} />
             </Route>
             <PrivateRoute auth={auth} roles={roles} exact path="/user/dashboard">
-              <UserDashboard />
+              <UserDashboard username={username} />
             </PrivateRoute>
             <PrivateRoute auth={auth} roles={roles} exact path="/employee/dashboard">
               <EmployeeDashboard />

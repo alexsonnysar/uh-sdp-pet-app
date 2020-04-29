@@ -62,6 +62,13 @@ const idCheck = (list, id) => {
 };
 
 const PetInfo = ({ pet, roles }) => {
+  const auth = `Bearer ${localStorage.getItem('jwt')}`;
+
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
   const matches = useMediaQuery('(min-width:450px)');
   const { id, name, age, size, type, weight, sex, description } = pet;
   const numWeight = Number(weight).toFixed(2);
@@ -99,7 +106,7 @@ const PetInfo = ({ pet, roles }) => {
     setLoading(true);
 
     if (requested) {
-      cancelAdoptRequest(cancelUrl, requestData)
+      cancelAdoptRequest(cancelUrl, requestData, reqHeaders)
         .then(() => {
           setRequested(false);
           setSuccessMsgOpen(true);
@@ -111,7 +118,7 @@ const PetInfo = ({ pet, roles }) => {
           setLoading(false);
         });
     } else {
-      requestAdoptPet(url, requestData)
+      requestAdoptPet(url, requestData, reqHeaders)
         .then(() => {
           setRequested(true);
           setSuccessMsgOpen(true);
@@ -144,7 +151,7 @@ const PetInfo = ({ pet, roles }) => {
     setLoading(true);
 
     if (favorited) {
-      unfavoritePet(url, favData)
+      unfavoritePet(url, favData, reqHeaders)
         .then(() => {
           setFavorited(false);
           const oldFavs = JSON.parse(localStorage.getItem('favIDs'));
@@ -155,7 +162,7 @@ const PetInfo = ({ pet, roles }) => {
           setLoading(false);
         });
     } else {
-      favoritePet(url, favData)
+      favoritePet(url, favData, reqHeaders)
         .then(() => {
           setFavorited(true);
           const favs = JSON.parse(localStorage.getItem('favIDs'));
