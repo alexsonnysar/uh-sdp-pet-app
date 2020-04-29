@@ -20,7 +20,7 @@ const PetCardList = ({ petList, userFavorite, roles }) => (
 
 PetCardList.propTypes = {
   petList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  userFavorite: PropTypes.string.isRequired,
+  userFavorite: PropTypes.arrayOf(PropTypes.string).isRequired,
   roles: PropTypes.string.isRequired,
 };
 

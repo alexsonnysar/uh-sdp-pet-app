@@ -32,15 +32,13 @@ const RequestList = ({ heading, requestList, putRequest }) => {
       {requestList.length !== 0 ? (
         <Paper className={classes.paper}>
           <List>
-            {requestList
-              .filter((r) => r.status === 'PENDING')
-              .map((requests) => (
-                <RequestListItem
-                  requestUpdated={putRequest}
-                  requests={requests}
-                  key={requests.id}
-                />
-              ))}
+            {requestList.map((requests) => (
+              <RequestListItem
+                requestUpdated={putRequest}
+                requests={requests}
+                key={requests.id}
+              />
+            ))}
           </List>
         </Paper>
       ) : (

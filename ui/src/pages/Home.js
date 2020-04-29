@@ -62,7 +62,11 @@ const Home = ({ roles }) => {
 };
 
 Home.propTypes = {
-  roles: PropTypes.string.isRequired,
+  roles: PropTypes.string,
+};
+
+Home.defaultProps = {
+  roles: '',
 };
 
 export default Home;

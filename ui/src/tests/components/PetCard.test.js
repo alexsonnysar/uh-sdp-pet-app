@@ -4,14 +4,13 @@ import { Router } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import PetCard from '../../components/PetCard';
 import { pet } from '../mocks/pets';
-import favIdList from '../mocks/userFavorites';
 
 test('should render pet card', () => {
   const history = createMemoryHistory();
 
   const { getByTestId } = render(
     <Router history={history}>
-      <PetCard pet={pet} roles="ROLE_User" userFavorite={favIdList} />
+      <PetCard pet={pet} roles="ROLE_User" userFavorite />
     </Router>
   );
 
@@ -24,7 +23,7 @@ test('should not see button unless user role', () => {
 
   const { getByTestId } = render(
     <Router history={history}>
-      <PetCard pet={pet} roles="NOT_User" userFavorite={favIdList} />
+      <PetCard pet={pet} roles="NOT_User" userFavorite />
     </Router>
   );
 

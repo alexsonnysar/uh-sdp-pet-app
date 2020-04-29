@@ -31,25 +31,33 @@ const EmployeeDashboard = () => {
 
   const handleError = () => {};
 
-  useEffect(() => {
+  const axiosRequest = () => {
     axios
       .all([getAllRequestedPets(requestedPetsUrl), getAllPets(petsUrl)])
       .then(
         axios.spread((allRequestedRes, allPetsRes) => {
-          setRequestList(allRequestedRes.data);
-          setPetList(allPetsRes.data);
+          setRequestList(allRequestedRes.data.filter((r) => r.status === 'PENDING'));
+          setPetList(allPetsRes.data.filter((r) => r.adopted === false));
         })
       )
       .catch(handleError)
       .finally(() => setLoading(false));
-  }, []);
-
-  const removePetFromList = (id) => {
-    setPetList(petList.filter((el) => el.id !== id));
   };
 
-  const updateRequestFromList = (id) => {
+  useEffect(() => {
+    axiosRequest();
+  }, [loading]);
+  const removePetFromList = (id) => {
+    setPetList(petList.filter((el) => el.id !== id));
+    setRequestList(requestList.filter((el) => el.petId !== id));
+  };
+
+  const updateRequestFromList = (id, petId, response) => {
     setRequestList(requestList.filter((el) => el.id !== id));
+    if (response === 'APPROVED') {
+      setRequestList(requestList.filter((el) => el.petId !== petId));
+      setPetList(petList.filter((el) => el.id !== petId));
+    }
   };
 
   return (

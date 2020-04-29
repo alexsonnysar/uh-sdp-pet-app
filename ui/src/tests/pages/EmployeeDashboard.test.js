@@ -31,7 +31,7 @@ describe('<EmployeeDashboard /> Tests', () => {
 
     const loadedPetList = await waitForElement(() => getByTestId('loadedList'));
     expect(loadedPetList).toBeInTheDocument();
-    expect(getAllRequestedPets).toHaveBeenCalledTimes(1);
-    expect(getAllPets).toHaveBeenCalledTimes(1);
+    expect(getAllRequestedPets).toHaveBeenCalledTimes(2);
+    expect(getAllPets).toHaveBeenCalledTimes(2);
   });
 });

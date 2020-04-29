@@ -14,13 +14,9 @@ import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const [auth, setAuth] = useState(localStorage.getItem('jwt') !== null);
-  // const [auth, setAuth] = useState(false);
   const [roles, setRoles] = useState(localStorage.getItem('roles'));
-  // const [roles, setRoles] = useState(null);
 
   useEffect(() => {
-    // check local storage
-    // setAuth if JWT in local
     if (localStorage.getItem('jwt') !== null) {
       setAuth(true);
       setRoles(localStorage.getItem('roles'));

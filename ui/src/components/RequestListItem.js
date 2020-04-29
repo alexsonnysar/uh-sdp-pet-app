@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RequestListItem = ({ requests, requestUpdated }) => {
-  const { id, userEmail, petName } = requests;
+  const { id, userEmail, petName, petId } = requests;
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
@@ -33,7 +33,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
 
   const handleRequest = (requestData) => {
     setLoading(true);
-    requestUpdated(id);
+    requestUpdated(id, petId, requestData);
     axios
       .put(`http://localhost:8080/request/${id}`, requestData, { headers: headersAxios })
       .then((response) => response.data)
@@ -41,7 +41,7 @@ const RequestListItem = ({ requests, requestUpdated }) => {
   };
 
   return (
-    <ListItemLink href={`/pet-profile/${id}`} data-testid="requestlistitem">
+    <ListItemLink href={`/pet-profile/${petId}`} data-testid="requestlistitem">
       <ListItemAvatar>
         <Avatar alt="Pet" src="/images/garfield.jpg" />
       </ListItemAvatar>
@@ -81,6 +81,7 @@ RequestListItem.propTypes = {
     id: PropTypes.string,
     userEmail: PropTypes.string,
     petName: PropTypes.string,
+    petId: PropTypes.string,
   }).isRequired,
   requestUpdated: PropTypes.func,
 };

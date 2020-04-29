@@ -26,7 +26,7 @@ public class PetDao {
 
   public Pet getPetById(String petid){
     if (petid == null) return null;
-    
+
     Optional<Pet> pet = repository.findById(petid);
 
     return pet.isPresent() ? pet.get() : null;
@@ -34,26 +34,26 @@ public class PetDao {
 
   public Pet createPet(Pet pet) {
     if (pet == null || pet.getId() != null ) return null;
-    
+
     pet.capitalizeName();
     return repository.insert(pet);
   }
 
   public Pet putPet(Pet pet) {
     if (pet == null || getPetById(pet.getId()) == null) return null;
-    
+
     pet.capitalizeName();
-    
+
     if (!pet.isActive()) {
       List<Requests> cancelReqs = reqRepo.findAll()
         .stream()
         .filter(r -> r.getPetid().equals(pet.getId()) && r.getStatus().equals("PENDING"))
         .collect(Collectors.toList());
-      
+
       cancelReqs.forEach(r -> r.setStatus("CANCELED"));
       reqRepo.saveAll(cancelReqs);
     }
-    
+
     return repository.save(pet);
   }
 
@@ -62,7 +62,7 @@ public class PetDao {
 
     Pet pet = getPetById(petid);
     if (pet == null) return null;
-    
+
     repository.delete(pet);
     return pet;
   }
@@ -71,5 +71,5 @@ public class PetDao {
     pet.capitalizeName();
     return repository.save(pet);
   }
-  
+
 }

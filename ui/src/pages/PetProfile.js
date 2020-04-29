@@ -54,7 +54,11 @@ const PetProfile = ({ roles }) => {
 };
 
 PetProfile.propTypes = {
-  roles: PropTypes.string.isRequired,
+  roles: PropTypes.string,
+};
+
+PetProfile.defaultProps = {
+  roles: '',
 };
 
 export default PetProfile;

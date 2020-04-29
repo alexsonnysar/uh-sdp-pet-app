@@ -31,7 +31,7 @@ public class RequestsDao {
 
   public Requests getRequestById(String reqid) {
     if (reqid == null) return null;
-    
+
     Optional<Requests> req = repository.findById(reqid);
     return req.isPresent() ? req.get() : null;
   }
@@ -137,7 +137,7 @@ public class RequestsDao {
 
     List<RequestInformation> reqInfoList = reqList.stream()
       .map(r -> getAllRequestInfoHelper(r, userInfo, petInfo)).collect(Collectors.toList());
-    
+
     return reqInfoList;
   }
 
