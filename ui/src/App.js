@@ -15,7 +15,7 @@ import PrivateRoute from './components/PrivateRoute';
 const App = () => {
   const [auth, setAuth] = useState(localStorage.getItem('jwt') !== null);
   const [roles, setRoles] = useState(localStorage.getItem('roles'));
-  const [username] = useState(localStorage.getItem('username'))
+  const [username] = useState(localStorage.getItem('username'));
 
   useEffect(() => {
     if (localStorage.getItem('jwt') !== null) {

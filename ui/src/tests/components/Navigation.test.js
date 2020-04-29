@@ -9,7 +9,12 @@ describe('<Navigation />', () => {
     const history = createMemoryHistory();
     const { getByTestId } = render(
       <Router history={history}>
-        <Navigation auth={false} handleAuth={() => {}} handleRoles={() => {}} />
+        <Navigation
+          auth={false}
+          handleAuth={() => {}}
+          handleRoles={() => {}}
+          username="Alex"
+        />
       </Router>
     );
     const navigation = getByTestId('navbar');
