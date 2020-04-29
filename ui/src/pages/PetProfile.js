@@ -21,7 +21,10 @@ const PetProfile = ({ roles }) => {
 
   const url = `http://localhost:8080/pet/${id}`;
   const recUrl = `http://localhost:8080/user/recent/${id}`;
-  addRecent(recUrl);
+
+  if (roles === 'ROLE_User') {
+    addRecent(recUrl);
+  }
 
   const handleError = () => {};
   useEffect(() => {
