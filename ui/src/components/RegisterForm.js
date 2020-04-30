@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import ErrorReqMsg from './ErrorReqMsg';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,6 +35,7 @@ const RegisterForm = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
+  const [emailCheck, setEmailCheck] = useState(false);
 
   const PostLoginUser = (userData) => {
     const handleError = () => {};
@@ -71,8 +73,12 @@ const RegisterForm = (props) => {
     setLoading(true);
     axios
       .post(signupUrl, userData, { headers: axiosHeaders })
-      .then(() => {
-        PostLoginUser(formData);
+      .then((res) => {
+        if (res.data.message === 'Error: Email is already in use!') {
+          setEmailCheck(true);
+        } else {
+          PostLoginUser(userData);
+        }
       })
       .catch(handleError)
       .finally(() => {
@@ -101,8 +107,14 @@ const RegisterForm = (props) => {
     } else if (formData.password !== formData.passwordConfirm) {
       setError(true);
     } else if (formData.password === formData.passwordConfirm) {
-      PostAddUser(formData);
+      PostAddUser({ ...formData, email: formData.email.toLowerCase() });
     }
+  };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setEmailCheck(false);
   };
 
   const classes = useStyles();
@@ -166,6 +178,11 @@ const RegisterForm = (props) => {
         >
           Complete Registration
         </Button>
+        <ErrorReqMsg
+          open={emailCheck}
+          handleClose={() => handleClose()}
+          errorMsg="Email is already in use! Please try again."
+        />
         <small className={classes.text}>
           {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
           Already have an account? Log in <Link to="/login">here</Link>

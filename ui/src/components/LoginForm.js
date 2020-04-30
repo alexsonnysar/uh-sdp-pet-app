@@ -62,7 +62,7 @@ const LoginForm = ({ handleAuth }) => {
           history.replace('/employee/dashboard');
         }
       })
-      .catch(() => handleError())
+      .catch(handleError)
       .finally(() => {
         setLoading(false);
       });
@@ -83,7 +83,7 @@ const LoginForm = ({ handleAuth }) => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
       setError(true);
     } else {
-      PostLoginUser(formData);
+      PostLoginUser({ ...formData, email: formData.email.toLowerCase() });
     }
   };
 
