@@ -31,7 +31,14 @@ Edit the `application.properties` file with your favorite editor and add your Mo
 spring.data.mongodb.uri=<your-URI>
 ```
 
-After adding MongoDB URI then run (from the `resources` directory):
+You will also need to add a JWT Secret and the expiration of JWT in MS (milliseconds) to the file:
+
+```java
+pet.app.jwtSecret=<your-secret>
+pet.app.jwtExpirationMs=<exp-in-ms>
+```
+
+After adding MongoDB URI and JWT configs then run (from the `resources` directory):
 
 ```bash
 cd ../../../../ui/
