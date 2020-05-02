@@ -23,7 +23,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: cd api && chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew
+      run: cd api && ./gradlew
       env: 
         pet_app_jwtSecret: WZ99DVSI626r59/+zx4pSZGH2UfrIajxy1fEnM6lWsU=
         pet_app_jwtExpirationMs: 86400000 
