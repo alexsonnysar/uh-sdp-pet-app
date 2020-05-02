@@ -20,9 +20,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 13
-        path: ~/api/
     - name: Grant execute permission for gradlew
-      run: pwd && ls && chmod +x gradlew
+      run: cd api && chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew
       env: 
